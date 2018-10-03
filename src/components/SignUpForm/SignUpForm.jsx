@@ -19,7 +19,7 @@ const SignUpForm = () => (
           firstName: Yup.string().min(2, 'Too short').max(30, 'Too long').required('Required'),
           lastName: Yup.string().min(2, 'Too short').max(30, 'Too long').required('Required'),
           email: Yup.string().email('Email must be a valid email').required('Required'),
-          password: Yup.string().required('Required'),
+          password: Yup.string().min(8, 'Must be at least 8 characters').required('Required'),
           passwordConfirm: Yup.string().oneOf([Yup.ref('password'), null], "Passwords don't match").required('Required'),
         })}
         onSubmit={(values) => {
