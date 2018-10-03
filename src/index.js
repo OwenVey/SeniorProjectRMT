@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import App from './components/App';
-import LoginForm from './components/LoginForm';
-import SignUpForm from './components/SignUpForm';
+import App from './components/App/App.jsx';
+import LoginForm from './components/LoginForm/LoginForm.jsx';
+import SignUpForm from './components/SignUpForm/SignUpForm.jsx';
 
 import './style.css';
 import 'normalize.css'
