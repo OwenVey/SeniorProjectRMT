@@ -12,16 +12,7 @@ class App extends Component {
 
         <Navbar></Navbar>
 
-        <div className='center'>
-          <Header
-            as='h1'
-            content='Welcome!'
-            style={{
-              fontSize: '4em',
-              fontWeight: 'normal',
-            }}
-          />
-        </div>
+        
 
       </div>
     );
