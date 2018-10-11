@@ -1,6 +1,6 @@
 .welcome {
-  height: 100vh;
   display: flex;
-  align-items: center;
+  margin-top: 4em;
+  align-items: left;
   justify-content: center;
 }
