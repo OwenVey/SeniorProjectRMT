@@ -14,7 +14,7 @@ const SignUpForm = () => (
       </Header>
 
       <Formik
-        initialValues={{ firstName: 'Owen', lastName: '', email: '', password: '', passwordConfirm: '' }}
+        initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: '' }}
         validationSchema={Yup.object().shape({
           firstName: Yup.string().min(2, 'Too short').max(30, 'Too long').required('Required'),
           lastName: Yup.string().min(2, 'Too short').max(30, 'Too long').required('Required'),
