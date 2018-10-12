@@ -1,5 +1,21 @@
 import React from 'react'
 import { Header, Menu, Container, Button, List } from 'semantic-ui-react'
+import ProjectListItem from '../ProjectListItem/ProjectListItem.jsx'
+
+const projects = [
+  {
+    name: 'Project 1',
+    description: 'This is the description for Project 1'
+  },
+  {
+    name: 'Project 2',
+    description: 'This is the description for Project 2'
+  },
+  {
+    name: 'Project 3',
+    description: 'This is the description for Project 3'
+  },
+]
 
 const Welcome = () => (
 
@@ -23,40 +39,9 @@ const Welcome = () => (
         </Menu.Menu>
       </Menu>
 
-      <List selection animated divided relaxed size='large'>
+      <List selection divided relaxed size='large'>
 
-
-
-        <List.Item onClick={function () { alert('hello') }}>
-          <List.Content floated='right' verticalAlign='middle'>
-            1.0
-          </List.Content>
-          <List.Content>
-            <List.Header>Project 1</List.Header>
-            This is the description for Project 1
-
-          </List.Content>
-        </List.Item>
-
-        <List.Item onClick={function () { alert('hello') }}>
-          <List.Content floated='right' verticalAlign='middle'>
-            1.0
-          </List.Content>
-          <List.Content>
-            <List.Header>Project 2</List.Header>
-            This is the description for Project 2
-          </List.Content>
-        </List.Item>
-
-        <List.Item onClick={function () { alert('hello') }}>
-          <List.Content floated='right'>
-            1.0
-          </List.Content>
-          <List.Content>
-            <List.Header>Project 3</List.Header>
-            This is the description for Project 3
-          </List.Content>
-        </List.Item>
+        {projects.map((project) => <ProjectListItem name={project.name} description={project.description}></ProjectListItem>)}
 
       </List>
 
