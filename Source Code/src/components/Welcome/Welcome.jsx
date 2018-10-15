@@ -41,7 +41,7 @@ class Welcome extends Component {
 
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Button color='teal'>New Project</Button>
+              <Button onClick='' color='teal'>New Project</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>

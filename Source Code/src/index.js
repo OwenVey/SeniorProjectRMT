@@ -6,6 +6,7 @@ import App from './components/App/App.jsx';
 import LoginForm from './components/LoginForm/LoginForm.jsx';
 import SignUpForm from './components/SignUpForm/SignUpForm.jsx';
 import Welcome from './components/Welcome/Welcome.jsx';
+import CreateNewProject from './components/CreateNewProject/CreateNewProject.jsx';
 
 import './style.css';
 import 'normalize.css'
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route exact path='/home' component={Welcome} />
       <Route exact path='/login' component={LoginForm} />
       <Route exact path='/signup' component={SignUpForm} />
+      <Route exact path='/createnewproject' component={CreateNewProject} />
     </div>
   </Router>
   , document.getElementById('root'));
