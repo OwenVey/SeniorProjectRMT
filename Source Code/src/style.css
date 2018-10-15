@@ -1,6 +1,13 @@
 .welcome {
-  height: 100vh;
   display: flex;
-  align-items: center;
+  margin-top: 4em;
   justify-content: center;
+}
+
+.smallFont {
+  font-size: 2em;
+}
+
+.searchBar {
+  width: 4000px;
 }
