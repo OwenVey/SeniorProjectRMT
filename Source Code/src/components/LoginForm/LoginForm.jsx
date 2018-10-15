@@ -75,7 +75,7 @@ const LoginForm = () => (
 
       <Message attached='bottom'>
         <Icon name='help' />
-        Don't have an account? <a><Link to='/signup'>Sign Up</Link></a>
+        Don't have an account? <Link to='/signup'>Sign Up</Link>
       </Message>
 
     </div>
