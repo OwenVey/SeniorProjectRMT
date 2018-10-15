@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Menu, Container, Button, Input } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import ProjectList from '../ProjectList/ProjectList.jsx'
 import data from './data.js'
 
@@ -41,7 +42,7 @@ class Welcome extends Component {
 
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Button onClick='' color='teal'>New Project</Button>
+              <Button as={Link} to='/createnewproject' color='teal'>New Project</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>
