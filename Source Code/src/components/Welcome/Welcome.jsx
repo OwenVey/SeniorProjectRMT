@@ -1,64 +1,54 @@
-import React from 'react'
-import { Header, Menu, Container, Button, List, Search} from 'semantic-ui-react'
-import ProjectListItem from '../ProjectListItem/ProjectListItem.jsx'
+import React, { Component } from 'react'
+import { Menu, Container, Button, Input } from 'semantic-ui-react'
+import ProjectList from '../ProjectList/ProjectList.jsx'
+import data from './data.js'
 
-const projects = [
-  {
-    name: 'Project 1',
-    description: 'This is the description for Project 1'
-  },
-  {
-    name: 'Project 2',
-    description: 'This is the description for Project 2'
-  },
-  {
-    name: 'Project 3',
-    description: 'This is the description for Project 3'
-  },
-]
+class Welcome extends Component {
 
-const Welcome = () => (
+  constructor() {
+    super();
+    const PROJECTS = data.projects;
 
-  <div>
-    <div className='welcome'>
-      <Header
-        as='h1'
-        content='Welcome!'
-        style={{
-          fontSize: '4em',
-          fontWeight: 'normal',
-        }}
-      />
-    </div>
-    
-    
-    <Container>
-      <Menu pointing secondary size='massive'>
-        <Menu.Item active name='Projects' />
-        <Search size='small' className='searchBar'
-            //loading=
-            //onResultSelect=
-            //onSearchChange=
-            //results=
-            //value={value}
-            //{...this.props}
-          />
-        <Menu.Menu position='right'>
-          <Button color='teal' style={{
-              width: '200px',
-              height: '40px',
-            }}>New Project</Button>
-        </Menu.Menu>
-      </Menu>
+    this.state = {
+      projects: PROJECTS,
+      filter: null
+    };
+  }
 
-      <List selection divided relaxed size='large'>
+  updateSearch = (event) => {
+    this.setState({
+      filter: event.target.value
+    });
+  }
 
-        {projects.map((project) => <ProjectListItem name={project.name} description={project.description}></ProjectListItem>)}
+  render() {
+    return (
+      <Container className='center' style={{ paddingTop: '4em' }}>
 
-      </List>
+        <Menu pointing secondary>
+          <Menu.Menu position='left'>
+            <Menu.Item name='Projects' style={{ fontSize: '18px' }} active />
+            <Menu.Item>
+              <Input
+                icon={{ name: 'search', link: true }}
+                style={{ width: '300px' }}
+                iconPosition='left'
+                placeholder='Search projects...'
+                onChange={this.updateSearch}
+              />
+            </Menu.Item>
+          </Menu.Menu>
 
-    </Container>
-  </div >
-)
+          <Menu.Menu position='right'>
+            <Menu.Item>
+              <Button color='teal'>New Project</Button>
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
 
+        <ProjectList filter={this.state.filter} projects={this.state.projects}></ProjectList>
+      </Container>
+    )
+  }
+}
 export default Welcome
