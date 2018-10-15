@@ -122,7 +122,7 @@ const SignUpForm = () => (
       </Formik>
 
       <Message attached='bottom'>
-        <Icon name='help' />Already have an account? <a><Link to='/login'>Log In</Link></a>
+        <Icon name='help' />Already have an account? <Link to='/login'>Log In</Link>
       </Message>
 
     </div>
