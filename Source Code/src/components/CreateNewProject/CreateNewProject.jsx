@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Button, Form, Header, FormGroup } from 'semantic-ui-react'
 import { Formik } from 'formik';
@@ -99,11 +99,11 @@ class CreateNewProject extends Component {
                       <DateInput
                         id='dueDate'
                         label='Project Due Date'
-                        name="date"
-                        placeholder="Project Due Date"
+                        name='date'
+                        placeholder='Project Due Date'
                         value={this.state.date}
                         minDate={moment()}
-                        iconPosition="left"
+                        iconPosition='left'
                         onChange={this.handleChange} />
                       {errors.dueDate && touched.dueDate && <div style={{ color: '#db2828' }}>{errors.dueDate}</div>}
                     </Form.Field>
