@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Navbar from '../Navbar/Navbar.jsx'
 import { Route, Switch } from 'react-router-dom';
 
+import Navbar from '../Navbar/Navbar.jsx'
 import LoginForm from '../LoginForm/LoginForm.jsx';
 import SignUpForm from '../SignUpForm/SignUpForm.jsx';
 import Welcome from '../Welcome/Welcome.jsx';

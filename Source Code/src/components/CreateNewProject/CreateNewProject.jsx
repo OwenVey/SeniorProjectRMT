@@ -36,7 +36,7 @@ class CreateNewProject extends Component {
             validationSchema={Yup.object().shape({
               name: Yup.string().min(10, 'Too short.').max(30, 'Too long.').required('Required'),
               description: Yup.string().min(20, 'Description must be at least 20 characters.').required('Required'),
-              dueDate: Yup.string()
+              dueDate: Yup.date()
             })}
             onSubmit={(project, { setSubmitting }) => {
               setSubmitting(false);
