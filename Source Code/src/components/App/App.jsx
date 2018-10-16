@@ -7,17 +7,34 @@ import SignUpForm from '../SignUpForm/SignUpForm.jsx';
 import Welcome from '../Welcome/Welcome.jsx';
 import CreateNewProject from '../CreateNewProject/CreateNewProject';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
+import data from '../App/data.js'
 
 class App extends Component {
+
+  constructor() {
+    super();
+    const PROJECTS = data.projects;
+
+    this.state = {
+      projects: PROJECTS
+    };
+  }
+
+  handleProjectAdded = (project) => {
+    this.setState(prevState => ({
+      projects: [...prevState.projects, project]
+    }))
+  }
+
   render() {
     return (
       <React.Fragment>
         <Navbar></Navbar>
         <Switch>
-          <Route exact path='/' component={Welcome} />
+          <Route exact path='/' render={props => <Welcome {...props} projects={this.state.projects} />} />
           <Route path='/login' component={LoginForm} />
           <Route path='/signup' component={SignUpForm} />
-          <Route path='/createnewproject' component={CreateNewProject} />
+          <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
           <Route component={PageNotFound} />
         </Switch>
       </React.Fragment>

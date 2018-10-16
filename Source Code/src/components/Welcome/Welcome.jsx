@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 import { Menu, Container, Button, Input } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import ProjectList from '../ProjectList/ProjectList.jsx'
-import data from './data.js'
 
 class Welcome extends Component {
 
   constructor() {
     super();
-    const PROJECTS = data.projects;
 
     this.state = {
-      projects: PROJECTS,
       filter: null
     };
   }
@@ -47,7 +44,7 @@ class Welcome extends Component {
           </Menu.Menu>
         </Menu>
 
-        <ProjectList filter={this.state.filter} projects={this.state.projects}></ProjectList>
+        <ProjectList filter={this.state.filter} projects={this.props.projects}></ProjectList>
       </Container>
     )
   }

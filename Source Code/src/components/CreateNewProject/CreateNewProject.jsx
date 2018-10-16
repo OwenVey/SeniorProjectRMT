@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom'
 import { Button, Form, Header, FormGroup } from 'semantic-ui-react'
 import { Formik } from 'formik';
 import { DateInput } from 'semantic-ui-calendar-react';
@@ -31,15 +32,17 @@ class CreateNewProject extends Component {
             </Header>
 
           <Formik
-            initialValues={{ projectName: '', projectDesc: '', projectDueDate: '' }}
+            initialValues={{ name: '', description: '', dueDate: '' }}
             validationSchema={Yup.object().shape({
-              projectName: Yup.string().min(10, 'Too short.').max(30, 'Too long.').required('Required'),
-              projectDesc: Yup.string().min(20, 'Description must be at least 20 characters.').required('Required'),
-              projectDueDate: Yup.string()
+              name: Yup.string().min(10, 'Too short.').max(30, 'Too long.').required('Required'),
+              description: Yup.string().min(20, 'Description must be at least 20 characters.').required('Required'),
+              dueDate: Yup.string()
             })}
-            onSubmit={(values) => {
-              values.projectDueDate = this.state.date;
-              console.log(values);
+            onSubmit={(project, { setSubmitting }) => {
+              setSubmitting(false);
+              project.dueDate = this.state.date;
+              this.props.onProjectAdded(project);
+              this.props.history.push('/')
             }}
           >
             {props => {
@@ -49,6 +52,7 @@ class CreateNewProject extends Component {
                 errors,
                 handleChange,
                 handleSubmit,
+                isSubmitting
               } = props;
               return (
 
@@ -57,43 +61,43 @@ class CreateNewProject extends Component {
                   <Form.Group widths='equal'>
                     <Form.Field>
                       <Form.Input
-                        id='projectName'
+                        id='name'
                         label='Project Name'
                         placeholder='Project Name'
                         type='text'
                         className='required'
-                        value={values.projectName}
+                        value={values.name}
                         onChange={handleChange}
-                        error={errors.projectName && touched.projectName}
+                        error={errors.name && touched.name}
                       />
-                      {errors.projectName && touched.projectName && <div style={{ color: '#db2828' }}>{errors.projectName}</div>}
+                      {errors.name && touched.name && <div style={{ color: '#db2828' }}>{errors.name}</div>}
                     </Form.Field>
                   </Form.Group>
 
                   <FormGroup widths='equal'>
                     <Form.Field>
                       <Form.TextArea
-                        id='projectDesc'
+                        id='description'
                         label='Project Description'
                         placeholder='Project Description'
                         type='text'
                         className='required'
-                        value={values.projectDesc}
+                        value={values.description}
                         onChange={handleChange}
-                        error={errors.projectDesc && touched.projectDesc}
+                        error={errors.description && touched.description}
                         autoHeight
                         style={{
                           maxHeight: '300px'
                         }}
                       />
-                      {errors.projectDesc && touched.projectDesc && <div style={{ color: '#db2828' }}>{errors.projectDesc}</div>}
+                      {errors.description && touched.description && <div style={{ color: '#db2828' }}>{errors.description}</div>}
                     </Form.Field>
                   </FormGroup>
 
                   <FormGroup widths='equal'>
                     <Form.Field>
                       <DateInput
-                        id='projectDueDate'
+                        id='dueDate'
                         label='Project Due Date'
                         name="date"
                         placeholder="Project Due Date"
@@ -101,11 +105,11 @@ class CreateNewProject extends Component {
                         minDate={moment()}
                         iconPosition="left"
                         onChange={this.handleChange} />
-                      {errors.projectDueDate && touched.projectDueDate && <div style={{ color: '#db2828' }}>{errors.projectDueDate}</div>}
+                      {errors.dueDate && touched.dueDate && <div style={{ color: '#db2828' }}>{errors.dueDate}</div>}
                     </Form.Field>
                   </FormGroup>
 
-                  <Button type='submit' color='teal' fluid size='large'>Create</Button>
+                  <Button type='submit' loading={isSubmitting} disabled={isSubmitting} color='teal' fluid size='large'>Create</Button>
 
                 </Form>
               );
@@ -116,4 +120,4 @@ class CreateNewProject extends Component {
     )
   }
 }
-export default CreateNewProject;
+export default withRouter(CreateNewProject);
