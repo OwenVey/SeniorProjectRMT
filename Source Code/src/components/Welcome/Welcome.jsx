@@ -24,7 +24,7 @@ class Welcome extends Component {
 
   render() {
     return (
-      <Container className='center' style={{ paddingTop: '4em' }}>
+      <Container className='center' style={{ paddingTop: '8em' }}>
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>
