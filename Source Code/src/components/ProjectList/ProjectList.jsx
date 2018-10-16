@@ -14,7 +14,7 @@ class ProjectList extends Component {
   render() {
     return (
       <List selection divided relaxed size='large'>
-        {this.filter(this.props.projects).map((project) => <ProjectListItem key={project.id} name={project.name} description={project.description}></ProjectListItem>)}
+        {this.filter(this.props.projects).map((project) => <ProjectListItem key={project.id} project={project}></ProjectListItem>)}
       </List>
     )
   }
