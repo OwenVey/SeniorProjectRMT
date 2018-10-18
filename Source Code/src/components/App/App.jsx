@@ -1,14 +1,43 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+
 import Navbar from '../Navbar/Navbar.jsx'
+import LoginForm from '../LoginForm/LoginForm.jsx';
+import SignUpForm from '../SignUpForm/SignUpForm.jsx';
+import Welcome from '../Welcome/Welcome.jsx';
+import CreateNewProject from '../CreateNewProject/CreateNewProject';
+import PageNotFound from '../PageNotFound/PageNotFound.jsx';
+import data from '../App/data.js'
 
 class App extends Component {
+
+  constructor() {
+    super();
+    const PROJECTS = data.projects;
+
+    this.state = {
+      projects: PROJECTS
+    };
+  }
+
+  handleProjectAdded = (project) => {
+    this.setState(prevState => ({
+      projects: [...prevState.projects, project]
+    }))
+  }
+
   render() {
     return (
-      <div className='App'>
-
+      <React.Fragment>
         <Navbar></Navbar>
-
-      </div>
+        <Switch>
+          <Route exact path='/' render={props => <Welcome {...props} projects={this.state.projects} />} />
+          <Route path='/login' component={LoginForm} />
+          <Route path='/signup' component={SignUpForm} />
+          <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </React.Fragment>
     );
   }
 }

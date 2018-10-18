@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import { Menu, Container, Button, Input } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import ProjectList from '../ProjectList/ProjectList.jsx'
-import data from './data.js'
 
 class Welcome extends Component {
 
   constructor() {
     super();
-    const PROJECTS = data.projects;
 
     this.state = {
-      projects: PROJECTS,
       filter: null
     };
   }
@@ -23,7 +21,7 @@ class Welcome extends Component {
 
   render() {
     return (
-      <Container className='center' style={{ paddingTop: '4em' }}>
+      <Container className='center' style={{ paddingTop: '8em' }}>
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>
@@ -41,12 +39,12 @@ class Welcome extends Component {
 
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Button color='teal'>New Project</Button>
+              <Button as={Link} to='/createnewproject' color='teal'>New Project</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>
 
-        <ProjectList filter={this.state.filter} projects={this.state.projects}></ProjectList>
+        <ProjectList filter={this.state.filter} projects={this.props.projects}></ProjectList>
       </Container>
     )
   }

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 const LoginForm = () => (
 
-  <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+  <div className='centered'>
     <div style={{ width: 450 }}>
 
       <Header as='h2' color='teal' textAlign='center'>
@@ -75,7 +75,7 @@ const LoginForm = () => (
 
       <Message attached='bottom'>
         <Icon name='help' />
-        Don't have an account? <a><Link to='/signup'>Sign Up</Link></a>
+        Don't have an account? <Link to='/signup'>Sign Up</Link>
       </Message>
 
     </div>

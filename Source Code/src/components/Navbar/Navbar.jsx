@@ -15,7 +15,7 @@ export default class Navbar extends Component {
         <Menu fixed='top' inverted>
           <Container>
             <Menu.Item header><Icon name='pencil' size='large' />Requirements Tool</Menu.Item>
-            <Menu.Item as={Nav} to='/home' name='home' >Home</Menu.Item>
+            <Menu.Item as={Nav} to='/' name='home' >Home</Menu.Item>
 
             <Menu.Menu position='right' >
               <Menu.Item as={Nav} to='/login' name='login'>Log In</Menu.Item>

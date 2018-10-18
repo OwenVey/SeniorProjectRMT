@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 const SignUpForm = () => (
 
-  <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+  <div className='centered'>
     <div style={{ width: 450 }}>
 
       <Header as='h2' color='teal' textAlign='center'>
@@ -122,7 +122,7 @@ const SignUpForm = () => (
       </Formik>
 
       <Message attached='bottom'>
-        <Icon name='help' />Already have an account? <a><Link to='/login'>Log In</Link></a>
+        <Icon name='help' />Already have an account? <Link to='/login'>Log In</Link>
       </Message>
 
     </div>
