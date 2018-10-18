@@ -36,7 +36,7 @@ class App extends Component {
           <Route path='/login' component={LoginForm} />
           <Route path='/signup' component={SignUpForm} />
           <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
-          <Route exact path='/dashboard' component={DashboardForm} />
+          <Route path='/dashboard' component={DashboardForm} />
           <Route component={PageNotFound} />
         </Switch>
       </React.Fragment>

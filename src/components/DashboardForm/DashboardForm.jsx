@@ -15,7 +15,7 @@ const DashboardForm = () => (
           Requirements
       </Header>
 
-        <Accordion defaultActiveIndex={0} panels={rootPanels} styled />
+        <Accordion panels={rootPanels} styled />
 
       </div>
     </div>

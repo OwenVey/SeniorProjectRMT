@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { List } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 
 class ProjectListItem extends Component {
+
   render() {
     return (
 
-      <List.Item onClick={function () { alert('hello') }}>
+      <List.Item onClick={() => { this.props.history.push('/dashboard') }}>
         <List.Content floated='right' verticalAlign='middle'>
           {'Due Date: ' + this.props.project.dueDate}
         </List.Content>
@@ -19,4 +21,4 @@ class ProjectListItem extends Component {
   }
 }
 
-export default ProjectListItem;
+export default withRouter(ProjectListItem);
