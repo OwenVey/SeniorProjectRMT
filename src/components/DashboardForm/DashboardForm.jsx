@@ -20,20 +20,22 @@ const rootPanels = [
 
 export default class DashboardForm extends Component {
   state = {
-    requirementDescription: 'No Requirement Selected'
+    requirementDescription: 'No Requirement Selected',
+    activeIndex: -1
   }
 
-  toggleRequirement = () => {
-    if(document.getElementsByClassName('content active')[0] != null){
-      this.setState( {requirementDescription: document.getElementsByClassName('content active')[0].childNodes[0].innerHTML})
-    }
-    else{
-      this.setState( {requirementDescription: 'No Requirement Selected'})
-    }
+  toggleRequirement = (event, itemProps) => {
+    const { index } = itemProps
+    const { activeIndex } = this.state
+    const newIndex = activeIndex === index ? -1 : index
+    this.setState({
+        activeIndex: newIndex,
+        requirementDescription: document.getElementsByClassName('accordion ui styled')[0].childNodes[index*2+1].childNodes[0].innerHTML
+      })
     this.render()
   }
   render() {
-    const {requirementDescription} = this.state
+    const {requirementDescription, activeIndex} = this.state
     return(
     <div>
     <div style={{ display: 'flex', position: 'relative', justifyContent: 'center' }}>
@@ -52,7 +54,7 @@ export default class DashboardForm extends Component {
         <Header as='h2' color='teal' textAlign='center'>
           Requirements
         </Header>
-        <Accordion panels={rootPanels} onTitleClick={this.toggleRequirement} styled />
+        <Accordion activeIndex={activeIndex} panels={rootPanels} onTitleClick={this.toggleRequirement} styled />
       </div>
     </div>
     <div style={{ display: 'flex', position: 'relative', justifyContent: 'right' }}>
@@ -71,6 +73,10 @@ export default class DashboardForm extends Component {
         </Header>
         </Button>
       </Button.Group>
+      </div>
+    </div>
+    <div style={{ display: 'flex', position: 'relative', justifyContent: 'center' }}>
+      <div style={{ top: 80, position: 'absolute', width: '50%', height: 800, backgroundColor: 'lightgrey', }}>
       </div>
     </div>
   </div>
