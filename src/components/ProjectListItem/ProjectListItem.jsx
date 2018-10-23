@@ -7,7 +7,7 @@ class ProjectListItem extends Component {
   render() {
     return (
 
-      <List.Item onClick={() => { this.props.history.push('/dashboard') }}>
+      <List.Item onClick={() => { this.props.history.push('/project') }}>
         <List.Content floated='right' verticalAlign='middle'>
           {'Due Date: ' + this.props.project.dueDate}
         </List.Content>
