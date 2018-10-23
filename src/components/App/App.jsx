@@ -7,7 +7,7 @@ import SignUpForm from '../SignUpForm/SignUpForm.jsx';
 import Welcome from '../Welcome/Welcome.jsx';
 import CreateNewProject from '../CreateNewProject/CreateNewProject';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
-import DashboardForm from '../DashboardForm/DashboardForm.jsx';
+import ProjectPage from '../ProjectPage/ProjectPage.jsx';
 import data from '../App/data.js'
 
 class App extends Component {
@@ -36,7 +36,7 @@ class App extends Component {
           <Route path='/login' component={LoginForm} />
           <Route path='/signup' component={SignUpForm} />
           <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
-          <Route path='/dashboard' component={DashboardForm} />
+          <Route path='/project' component={ProjectPage} />
           <Route component={PageNotFound} />
         </Switch>
       </React.Fragment>
