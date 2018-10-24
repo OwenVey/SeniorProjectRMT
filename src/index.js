@@ -6,6 +6,7 @@ import App from './components/App/App.jsx';
 import './style.css';
 import 'normalize.css'
 import 'semantic-ui-css/semantic.min.css';
+import 'react-sortable-tree/style.css'
 
 ReactDOM.render(
   <Router>
