@@ -13,9 +13,16 @@ const Level2Content = (
   </div>
 )
 
+const Level3Content = (
+  <div>
+    Test the ability to add an item to the accordion/tree.
+  </div>
+)
+
 const rootPanels = [
   { key: 'panel-1', title: '0048862 - Branch Project', content: { content: Level1Content } },
   { key: 'panel-2', title: '0038535 - Merge Project', content: { content: Level2Content } },
+  { key: 'panel-3', title: '0000001 - Test Project', content: { content: Level3Content } },
 ]
 
 export default class ProjectPage extends Component {
