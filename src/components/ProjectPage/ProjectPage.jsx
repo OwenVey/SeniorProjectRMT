@@ -42,7 +42,7 @@ export default class ProjectPage extends Component {
     this.render()
   }
   render() {
-    const { requirementDescription, activeIndex } = this.state
+    const { activeIndex } = this.state
     return (
       <div>
         <div style={{ display: 'flex', position: 'relative', justifyContent: 'center' }}>

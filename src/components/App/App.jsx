@@ -9,6 +9,7 @@ import CreateNewProject from '../CreateNewProject/CreateNewProject';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import ProjectPage from '../ProjectPage/ProjectPage.jsx';
 import data from '../App/data.js'
+import TreeView from '../TreeView/TreeView.jsx';
 
 class App extends Component {
 
@@ -37,6 +38,7 @@ class App extends Component {
           <Route path='/signup' component={SignUpForm} />
           <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
           <Route path='/project' component={ProjectPage} />
+          <Route path='/TreeView' component={TreeView} />
           <Route component={PageNotFound} />
         </Switch>
       </React.Fragment>
