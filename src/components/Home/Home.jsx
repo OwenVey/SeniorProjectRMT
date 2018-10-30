@@ -3,7 +3,7 @@ import { Menu, Container, Button, Input } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import ProjectList from '../ProjectList/ProjectList.jsx'
 
-class Welcome extends Component {
+class Home extends Component {
 
   constructor() {
     super();
@@ -25,21 +25,15 @@ class Welcome extends Component {
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>
-            <Menu.Item name='Projects' style={{ fontSize: '18px' }} active />
+            <Menu.Item name='Recently Viewed' style={{ fontSize: '18px' }} active />
             <Menu.Item>
               <Input
                 icon={{ name: 'search', link: true }}
                 style={{ width: '300px' }}
                 iconPosition='left'
-                placeholder='Search projects...'
+                placeholder='Search all items...'
                 onChange={this.updateSearch}
               />
-            </Menu.Item>
-          </Menu.Menu>
-
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Button as={Link} to='/createnewproject' color='teal'>New Project</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>
@@ -49,4 +43,4 @@ class Welcome extends Component {
     )
   }
 }
-export default Welcome
+export default Home

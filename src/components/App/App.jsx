@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar.jsx'
 import LoginForm from '../LoginForm/LoginForm.jsx';
 import SignUpForm from '../SignUpForm/SignUpForm.jsx';
-import Welcome from '../Welcome/Welcome.jsx';
+import Home from '../Home/Home.jsx';
 import CreateNewProject from '../CreateNewProject/CreateNewProject';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import ProjectPage from '../ProjectPage/ProjectPage.jsx';
@@ -32,7 +32,8 @@ class App extends Component {
       <React.Fragment>
         <Navbar></Navbar>
         <Switch>
-          <Route exact path='/' render={props => <Welcome {...props} projects={this.state.projects} />} />
+          <Route exact path='/' render={props => <Home {...props} projects={this.state.projects} />} />
+          <Route path='/home' render={props => <Home {...props} projects={this.state.projects} />} />
           <Route path='/login' component={LoginForm} />
           <Route path='/signup' component={SignUpForm} />
           <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
