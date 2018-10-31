@@ -23,7 +23,7 @@ class Home extends Component {
 
   render() {
     return (
-      <Container className='center' style={{ paddingTop: '8em' }}>
+      <Container className='content' style={{ width: '50%' }}>
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>

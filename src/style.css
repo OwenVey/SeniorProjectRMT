@@ -14,3 +14,24 @@ body {
   justify-content:center;
   align-items:center;
 }
+
+
+.grid-container {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 47px 1fr;
+  grid-template-areas: "navbar" "content";
+}
+
+.content { grid-area: content; }
+
+.navbar { grid-area: navbar; }
+
+.recently-viewed-item {
+  cursor: pointer;
+}
+.recently-viewed-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+  
+}

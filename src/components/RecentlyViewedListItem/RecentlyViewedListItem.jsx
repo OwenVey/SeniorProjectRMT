@@ -13,7 +13,7 @@ class RecentlyViewedListItem extends Component {
 
   render() {
     return (
-      <List.Item>
+      <List.Item className='recently-viewed-item' onClick={function () { alert('hello') }}>
         <List.Content floated='right'>
           <List.Icon onClick={this.handleBookmark} name={this.state.isBookmarked ? 'bookmark' : 'bookmark outline'} />
         </List.Content>

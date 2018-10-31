@@ -39,7 +39,7 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className='grid-container'>
         <Navbar onLogout={this.logout}></Navbar>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/home" />} />
@@ -48,9 +48,8 @@ class App extends Component {
           <PrivateRoute authed={this.state.isAuthenticated} path='/tree' component={TreeView} />
           <Route path='/login' render={props => <Login {...props} onLogin={this.login} />} />
           <PrivateRoute authed={this.state.isAuthenticated} component={PageNotFound} />
-          
         </Switch>
-      </React.Fragment>
+      </div>
     );
   }
 }
