@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar.jsx'
-import LoginForm from '../LoginForm/LoginForm.jsx';
-import SignUpForm from '../SignUpForm/SignUpForm.jsx';
-import Welcome from '../Welcome/Welcome.jsx';
-import CreateNewProject from '../CreateNewProject/CreateNewProject';
+import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx'
+import Login from '../Login/Login.jsx';
+import Home from '../Home/Home.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import ProjectPage from '../ProjectPage/ProjectPage.jsx';
-import data from '../App/data.js'
 import TreeView from '../TreeView/TreeView.jsx';
 
 class App extends Component {
 
   constructor() {
     super();
-    const PROJECTS = data.projects;
 
     this.state = {
-      projects: PROJECTS
+      isAuthenticated: false,
     };
+  }
+
+  login = () => {
+    this.setState({
+      isAuthenticated: true
+    })
+  }
+
+  logout = () => {
+    this.setState({
+      isAuthenticated: false
+    })
   }
 
   handleProjectAdded = (project) => {
@@ -31,15 +40,15 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar></Navbar>
+        <Navbar onLogout={this.logout}></Navbar>
         <Switch>
-          <Route exact path='/' render={props => <Welcome {...props} projects={this.state.projects} />} />
-          <Route path='/login' component={LoginForm} />
-          <Route path='/signup' component={SignUpForm} />
-          <Route path='/createnewproject' render={props => <CreateNewProject {...props} onProjectAdded={this.handleProjectAdded} />} />
-          <Route path='/project' component={ProjectPage} />
-          <Route path='/TreeView' component={TreeView} />
-          <Route component={PageNotFound} />
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
+          <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={Home} />
+          <PrivateRoute authed={this.state.isAuthenticated} path='/project' component={ProjectPage} />
+          <PrivateRoute authed={this.state.isAuthenticated} path='/tree' component={TreeView} />
+          <Route path='/login' render={props => <Login {...props} onLogin={this.login} />} />
+          <PrivateRoute authed={this.state.isAuthenticated} component={PageNotFound} />
+          
         </Switch>
       </React.Fragment>
     );

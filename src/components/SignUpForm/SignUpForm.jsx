@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button, Form, Icon, Header, Message, FormGroup } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Button, Form, Header, FormGroup } from 'semantic-ui-react'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -120,10 +119,6 @@ const SignUpForm = () => (
           );
         }}
       </Formik>
-
-      <Message attached='bottom'>
-        <Icon name='help' />Already have an account? <Link to='/login'>Log In</Link>
-      </Message>
 
     </div>
   </div>
