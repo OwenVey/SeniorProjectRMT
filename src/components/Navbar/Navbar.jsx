@@ -31,7 +31,7 @@ export default class Navbar extends Component {
 
 
           <Menu.Menu position='right' >
-            <Menu.Item as={Nav} to='/login' name='logout'>
+            <Menu.Item as={Nav} onClick={this.props.onLogout} to='/login' name='logout'>
               <Icon name='log out' />
               Log Out
               </Menu.Item>
