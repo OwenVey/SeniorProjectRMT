@@ -1,34 +1,61 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
-import SortableTree from 'react-sortable-tree';
-import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
+import { Treebeard } from "react-treebeard";
+
+const data = {
+  name: "root",
+  toggled: true,
+  children: [
+    {
+      name: "parent",
+      children: [{ name: "child1" }, { name: "child2" }]
+    },
+    {
+      name: "loading parent",
+      loading: true,
+      children: []
+    },
+    {
+      name: "parent",
+      children: [
+        {
+          name: "nested parent",
+          children: [{ name: "nested child 1" }, { name: "nested child 2" }]
+        }
+      ]
+    }
+  ]
+};
 
 class TreeView extends Component {
-    constructor(props) {
-      super(props);
-  
-      this.state = {
-        treeData: [{ title: 'Chicken', expanded: true, children: [{ title: 'Egg' }] },
-            {title: 'Samantha', expanded: true, children: [{title: 'dog'}]},
-            {title: 'Samantha', expanded: true, children: [{title: 'dog'}]},
-            {title: 'Samantha', expanded: true, children: [{title: 'dog'}]}],
-      };
-    }
-  
-    render() {
-      return (
-        <div style={{
-            height: 1600,
-            marginTop: '200px',
-            }}>
-        <SortableTree
-            treeData={this.state.treeData}
-            onChange={treeData => this.setState({ treeData })}
-            theme={FileExplorerTheme}
-          />
-        </div>
-      );
-    }
-  }
+  constructor(props) {
+    super(props);
 
-export default TreeView
+    this.state = {};
+    this.onToggle = this.onToggle.bind(this);
+  }
+  onToggle(node, toggled) {
+    if (this.state.cursor) {
+      this.state.cursor.active = false;
+    }
+    node.active = true;
+    if (node.children) {
+      node.toggled = toggled;
+    }
+    this.setState({ cursor: node });
+  }
+  render() {
+    return (
+      <div
+        style={{
+          height: 1600,
+          marginTop: "200px"
+        }}
+      >
+        <Treebeard data={data} onToggle={this.onToggle} />
+      </div>
+    );
+  }
+}
+
+export default TreeView;
