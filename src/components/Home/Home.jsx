@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Menu, Container, Button, Input } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import ProjectList from '../ProjectList/ProjectList.jsx'
+import { Menu, Container, Input } from 'semantic-ui-react'
+import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
+import data from '../Home/data.js'
 
 class Home extends Component {
 
   constructor() {
     super();
+    const RECENTLY_VIEWED = data.recentlyViewedItems;
 
     this.state = {
-      filter: null
+      filter: null,
+      recentlyViewedItems: RECENTLY_VIEWED,
     };
   }
 
@@ -38,7 +40,7 @@ class Home extends Component {
           </Menu.Menu>
         </Menu>
 
-        <ProjectList filter={this.state.filter} projects={this.props.projects}></ProjectList>
+        <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems}></RecentlyViewedList>
       </Container>
     )
   }
