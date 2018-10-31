@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Menu, Container, Button, Input } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import ProjectList from '../ProjectList/ProjectList.jsx'
+import { Menu, Container, Input } from 'semantic-ui-react'
+import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
+import data from '../Home/data.js'
 
-class Welcome extends Component {
+class Home extends Component {
 
   constructor() {
     super();
+    const RECENTLY_VIEWED = data.recentlyViewedItems;
 
     this.state = {
-      filter: null
+      filter: null,
+      recentlyViewedItems: RECENTLY_VIEWED,
     };
   }
 
@@ -25,28 +27,22 @@ class Welcome extends Component {
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>
-            <Menu.Item name='Projects' style={{ fontSize: '18px' }} active />
+            <Menu.Item name='Recently Viewed' style={{ fontSize: '18px' }} active />
             <Menu.Item>
               <Input
                 icon={{ name: 'search', link: true }}
                 style={{ width: '300px' }}
                 iconPosition='left'
-                placeholder='Search projects...'
+                placeholder='Search all items...'
                 onChange={this.updateSearch}
               />
             </Menu.Item>
           </Menu.Menu>
-
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Button as={Link} to='/createnewproject' color='teal'>New Project</Button>
-            </Menu.Item>
-          </Menu.Menu>
         </Menu>
 
-        <ProjectList filter={this.state.filter} projects={this.props.projects}></ProjectList>
+        <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems}></RecentlyViewedList>
       </Container>
     )
   }
 }
-export default Welcome
+export default Home

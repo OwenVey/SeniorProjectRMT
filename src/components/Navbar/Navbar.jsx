@@ -8,27 +8,37 @@ const Nav = props => (
 
 export default class Navbar extends Component {
   render() {
-
+    if (window.location.pathname === '/login') return null;
     return (
-      <div>
+      <Menu fixed='top' inverted>
+        <Container>
+          <Menu.Item header><Icon name='pencil' size='large' />Requirements Tool</Menu.Item>
 
-        <Menu fixed='top' inverted>
-          <Container>
-            <Menu.Item header><Icon name='pencil' size='large' />Requirements Tool</Menu.Item>
-            <Menu.Item as={Nav} to='/' name='home' >Home</Menu.Item>
+          <Menu.Item as={Nav} to='/home' name='home' >
+            <Icon name='home' />
+            Home
+          </Menu.Item>
 
-            <Menu.Menu position='right' >
-              <Menu.Item as={Nav} to='/login' name='login'>Log In</Menu.Item>
-              <Menu.Item as={Nav} to='/signup' name='signup'>Sign Up</Menu.Item>
-            </Menu.Menu>
+          <Menu.Item as={Nav} to='/project' name='projects' >
+            <Icon name='box' />
+            Projects
+          </Menu.Item>
 
-          </Container>
-        </Menu >
+          <Menu.Item as={Nav} to='/admin' name='admin' >
+            <Icon name='key' />
+            Admin
+          </Menu.Item>
 
-      </div >
+
+          <Menu.Menu position='right' >
+            <Menu.Item as={Nav} onClick={this.props.onLogout} to='/login' name='logout'>
+              <Icon name='log out' />
+              Log Out
+              </Menu.Item>
+          </Menu.Menu>
+        </Container>
+      </Menu >
     )
   }
-
-
 }
 
