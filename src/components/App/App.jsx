@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar.jsx'
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx'
-import LoginForm from '../LoginForm/LoginForm.jsx';
+import Login from '../Login/Login.jsx';
 import Home from '../Home/Home.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import ProjectPage from '../ProjectPage/ProjectPage.jsx';
@@ -44,7 +44,7 @@ class App extends Component {
         <Switch>
           <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={Home} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/project' component={ProjectPage} />
-          <Route path='/login' render={props => <LoginForm {...props} onLogin={this.login} />} />
+          <Route path='/login' render={props => <Login {...props} onLogin={this.login} />} />
           <PrivateRoute authed={this.state.isAuthenticated} component={PageNotFound} />
         </Switch>
       </React.Fragment>
