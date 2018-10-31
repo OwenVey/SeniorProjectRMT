@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar.jsx'
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx'
@@ -42,6 +42,7 @@ class App extends Component {
       <React.Fragment>
         <Navbar onLogout={this.logout}></Navbar>
         <Switch>
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={Home} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/project' component={ProjectPage} />
           <Route path='/login' render={props => <Login {...props} onLogin={this.login} />} />
