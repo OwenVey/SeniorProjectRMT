@@ -3,6 +3,8 @@ import { Menu, Container, Input } from 'semantic-ui-react'
 import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
 import data from '../Home/data.js'
 
+import './Home.css'
+
 class Home extends Component {
 
   constructor() {
@@ -23,7 +25,7 @@ class Home extends Component {
 
   render() {
     return (
-      <Container className='content' style={{ width: '50%' }}>
+      <Container className='home-page' style={{ width: '50%' }}>
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>

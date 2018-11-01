@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Card, Icon } from 'semantic-ui-react'
 import { Treebeard, decorators } from "react-treebeard";
 
+import './TreeView.css'
+
 const theme = {
   tree: {
     base: {
@@ -14,14 +16,16 @@ const theme = {
       base: {
         position: 'relative'
       },
-      link: {
-        cursor: 'pointer',
-        position: 'relative',
-        padding: '0px 5px',
-        display: 'block'
-      },
-      activeLink: {
-        background: '#31363F'
+      container: {
+        link: {
+          cursor: 'pointer',
+          position: 'relative',
+          padding: '0px 5px',
+          display: 'block'
+        },
+        activeLink: {
+          background: '#31363F'
+        }
       },
       toggle: {
         base: {
@@ -143,33 +147,28 @@ class TreeView extends Component {
   }
 
   onToggle(node, toggled) {
-
     if (this.state.cursor) {
       this.setState({
         active: false,
       })
     }
-
     node.active = true;
-
     if (node.children) {
       node.toggled = toggled;
     }
-
     this.setState({ cursor: node });
   }
 
-
-
   render() {
-
-
-
     return (
-      <Card style={{ margin: '100px', padding: '20px' }}>
-        <Treebeard style={theme} data={data} onToggle={this.onToggle} decorators={modifiedDecorators} animations={animations} />
-      </Card>
-
+      <div className='treeview'>
+        <Treebeard
+          style={theme}
+          data={data}
+          onToggle={this.onToggle}
+          decorators={modifiedDecorators}
+          animations={animations} />
+      </div>
     );
   }
 }

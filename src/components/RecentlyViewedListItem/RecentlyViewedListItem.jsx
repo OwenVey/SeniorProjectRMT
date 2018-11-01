@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { List } from 'semantic-ui-react';
 
+import './RecentlyViewedListItem.css';
+
 class RecentlyViewedListItem extends Component {
 
   state = { isBookmarked: false };

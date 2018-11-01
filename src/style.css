@@ -1,8 +1,8 @@
 html {
-  height: 100%;
+  height: 100vh;
 }
 body {
-  height: 100%;
+  height: 100vh;
   margin: 0;
   overflow: hidden;
 }
@@ -15,23 +15,14 @@ body {
   align-items:center;
 }
 
-
-.grid-container {
+.app {
   display: grid;
-  height: 100%;
+  height: 100vh;
   grid-template-columns: 1fr;
   grid-template-rows: 47px 1fr;
   grid-template-areas: "navbar" "content";
 }
 
-.content { grid-area: content; }
-
-.navbar { grid-area: navbar; }
-
-.recently-viewed-item {
-  cursor: pointer;
-}
-.recently-viewed-item:hover {
-  background: rgba(0, 0, 0, 0.03);
-  
+.navbar { 
+  grid-area: navbar; 
 }

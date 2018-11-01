@@ -1,0 +1,7 @@
+.recently-viewed-item {
+  cursor: pointer;
+}
+
+.recently-viewed-item:hover {
+  background: rgba(0, 0, 0, 0.03);  
+}

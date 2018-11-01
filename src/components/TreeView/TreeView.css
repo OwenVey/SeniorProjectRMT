@@ -1,0 +1,5 @@
+.treeview {
+  grid-area: treeview;
+  background: rgb(139, 139, 139);
+  padding: 10px;
+}

@@ -39,7 +39,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className='grid-container'>
+      <div className='app'>
         <Navbar onLogout={this.logout}></Navbar>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/home" />} />
