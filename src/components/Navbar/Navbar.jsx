@@ -21,16 +21,17 @@ export default class Navbar extends Component {
           </Menu.Item>
 
             <Menu.Item as={Nav} to='/project' name='projects' >
-              <Icon name='box' />
+              <Icon name='archive' />
               Projects
           </Menu.Item>
 
             <Menu.Item as={Nav} to='/admin' name='admin' >
-              <Icon name='key' />
+              <Icon name='lock' />
               Admin
           </Menu.Item>
 
             <Menu.Item as={Nav} to='/tree' name='admin' >
+              <Icon name='tree' />
               Tree
           </Menu.Item>
 
