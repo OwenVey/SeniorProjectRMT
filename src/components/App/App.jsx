@@ -4,9 +4,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar.jsx'
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx'
 import LoginPage from '../LoginPage/LoginPage.jsx';
-import HomePage from '../HomePage/HomePage.jsx';
-import ProjectPage from '../ProjectPage/ProjectPage.jsx';
-import AdminPage from '../AdminPage/AdminPage.jsx';
+import HomePage from '../Home/HomePage/HomePage.jsx';
+import ProjectPage from '../Projects/ProjectPage/ProjectPage.jsx';
+import AdminPage from '../Admin/AdminPage/AdminPage.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import TreeView from '../TreeView/TreeView.jsx';
 

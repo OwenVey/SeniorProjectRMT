@@ -6,7 +6,7 @@ import './AdminSidebar.css'
 
 class AdminSidebar extends Component {
 
-  state = { activeItem: 'organizationDetail' }
+  state = { activeItem: 'organizationDetails' }
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name })
@@ -21,9 +21,9 @@ class AdminSidebar extends Component {
 
 
       <Menu vertical style={{ width: '100%', height: '100%' }}>
-        <Menu.Item name='organizationDetail' active={activeItem === 'organizationDetail'} onClick={this.handleItemClick}>
+        <Menu.Item name='organizationDetails' active={activeItem === 'organizationDetails'} onClick={this.handleItemClick}>
           <Icon className='left' name='building' />
-          Organization Detail
+          Organization Details
           </Menu.Item>
 
         <Menu.Item name='users' active={activeItem === 'users'} onClick={this.handleItemClick}>
