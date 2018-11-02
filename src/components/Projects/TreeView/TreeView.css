@@ -1,5 +1,9 @@
 .treeview {
   grid-area: treeview;
-  background: rgb(139, 139, 139);
   padding: 10px;
+}
+
+.node:hover {
+  background: rgb(236, 236, 236);
+  border-radius: 5px;
 }

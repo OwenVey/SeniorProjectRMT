@@ -102,7 +102,7 @@ const modifiedDecorators = Object.assign({}, decorators, {
     const { style, node } = props;
     let iconName = node.hasOwnProperty('children') ? 'folder' : node.icon;
     return (
-      <div style={style.base}>
+      <div className='node' style={style.base}>
         <Icon name={iconName} />
         <div style={style.title}>
           {node.name}
