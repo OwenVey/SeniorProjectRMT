@@ -6,14 +6,14 @@ const Nav = props => (
   <NavLink exact {...props} activeClassName='active' />
 );
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   render() {
     if (window.location.pathname === '/login') return null;
     return (
       <div className='navbar'>
         <Menu fixed='top' inverted>
           <Container>
-            <Menu.Item header><Icon name='pencil' size='large' />Requirements Tool</Menu.Item>
+            <Menu.Item header><Icon name='pencil' color='teal' size='large' />Requirements Tool</Menu.Item>
 
             <Menu.Item as={Nav} to='/home' name='home' >
               <Icon name='home' />
@@ -31,10 +31,17 @@ export default class Navbar extends Component {
           </Menu.Item>
 
             <Menu.Menu position='right' >
+
+              <Menu.Item as={Nav} to='/user' name='user'>
+                <Icon name='user circle' size='large' />
+                Your Name
+              </Menu.Item>
+
               <Menu.Item as={Nav} onClick={this.props.onLogout} to='/login' name='logout'>
                 <Icon name='log out' />
                 Log Out
               </Menu.Item>
+
             </Menu.Menu>
           </Container>
         </Menu >
@@ -43,3 +50,4 @@ export default class Navbar extends Component {
   }
 }
 
+export default Navbar;
