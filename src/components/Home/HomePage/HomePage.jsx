@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Menu, Container, Input } from 'semantic-ui-react'
 import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
-import data from '../Home/data.js'
+import data from '../HomePage/data.js'
 
-import './Home.css'
+import './HomePage.css'
 
-class Home extends Component {
+class HomePage extends Component {
 
   constructor() {
     super();
@@ -47,4 +47,4 @@ class Home extends Component {
     )
   }
 }
-export default Home
+export default HomePage

@@ -1,12 +1,3 @@
-.admin-sidebar {
-  grid-area: adminsidebar;
-}
-
-.admin-content {
-  grid-area: admincontent;
-  background: rgb(187, 187, 187);
-}
-
 .admin-sidebar-icon {
   float: left;
 }

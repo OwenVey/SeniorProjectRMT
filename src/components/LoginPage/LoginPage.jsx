@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-class Login extends Component {
+class LoginPage extends Component {
 
   state = {
     redirectToReferrer: false
@@ -100,4 +100,4 @@ class Login extends Component {
     )
   }
 }
-export default Login
+export default LoginPage

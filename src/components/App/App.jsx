@@ -3,8 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar.jsx'
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx'
-import Login from '../Login/Login.jsx';
-import Home from '../Home/Home.jsx';
+import LoginPage from '../LoginPage/LoginPage.jsx';
+import HomePage from '../HomePage/HomePage.jsx';
 import ProjectPage from '../ProjectPage/ProjectPage.jsx';
 import AdminPage from '../AdminPage/AdminPage.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
@@ -43,9 +43,9 @@ class App extends Component {
       <div className='app'>
         <Navbar onLogout={this.logout}></Navbar>
         <Switch>
-          <Route path='/login' render={props => <Login {...props} onLogin={this.login} />} />
+          <Route path='/login' render={props => <LoginPage {...props} onLogin={this.login} />} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
-          <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={Home} />
+          <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={HomePage} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/project' component={ProjectPage} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/admin' component={AdminPage} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/tree' component={TreeView} />
