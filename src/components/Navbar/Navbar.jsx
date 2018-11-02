@@ -30,12 +30,6 @@ export default class Navbar extends Component {
               Admin
           </Menu.Item>
 
-            <Menu.Item as={Nav} to='/tree' name='admin' >
-              <Icon name='tree' />
-              Tree
-          </Menu.Item>
-
-
             <Menu.Menu position='right' >
               <Menu.Item as={Nav} onClick={this.props.onLogout} to='/login' name='logout'>
                 <Icon name='log out' />

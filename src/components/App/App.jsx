@@ -8,7 +8,6 @@ import HomePage from '../Home/HomePage/HomePage.jsx';
 import ProjectPage from '../Projects/ProjectPage/ProjectPage.jsx';
 import AdminPage from '../Admin/AdminPage/AdminPage.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
-import TreeView from '../TreeView/TreeView.jsx';
 
 class App extends Component {
 
@@ -48,7 +47,6 @@ class App extends Component {
           <PrivateRoute authed={this.state.isAuthenticated} path='/home' component={HomePage} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/project' component={ProjectPage} />
           <PrivateRoute authed={this.state.isAuthenticated} path='/admin' component={AdminPage} />
-          <PrivateRoute authed={this.state.isAuthenticated} path='/tree' component={TreeView} />
           <PrivateRoute authed={this.state.isAuthenticated} component={PageNotFound} />
         </Switch>
       </div>
