@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Menu, Container, Input } from 'semantic-ui-react'
 import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
-import data from '../Home/data.js'
+import data from '../HomePage/data.js'
 
-class Home extends Component {
+import './HomePage.css'
+
+class HomePage extends Component {
 
   constructor() {
     super();
@@ -23,7 +25,7 @@ class Home extends Component {
 
   render() {
     return (
-      <Container className='center' style={{ paddingTop: '8em' }}>
+      <Container className='home-page' style={{ width: '50%' }}>
 
         <Menu pointing secondary>
           <Menu.Menu position='left'>
@@ -45,4 +47,4 @@ class Home extends Component {
     )
   }
 }
-export default Home
+export default HomePage

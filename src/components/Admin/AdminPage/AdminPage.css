@@ -1,0 +1,7 @@
+.admin-page {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "adminsidebar admincontent";
+}

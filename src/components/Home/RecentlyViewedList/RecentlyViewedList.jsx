@@ -13,7 +13,7 @@ class RecentlyViewedList extends Component {
 
   render() {
     return (
-      <List selection divided relaxed size='large' verticalAlign='middle'>
+      <List divided relaxed size='large' verticalAlign='middle'>
         {this
           .filter(this.props.recentlyViewedItems)
           .map((recentlyViewedItem) => <RecentlyViewedListItem key={recentlyViewedItem.id} recentlyViewedItem={recentlyViewedItem}></RecentlyViewedListItem>)}

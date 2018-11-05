@@ -1,0 +1,8 @@
+.admin-sidebar-icon {
+  float: left;
+}
+
+.ui.vertical.menu .item > i.icon.left {
+  float: none;
+  margin: 0em 0.35714286em 0em 0em;
+}
