@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { Treebeard, decorators } from "react-treebeard";
 
 import './TreeView.css'

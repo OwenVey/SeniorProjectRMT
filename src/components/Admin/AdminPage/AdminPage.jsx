@@ -48,6 +48,8 @@ class AdminPage extends Component {
       case "manageAllProjects":
         selectedPage = <ManageAllProjects />;
         break;
+      default:
+        selectedPage = null;
     }
 
     return (

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Icon, Menu } from 'semantic-ui-react'
-import SplitPane from 'react-split-pane'
 
 import './AdminSidebar.css'
 
