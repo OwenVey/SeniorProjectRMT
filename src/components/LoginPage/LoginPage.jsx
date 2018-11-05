@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import { Button, Form, Header, FormGroup, Message, Input } from 'semantic-ui-react'
-import { Redirect } from 'react-router-dom'
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Form, Icon, Input, Button, Checkbox, Card, Alert } from 'antd';
 import axios from 'axios';
+import './LoginPage.css';
+
+const FormItem = Form.Item;
 
 class LoginPage extends Component {
 
@@ -17,10 +18,16 @@ class LoginPage extends Component {
     }
   }
 
-  focusField = React.createRef();
-
-  focusInput = props =>
-    <Input ref={this.focusField} {...props} />
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.setState({ loading: true });
+        this.login(values);
+      }
+    });
+  }
 
   login = (loginInfo) => {
     const url = 'https://senior-design.timblin.org/api/login'
@@ -38,12 +45,12 @@ class LoginPage extends Component {
           invalidLogin: true,
           loading: false,
         });
-        this.focusField.current.focus();
         console.log(error);
       });
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
     const { from } = this.props.location.state || { from: { pathname: '/home' } }
     const { redirectToReferrer } = this.state;
 
@@ -53,72 +60,54 @@ class LoginPage extends Component {
 
     return (
       <div className='centered'>
-        <div style={{ width: 450 }}>
+        <Card title='Login'>
 
-          <Header as='h2' color='teal' textAlign='center'>
-            Log In
-            </Header>
+          <Form onSubmit={this.handleSubmit} className="login-form">
 
-          <Message negative hidden={!this.state.invalidLogin}>Invalid login</Message>
+            {this.state.invalidLogin && <Alert className='error-alert' message="Invalid login" type="error" />}
 
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            validationSchema={Yup.object().shape({
-              email: Yup.string().email('Email must be a valid email').required('Required'),
-              password: Yup.string().required('Required'),
-            })}
-            onSubmit={(loginInfo) => {
-              this.setState({ loading: true });
-              this.login(loginInfo);
-            }}
-          >
-            {props => {
-              const { values, touched, errors, handleChange, handleSubmit } = props;
-              return (
-                <Form onSubmit={handleSubmit} className='attached segment'>
+            <div>Email</div>
+            <FormItem>
+              {getFieldDecorator('email', {
+                rules: [{ required: true, message: 'Please input your email' }],
+              })(
+                <Input
+                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  type='email'
+                  placeholder="Email"
+                />
+              )}
+            </FormItem>
 
-                  <FormGroup widths='equal'>
-                    <Form.Field>
-                      <Form.Input
-                        id='email'
-                        label='Email'
-                        placeholder='Email'
-                        className='required'
-                        value={values.email}
-                        onChange={handleChange}
-                        error={errors.email && touched.email}
-                      />
-                      {errors.email && touched.email && <div style={{ color: '#db2828' }}>{errors.email}</div>}
-                    </Form.Field>
-                  </FormGroup>
+            <div>Password</div>
+            <FormItem>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: 'Please input your password' }],
+              })(
+                <Input
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  type="password"
+                  placeholder="Password"
+                />
+              )}
+            </FormItem>
 
-                  <FormGroup widths='equal'>
-                    <Form.Field>
-                      <Form.Input
-                        id='password'
-                        label='Password'
-                        placeholder='Password'
-                        type='password'
-                        className='required'
-                        value={values.password}
-                        onChange={handleChange}
-                        error={errors.password && touched.password}
-                        control={this.focusInput}
-                      />
-                      {errors.password && touched.password && <div style={{ color: '#db2828' }}>{errors.password}</div>}
-                    </Form.Field>
-                  </FormGroup>
+            <FormItem style={{ marginBottom: 0 }}>
+              {getFieldDecorator('remember', {
+                valuePropName: 'checked',
+                initialValue: true,
+              })(
+                <Checkbox>Remember me</Checkbox>
+              )}
+              <a className="login-form-forgot" href="">Forgot password</a>
+              <Button type="primary" htmlType="submit" className="login-form-button" loading={this.state.loading}>Log in</Button>
+            </FormItem>
 
-                  <Button type='submit' color='teal' fluid size='large' loading={this.state.loading} >Login</Button>
-
-                </Form>
-              );
-            }}
-          </Formik>
-
-        </div>
+          </Form>
+        </Card>
       </div>
-    )
+    );
   }
 }
-export default LoginPage
+
+export default Form.create()(LoginPage);
