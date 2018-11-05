@@ -3,13 +3,12 @@
   display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 40px 1fr;
-  grid-template-areas: "searchbar searchbar"
-                       "treeview projectcontent";
+  grid-template-areas: "searchbar"
+                       "splitpane";
 }
 
-.projectcontent {
-  grid-area: projectcontent;
-  background: rgb(187, 187, 187);
+.splitpane {
+  grid-area: splitpane;
 }
