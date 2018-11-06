@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Input, Icon } from 'semantic-ui-react'
+import { Input } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './SearchBar.css';
 
@@ -13,16 +14,17 @@ class SearchBar extends Component {
 
           <div className='project-name-group'>
             <div className='project-name'>Example Project Name</div>
-            <Icon className='gear-icon' name='setting' onClick={() => { alert('open project settings'); }} />
+            <FontAwesomeIcon icon='cog' className='gear-icon' />
           </div>
 
           <div className='searchgroup'>
-            <Input
-              className='searchbox'
-              icon={{ name: 'search', link: true }}
-              iconPosition='left'
-              placeholder='Search all items...'
-            />
+            <div>
+              <Input.Search
+                style={{ width: '300px' }}
+                className='searchbox'
+                placeholder='Search...'
+              />
+            </div>
             <div className='advanced-search' onClick={() => { alert('open advanced search window'); }}>Advanced Search</div>
 
           </div>
