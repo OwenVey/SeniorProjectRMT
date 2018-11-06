@@ -1,3 +1,35 @@
 .home-page {
   grid-area: content;
 }
+
+.center-card { 
+  width: 100vw;
+  height: 100vh;
+  display:flex;
+  justify-content:center;
+  margin-top: 10em;
+}
+
+.list-item:hover{
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.title-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+.list-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.grow div:nth-child(2) {
+  flex:1;
+}

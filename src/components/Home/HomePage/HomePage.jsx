@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
-import { Menu, Container, Input } from 'semantic-ui-react'
-import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx'
-import data from '../HomePage/data.js'
-
-import './HomePage.css'
+import React, { Component } from 'react';
+import { Input } from 'antd';
+import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx';
+import data from '../HomePage/data.js';
+import './HomePage.css';
 
 class HomePage extends Component {
 
   constructor() {
     super();
-    const RECENTLY_VIEWED = data.recentlyViewedItems;
 
     this.state = {
       filter: null,
-      recentlyViewedItems: RECENTLY_VIEWED,
+      recentlyViewedItems: data.recentlyViewedItems,
     };
   }
 
@@ -25,26 +23,22 @@ class HomePage extends Component {
 
   render() {
     return (
-      <Container className='home-page' style={{ width: '50%' }}>
+      <div className='center-card'>
+        <div>
+          <div className='title-bar'>
+            <h3 style={{ marginBottom: '0px' }}>Recently Viewed Items</h3>
+            <Input.Search
+              style={{ width: '300px' }}
+              placeholder='Search all items...'
+              onChange={this.updateSearch}
+            />
+          </div>
+          <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems}></RecentlyViewedList>
+        </div>
+      </div>
 
-        <Menu pointing secondary>
-          <Menu.Menu position='left'>
-            <Menu.Item name='Recently Viewed' style={{ fontSize: '18px' }} active />
-            <Menu.Item>
-              <Input
-                icon={{ name: 'search', link: true }}
-                style={{ width: '300px' }}
-                iconPosition='left'
-                placeholder='Search all items...'
-                onChange={this.updateSearch}
-              />
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-
-        <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems}></RecentlyViewedList>
-      </Container>
     )
   }
 }
+
 export default HomePage

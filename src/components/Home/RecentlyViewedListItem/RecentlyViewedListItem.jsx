@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { List, Popup } from 'semantic-ui-react';
+import { List, Tooltip } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './RecentlyViewedListItem.css';
 
@@ -20,20 +21,12 @@ class RecentlyViewedListItem extends Component {
 
   render() {
     return (
-      <List.Item className='recently-viewed-item' onClick={this.handleClick}>
-        <List.Content floated='right'>
-          <Popup
-            trigger={<List.Icon onClick={this.handleBookmark} name={this.state.isBookmarked ? 'bookmark' : 'bookmark outline'} />}
-            content='Add Bookmark'
-            inverted
-            position='top center'
-            size='mini'
-          />
-        </List.Content>
-        <List.Icon name='file' />
-        <List.Content>
-          <List.Item content={this.props.recentlyViewedItem.name}></List.Item>
-        </List.Content>
+      <List.Item className='list-item' onClick={this.handleClick}>
+        <div className='list-content grow'>
+          <div style={{ marginRight: '10px' }}><FontAwesomeIcon icon={this.props.recentlyViewedItem.icon} /></div>
+          <div>{this.props.recentlyViewedItem.name}</div>
+          <div><Tooltip placement='top' title='Add Bookmark' ><FontAwesomeIcon onClick={this.handleBookmark} icon={this.state.isBookmarked ? ["fas", "bookmark"] : ["far", "bookmark"]} /></Tooltip></div>
+        </div>
       </List.Item>
     );
   }

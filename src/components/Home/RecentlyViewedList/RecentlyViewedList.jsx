@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { List } from 'semantic-ui-react'
-import RecentlyViewedListItem from '../RecentlyViewedListItem/RecentlyViewedListItem.jsx'
+import React, { Component } from 'react';
+import { List } from 'antd';
+import RecentlyViewedListItem from '../RecentlyViewedListItem/RecentlyViewedListItem.jsx';
 
 class RecentlyViewedList extends Component {
 
@@ -13,9 +13,12 @@ class RecentlyViewedList extends Component {
 
   render() {
     return (
-      <List divided relaxed size='large' verticalAlign='middle'>
-        {this
-          .filter(this.props.recentlyViewedItems)
+      <List
+        style={{ height: 'fit-content', width: '800px' }}
+        itemLayout="horizontal"
+        bordered
+      >
+        {this.filter(this.props.recentlyViewedItems)
           .map((recentlyViewedItem) => <RecentlyViewedListItem key={recentlyViewedItem.id} recentlyViewedItem={recentlyViewedItem}></RecentlyViewedListItem>)}
       </List>
     )

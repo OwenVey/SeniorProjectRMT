@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHome, faArchive, faLock, faUser, faSignOutAlt, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 import Navbar from '../Navbar/Navbar.jsx';
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx';
 import LoginPage from '../LoginPage/LoginPage.jsx';
@@ -10,7 +11,7 @@ import ProjectPage from '../Projects/ProjectPage/ProjectPage.jsx';
 import AdminPage from '../Admin/AdminPage/AdminPage.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 
-library.add(faHome, faArchive, faLock, faUser, faSignOutAlt, faPencilAlt);
+library.add(fas, far);
 
 class App extends Component {
 
