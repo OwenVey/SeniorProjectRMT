@@ -1,3 +1,10 @@
 table th {
   cursor: move;
 }
+
+.userBoxList {
+  display: flex;
+  align-items: center;
+  margin-left: 2em;
+  margin-right: 1em;
+}
