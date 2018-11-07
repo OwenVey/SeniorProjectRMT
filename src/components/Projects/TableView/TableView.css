@@ -1,0 +1,40 @@
+.logo-group {
+  height: inherit;
+  float: left;
+  display: flex;
+  align-items: center;
+  margin-left: 75px;
+  margin-right: 30px;
+}
+
+.logo-text {
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.navbar-icon {
+  margin-right: 10px;
+}
+
+.ant-layout-header.header {
+  height: 50px;
+  background: #1b1c1d;
+}
+
+.ant-menu-dark.menu {
+  background: #1b1c1d;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected.menu-item {
+  background-color: #3d3e3f;
+}
+
+.navbar-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+table th {
+  cursor: move;
+}
