@@ -25,11 +25,12 @@ npm install
 - Open the client at http://localhost:3000
 
 Login
-Email: 'test@test.com'
+Email: 'user@test.com'
 Pass: 'test'
 
-### 4. Update the app
+### 4. Updating the app
 
-git fetch
-git pull
-npm install
+Delete Branch; check out to master - ctr shift p, delete branch, select branch
+git fetch - get new branches
+git pull - update branch
+npm install - every branch
