@@ -1,42 +1,45 @@
 import React, { Component } from 'react';
 import { Tree, Input } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const TreeNode = Tree.TreeNode;
 
 const treeData = [{
-  title: '0-0',
+  title: 'Project Name',
   key: '0-0',
+  icon: 'archive',
   children: [{
-    title: '0-0-0',
+    title: 'Component 1',
     key: '0-0-0',
+    icon: 'sitemap',
     children: [
-      { title: 'File', key: '0-0-0-0' },
-      { title: '0-0-0-1', key: '0-0-0-1' },
-      { title: '0-0-0-2', key: '0-0-0-2' },
+      { title: 'Requirement 0001', key: '0-0-0-0', icon: 'file-alt' },
+      { title: 'Requirement 0002', key: '0-0-0-1', icon: 'file-alt' },
+      { title: 'Requirement 0003', key: '0-0-0-2', icon: 'file-alt' },
     ],
   }, {
-    title: '0-0-1',
+    title: 'Component 2',
     key: '0-0-1',
+    icon: 'sitemap',
     children: [
-      { title: '0-0-1-0', key: '0-0-1-0' },
-      { title: '0-0-1-1', key: '0-0-1-1' },
-      { title: '0-0-1-2', key: '0-0-1-2' },
+      { title: 'Requirement 0001', key: '0-0-1-0', icon: 'file-alt' },
+      { title: 'Requirement 0002', key: '0-0-1-1', icon: 'file-alt' },
+      { title: 'Requirement 0003', key: '0-0-1-2', icon: 'file-alt' },
     ],
   }, {
-    title: '0-0-2',
+    title: 'Component 3',
     key: '0-0-2',
+    icon: 'sitemap',
+    children: [
+      {title: 'Requirement 0001', key: '0-0-2-0', icon: 'file-alt'},
+      {title: 'Requirement 0002', key: '0-0-2-1', icon: 'file-alt'},
+      {title: 'Requirement 0003', key: '0-0-2-2', icon: 'file-alt'},
+      {title: 'Requirement 0004', key: '0-0-2-3', icon: 'file-alt',
+        children: [
+          {title: 'Note 1', key: '0-0-2-3-0', icon: 'file-signature'},
+        ]},
+    ],
   }],
-}, {
-  title: '0-1',
-  key: '0-1',
-  children: [
-    { title: '0-1-0-0', key: '0-1-0-0' },
-    { title: '0-1-0-1', key: '0-1-0-1' },
-    { title: '0-1-0-2', key: '0-1-0-2' },
-  ],
-}, {
-  title: '0-2',
-  key: '0-2',
 }];
 
 
@@ -180,26 +183,28 @@ class TreeView extends Component {
       ) : <span>{item.title}</span>;
       if (item.children) {
         return (
-          <TreeNode key={item.key} title={title} isLeaf={item.isLeaf}>
+          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon}/>}>
+          
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} title={title} isLeaf={item.isLeaf} />;
+      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon}/>}/>;
     });
     return (
       <div>
         <Input.Search placeholder="Search" onChange={this.onChange} />
-        <Tree
+        <Tree.DirectoryTree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}
           autoExpandParent={autoExpandParent}
           draggable
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
+          showIcon
         >
           {loop(this.state.gData)}
-        </Tree>
+        </Tree.DirectoryTree>
       </div>
     );
   }
