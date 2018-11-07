@@ -1,4 +1,5 @@
 # SeniorProjectRMT
+
 Front end app for the Requirements Management Tool built with React 16.
 
 See the application running live at https://seniorprojectrmt.netlify.com/
@@ -22,3 +23,14 @@ npm install
 `npm start` to start the local server (this project uses create-react-app)
 
 - Open the client at http://localhost:3000
+
+Login
+Email: 'user@test.com'
+Pass: 'test'
+
+### 4. Updating the app
+
+Delete Branch; check out to master - ctr shift p, delete branch, select branch
+git fetch - get new branches
+git pull - update branch
+npm install - every branch
