@@ -7,7 +7,6 @@ import Permissions from "../Permissions/Permissions.jsx";
 import ItemTypes from "../ItemTypes/ItemTypes.jsx";
 import ManageAllProjects from "../ManageAllProjects/ManageAllProjects.jsx";
 import SplitPane from "react-split-pane";
-import InfoBar from "../InfoBar/InfoBar.jsx";
 
 import "./AdminPage.css";
 

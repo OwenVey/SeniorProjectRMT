@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import ReactDragListView from "react-drag-listview";
-import { Table } from "antd";
-function onChange(pagination, sorter) {
-  console.log("params", pagination, sorter);
-}
+import { Table, Tag, Divider } from "antd";
+
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -14,66 +12,104 @@ class Users extends Component {
           fullName: "Alex Tilot",
           email: "alextilot@gmail.com",
           userName: "Nezzely",
-          userGroups: "purple, yellow, orange",
+          userGroups: ["Purple", "Blue", "Brown"],
           liscenceType: "Developer",
-          userStatus: "ACTIVE"
+          userStatus: "ACTIVE",
+          actions: ""
         },
         {
           fullName: "Jared Bloomfield",
           email: "Jaredbloomfield@gmail.com",
           userName: "Jrod744",
-          userGroups: "red, blue, orange",
+          userGroups: ["Red", "White", "Yellow"],
           liscenceType: "Developer",
-          userStatus: "ACTIVE"
+          userStatus: "ACTIVE",
+          actions: ""
         },
         {
           fullName: "Owen Vey",
           email: "owenvey@gmail.com",
           userName: "Slopeur",
-          userGroups: "Black, Pink",
+          userGroups: ["Black", "Pink", "Silver"],
           liscenceType: "PO",
-          userStatus: "ACTIVE"
+          userStatus: "ACTIVE",
+          actions: ""
         },
         {
           fullName: "Josh Debaets",
           email: "joshdebaets@gmail.com",
           userName: "Debaets",
-          userGroups: "green, orange",
+          userGroups: ["Green", "Orange", "Cyan"],
           liscenceType: "Developer",
-          userStatus: "DEACTIVE"
+          userStatus: "DEACTIVE",
+          actions: ""
         }
       ],
       columns: [
         {
           title: "Full Name",
           dataIndex: "fullName",
+          key: "fullname",
           defaultSortOrder: "descend",
           sorter: (a, b) => a.fullName - b.fullName
         },
         {
-          title: "Email",
-          dataIndex: "email",
-          sorter: (a, b) => a.email.length - b.email.length
-        },
-        {
           title: "User Name",
           dataIndex: "userName",
+          key: "userName",
           sorter: (a, b) => a.userName.length - b.userName.length
+        },
+        {
+          title: "Email",
+          dataIndex: "email",
+          key: "email",
+          sorter: (a, b) => a.email.length - b.email.length
         },
         {
           title: "User Groups",
           dataIndex: "userGroups",
+          key: "userGroups",
+          render: tags => (
+            <span>
+              {tags.map(tag => (
+                <Tag color={tag} key={tag}>
+                  {tag}
+                </Tag>
+              ))}
+            </span>
+          ),
           sorter: (a, b) => a.userGroups.length - b.userGroups.length
         },
         {
           title: "Liscence Type",
           dataIndex: "liscenceType",
+          key: "liscenceType",
           sorter: (a, b) => a.liscenceType.length - b.liscenceType.length
         },
         {
           title: "User Status",
           dataIndex: "userStatus",
+          key: "userStatus",
           sorter: (a, b) => a.userStatus.length - b.userStatus.length
+        },
+        {
+          //Actions-> edit, password, subscriptions, invite deactivate
+          title: "Actions",
+          key: "actions",
+          render: () => (
+            <span>
+              <a href="javascript:;">Edit</a>
+              <Divider type="vertical" />
+              <a href="javascript:;">Password</a>
+              <Divider type="vertical" />
+              <a href="javascript:;">Subscriptions</a>
+              <Divider type="vertical" />
+              <a href="javascript:;">Invite</a>
+              <Divider type="vertical" />
+              <a href="javascript:;">Deactivate</a>
+            </span>
+          ),
+          sorter: (a, b) => a.actions.length - b.actions.length
         }
       ]
     };
@@ -94,14 +130,12 @@ class Users extends Component {
     };
 
     return (
-      <div style={{ margin: 20 }}>
-        <h2>Requirements</h2>
+      <div className="userBoxList">
         <ReactDragListView.DragColumn {...this.dragProps}>
           <Table
             columns={this.state.columns}
             pagination={false}
             dataSource={this.state.data}
-            onChange={onChange}
             bordered
           />
         </ReactDragListView.DragColumn>
