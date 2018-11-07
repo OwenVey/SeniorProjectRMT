@@ -1,60 +1,52 @@
 import React, { Component } from 'react'
-import { Icon, Menu } from 'semantic-ui-react'
+import { Menu, Icon } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './AdminSidebar.css'
 
 class AdminSidebar extends Component {
 
-  state = { activeItem: 'organizationDetails' }
-
-  handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name })
-    this.props.handlePageChange(name);
-  }
-
   render() {
-    const { activeItem } = this.state
-
     return (
+      <Menu
+        defaultSelectedKeys={['1']}
+        mode='vertical'
+      >
+        <Menu.Item key="1">
+          <Icon><FontAwesomeIcon icon='building' /></Icon>
+          <span>Organization Details</span>
+        </Menu.Item>
 
+        <Menu.Item key="2">
+          <Icon><FontAwesomeIcon icon='user' /></Icon>
+          <span>Users</span>
+        </Menu.Item>
 
+        <Menu.Item key="3">
+          <Icon>  <FontAwesomeIcon icon='users' /></Icon>
+          <span>User Groups</span>
+        </Menu.Item>
 
-      <Menu vertical style={{ width: '100%', height: '100%' }}>
-        <Menu.Item name='organizationDetails' active={activeItem === 'organizationDetails'} onClick={this.handleItemClick}>
-          <Icon className='left' name='building' />
-          Organization Details
-          </Menu.Item>
+        <Menu.Item key="4">
+          <Icon><FontAwesomeIcon icon='shield-alt' /></Icon>
+          <span>Permissions</span>
+        </Menu.Item>
 
-        <Menu.Item name='users' active={activeItem === 'users'} onClick={this.handleItemClick}>
-          <Icon className='left' name='user' />
-          Users
-          </Menu.Item>
+        <Menu.Item key="5">
+          <Icon><FontAwesomeIcon icon='list' /></Icon>
+          <span>Item Types</span>
+        </Menu.Item>
 
-        <Menu.Item name='userGroups' active={activeItem === 'userGroups'} onClick={this.handleItemClick}>
-          <Icon className='left' name='users' />
-          User Groups
-          </Menu.Item>
+        <Menu.Item key="6">
+          <Icon><FontAwesomeIcon icon='cogs' /></Icon>
+          <span>Manage All Projects</span>
+        </Menu.Item>
 
-        <Menu.Item name='permissions' active={activeItem === 'permissions'} onClick={this.handleItemClick}>
-          <Icon className='left' name='shield' />
-          Permissions
-          </Menu.Item>
-
-        <Menu.Item name='itemTypes' active={activeItem === 'itemTypes'} onClick={this.handleItemClick}>
-          <Icon className='left' name='list' />
-          Item Types
-          </Menu.Item>
-
-        <Menu.Item name='manageAllProjects' active={activeItem === 'manageAllProjects'} onClick={this.handleItemClick}>
-          <Icon className='left' name='cogs' />
-          Manage All Projects
-          </Menu.Item>
       </Menu>
 
-
-
-    )
+    );
   }
 }
 
-export default AdminSidebar
+
+export default AdminSidebar;
