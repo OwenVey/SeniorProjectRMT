@@ -54,40 +54,40 @@ class TableView extends Component {
                 {
                     title: "Attribute 1",
                     dataIndex: "att1",
-                    sorter: (a, b) => a.att1.length - b.att1.length,                    
+                    sorter: (a, b) => a.att1.length - b.att1.length,
                 },
             ]
         };
     }
 
-  render() {
-    const that = this;
-    this.dragProps = {
-        onDragEnd(fromIndex, toIndex) {
-            const columns = that.state.columns;
-            const item = columns.splice(fromIndex, 1)[0];
-            columns.splice(toIndex, 0, item);
-            that.setState({
-                columns
-            });
-        },
-        nodeSelector: "th"
-    };
+    render() {
+        const that = this;
+        this.dragProps = {
+            onDragEnd(fromIndex, toIndex) {
+                const columns = that.state.columns;
+                const item = columns.splice(fromIndex, 1)[0];
+                columns.splice(toIndex, 0, item);
+                that.setState({
+                    columns
+                });
+            },
+            nodeSelector: "th"
+        };
 
-    return (
-      <div style={{ margin: 20 }}>
-          <h2>Requirements</h2>
-          <ReactDragListView {...this.dragProps}>
-              <Table
-                  columns={this.state.columns}
-                  pagination={false}
-                  dataSource={this.state.data}
-                  onChange={onChange}
-                  bordered
-              />
-          </ReactDragListView>
-      </div>
-  );
-  }
+        return (
+            <div style={{ margin: 20 }}>
+                <h2>Requirements</h2>
+                <ReactDragListView.DragColumn {...this.dragProps}>
+                    <Table
+                        columns={this.state.columns}
+                        pagination={false}
+                        dataSource={this.state.data}
+                        onChange={onChange}
+                        bordered
+                    />
+                </ReactDragListView.DragColumn>
+            </div>
+        );
+    }
 }
 export default TableView;
