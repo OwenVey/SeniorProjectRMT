@@ -6,44 +6,48 @@ import './AdminSidebar.css'
 
 class AdminSidebar extends Component {
 
+  handleItemClick = (item) => {
+    this.props.handlePageChange(item.key);
+  }
+
   render() {
     return (
       <Menu
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={['organizationDetails']}
         mode='vertical'
+        onSelect={this.handleItemClick}
       >
-        <Menu.Item key="1">
+        <Menu.Item key="organizationDetails">
           <Icon><FontAwesomeIcon icon='building' /></Icon>
           <span>Organization Details</span>
         </Menu.Item>
 
-        <Menu.Item key="2">
+        <Menu.Item key="users">
           <Icon><FontAwesomeIcon icon='user' /></Icon>
           <span>Users</span>
         </Menu.Item>
 
-        <Menu.Item key="3">
+        <Menu.Item key="userGroups">
           <Icon>  <FontAwesomeIcon icon='users' /></Icon>
           <span>User Groups</span>
         </Menu.Item>
 
-        <Menu.Item key="4">
+        <Menu.Item key="permissions">
           <Icon><FontAwesomeIcon icon='shield-alt' /></Icon>
           <span>Permissions</span>
         </Menu.Item>
 
-        <Menu.Item key="5">
+        <Menu.Item key="itemTypes">
           <Icon><FontAwesomeIcon icon='list' /></Icon>
           <span>Item Types</span>
         </Menu.Item>
 
-        <Menu.Item key="6">
+        <Menu.Item key="manageAllProjects">
           <Icon><FontAwesomeIcon icon='cogs' /></Icon>
           <span>Manage All Projects</span>
         </Menu.Item>
 
       </Menu>
-
     );
   }
 }
