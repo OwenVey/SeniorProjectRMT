@@ -3,6 +3,11 @@ import { Table } from 'antd';
 
 import ReactDragListView from "react-drag-listview";
 
+
+function onChange(pagination, sorter) {
+    console.log('params', pagination, sorter);
+}
+
 class TableView extends Component {
 
     constructor(props) {
@@ -32,19 +37,24 @@ class TableView extends Component {
             columns: [
                 {
                     title: "ID",
-                    dataIndex: "id"
+                    dataIndex: "id",
+                    defaultSortOrder: 'descend',
+                    sorter: (a, b) => a.id - b.id,
                 },
                 {
                     title: "Summary",
-                    dataIndex: "summary"
+                    dataIndex: "summary",
+                    sorter: (a, b) => a.summary.length - b.summary.length,
                 },
                 {
                     title: "Description",
-                    dataIndex: "description"
+                    dataIndex: "description",
+                    sorter: (a, b) => a.description.length - b.description.length,
                 },
                 {
                     title: "Attribute 1",
-                    dataIndex: "att1"
+                    dataIndex: "att1",
+                    sorter: (a, b) => a.att1.length - b.att1.length,                    
                 },
             ]
         };
@@ -72,6 +82,7 @@ class TableView extends Component {
                   columns={this.state.columns}
                   pagination={false}
                   dataSource={this.state.data}
+                  onChange={onChange}
                   bordered
               />
           </ReactDragListView>
