@@ -9,20 +9,13 @@
     "@fortawesome/react-fontawesome": "^0.1.3",
     "antd": "^3.10.4",
     "axios": "^0.18.0",
-    "classnames": "^2.2.6",
-    "formik": "^1.3.1",
     "normalize.css": "^8.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-drag-listview": "^0.1.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
-    "react-split-pane": "^0.1.84",
-    "react-treebeard": "^3.1.0",
-    "semantic-ui-calendar-react": "^0.9.1",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.82.5",
-    "yup": "^0.26.6"
+    "react-split-pane": "^0.1.84"
   },
   "scripts": {
     "start": "react-scripts start",
