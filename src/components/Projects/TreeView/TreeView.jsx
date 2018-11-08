@@ -136,13 +136,8 @@ class TreeView extends Component {
 
   onSelect = (e) => {
     const selectedKey = e[0];
-    let selectedNode = this.getSelectedNode(selectedKey, this.state.treeData)
-    if (selectedNode.children) {
-      console.log('Parent Node:');
-    } else {
-      console.log('Child Node:');
-    }
-    console.log(selectedNode);
+    let selectedNode = this.getSelectedNode(selectedKey, this.state.treeData);
+    this.props.handleItemSelect(selectedNode);
   }
 
   getSelectedNode = (key, tree) => {

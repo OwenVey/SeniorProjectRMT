@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 
 import ReactDragListView from "react-drag-listview";
 
@@ -14,49 +14,52 @@ class TableView extends Component {
         super(props);
 
         this.state = {
-            data: [
-                {
-                    id: "357665",
-                    summary: "Branch Requirements",
-                    description: "Allow users to branch requirements",
-                    att1: "purple",
-                },
-                {
-                    id: "346577",
-                    summary: "Merge Requirements",
-                    description: "Allow users to merge requirements",
-                    att1: "9 3/4",
-                },
-                {
-                    id: "385794",
-                    summary: "Add Users",
-                    description: "Allow admins to create new users",
-                    att1: "admin access only",
-                },
-            ],
             columns: [
                 {
                     title: "ID",
-                    dataIndex: "id",
-                    defaultSortOrder: 'descend',
-                    sorter: (a, b) => a.id - b.id,
+                    dataIndex: "key",
+                    defaultSortOrder: 'ascend',
+                    sorter: (a, b) => a.key.localeCompare(b.key)
                 },
                 {
-                    title: "Summary",
-                    dataIndex: "summary",
-                    sorter: (a, b) => a.summary.length - b.summary.length,
+                    title: "Name",
+                    dataIndex: "title",
+                    sorter: (a, b) => a.title.localeCompare(b.title)
                 },
                 {
                     title: "Description",
                     dataIndex: "description",
-                    sorter: (a, b) => a.description.length - b.description.length,
                 },
                 {
-                    title: "Attribute 1",
-                    dataIndex: "att1",
-                    sorter: (a, b) => a.att1.length - b.att1.length,
-                },
-            ]
+                    title: "Status",
+                    dataIndex: "status",
+                    sorter: (a, b) => a.status.localeCompare(b.status),
+                    render: status => {
+                        let color;
+                        switch (status) {
+                            case 'Draft':
+                                color = '';
+                                break;
+                            case 'Approved':
+                                color = 'green';
+                                break;
+                            case 'Completed':
+                                color = 'blue';
+                                break;
+                            case 'Rejected':
+                                color = 'red';
+                                break;
+                            default:
+                                color = '';
+                        }
+                        return (
+                            <Tag color={color}>
+                                {status}
+                            </Tag>
+                        )
+                    },
+                }
+            ],
         };
     }
 
@@ -81,11 +84,12 @@ class TableView extends Component {
                     <Table
                         columns={this.state.columns}
                         pagination={false}
-                        dataSource={this.state.data}
+                        dataSource={this.props.currentSelectedItem.children}
                         onChange={onChange}
                         bordered
                     />
                 </ReactDragListView.DragColumn>
+                {this.props.currentSelectedItem && <h4>{this.props.currentSelectedItem.title}</h4>}
             </div>
         );
     }
