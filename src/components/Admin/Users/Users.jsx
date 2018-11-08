@@ -50,20 +50,20 @@ class Users extends Component {
           title: 'Full Name',
           dataIndex: 'fullName',
           key: 'fullname',
-          defaultSortOrder: 'descend',
-          sorter: (a, b) => a.fullName - b.fullName
+          defaultSortOrder: 'ascend',
+          sorter: (a, b) => a.fullName.localeCompare(b.fullName)
         },
         {
           title: 'User Name',
           dataIndex: 'userName',
           key: 'userName',
-          sorter: (a, b) => a.userName.length - b.userName.length
+          sorter: (a, b) => a.userName.localeCompare(b.userName)
         },
         {
           title: 'Email',
           dataIndex: 'email',
           key: 'email',
-          sorter: (a, b) => a.email.length - b.email.length
+          sorter: (a, b) => a.email.localeCompare(b.email)
         },
         {
           title: 'User Groups',
@@ -78,19 +78,19 @@ class Users extends Component {
               ))}
             </span>
           ),
-          sorter: (a, b) => a.userGroups.length - b.userGroups.length
+
         },
         {
           title: 'Liscence Type',
           dataIndex: 'liscenceType',
           key: 'liscenceType',
-          sorter: (a, b) => a.liscenceType.length - b.liscenceType.length
+          sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
         },
         {
           title: 'User Status',
           dataIndex: 'userStatus',
           key: 'userStatus',
-          sorter: (a, b) => a.userStatus.length - b.userStatus.length
+          sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
         },
         {
           //Actions-> edit, password, subscriptions, invite deactivate
@@ -109,7 +109,7 @@ class Users extends Component {
               <a href=''>Deactivate</a>
             </span>
           ),
-          sorter: (a, b) => a.actions.length - b.actions.length
+
         }
       ]
     };
