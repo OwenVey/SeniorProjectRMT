@@ -31,24 +31,26 @@ const treeData = [{
     key: '0-0-2',
     icon: 'sitemap',
     children: [
-      {title: 'Requirement 0001', key: '0-0-2-0', icon: 'file-alt'},
-      {title: 'Requirement 0002', key: '0-0-2-1', icon: 'file-alt'},
-      {title: 'Requirement 0003', key: '0-0-2-2', icon: 'file-alt'},
-      {title: 'Requirement 0004', key: '0-0-2-3', icon: 'file-alt',
+      { title: 'Requirement 0001', key: '0-0-2-0', icon: 'file-alt' },
+      { title: 'Requirement 0002', key: '0-0-2-1', icon: 'file-alt' },
+      { title: 'Requirement 0003', key: '0-0-2-2', icon: 'file-alt' },
+      {
+        title: 'Requirement 0004', key: '0-0-2-3', icon: 'file-alt',
         children: [
-          {title: 'Note 1', key: '0-0-2-3-0', icon: 'file-signature'},
-        ]},
+          { title: 'Note 1', key: '0-0-2-3-0', icon: 'file-signature' },
+        ]
+      },
     ],
   }],
 }];
-
 
 const dataList = [];
 const generateList = (data) => {
   for (let i = 0; i < data.length; i++) {
     const node = data[i];
     const key = node.key;
-    dataList.push({ key, title: key });
+    const title = node.title.toLowerCase();
+    dataList.push({ key, title: title });
     if (node.children) {
       generateList(node.children, node.key);
     }
@@ -56,7 +58,9 @@ const generateList = (data) => {
 };
 generateList(treeData);
 
+
 const getParentKey = (key, tree) => {
+
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
@@ -89,7 +93,7 @@ class TreeView extends Component {
   onChange = (e) => {
     const value = e.target.value;
     const expandedKeys = dataList.map((item) => {
-      if (item.title.indexOf(value) > -1) {
+      if (item.title.toLowerCase().indexOf(value.toLowerCase()) > -1) {
         return getParentKey(item.key, treeData);
       }
       return null;
@@ -170,30 +174,32 @@ class TreeView extends Component {
 
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
+
     const loop = data => data.map((item) => {
-      const index = item.title.indexOf(searchValue);
+      const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
       const beforeStr = item.title.substr(0, index);
+      const middleStr = item.title.substr(index, searchValue.length);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = index > -1 ? (
         <span>
           {beforeStr}
-          <span style={{ color: '#f50' }}>{searchValue}</span>
+          <span style={{ color: '#f50' }}>{middleStr}</span>
           {afterStr}
         </span>
       ) : <span>{item.title}</span>;
       if (item.children) {
         return (
-          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon}/>}>
-          
+          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon}/>}/>;
+      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />} />;
     });
+
     return (
       <div>
-        <Input.Search placeholder="Search" onChange={this.onChange} />
+        <div style={{ margin: '10px 10px 0px' }}><Input.Search placeholder="Search" onChange={this.onChange} /></div>
         <Tree.DirectoryTree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}
