@@ -35,20 +35,21 @@
 
 .searchgroup {
   display:flex;
+  flex-direction: row;
   align-items:center;
-  margin-right: 2em;
+  margin-right: 4em;
 }
 
 .searchbox {
   width: 300px;
   height: 30px;
   float: right;
-  margin-right: 1em;
 }
 
 .advanced-search {
   color: rgba(255,255,255,0.9); 
   float: right;
+  margin-left: 30px;
 }
 
 .advanced-search:hover {

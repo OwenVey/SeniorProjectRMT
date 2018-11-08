@@ -1,51 +1,70 @@
-import React, { Component } from 'react'
-import { Container, Icon, Menu } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './Navbar.css';
 
-const Nav = props => (
-  <NavLink exact {...props} activeClassName='active' />
-);
+const { Header } = Layout;
 
 class Navbar extends Component {
+
   render() {
+    let href = window.location.pathname;
     if (window.location.pathname === '/login') return null;
     return (
-      <div className='navbar'>
-        <Menu fixed='top' inverted>
-          <Container>
-            <Menu.Item header><Icon name='pencil' color='teal' size='large' />Requirements Tool</Menu.Item>
+      <Header style={{ justifyContent: 'center' }} className='header'>
 
-            <Menu.Item as={Nav} to='/home' name='home' >
-              <Icon name='home' />
+        <div className='logo-group'>
+          <FontAwesomeIcon size='2x' color='#1890ff' icon='pencil-alt' />
+          <span className='logo-text'>Requirements Tool</span>
+        </div>
+
+        <Menu
+          className='menu'
+          theme='dark'
+          mode='horizontal'
+          selectedKeys={[href]}
+          style={{ lineHeight: '50px' }}
+        >
+
+          <Menu.Item className='menu-item' key='/home'>
+            <NavLink to='/home'>
+              <FontAwesomeIcon className='navbar-icon' icon='home' />
               Home
+          </NavLink>
           </Menu.Item>
 
-            <Menu.Item as={Nav} to='/project' name='projects' >
-              <Icon name='archive' />
+          <Menu.Item className='menu-item' key='/project'>
+            <NavLink to='/project'>
+              <FontAwesomeIcon className='navbar-icon' icon='archive' />
               Projects
+          </NavLink>
           </Menu.Item>
 
-            <Menu.Item as={Nav} to='/admin' name='admin' >
-              <Icon name='lock' />
+          <Menu.Item className='menu-item' key='/admin'>
+            <NavLink to='/admin'>
+              <FontAwesomeIcon className='navbar-icon' icon='lock' />
               Admin
+          </NavLink>
           </Menu.Item>
 
-            <Menu.Menu position='right' >
 
-              <Menu.Item as={Nav} to='/user' name='user'>
-                <Icon name='user circle' size='large' />
-                Your Name
-              </Menu.Item>
+          <Menu.Item className='menu-item' key='/logout' onClick={this.props.onLogout} style={{ float: 'right', marginRight: '75px' }}>
+            <NavLink to='/login'>
+              <FontAwesomeIcon className='navbar-icon' icon='sign-out-alt' />
+              Log Out
+          </NavLink>
+          </Menu.Item>
 
-              <Menu.Item as={Nav} onClick={this.props.onLogout} to='/login' name='logout'>
-                <Icon name='log out' />
-                Log Out
-              </Menu.Item>
+          <Menu.Item className='menu-item' key='/user' style={{ float: 'right' }}>
+            <NavLink to='/user'>
+              <FontAwesomeIcon className='navbar-icon' icon='user' />
+              Your Name
+          </NavLink>
+          </Menu.Item>
 
-            </Menu.Menu>
-          </Container>
-        </Menu >
-      </div>
+        </Menu>
+      </Header>
     )
   }
 }

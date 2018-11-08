@@ -1,0 +1,3 @@
+table th {
+  cursor: move;
+}
