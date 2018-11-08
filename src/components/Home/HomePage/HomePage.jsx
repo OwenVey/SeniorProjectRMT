@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Input } from 'antd';
 import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx';
-import data from '../HomePage/data.js';
+import data from '../../../data.js';
 import './HomePage.css';
 
 class HomePage extends Component {

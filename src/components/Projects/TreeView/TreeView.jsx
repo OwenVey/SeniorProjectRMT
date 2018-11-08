@@ -1,48 +1,9 @@
 import React, { Component } from 'react';
 import { Tree, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import data from '../../../data.js';
 
 const TreeNode = Tree.TreeNode;
-
-const treeData = [{
-  title: 'Project Name',
-  key: '0-0',
-  icon: 'archive',
-  children: [{
-    title: 'Component 1',
-    key: '0-0-0',
-    icon: 'sitemap',
-    children: [
-      { title: 'Requirement 0001', key: '0-0-0-0', icon: 'file-alt' },
-      { title: 'Requirement 0002', key: '0-0-0-1', icon: 'file-alt' },
-      { title: 'Requirement 0003', key: '0-0-0-2', icon: 'file-alt' },
-    ],
-  }, {
-    title: 'Component 2',
-    key: '0-0-1',
-    icon: 'sitemap',
-    children: [
-      { title: 'Requirement 0001', key: '0-0-1-0', icon: 'file-alt' },
-      { title: 'Requirement 0002', key: '0-0-1-1', icon: 'file-alt' },
-      { title: 'Requirement 0003', key: '0-0-1-2', icon: 'file-alt' },
-    ],
-  }, {
-    title: 'Component 3',
-    key: '0-0-2',
-    icon: 'sitemap',
-    children: [
-      { title: 'Requirement 0001', key: '0-0-2-0', icon: 'file-alt' },
-      { title: 'Requirement 0002', key: '0-0-2-1', icon: 'file-alt' },
-      { title: 'Requirement 0003', key: '0-0-2-2', icon: 'file-alt' },
-      {
-        title: 'Requirement 0004', key: '0-0-2-3', icon: 'file-alt',
-        children: [
-          { title: 'Note 1', key: '0-0-2-3-0', icon: 'file-signature' },
-        ]
-      },
-    ],
-  }],
-}];
 
 const dataList = [];
 const generateList = (data) => {
@@ -56,11 +17,8 @@ const generateList = (data) => {
     }
   }
 };
-generateList(treeData);
-
 
 const getParentKey = (key, tree) => {
-
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
@@ -76,11 +34,18 @@ const getParentKey = (key, tree) => {
 };
 
 class TreeView extends Component {
-  state = {
-    gData: treeData,
-    expandedKeys: [],
-    searchValue: '',
-    autoExpandParent: true,
+
+  constructor() {
+    super();
+
+    this.state = {
+      treeData: data.projectTreeData,
+      expandedKeys: [],
+      searchValue: '',
+      autoExpandParent: true,
+    };
+
+    generateList(this.state.treeData);
   }
 
   onExpand = (expandedKeys) => {
@@ -94,7 +59,7 @@ class TreeView extends Component {
     const value = e.target.value;
     const expandedKeys = dataList.map((item) => {
       if (item.title.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-        return getParentKey(item.key, treeData);
+        return getParentKey(item.key, this.state.treeData);
       }
       return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
@@ -124,7 +89,7 @@ class TreeView extends Component {
         }
       });
     };
-    const data = [...this.state.gData];
+    const data = [...this.state.treeData];
 
     // Find dragObject
     let dragObj;
@@ -165,12 +130,9 @@ class TreeView extends Component {
     }
 
     this.setState({
-      gData: data,
+      treeData: data,
     });
   }
-
-
-
 
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
@@ -209,7 +171,7 @@ class TreeView extends Component {
           onDrop={this.onDrop}
           showIcon
         >
-          {loop(this.state.gData)}
+          {loop(this.state.treeData)}
         </Tree.DirectoryTree>
       </div>
     );
