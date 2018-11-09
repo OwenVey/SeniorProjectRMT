@@ -17,7 +17,6 @@ export default class ProjectPage extends Component {
   }
 
   onTreeItemSelect = (node) => {
-    console.log(node);
     this.setState({ currentSelectedItem: node });
   }
 

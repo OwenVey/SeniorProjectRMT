@@ -33,6 +33,7 @@ class ProjectTable extends Component {
                 {
                     title: "Status",
                     dataIndex: "status",
+                    align: 'center',
                     // add when type is available 
                     // sorter: (a, b) => a.status.localeCompare(b.status),
                     render: status => {
@@ -54,7 +55,7 @@ class ProjectTable extends Component {
                                 color = '';
                         }
                         return (
-                            <Tag color={color}>
+                            <Tag style={{ width: '75px' }} color={color}>
                                 {status}
                             </Tag>
                         )
@@ -63,7 +64,7 @@ class ProjectTable extends Component {
             ],
         };
     }
-    
+
 
     render() {
         const that = this;
@@ -81,9 +82,9 @@ class ProjectTable extends Component {
 
         const rowSelection = {
             onChange: (selectedRowKeys, selectedRows) => {
-              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
             },
-          };
+        };
 
         return (
             <div style={{ margin: 20 }}>
@@ -95,9 +96,9 @@ class ProjectTable extends Component {
                         dataSource={this.props.currentSelectedItem.children}
                         onChange={onChange}
                         bordered
-                        rowSelection = {rowSelection}
+                        rowSelection={rowSelection}
                     />
-                </ReactDragListView.DragColumn>   
+                </ReactDragListView.DragColumn>
             </div>
         );
     }
