@@ -8,7 +8,7 @@ function onChange(pagination, sorter) {
     console.log('params', pagination, sorter);
 }
 
-class TableView extends Component {
+class ProjectTable extends Component {
 
     constructor(props) {
         super(props);
@@ -33,7 +33,8 @@ class TableView extends Component {
                 {
                     title: "Status",
                     dataIndex: "status",
-                    sorter: (a, b) => a.status.localeCompare(b.status),
+                    // add when type is available 
+                    // sorter: (a, b) => a.status.localeCompare(b.status),
                     render: status => {
                         let color;
                         switch (status) {
@@ -62,6 +63,7 @@ class TableView extends Component {
             ],
         };
     }
+    
 
     render() {
         const that = this;
@@ -77,9 +79,15 @@ class TableView extends Component {
             nodeSelector: "th"
         };
 
+        const rowSelection = {
+            onChange: (selectedRowKeys, selectedRows) => {
+              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            },
+          };
+
         return (
             <div style={{ margin: 20 }}>
-                <h2>Requirements</h2>
+                {this.props.currentSelectedItem && <h2>{this.props.currentSelectedItem.title}</h2>}
                 <ReactDragListView.DragColumn {...this.dragProps}>
                     <Table
                         columns={this.state.columns}
@@ -87,11 +95,11 @@ class TableView extends Component {
                         dataSource={this.props.currentSelectedItem.children}
                         onChange={onChange}
                         bordered
+                        rowSelection = {rowSelection}
                     />
-                </ReactDragListView.DragColumn>
-                {this.props.currentSelectedItem && <h4>{this.props.currentSelectedItem.title}</h4>}
+                </ReactDragListView.DragColumn>   
             </div>
         );
     }
 }
-export default TableView;
+export default ProjectTable;
