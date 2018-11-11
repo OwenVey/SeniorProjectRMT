@@ -1,10 +1,19 @@
-table th {
-  cursor: move;
-}
-
 .userBoxList {
   display: flex;
   align-items: center;
   margin-left: 2em;
   margin-right: 1em;
+}
+
+.react-resizable {
+  position: relative;
+}
+
+ .react-resizable-handle {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  bottom: 0;
+  right: -5px;
+  cursor: col-resize;
 }
