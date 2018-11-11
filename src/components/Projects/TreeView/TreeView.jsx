@@ -134,6 +134,26 @@ class TreeView extends Component {
     });
   }
 
+  onSelect = (e) => {
+    const selectedKey = e[0];
+    let selectedNode = this.getSelectedNode(selectedKey, this.state.treeData);
+    this.props.handleItemSelect(selectedNode);
+  }
+
+  getSelectedNode = (key, tree) => {
+    let selectedNode;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.key === key) {
+        selectedNode = node;
+      } else if (node.children && this.getSelectedNode(key, node.children)) {
+        selectedNode = this.getSelectedNode(key, node.children);
+      }
+    }
+    return selectedNode;
+  }
+
+
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
 
@@ -170,6 +190,7 @@ class TreeView extends Component {
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
           showIcon
+          onSelect={this.onSelect}
         >
           {loop(this.state.treeData)}
         </Tree.DirectoryTree>
