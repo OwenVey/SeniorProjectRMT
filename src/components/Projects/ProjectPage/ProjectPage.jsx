@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import TreeView from '../TreeView/TreeView.jsx';
+import ObjectGroupBar from '../ObjectGroupBar/ObjectGroupBar.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import SplitPane from 'react-split-pane';
 
@@ -28,6 +29,7 @@ export default class ProjectPage extends Component {
           <SplitPane minSize={200} maxSize={-100} defaultSize={'20%'}>
             <TreeView handleItemSelect={this.onTreeItemSelect} />
             <div className='projectcontent'>
+              <ObjectGroupBar/>
               <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
             </div>
           </SplitPane>
