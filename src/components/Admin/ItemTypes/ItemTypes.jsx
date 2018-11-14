@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDragListView from "react-drag-listview";
-import { Table } from "antd";
+import { Table, Divider } from "antd";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function onChange(pagination, sorter) {
   console.log("params", pagination, sorter);
@@ -13,16 +14,16 @@ class ItemTypes extends Component {
   this.state = {
     data: [
       {
-        icon: "",
-        display: "Analysis Items",
-        plural: "Analysis Items",
+        icon: <FontAwesomeIcon icon='archive'/>,
+        display: "Projects",
+        plural: "Projects",
         key: "AITEM",
-        description: "IIBA BABOK v3",
+        description: "Used for projects",
         id: "80",
         system: "No"
       },
       {
-        icon: "",
+        icon: <FontAwesomeIcon icon='paperclip'/>,
         display: "Attachment",
         plural: "Attachments",
         key: "ATT",
@@ -31,20 +32,20 @@ class ItemTypes extends Component {
         system: "Yes"
       },
       {
-        icon: "",
-        display: "Automotive Cause",
-        plural: "Automotive Cause",
+        icon: <FontAwesomeIcon icon='file-alt'/>,
+        display: "Requirements",
+        plural: "Requirements",
         key: "CAUS",
-        description: "Automotive",
+        description: "Used in the projects component",
         id: "129",
         system: "No"
       },
       {
-        icon: "",
-        display: "Automotive Failure Mode",
-        plural: "Automotive Failure Mode",
+        icon: <FontAwesomeIcon icon='file-signature'/>,
+        display: "Note",
+        plural: "Note",
         key: "FM",
-        description: "Used in Automotive FMEA",
+        description: "Used in Requirements",
         id: "128",
         system: "No"
       }
@@ -89,8 +90,19 @@ class ItemTypes extends Component {
       {
         title: "Action",
         dataIndex: "action",
-        sorter: (a,b) => a.system.length - b.system.length
-
+        sorter: (a,b) => a.system.length - b.system.length,
+        render: () => (
+          <span>
+            <a href=''>Edit</a>
+            <Divider type='vertical' />
+            <a href=''>Password</a>
+            <Divider type='vertical' />
+            <a href=''>Subscriptions</a>
+            <Divider type='vertical' />
+            <a href=''>Invite</a>
+            <Divider type='vertical' />
+            <a href=''>Deactivate</a>
+          </span>)
       }
     ]
   };
@@ -119,6 +131,7 @@ class ItemTypes extends Component {
             pagination={false}
             dataSource={this.state.data}
             onChange={onChange}
+            icon={<FontAwesomeIcon/>}
             bordered
           />
         </ReactDragListView.DragColumn>
