@@ -136,6 +136,7 @@ class ItemTypes extends Component {
       </div>
     );
   }
+
 }
 
 export default ItemTypes;
