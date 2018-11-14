@@ -1,0 +1,12 @@
+.inputRow{
+    margin-bottom: 20px;
+}
+.transferUsers{
+    width: 1000px;
+}
+.userGroupModal{
+    top: 20px;
+    left: 10px;
+    right: 50px;
+    bottom: 100px;
+}
