@@ -95,11 +95,11 @@ class ItemTypes extends Component {
           <span>
             <a href=''>Edit</a>
             <Divider type='vertical' />
-            <a href=''>Password</a>
+            <a href=''>Fields</a>
             <Divider type='vertical' />
-            <a href=''>Subscriptions</a>
+            <a href=''>Views</a>
             <Divider type='vertical' />
-            <a href=''>Invite</a>
+            <a href=''>Delete</a>
             <Divider type='vertical' />
             <a href=''>Deactivate</a>
           </span>)
