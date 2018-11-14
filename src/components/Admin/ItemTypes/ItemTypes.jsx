@@ -100,8 +100,6 @@ class ItemTypes extends Component {
             <a href=''>Views</a>
             <Divider type='vertical' />
             <a href=''>Delete</a>
-            <Divider type='vertical' />
-            <a href=''>Deactivate</a>
           </span>)
       }
     ]
