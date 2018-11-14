@@ -82,6 +82,8 @@ class UserGroups extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          width="80%"
+          style={{ top: 20 }}
           className="userGroupModal">
           <Row className="inputRow">
           <Input 
