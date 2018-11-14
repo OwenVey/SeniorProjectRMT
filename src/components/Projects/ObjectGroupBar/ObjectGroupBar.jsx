@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu, Icon, Dropdown, Row, Col} from 'antd';
+import { Button, Menu, Icon, Dropdown} from 'antd';
 
 const exportMenu = (
   <Menu>
@@ -18,10 +18,10 @@ const exportMenu = (
 const actionMenu = (
   <Menu>
     <Menu.Item>
-      <Icon type="file-add" />Clone
+      <Icon type="file-add" style={{color: '#1890dd'}}/>Clone
     </Menu.Item>
     <Menu.Item>
-      <Icon type="delete" /> Delete
+      <Icon type="delete" style={{color: 'red'}}/>Delete
     </Menu.Item>
   </Menu>
 )
@@ -30,24 +30,24 @@ class ObjectGroupBar extends Component {
 
   render() {
     return (
-      <div style={{ flex: 1, flexDirection: 'row', margin: 20, justifyContent: 'space-between', backgroundColor:'#eee'}}>
-        <div>
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, aligntItems: 'centered', justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
+        <div style={{paddingRight: 20}}>
           <Dropdown overlay={exportMenu}>
-            <a className="ant-dropdown-link" href="#">
+            <a className="ant-dropdown-link">
               Export Selected <Icon type="down" />
             </a>
           </Dropdown>
         </div>
-        <div>
+        <div style={{paddingRight: 20}}>
           <Dropdown overlay={actionMenu}>
-            <a className="ant-dropdown-link" href="#">
+            <a className="ant-dropdown-link">
               Actions <Icon type="down" />
             </a>
           </Dropdown>
         </div>
-        <div>
+        <div style={{paddingRight: 20}}>
           <Button type="primary">
-          <Icon type="filter" /> Select Columns
+          <Icon type="filter" />
           </Button>
         </div>
         <div>
