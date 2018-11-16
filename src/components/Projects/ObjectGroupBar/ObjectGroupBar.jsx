@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu, Icon, Dropdown} from 'antd';
+import { Tooltip, Button, Menu, Icon, Dropdown, Modal} from 'antd';
 
 const exportMenu = (
   <Menu>
@@ -26,28 +26,48 @@ const actionMenu = (
   </Menu>
 )
 
+function showColumnSelectModal() {
+  Modal.info({
+    title: 'Select the columns you wish to display',
+    content: 'InsertColumnNamesHere',
+    okText: 'Save',
+    onOk() {
+      console.log('Saved!');
+    },
+    onCancel() {
+      console.log('Cancelled');
+    },
+    iconType: 'filter'
+  });
+}
+
 class ObjectGroupBar extends Component {
 
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, aligntItems: 'centered', justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
-        <div style={{paddingRight: 20}}>
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Tooltip title='Refresh'>
+            <Icon type="reload" />
+          </Tooltip>
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
           <Dropdown overlay={exportMenu}>
             <a className="ant-dropdown-link">
               Export Selected <Icon type="down" />
             </a>
           </Dropdown>
         </div>
-        <div style={{paddingRight: 20}}>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
           <Dropdown overlay={actionMenu}>
             <a className="ant-dropdown-link">
               Actions <Icon type="down" />
             </a>
           </Dropdown>
         </div>
-        <div style={{paddingRight: 20}}>
-          <Button type="primary">
-          <Icon type="filter" />
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Button type="primary" onClick={showColumnSelectModal}>
+            <Icon type="filter" />
           </Button>
         </div>
         <div>
