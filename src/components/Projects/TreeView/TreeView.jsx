@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tree, Input } from 'antd';
+import { Tree, Input, Dropdown, Menu, Icon, Select, Card } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import data from '../../../data.js';
 
@@ -33,6 +33,14 @@ const getParentKey = (key, tree) => {
   return parentKey;
 };
 
+const menu = (
+  <Menu>
+    <Menu.Item key="1">1st menu item</Menu.Item>
+    <Menu.Item key="2">2nd menu item</Menu.Item>
+    <Menu.Item key="3">3rd menu item</Menu.Item>
+  </Menu>
+);
+
 class TreeView extends Component {
 
   constructor() {
@@ -43,6 +51,7 @@ class TreeView extends Component {
       expandedKeys: [],
       searchValue: '',
       autoExpandParent: true,
+      rightClickNodeTreeItem: null,
     };
 
     generateList(this.state.treeData);
@@ -153,6 +162,45 @@ class TreeView extends Component {
     return selectedNode;
   }
 
+  onTreeNodeRightClick = (e) => {
+    this.setState({
+      rightClickNodeTreeItem: {
+        pageX: e.event.pageX,
+        pageY: e.event.pageY,
+        id: e.node.props['data-key'],
+        categoryName: e.node.props['data-title']
+      }
+    });
+  }
+
+
+  getNodeTreeRightClickMenu() {
+    const { pageX, pageY } = { ...this.state.rightClickNodeTreeItem };
+    const tmpStyle = {
+      position: 'absolute',
+      left: `${pageX + 0}px`,
+      top: `${pageY - 90}px`,
+      zIndex: 100,
+      boxShadow: '0 2px 8px rgba(0,0,0,.15)',
+    };
+    const menu = (
+
+      <Menu
+        onClick={this.handleMenuClick}
+        style={tmpStyle}
+      >
+
+        <Menu.Item className='ant-dropdown-menu-item' key="1">1st menu item</Menu.Item>
+        <Menu.Item className='ant-dropdown-menu-item' key="2">2nd menu item</Menu.Item>
+        <Menu.Item className='ant-dropdown-menu-item' key="3">3rd menu item</Menu.Item>
+
+      </Menu>
+
+
+    );
+    return (this.state.rightClickNodeTreeItem == null) ? '' : menu;
+  }
+
 
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
@@ -191,9 +239,12 @@ class TreeView extends Component {
           onDrop={this.onDrop}
           showIcon
           onSelect={this.onSelect}
+          onRightClick={this.onTreeNodeRightClick}
         >
           {loop(this.state.treeData)}
         </Tree.DirectoryTree>
+
+        {this.getNodeTreeRightClickMenu()}
       </div>
     );
   }
