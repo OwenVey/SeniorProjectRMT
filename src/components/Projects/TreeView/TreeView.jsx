@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
-import { Tree, Input, Dropdown, Menu, Icon, Select, Card } from 'antd';
+import { Tree, Input, Dropdown, Icon, Select, Card } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import data from '../../../data.js';
+import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.min.css';
 
 const TreeNode = Tree.TreeNode;
+
+const onClick = ({ event, props }) => console.log(event, props);
+
+// create your menu first
+const MyAwesomeMenu = () => (
+  <Menu id='menu_id' style={{ zIndex: 1000 }}>
+    <Item onClick={onClick}>Lorem</Item>
+    <Item onClick={onClick}>Ipsum</Item>
+    <Separator />
+    <Item disabled>Dolor</Item>
+    <Separator />
+    <Submenu label="Foobar">
+      <Item onClick={onClick}>Foo</Item>
+      <Item onClick={onClick}>Bar</Item>
+    </Submenu>
+  </Menu>
+);
 
 const dataList = [];
 const generateList = (data) => {
@@ -162,50 +181,19 @@ class TreeView extends Component {
     return selectedNode;
   }
 
-  onTreeNodeRightClick = (e) => {
-    this.setState({
-      rightClickNodeTreeItem: {
-        pageX: e.event.pageX,
-        pageY: e.event.pageY,
-        id: e.node.props['data-key'],
-        categoryName: e.node.props['data-title']
-      }
-    });
-  }
 
-
-  getNodeTreeRightClickMenu() {
-    const { pageX, pageY } = { ...this.state.rightClickNodeTreeItem };
-    const tmpStyle = {
-      position: 'absolute',
-      left: `${pageX + 0}px`,
-      top: `${pageY - 90}px`,
-      zIndex: 100,
-      boxShadow: '0 2px 8px rgba(0,0,0,.15)',
-    };
-    const menu = (
-
-      <Menu
-        onClick={this.handleMenuClick}
-        style={tmpStyle}
-      >
-
-        <Menu.Item className='ant-dropdown-menu-item' key="1">1st menu item</Menu.Item>
-        <Menu.Item className='ant-dropdown-menu-item' key="2">2nd menu item</Menu.Item>
-        <Menu.Item className='ant-dropdown-menu-item' key="3">3rd menu item</Menu.Item>
-
-      </Menu>
-
-
-    );
-    return (this.state.rightClickNodeTreeItem == null) ? '' : menu;
-  }
 
 
   render() {
+
+
+
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
 
     const loop = data => data.map((item) => {
+
+      const title2 = (<MenuProvider style={{ display: 'inline' }} id='menu_id' data-key={item.key}><span style={{ display: 'inline' }}>{item.title}</span></MenuProvider>);
+
       const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
       const beforeStr = item.title.substr(0, index);
       const middleStr = item.title.substr(index, searchValue.length);
@@ -219,16 +207,21 @@ class TreeView extends Component {
       ) : <span>{item.title}</span>;
       if (item.children) {
         return (
-          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />}>
+          <TreeNode key={item.key} title={title2} icon={<FontAwesomeIcon icon={item.icon} />}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />} />;
+      return <TreeNode key={item.key} title={title2} icon={<FontAwesomeIcon icon={item.icon} />} />;
     });
 
     return (
       <div>
+
+        <MenuProvider id="menu_id" style={{ border: '1px solid purple', display: 'inline-block' }}>
+          Right click me...
+        </MenuProvider>
+        <MyAwesomeMenu />
         <div style={{ margin: '10px 10px 0px' }}><Input.Search placeholder="Search" onChange={this.onChange} /></div>
         <Tree.DirectoryTree
           onExpand={this.onExpand}
@@ -239,12 +232,10 @@ class TreeView extends Component {
           onDrop={this.onDrop}
           showIcon
           onSelect={this.onSelect}
-          onRightClick={this.onTreeNodeRightClick}
         >
           {loop(this.state.treeData)}
         </Tree.DirectoryTree>
 
-        {this.getNodeTreeRightClickMenu()}
       </div>
     );
   }
