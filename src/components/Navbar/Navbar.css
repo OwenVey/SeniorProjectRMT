@@ -37,3 +37,26 @@
   font-weight: bold;
   font-size: 14px;
 }
+
+.profile-dropdown-menu {
+  min-width: 180px;
+}
+
+.profile-menu .user-full-name-info {
+  font-size: 17px;
+  font-weight: 600;
+  color: rgba(255,255,255,1);
+}
+
+.profile-menu .username-info {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected.profile-menu {
+  background-color: #3d3e3f;
+}
