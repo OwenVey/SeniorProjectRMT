@@ -28,7 +28,10 @@ export default class ProjectPage extends Component {
           <SplitPane minSize={200} maxSize={-100} defaultSize={'20%'}>
             <TreeView handleItemSelect={this.onTreeItemSelect} />
             <div className='projectcontent'>
-              <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
+              {
+                this.state.currentSelectedItem.children &&
+                <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
+              }
             </div>
           </SplitPane>
         </div>
