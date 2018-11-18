@@ -19,51 +19,66 @@ class Navbar extends Component {
           <span className='logo-text'>Requirements Tool</span>
         </div>
 
-        <Menu
-          className='menu'
-          theme='dark'
-          mode='horizontal'
-          selectedKeys={[href]}
-          style={{ lineHeight: '50px' }}
-        >
 
-          <Menu.Item className='menu-item' key='/home'>
-            <NavLink to='/home'>
-              <FontAwesomeIcon className='navbar-icon' icon='home' />
-              Home
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
+          <div style={{ display: 'inline' }}>
+            <Menu
+              className='menu'
+              theme='dark'
+              mode='horizontal'
+              selectedKeys={[href]}
+              style={{ width: 'fit-content', height: '50px', display: 'inline-block', verticalAlign: 'top' }}
+            >
+              <Menu.Item className='menu-item' key='/home'>
+                <NavLink to='/home'>
+                  <FontAwesomeIcon className='navbar-icon' icon='home' />
+                  Home
           </NavLink>
-          </Menu.Item>
+              </Menu.Item>
 
-          <Menu.Item className='menu-item' key='/project'>
-            <NavLink to='/project'>
-              <FontAwesomeIcon className='navbar-icon' icon='archive' />
-              Projects
+              <Menu.Item className='menu-item' key='/project' >
+                <NavLink to='/project'>
+                  <FontAwesomeIcon className='navbar-icon' icon='archive' />
+                  Projects
           </NavLink>
-          </Menu.Item>
+              </Menu.Item>
 
-          <Menu.Item className='menu-item' key='/admin'>
-            <NavLink to='/admin'>
-              <FontAwesomeIcon className='navbar-icon' icon='lock' />
-              Admin
+
+              <Menu.Item className='menu-item' key='/admin'>
+                <NavLink to='/admin'>
+                  <FontAwesomeIcon className='navbar-icon' icon='lock' />
+                  Admin
           </NavLink>
-          </Menu.Item>
+              </Menu.Item>
+            </Menu>
+          </div>
 
-
-          <Menu.Item className='menu-item' key='/logout' onClick={this.props.onLogout} style={{ float: 'right', marginRight: '75px' }}>
-            <NavLink to='/login'>
-              <FontAwesomeIcon className='navbar-icon' icon='sign-out-alt' />
-              Log Out
+          <div style={{ display: 'inline' }}>
+            <Menu
+              className='menu'
+              theme='dark'
+              mode='horizontal'
+              selectedKeys={[href]}
+              style={{ width: 'fit-content', height: '50px', display: 'inline-block', verticalAlign: 'top' }}
+            >
+              <Menu.Item className='menu-item' key='/logout' onClick={this.props.onLogout}>
+                <NavLink to='/login'>
+                  <FontAwesomeIcon className='navbar-icon' icon='sign-out-alt' />
+                  Log Out
           </NavLink>
-          </Menu.Item>
+              </Menu.Item>
 
-          <Menu.Item className='menu-item' key='/user' style={{ float: 'right' }}>
-            <NavLink to='/user'>
-              <FontAwesomeIcon className='navbar-icon' icon='user' />
-              Your Name
+              <Menu.Item className='menu-item' key='/user'>
+                <NavLink to='/user'>
+                  <FontAwesomeIcon className='navbar-icon' icon='user' />
+                  Your Name
           </NavLink>
-          </Menu.Item>
+              </Menu.Item>
+            </Menu>
+          </div>
 
-        </Menu>
+        </div>
       </Header>
     )
   }

@@ -3,7 +3,6 @@
   float: left;
   display: flex;
   align-items: center;
-  margin-left: 75px;
   margin-right: 30px;
 }
 
@@ -24,6 +23,10 @@
 
 .ant-menu-dark.menu {
   background: #1b1c1d;
+}
+
+.menu-item {
+  height: 50px;
 }
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected.menu-item {
