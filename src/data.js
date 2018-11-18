@@ -31,7 +31,7 @@ export default {
                 {
                     key: '0-0-0-0',
                     title: 'Requirement 0001',
-                    description: 'Aute consequat excepteur amet veniam aute laborum excepteur nisi excepteur non et sint ea aute.',
+                    description: 'Aute consequat excepteur amet veniam aute laborum.',
                     icon: 'file-alt',
                     status: 'Completed',
                 },

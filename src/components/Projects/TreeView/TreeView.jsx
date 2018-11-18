@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
-import { Tree, Input, Dropdown, Icon, Select, Card } from 'antd';
+import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import data from '../../../data.js';
-import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify';
-import 'react-contexify/dist/ReactContexify.min.css';
 
 const TreeNode = Tree.TreeNode;
 
-const onClick = ({ event, props }) => console.log(event, props);
 
-// create your menu first
-const MyAwesomeMenu = () => (
-  <Menu id='menu_id' style={{ zIndex: 1000 }}>
-    <Item onClick={onClick}>Lorem</Item>
-    <Item onClick={onClick}>Ipsum</Item>
-    <Separator />
-    <Item disabled>Dolor</Item>
-    <Separator />
-    <Submenu label="Foobar">
-      <Item onClick={onClick}>Foo</Item>
-      <Item onClick={onClick}>Bar</Item>
-    </Submenu>
-  </Menu>
-);
 
 const dataList = [];
 const generateList = (data) => {
@@ -52,14 +35,6 @@ const getParentKey = (key, tree) => {
   return parentKey;
 };
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st menu item</Menu.Item>
-    <Menu.Item key="2">2nd menu item</Menu.Item>
-    <Menu.Item key="3">3rd menu item</Menu.Item>
-  </Menu>
-);
-
 class TreeView extends Component {
 
   constructor() {
@@ -67,12 +42,11 @@ class TreeView extends Component {
 
     this.state = {
       treeData: data.projectTreeData,
-      expandedKeys: [],
+      expandedKeys: ['0-0'],
       searchValue: '',
       autoExpandParent: true,
-      rightClickNodeTreeItem: null,
+      rightClickedTreeNode: null,
     };
-
     generateList(this.state.treeData);
   }
 
@@ -181,57 +155,97 @@ class TreeView extends Component {
     return selectedNode;
   }
 
+  onRightClickTreeNode = ({ node }) => {
+    this.setState({ rightClickedTreeNode: node.props.eventKey })
+  }
 
+  showDeleteModal = (e) => {
+    e.domEvent.stopPropagation();
+    let selectedNode = this.getSelectedNode(this.state.rightClickedTreeNode, this.state.treeData);
 
+    Modal.confirm({
+      title: 'Delete',
+      content: selectedNode.children ? 'Are you sure delete the item "' + selectedNode.title + '" and its children?' : 'Are you sure you want to delete the item "' + selectedNode.title + '"?',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: () => { this.deleteNodeFromTree(this.state.rightClickedTreeNode) },
+    });
+  }
+
+  deleteNodeFromTree = (keyToDelete) => {
+    let newTreeData = this.recursivelyDeleteNode(this.state.treeData, keyToDelete);
+    this.setState({ treeData: newTreeData });
+  }
+
+  recursivelyDeleteNode = (tree, key) => {
+    for (var i = 0; i < tree.length; ++i) {
+      var node = tree[i];
+      if (node.key === key) {
+        tree.splice(i, 1);
+        return tree;
+      }
+      if (node.children) {
+        if (this.recursivelyDeleteNode(node.children, key)) {
+          if (node.children.length === 0) {
+            delete node.children;
+          }
+          return tree;
+        }
+      }
+    }
+  }
 
   render() {
 
-
+    const rightClickTreeNodeMenu = (
+      <Menu>
+        <Menu.Item key="1">Open</Menu.Item>
+        <Menu.Item key="2">Edit</Menu.Item>
+        <Menu.Item key="3" onClick={this.showDeleteModal}>Delete</Menu.Item>
+      </Menu>
+    );
 
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
 
     const loop = data => data.map((item) => {
-
-      const title2 = (<MenuProvider style={{ display: 'inline' }} id='menu_id' data-key={item.key}><span style={{ display: 'inline' }}>{item.title}</span></MenuProvider>);
-
       const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
       const beforeStr = item.title.substr(0, index);
       const middleStr = item.title.substr(index, searchValue.length);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = index > -1 ? (
-        <span>
-          {beforeStr}
-          <span style={{ color: '#f50' }}>{middleStr}</span>
-          {afterStr}
-        </span>
-      ) : <span>{item.title}</span>;
+        <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}>
+          <span style={{ padding: '0px 30px', margin: '0px -30px' }}>
+            {beforeStr}
+            <span style={{ color: '#f50' }}>{middleStr}</span>
+            {afterStr}
+          </span>
+        </Dropdown>
+      ) : <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}><span style={{ padding: '0px 30px', margin: '0px -30px' }}>{item.title}</span></Dropdown>;
       if (item.children) {
         return (
-          <TreeNode key={item.key} title={title2} icon={<FontAwesomeIcon icon={item.icon} />}>
+          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} title={title2} icon={<FontAwesomeIcon icon={item.icon} />} />;
+      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />} />;
     });
 
     return (
       <div>
-
-        <MenuProvider id="menu_id" style={{ border: '1px solid purple', display: 'inline-block' }}>
-          Right click me...
-        </MenuProvider>
-        <MyAwesomeMenu />
         <div style={{ margin: '10px 10px 0px' }}><Input.Search placeholder="Search" onChange={this.onChange} /></div>
         <Tree.DirectoryTree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}
+          defaultSelectedKeys={['0-0']}
           autoExpandParent={autoExpandParent}
           draggable
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
           showIcon
           onSelect={this.onSelect}
+          onRightClick={this.onRightClickTreeNode}
         >
           {loop(this.state.treeData)}
         </Tree.DirectoryTree>
