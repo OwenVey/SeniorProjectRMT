@@ -41,8 +41,7 @@ function showColumnSelectModal() {
   });
 }
 
-class ObjectGroupBar extends Component {
-
+export class ObjectGroupBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
@@ -67,7 +66,7 @@ class ObjectGroupBar extends Component {
         </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
           <Button type="primary" onClick={showColumnSelectModal}>
-            <Icon type="filter" />
+            <Icon type="filter" /> {/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
           </Button>
         </div>
         <div>
@@ -80,4 +79,32 @@ class ObjectGroupBar extends Component {
   }
 }
 
-export default ObjectGroupBar;
+export class ObjectBar extends Component {
+  render() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Dropdown overlay={exportMenu}>
+            <a className="ant-dropdown-link">
+              Export Selected <Icon type="down" />
+            </a>
+          </Dropdown>
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Icon type="file-add" style={{color: '#1890dd'}}/>Clone
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Icon type="delete" style={{color: 'red'}}/>Delete
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Icon type="edit" style={{color: '#1890dd'}}/>Edit
+        </div>
+        <div>
+          <Button type="primary">
+            <Icon type="plus-circle" />Add Object
+          </Button>
+        </div>
+      </div>
+    )
+  }
+}
