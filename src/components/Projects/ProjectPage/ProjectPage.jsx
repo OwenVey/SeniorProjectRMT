@@ -5,7 +5,7 @@ import TreeView from '../TreeView/TreeView.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import ObjectView from '../ObjectView/ObjectView.jsx';
 import SplitPane from 'react-split-pane';
-import { Tabs } from 'antd';
+import { Tabs, Dropdown } from 'antd';
 import './ProjectPage.css';
 const TabPane = Tabs.TabPane;
 
@@ -71,21 +71,22 @@ export default class ProjectPage extends Component {
     return (
       <div className='projects-page'>
         <SearchBar />
-        <div className='splitpane'>
-          <SplitPane minSize={200} maxSize={-100} defaultSize={'20%'}>
-            <TreeView handleItemSelect={this.onTreeItemSelect} />
-            <div className='projectcontent'>
-              <Tabs
-                hideAdd
-                onChange={this.onChange}
-                activeKey={this.state.activeKey}
-                type="editable-card"
-                onEdit={this.onEdit}
-              >
-                {this.state.tabs.map(tab => <TabPane tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
-              </Tabs>
 
-            </div>
+        <div className='splitpane'>
+          <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
+
+            <TreeView handleItemSelect={this.onTreeItemSelect} />
+
+            <Tabs
+              hideAdd
+              onChange={this.onChange}
+              activeKey={this.state.activeKey}
+              type="editable-card"
+              onEdit={this.onEdit}
+            >
+              {this.state.tabs.map(tab => <TabPane tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
+            </Tabs>
+
           </SplitPane>
         </div>
       </div >
