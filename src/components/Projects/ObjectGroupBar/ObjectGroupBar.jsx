@@ -56,13 +56,47 @@ function showColumnSelectModal() {
   });
 }
 
+function showFilterModal() {
+  Modal.confirm({
+    title: 'Apply Filters',
+    content: 'InsertFilterOptionsHere',
+    okText: 'Save',
+    onOk() {
+      console.log('Saved!');
+    },
+    onCancel() {
+      console.log('Cancelled');
+    },
+    iconType: 'filter'
+    
+  });
+}
+
 export class ObjectGroupBar extends Component {
   render() {
+    let selectedItemRenderer;
+    if(this.props.currentSelectedItem !== []){
+      selectedItemRenderer = (
+        <div style={{flex: 1, justifyContent: 'flex-start'}}>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <h2>{this.props.currentSelectedItem.title}</h2>
+            <div style={{cursor: 'pointer', paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', color: '#1890FF', paddingBottom: 4}}>
+              View
+            </div>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            {'{X}'} Items
+            <div style={{cursor: 'pointer', paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', color: '#1890FF'}} onClick={showFilterModal}>
+            <Icon type="filter" theme='filled' /> Filter Items
+            </div>
+          </div>
+        </div>
+        )
+    }
+
     return (
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end'}}>
-        <div style={{flex: 1, justifyContent: 'flex-start'}}>
-          {this.props.currentSelectedItem && <h2>{this.props.currentSelectedItem.title}</h2>}
-        </div>
+        {selectedItemRenderer}
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
           <Tooltip title='Refresh' placement="bottom">
             <Button>
