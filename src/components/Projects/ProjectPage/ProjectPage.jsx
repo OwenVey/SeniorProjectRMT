@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import TreeView from '../TreeView/TreeView.jsx';
-import {ObjectGroupBar, ObjectBar} from '../ObjectGroupBar/ObjectGroupBar.jsx';
+import {ObjectGroupBar, ObjectBar} from '../ProjectBars/ProjectBars.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import SplitPane from 'react-split-pane';
 
