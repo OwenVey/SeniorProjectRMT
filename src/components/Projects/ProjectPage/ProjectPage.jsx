@@ -30,7 +30,7 @@ export default class ProjectPage extends Component {
             <TreeView handleItemSelect={this.onTreeItemSelect} />
             <div className='projectcontent'>
               <ObjectBar/>
-              <ObjectGroupBar/>
+              <ObjectGroupBar currentSelectedItem={this.state.currentSelectedItem}/>
               <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
             </div>
           </SplitPane>

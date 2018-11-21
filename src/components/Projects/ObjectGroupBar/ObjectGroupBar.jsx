@@ -60,6 +60,9 @@ export class ObjectGroupBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end'}}>
+        <div style={{flex: 1, justifyContent: 'flex-start'}}>
+          {this.props.currentSelectedItem && <h2>{this.props.currentSelectedItem.title}</h2>}
+        </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
           <Tooltip title='Refresh' placement="bottom">
             <Button>

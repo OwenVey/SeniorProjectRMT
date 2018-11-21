@@ -88,7 +88,6 @@ class ProjectTable extends Component {
 
         return (
             <div style={{ marginLeft: 20, marginRight: 20 }}>
-                {this.props.currentSelectedItem && <h2>{this.props.currentSelectedItem.title}</h2>}
                 <ReactDragListView.DragColumn {...this.dragProps}>
                     <Table
                         columns={this.state.columns}
