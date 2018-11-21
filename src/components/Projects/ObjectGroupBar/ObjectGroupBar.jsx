@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tooltip, Button, Menu, Icon, Dropdown, Modal} from 'antd';
+import { Tooltip, Button, Menu, Icon, Dropdown, Modal, Radio} from 'antd';
 
 const exportMenu = (
   <Menu>
@@ -26,8 +26,22 @@ const actionMenu = (
   </Menu>
 )
 
+const addMenu = (
+  <Menu>
+    <Menu.Item>
+      <Icon type="plus-circle" style={{color: '#1890dd'}}/>Add Object
+    </Menu.Item>
+    <Menu.Item>
+      <Icon type="file-text" />Add Text
+    </Menu.Item>
+    <Menu.Item>
+      <Icon type="folder" theme='twoTone' twoToneColor='#dd9633'/>Add Folder
+    </Menu.Item>
+  </Menu>
+)
+
 function showColumnSelectModal() {
-  Modal.info({
+  Modal.confirm({
     title: 'Select the columns you wish to display',
     content: 'InsertColumnNamesHere',
     okText: 'Save',
@@ -37,17 +51,41 @@ function showColumnSelectModal() {
     onCancel() {
       console.log('Cancelled');
     },
-    iconType: 'filter'
+    iconType: 'setting'
+    
   });
 }
 
 export class ObjectGroupBar extends Component {
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor:'#f7f7f7'}}>
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end'}}>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
-          <Tooltip title='Refresh'>
-            <Icon type="reload" />
+          <Tooltip title='Refresh' placement="bottom">
+            <Button>
+              <Icon type="reload" />
+            </Button>
+          </Tooltip>
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Radio.Group defaultValue='table' buttonStyle='solid'>
+            <Tooltip title='Table View' placement="bottom">
+              <Radio.Button value='table'>
+                <Icon type='table'/>
+              </Radio.Button>
+            </Tooltip>
+            <Tooltip title='Document View' placement="bottom">
+              <Radio.Button value='document'>
+                <Icon type='file'/>
+              </Radio.Button>
+            </Tooltip>
+          </Radio.Group>
+        </div>
+        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
+          <Tooltip title='Select Columns' placement="bottom">
+            <Button onClick={showColumnSelectModal}>
+              <Icon type="setting" theme='filled'/>{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
+            </Button>
           </Tooltip>
         </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
@@ -64,15 +102,12 @@ export class ObjectGroupBar extends Component {
             </a>
           </Dropdown>
         </div>
-        <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
-          <Button type="primary" onClick={showColumnSelectModal}>
-            <Icon type="filter" /> {/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
-          </Button>
-        </div>
-        <div>
-          <Button type="primary">
-            <Icon type="plus-circle" />Add Object
-          </Button>
+        <div style={{alignItems: 'center', alignSelf: 'center'}}>
+          <Dropdown overlay={addMenu}>
+            <a className="ant-dropdown-link">
+              Add <Icon type="down" />
+            </a>
+          </Dropdown>
         </div>
       </div>
     )
@@ -91,13 +126,13 @@ export class ObjectBar extends Component {
           </Dropdown>
         </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
-          <Icon type="file-add" style={{color: '#1890dd'}}/>Clone
+          <Icon type="file-add" style={{color: '#1890dd'}}/> Clone
         </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
-          <Icon type="delete" style={{color: 'red'}}/>Delete
+          <Icon type="delete" style={{color: 'red'}}/> Delete
         </div>
         <div style={{alignItems: 'center', alignSelf: 'center', paddingRight: 20}}>
-          <Icon type="edit" style={{color: '#1890dd'}}/>Edit
+          <Icon type="edit" style={{color: '#1890dd'}}/> Edit
         </div>
         <div>
           <Button type="primary">
