@@ -70,12 +70,15 @@ class ProjectTable extends Component {
         const that = this;
         this.dragProps = {
             onDragEnd(fromIndex, toIndex) {
-                const columns = that.state.columns;
-                const item = columns.splice(fromIndex, 1)[0];
-                columns.splice(toIndex, 0, item);
-                that.setState({
-                    columns
-                });
+                if(fromIndex > 0)
+                {
+                    const columns = that.state.columns;
+                    const item = columns.splice(fromIndex -1, 1)[0];
+                    columns.splice(toIndex -1, 0, item);
+                    that.setState({
+                        columns
+                    });
+                }
             },
             nodeSelector: "th"
         };
