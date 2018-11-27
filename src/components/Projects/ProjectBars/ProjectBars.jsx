@@ -53,7 +53,6 @@ function showColumnSelectModal() {
       console.log('Cancelled');
     },
     iconType: 'setting'
-
   });
 }
 
@@ -69,15 +68,13 @@ function showFilterModal() {
       console.log('Cancelled');
     },
     iconType: 'filter'
-
   });
 }
 
 export class ObjectGroupBar extends Component {
   render() {
-    let selectedItemRenderer;
-    if (this.props.currentSelectedItem !== []) {
-      selectedItemRenderer = (
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
         <div style={{ flex: 1, justifyContent: 'flex-start' }}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <h2>{this.props.currentSelectedItem.title}</h2>
@@ -92,12 +89,6 @@ export class ObjectGroupBar extends Component {
             </div>
           </div>
         </div>
-      )
-    }
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
-        {selectedItemRenderer}
         <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
           <Tooltip title='Refresh' placement="bottom">
             <Button>
@@ -195,30 +186,46 @@ const objectActionMenu = (
 export class ObjectBar extends Component {
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor: '#f7f7f7' }}>
-        <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-          <Dropdown overlay={objectExportMenu}>
-            <a className="ant-dropdown-link">
-              Export <Icon type="down" />
-            </a>
-          </Dropdown>
+      <div>
+        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor: '#f7f7f7' }}>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
+            <Dropdown overlay={objectExportMenu}>
+              <a className="ant-dropdown-link">
+                Export <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
+            <Dropdown overlay={objectActionMenu}>
+              <a className="ant-dropdown-link">
+                Actions <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
+            <Dropdown overlay={objectAddMenu}>
+              <a className="ant-dropdown-link">
+                Add <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ cursor: 'pointer', alignItems: 'center', alignSelf: 'center', paddingRight: 10 }}>
+            <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
+          </div>
         </div>
-        <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-          <Dropdown overlay={objectActionMenu}>
-            <a className="ant-dropdown-link">
-              Actions <Icon type="down" />
-            </a>
-          </Dropdown>
-        </div>
-        <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-          <Dropdown overlay={objectAddMenu}>
-            <a className="ant-dropdown-link">
-              Add <Icon type="down" />
-            </a>
-          </Dropdown>
-        </div>
-        <div style={{ cursor: 'pointer', alignItems: 'center', alignSelf: 'center', paddingRight: 10 }}>
-          <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
+        <div style={{ flex: 1, justifyContent: 'flex-start', marginLeft: 20, marginRight: 20}}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <h2>{this.props.currentSelectedItem.title}</h2>
+            <div style={{paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', paddingBottom: 4 }}>
+              Version - V
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {'${projectID} - ${ItemType}'}
+            <div style={{ paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', }}>
+              Parent Node 1 > Parent Node 2
+            </div>
+          </div>
         </div>
       </div>
     )
