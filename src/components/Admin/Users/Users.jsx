@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import ReactDragListView from 'react-drag-listview';
-import { Table, Tag, Divider } from 'antd';
-import { Resizable } from 'react-resizable';
-import './Users.css'
+import React, { Component } from "react";
+import ReactDragListView from "react-drag-listview";
+import { Table, Tag, Divider } from "antd";
+import { Resizable } from "react-resizable";
+import data from "../../../data.js";
+import "./Users.css";
 
-const ResizeableTitle = (props) => {
+const ResizeableTitle = props => {
   const { onResize, width, ...restProps } = props;
 
   if (!width) {
@@ -23,71 +24,34 @@ class Users extends Component {
     super(props);
 
     this.state = {
-      data: [
-        {
-          fullName: 'Alex Tilot',
-          email: 'alextilot@gmail.com',
-          userName: 'Nezzely',
-          userGroups: ['Purple', 'Blue', 'Brown'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Jared Bloomfield',
-          email: 'Jaredbloomfield@gmail.com',
-          userName: 'Jrod744',
-          userGroups: ['Red', 'White', 'Yellow'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Owen Vey',
-          email: 'owenvey@gmail.com',
-          userName: 'Slopeur',
-          userGroups: ['Black', 'Pink', 'Silver'],
-          liscenceType: 'PO',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Josh Debaets',
-          email: 'joshdebaets@gmail.com',
-          userName: 'Debaets',
-          userGroups: ['Green', 'Orange', 'Cyan'],
-          liscenceType: 'Developer',
-          userStatus: 'DEACTIVE',
-          actions: ''
-        }
-      ],
+      userData: data.userDataJson,
       columns: [
         {
-          title: 'Full Name',
-          dataIndex: 'fullName',
-          key: 'fullname',
-          defaultSortOrder: 'ascend',
+          title: "Full Name",
+          dataIndex: "fullName",
+          key: "fullname",
+          defaultSortOrder: "ascend",
           width: 150,
           sorter: (a, b) => a.fullName.localeCompare(b.fullName)
         },
         {
-          title: 'User Name',
-          dataIndex: 'userName',
-          key: 'userName',
+          title: "User Name",
+          dataIndex: "userName",
+          key: "userName",
           width: 150,
           sorter: (a, b) => a.userName.localeCompare(b.userName)
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
+          title: "Email",
+          dataIndex: "email",
+          key: "email",
           width: 250,
           sorter: (a, b) => a.email.localeCompare(b.email)
         },
         {
-          title: 'User Groups',
-          dataIndex: 'userGroups',
-          key: 'userGroups',
+          title: "User Groups",
+          dataIndex: "userGroups",
+          key: "userGroups",
           width: 200,
           render: tags => (
             <span>
@@ -97,42 +61,21 @@ class Users extends Component {
                 </Tag>
               ))}
             </span>
-          ),
-
+          )
         },
         {
-          title: 'Liscence Type',
-          dataIndex: 'liscenceType',
-          key: 'liscenceType',
+          title: "Liscence Type",
+          dataIndex: "liscenceType",
+          key: "liscenceType",
           width: 150,
           sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
         },
         {
-          title: 'User Status',
-          dataIndex: 'userStatus',
-          key: 'userStatus',
+          title: "User Status",
+          dataIndex: "userStatus",
+          key: "userStatus",
           width: 100,
           sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
-        },
-        {
-          //Actions-> edit, password, subscriptions, invite deactivate
-          title: 'Actions',
-          key: 'actions',
-          width: 400,
-          render: () => (
-            <span>
-              <a href=''>Edit</a>
-              <Divider type='vertical' />
-              <a href=''>Password</a>
-              <Divider type='vertical' />
-              <a href=''>Subscriptions</a>
-              <Divider type='vertical' />
-              <a href=''>Invite</a>
-              <Divider type='vertical' />
-              <a href=''>Deactivate</a>
-            </span>
-          ),
-
         }
       ]
     };
@@ -140,8 +83,8 @@ class Users extends Component {
 
   components = {
     header: {
-      cell: ResizeableTitle,
-    },
+      cell: ResizeableTitle
+    }
   };
 
   handleResize = index => (e, { size }) => {
@@ -149,7 +92,7 @@ class Users extends Component {
       const nextColumns = [...columns];
       nextColumns[index] = {
         ...nextColumns[index],
-        width: size.width,
+        width: size.width
       };
       return { columns: nextColumns };
     });
@@ -160,10 +103,9 @@ class Users extends Component {
       ...col,
       onHeaderCell: column => ({
         width: column.width,
-        onResize: this.handleResize(index),
-      }),
+        onResize: this.handleResize(index)
+      })
     }));
-
 
     const that = this;
     this.dragProps = {
@@ -175,17 +117,18 @@ class Users extends Component {
           columns
         });
       },
-      nodeSelector: 'th'
+      nodeSelector: "th"
     };
 
     return (
-      <div className='userBoxList'>
+      <div className="userBoxList">
         <ReactDragListView.DragColumn {...this.dragProps}>
           <Table
             components={this.components}
             columns={columns}
             pagination={false}
-            dataSource={this.state.data}
+            dataSource={this.state.userData}
+            scroll={{ y: 500 }}
             bordered
           />
         </ReactDragListView.DragColumn>
@@ -193,7 +136,5 @@ class Users extends Component {
     );
   }
 }
-//Bar: ViewInactie users, AddUser, Search ->ClearFunction
-//Users: UserName,FullName, Email, LoginName, UserGroups, LiscenceType, UserStatus,
-//Actions-> edit, password, subscriptions, invite deactivate
+
 export default Users;
