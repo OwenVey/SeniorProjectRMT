@@ -142,11 +142,11 @@ class Users extends Component {
 
 
   }
-  setAlex = () => this.setState( { index: 0 },
+  setAlex = () => this.setState( { index: 0},
   this.showModal
   );
 
-  setJared = () => this.setState( { index: 1 },
+  setJared = () => this.setState( { index: 1},
   this.showModal
   );
   setOwen = () => this.setState( { index: 2},
@@ -162,7 +162,7 @@ class Users extends Component {
       this.setState({ loading: true })
       setTimeout(() => {
         this.setState({ loading: false, visible: false });
-      }, 3000);
+      }, 0);
     }
 
     handleCancel = () => { this.setState({ visible: false })
@@ -180,6 +180,14 @@ class Users extends Component {
     onChangePassword = (e) => {
       const {index} = this.state;
       this.state.data[index].password = e.target.value };
+    
+    activate = () => {
+      const {index} = this.state;
+      this.state.data[index].userStatus = 'ACTIVE'};
+
+    deactivate = () => {
+       const {index} = this.state;
+      this.state.data[index].userStatus = 'INACTIVE'};
       
 
   render() {
@@ -228,10 +236,8 @@ class Users extends Component {
           <p> Email: <Input placeholder= {this.state.data[index].email} onChange={this.onChangeEmail} /></p>
           <p> Username: <Input placeholder= {this.state.data[index].userName} onChange={this.onChangeUserName}/> </p>
           <p> Current Status: {this.state.data[index].userStatus} </p>
-          <Radio.Group  buttonStyle="solid" >
-          <Radio.Button  onChange={this.Ina} value = 'ACTIVE'  > ACTIVE </Radio.Button>
-          <Radio.Button  value = 'INACTIVE' > INACTIVE </Radio.Button>
-        </Radio.Group>
+            <Button key="activate" type="primary" onClick={this.activate}>ACTIVATE</Button>,
+            <Button key="deactivate" type="primary" onClick={this.deactivate}>DEACTIVATE</Button>,
         </Modal>
       </div>
       
