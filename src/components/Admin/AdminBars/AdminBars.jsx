@@ -18,6 +18,36 @@ function showAddItemTypeModal() {
           <Option value="Defect">Defect</Option>
         </Select>
       </p>
+      <p>Icon: <Select defaultValue= "File">
+          <Option value="File">
+            <Icon type="file" theme="filled" style={{color: "grey"}}/>
+          </Option>
+          <Option value="Folder">
+            <Icon type="folder" theme="filled" style={{color: "#fcd788"}}/>
+          </Option>
+          <Option value="Check">
+            <Icon type="check" style={{color: "green"}} />
+          </Option>    
+          <Option value="Image">
+            <Icon type="picture" theme="filled" style={{color: "#1890FF"}}/>
+          </Option>
+          <Option value="Flag">
+            <Icon type="flag" theme="filled" style={{color: "red"}}/>
+          </Option>
+          <Option value="Bulb">
+            <Icon type="bulb"theme="filled" style={{color: "#ffc64c"}}/>
+          </Option>
+          <Option value="Database">
+            <Icon type="database" theme="filled" />
+          </Option>
+          <Option value="Project">
+            <Icon type="layout" theme="filled"/>
+          </Option>
+          <Option value="Setting">
+            <Icon type="setting" theme="filled"/>
+          </Option>
+        </Select></p>
+        
     </div>,
     okText: 'Save',
     onOk() {
