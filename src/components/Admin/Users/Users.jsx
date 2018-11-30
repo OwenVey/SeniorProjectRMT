@@ -183,10 +183,12 @@ class Users extends Component {
     
     activate = () => {
       const {index} = this.state;
+      this.setState({ })
       this.state.data[index].userStatus = 'ACTIVE'};
 
     deactivate = () => {
        const {index} = this.state;
+       this.setState({})
       this.state.data[index].userStatus = 'INACTIVE'};
       
 
@@ -225,7 +227,7 @@ class Users extends Component {
           onCancel={this.handleCancel}
           userStatus = {userStatus}
           footer={[
-            <Button key="back" onClick={this.handleCancel}> Cancel</Button>,
+            //<Button key="back" onClick={this.handleCancel}> Cancel</Button>,
             <Button key="update" type="primary" loading={loading} onClick={this.handleOk}>
               Update
             </Button>,
