@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDragListView from 'react-drag-listview';
 import { Table, Tag, Divider } from 'antd';
+import {UserBar} from '../AdminBars/AdminBars.jsx'
 
 class Users extends Component {
   constructor(props) {
@@ -131,6 +132,7 @@ class Users extends Component {
 
     return (
       <div className='userBoxList'>
+        <UserBar/>
         <ReactDragListView.DragColumn {...this.dragProps}>
           <Table
             columns={this.state.columns}

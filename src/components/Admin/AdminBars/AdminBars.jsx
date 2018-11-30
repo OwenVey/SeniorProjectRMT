@@ -80,3 +80,65 @@ export class ItemTypeBar extends Component {
 
 // #endregion
 
+//#region UserBar
+const userGroups = [
+  <Option key='red'>red</Option>,
+  <Option key='blue'>blue</Option>,
+  <Option key='green'>green</Option>,
+];
+
+function showAddUserModal() {
+  Modal.confirm({
+    title: 'Add User',
+    content: <div>
+      {/* <p> field 1: <Input onChange={()=>{alert('hello')}}/> </p> */}
+      <p> First Name: <Input/> </p>
+      <p> Last Name: <Input/> </p>
+      <p> Username: <Input/> </p>
+      <p> Email: <Input/> </p>
+      <p> Liscense Type: <Select defaultValue= "Developer" style={{ width: '100%' }}>
+          <Option value="Developer">Developer</Option>
+          <Option value="Admin">Admin</Option>    
+          <Option value="ProductOwner">Product Owner</Option>
+          <Option value="ScrumMaster">Scrum Master</Option>
+          <Option value="Client">Client</Option>
+        </Select>
+      </p>
+      <p>Status: <Select defaultValue= "Active" style={{ width: '100%' }}>
+          <Option value="Active">Active</Option>
+          <Option value="Inactive">Inactive</Option>
+        </Select></p>
+      <p>User Groups: <Select mode= "multiple" placeholder="Please Select" style={{ width: '100%' }}>
+        {userGroups}
+      </Select></p>
+    </div>,
+    okText: 'Save',
+    onOk() {
+      console.log('Saved!');
+    },
+    onCancel() {
+      console.log('Cancelled');
+    },
+    iconType: 'user'
+  });
+}
+// onChangePassword = (e) => {
+//   // const {index} = this.state;
+//   // this.state.data[index].password = e.target.value 
+// };
+
+export class UserBar extends Component {
+  render() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
+          <Button onClick={showAddUserModal}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
+            Add User
+          </Button>
+      </div>
+    )
+  }
+}
+
+
+// #endregion
