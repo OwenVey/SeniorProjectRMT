@@ -48,37 +48,36 @@ class UserGroups extends Component {
           <Divider type='vertical' />
           <a href=''>Group</a>
           <Divider type='vertical' />
-          <Button onClick={() => {this.setState({editModalVisible: true})}} title="Edit">Edit</Button>
+          <Button onClick={() => {this.setState({editModalVisible: true})}} title="Edit">Edit
           <Modal
-              title="Edit User Group"
-              visible={this.state.editModalVisible}
-              onOk={() => {this.setState({editModalVisible:false})}}
-              onCancel={() => {this.setState({editModalVisible:false})}}
-              width="80%"
-              style={{
-                top: 20
-              }}
-              className="editGroupModal">
-              <Row className="inputRow">
+            title="Edit User Group"
+            visible={this.state.editModalVisible}
+            onOk={this.editGroup()}
+//            onOk={() => {this.setState({editModalVisible:false})}}
+            onCancel={() => {this.setState({editModalVisible:false})}}
+            width="80%"
+            style={{
+              top: 20
+            }}
+            className="editGroupModal">
+            <Row className="inputRow">
               <Form layout="vertical"/>
               <FormItem label="Title"/>
-                <Input
-                  title="editGroupTitle"
-                  ></Input></Row>
-              <Row className="inputRow">
-                <Input
-                  title="editGroupDescription"
-                  >                
-                </Input>
-              </Row>
+              <Input title="editGroupTitle"></Input></Row>
+            <Row className="inputRow">
+              <Input title="editGroupDescription"></Input></Row>
               <Divider/>
-            </Modal>
+            </Modal></Button>
           <Divider type='vertical' />
           <a href=''>Delete</a>
         </span>
       ),
     }],
   };
+
+  editGroup = () => {
+    // alert("Edit Modal Opened")
+  }
 
   addModal = () => {
     this.setState({
@@ -137,27 +136,48 @@ class UserGroups extends Component {
     this.setState({ targetKeys });
   }
 
+  addNewUserGroup = () => {
+    //var index = data.length.valueOf();
+    //This will be used to determine where to add the data. Currently its adding double.
+    data[1] = {
+      key: '3',
+      groupType: 'Test2',
+      groupName: 'Test2',
+      numUsers: '2',
+      currentProjects: ['developer'],
+    }
+    data[2] = {
+      key: '4',
+      groupType: 'Test3',
+      groupName: 'Test3',
+      numUsers: '3',
+      currentProjects: ['dev'],
+    }
+  }
+
   render() {
     const size = this.state.size;
-    
+  ///*onClick={() => {this.setState({addModalVisible: true})}}>Add New User Group</Button>*/
     return (
       <div>
         <Button value="default" onClick={() => {this.setState({addModalVisible: true})}}>Add New User Group</Button>
         <Modal
           title="Add User Group"
           visible={this.state.addModalVisible}
-          onOk={() => {this.setState({addModalVisible:false})}}
+          onOk={this.addNewUserGroup()}
           onCancel={() => {this.setState({addModalVisible:false})}}
           width="80%"
           style={{ top: 20 }}
           className="userGroupModal">
           <Row className="inputRow">
-          <Input  
-            title="userGroupTitle"
-            placeholder="New User Group Title"></Input></Row>
+          <Input
+            id="userGroupType"
+            title="userGroupType"
+            placeholder="New User Group Type"></Input></Row>
           <Row className="inputRow"><Input 
-            title="userGroupDescription"
-            placeholder="New User Group Description"></Input></Row>
+            id="userGroupName"
+            title="userGroupName"
+            placeholder="New User Group Name"></Input></Row>
           <Divider />
           <Transfer
             dataSource={this.state.mockData}
@@ -178,7 +198,7 @@ class UserGroups extends Component {
   }
 }
 
-const data = [{
+var data = [{
   key: '1',
   groupType: 'Development',
   groupName: 'Developer Team 2',
