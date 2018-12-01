@@ -122,6 +122,31 @@ export class UserBar extends Component {
       addUserModalVisible: false,
     });
   }
+
+  handleFirstNameChange = (newFirstName) => {
+    this.setState({ newFirstName });
+  }
+
+  handleLastNameChange = (newLastName) => {
+    this.setState({ newLastName });
+  }
+
+  handleUsernameChange = (newUsername) => {
+    this.setState({ newUsername });
+  }
+
+  handleEmailChange = (newEmail) => {
+    this.setState({ newEmail });
+  }
+
+  handlePasswordChange = (newPassword) => {
+    this.setState({ newPassword });
+  }
+
+  handlePasswordConfirmChange = (newPasswordConfirm) => {
+    this.setState({ newPasswordConfirm });
+  }
+
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
@@ -135,26 +160,30 @@ export class UserBar extends Component {
           onOk={this.handleOkUserModal}
           onCancel={this.handleCancelUserModal}
           okText="Save"
+          maskClosable={false}
+          bodyStyle={{ maxHeight: '60vh', overflow: 'scroll', paddingTop: 5 }}
         >
-          <p> First Name: <Input placeholder='First Name' /*value={this.state.newFirstName}*/ /> </p>
-          <p> Last Name: <Input placeholder='Last Name' /*value={this.state.newLastName}*/ /> </p>
-          <p> Username: <Input placeholder='Username' /*value={this.state.newUsername}*/ /> </p>
-          <p> Email: <Input placeholder='Email' /*value={this.state.newEmail}*/ /> </p>
-          <p> License Type: <Select defaultValue="Developer" style={{ width: '100%' }}>
+          <div> First Name: <Input placeholder='First Name' /*value={this.state.newFirstName}*/ /> </div>
+          <div> Last Name: <Input placeholder='Last Name' /*value={this.state.newLastName}*/ /> </div>
+          <div> Email: <Input placeholder='Email' /*value={this.state.newEmail}*/ /> </div>
+          <div> Username: <Input placeholder='Username' /*value={this.state.newUsername}*/ /> </div>
+          <div> Password: <Input placeholder='Password' /*value={this.state.newEmail}*/ /> </div>
+          <div> Confirm Password: <Input placeholder='Confirm Password' /*value={this.state.newEmail}*/ /> </div>
+          <div> License Type: <Select defaultValue="Developer" style={{ width: '100%' }}>
             <Option value="Developer">Developer</Option>
             <Option value="Admin">Admin</Option>
             <Option value="ProductOwner">Product Owner</Option>
             <Option value="ScrumMaster">Scrum Master</Option>
             <Option value="Client">Client</Option>
           </Select>
-          </p>
-          <p>Status: <Select defaultValue="Active" style={{ width: '100%' }}>
+          </div>
+          <div>Status: <Select defaultValue="Active" style={{ width: '100%' }}>
             <Option value="Active">Active</Option>
             <Option value="Inactive">Inactive</Option>
-          </Select></p>
-          <p>User Groups: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }}>
+          </Select></div>
+          <div>User Groups: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }}>
             {userGroups}
-          </Select></p>
+          </Select></div>
         </Modal>
       </div>
     )
