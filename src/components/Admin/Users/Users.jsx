@@ -32,6 +32,7 @@ class Users extends Component {
           key: "fullname",
           defaultSortOrder: "ascend",
           width: 150,
+          sorter: (a, b) => a.fullName.localeCompare(b.fullName),
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className="custom-filter-dropdown">
               <Input
@@ -64,6 +65,7 @@ class Users extends Component {
                 ))}
               </span>
             ) : text;
+
           },
 
         },
@@ -177,6 +179,5 @@ class Users extends Component {
     );
   }
 }
-//<ReactDragListView.DragColumn {...this.dragProps}>
-//</ReactDragListView.DragColumn>
+
 export default Users;
