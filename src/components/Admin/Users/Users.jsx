@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch } from 'antd';
+import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch, Divider } from 'antd';
+import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
 import "./Users.css";
@@ -18,6 +19,7 @@ const ResizeableTitle = props => {
   );
 };
 
+
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ class Users extends Component {
       searchText: '',
       userData: data.userDataJson.splice(0, 15),
       visible: false,
+
       columns: [
         {
           title: 'Full Name',
@@ -96,17 +99,37 @@ class Users extends Component {
           title: 'User Groups',
           dataIndex: 'userGroups',
           key: 'userGroups',
-          width: 200,
-          render: tags => (
-            <span>
-              {tags.map((tag, index) => (
-                <Tag key={index} color={tag}>
-                  {tag}
-                </Tag>
-              ))}
-            </span>
-          ),
+          render: userGroups => (
+            userGroups.map(userGroup => {
+              console.log(userGroup);
+              let color;
+              switch (userGroup) {
+                case 'Developer':
+                  color = 'geekblue';
+                  break;
+                case 'Admin':
+                  color = 'red';
+                  break;
+                case 'Product Owner':
+                  color = 'green';
+                  break;
+                case 'Scrum Master':
+                  color = 'purple';
+                  break;
+                case 'Customer':
+                  color = 'gold';
+                  break;
+                default:
+                  color = '';
+              }
+              return (
+                <Tag color={color}>
+                  {userGroup}
 
+                </Tag>
+              )
+            })
+          ),
         },
         {
           title: 'Liscence Type',
@@ -125,6 +148,10 @@ class Users extends Component {
       ]
     };
   }
+
+
+  addUser = (user) => {
+    this.setState({ data: [...this.state.data, user] })
 
   components = {
     header: {
@@ -173,6 +200,7 @@ class Users extends Component {
 
   handleCancel = () => {
     this.setState({ visible: false });
+
   }
 
   render() {
@@ -200,8 +228,11 @@ class Users extends Component {
     };
 
     return (
-      <React.Fragment>
-        <div className="userBoxList">
+
+      <div className='userBoxList'>
+        <UserBar addUser={this.addUser} />
+       
+
           <Table
             components={this.components}
             columns={columns}
