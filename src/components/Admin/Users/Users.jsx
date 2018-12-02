@@ -142,8 +142,15 @@ class Users extends Component {
           title: 'User Status',
           dataIndex: 'userStatus',
           key: 'userStatus',
+          align: 'center',
           width: 100,
-          sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
+          sorter: (a, b) => a.userStatus.localeCompare(b.userStatus),
+          render: (status) => {
+            if (status)
+              return <Tag color='blue' style={{ width: 57 }}>Active</Tag>
+            else
+              return <Tag color='red' style={{ width: 57 }}>Inactive</Tag>
+          }
         },
       ]
     };

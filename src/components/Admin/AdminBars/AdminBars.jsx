@@ -130,7 +130,7 @@ export class UserBar extends Component {
       fullName: `${newFirstName} ${newLastName}`,
       email: newEmail,
       userName: newUsername,
-      userStatus: newStatus,
+      userStatus: newStatus === 'ACTIVE' ? true : false,
       liscenceType: newLicenseType,
       userGroups: newUserGroups,
       actions: ''
