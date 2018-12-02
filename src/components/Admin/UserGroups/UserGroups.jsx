@@ -59,7 +59,7 @@ class UserGroups extends Component {
             visible={this.state.editModalVisible}
             onOk={() => {
               this.setState({ editModalVisible: false }),
-                this.editUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers, this.state.curProjects)
+                this.editUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers)
             }}
             onCancel={() => { this.setState({ editModalVisible: false }) }}
             width="80%"
@@ -67,8 +67,10 @@ class UserGroups extends Component {
             className="editGroupModal">
             <Row className="inputRow">
               <Input
-                title="editGroupTitle"
-                value={document.getElementById('userGroupType')}
+                id="editGroupType"
+                title="editGroupType"
+                value={this.state.groupType}
+                onChange={(e) => this.setState({ groupType: e.target.value })}
               >
               </Input>
             </Row>
@@ -78,12 +80,16 @@ class UserGroups extends Component {
                 id="editGroupName"
                 title="editGroupName"
                 value={this.state.groupName}
-                placeholder={this.state.groupName}
                 onChange={(e) => this.setState({ groupName: e.target.value })}>
               </Input>
             </Row>
             <Row className="inputRow">
-              <Input title="editGroupDescription">
+              <Form layout="vertical" />
+              <Input
+                id="editNumUsers"
+                title="editNumUsers"
+                value={this.state.numUsers}
+                onChange={(e) => this.setState({ numUsers: e.target.value })}>
               </Input>
             </Row>
             <Divider />
@@ -99,9 +105,9 @@ class UserGroups extends Component {
     groupName: "",
     data: [{
       key: '0',
-      groupType: 'Dev',
-      groupName: 'Developer Team 2',
-      numUsers: '17',
+      groupType: 'Development',
+      groupName: 'Ocean\'s 8',
+      numUsers: '8',
       currentProjects: ['nice', 'developer'],
     }],
     numUsers: "0",
@@ -169,7 +175,7 @@ class UserGroups extends Component {
     this.setState({ targetKeys });
   }
 
-  addNewUserGroup = (groupType, groupName, numUsers, curProjects) => {
+  addNewUserGroup = (groupType, groupName, numUsers) => {
     //var index = data.length.valueOf();
     //This will be used to determine where to add the data. Currently its adding double.
     var index = this.state.data.length
@@ -178,12 +184,17 @@ class UserGroups extends Component {
       groupType: groupType,
       groupName: groupName,
       numUsers: numUsers,
-      currentProjects: [curProjects],
     }]
   }
 
-  editUserGroup = () => {
-
+  editUserGroup = (groupType, groupName, numUsers) => {
+    var index = this.state.data.key
+    this.state.data[index] = {
+      key: index,
+      groupType: groupType,
+      groupName: groupName,
+      numUsers: numUsers,
+    }
   }
 
   render() {
@@ -199,7 +210,7 @@ class UserGroups extends Component {
             //value => console.log(value)}}
             //alert(value)
             this.setState({ addModalVisible: false }),
-              this.addNewUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers, this.state.curProjects)
+              this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers, this.state.curProjects)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
           width="80%"
