@@ -1,121 +1,222 @@
 import React, { Component } from 'react';
-import ReactDragListView from 'react-drag-listview';
-import { Table, Tag, Divider } from 'antd';
+import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch, Divider } from 'antd';
+import { UserBar } from '../AdminBars/AdminBars.jsx';
+import { Resizable } from "react-resizable";
+import data from "../../../data.js";
+import "./Users.css";
+
+const ResizeableTitle = props => {
+  const { onResize, width, ...restProps } = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable width={width} height={0} onResize={onResize}>
+      <th {...restProps} />
+    </Resizable>
+  );
+};
+
 
 class Users extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: [
-        {
-          fullName: 'Alex Tilot',
-          email: 'alextilot@gmail.com',
-          userName: 'Nezzely',
-          userGroups: ['Purple', 'Blue', 'Brown'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Jared Bloomfield',
-          email: 'Jaredbloomfield@gmail.com',
-          userName: 'Jrod744',
-          userGroups: ['Red', 'White', 'Yellow'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Owen Vey',
-          email: 'owenvey@gmail.com',
-          userName: 'Slopeur',
-          userGroups: ['Black', 'Pink', 'Silver'],
-          liscenceType: 'PO',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          fullName: 'Josh Debaets',
-          email: 'joshdebaets@gmail.com',
-          userName: 'Debaets',
-          userGroups: ['Green', 'Orange', 'Cyan'],
-          liscenceType: 'Developer',
-          userStatus: 'DEACTIVE',
-          actions: ''
-        }
-      ],
+      editUser: {
+        key: '',
+        fullName: '',
+        userName: '',
+        email: '',
+        userGroups: '',
+        liscenceType: '',
+        userStatus: ''
+      },
+      searchText: '',
+      userData: data.userDataJson.splice(0, 15),
+      visible: false,
+
       columns: [
         {
           title: 'Full Name',
           dataIndex: 'fullName',
           key: 'fullname',
           defaultSortOrder: 'ascend',
-          sorter: (a, b) => a.fullName.localeCompare(b.fullName)
+          width: 150,
+          sorter: (a, b) => a.fullName.localeCompare(b.fullName),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => this.searchInput = ele}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.fullName.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                  fragment.toLowerCase() === searchText.toLowerCase()
+                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+                ))}
+              </span>
+            ) : text;
+          },
         },
         {
           title: 'User Name',
           dataIndex: 'userName',
           key: 'userName',
-          sorter: (a, b) => a.userName.localeCompare(b.userName)
+          width: 150,
+          sorter: (a, b) => a.userName.localeCompare(b.userName),
+          render: (userName, user) => <a onClick={() => this.openEditModal(user)}>{userName}</a>,
         },
         {
           title: 'Email',
           dataIndex: 'email',
           key: 'email',
+          width: 250,
           sorter: (a, b) => a.email.localeCompare(b.email)
         },
         {
           title: 'User Groups',
           dataIndex: 'userGroups',
           key: 'userGroups',
-          render: tags => (
-            <span>
-              {tags.map(tag => (
-                <Tag color={tag} key={tag}>
-                  {tag}
-                </Tag>
-              ))}
-            </span>
-          ),
+          render: userGroups => (
+            userGroups.map(userGroup => {
+              console.log(userGroup);
+              let color;
+              switch (userGroup) {
+                case 'Developer':
+                  color = 'geekblue';
+                  break;
+                case 'Admin':
+                  color = 'red';
+                  break;
+                case 'Product Owner':
+                  color = 'green';
+                  break;
+                case 'Scrum Master':
+                  color = 'purple';
+                  break;
+                case 'Customer':
+                  color = 'gold';
+                  break;
+                default:
+                  color = '';
+              }
+              return (
+                <Tag color={color}>
+                  {userGroup}
 
+                </Tag>
+              )
+            })
+          ),
         },
         {
           title: 'Liscence Type',
           dataIndex: 'liscenceType',
           key: 'liscenceType',
+          width: 150,
           sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
         },
         {
           title: 'User Status',
           dataIndex: 'userStatus',
           key: 'userStatus',
-          sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
+          align: 'center',
+          width: 100,
+          sorter: (a, b) => a.userStatus.localeCompare(b.userStatus),
+          render: (status) => {
+            if (status)
+              return <Tag color='blue' style={{ width: 57 }}>Active</Tag>
+            else
+              return <Tag color='red' style={{ width: 57 }}>Inactive</Tag>
+          }
         },
-        {
-          //Actions-> edit, password, subscriptions, invite deactivate
-          title: 'Actions',
-          key: 'actions',
-          render: () => (
-            <span>
-              <a href=''>Edit</a>
-              <Divider type='vertical' />
-              <a href=''>Password</a>
-              <Divider type='vertical' />
-              <a href=''>Subscriptions</a>
-              <Divider type='vertical' />
-              <a href=''>Invite</a>
-              <Divider type='vertical' />
-              <a href=''>Deactivate</a>
-            </span>
-          ),
-
-        }
       ]
     };
   }
 
+
+  addUser = (user) => {
+    this.setState({ userData: [...this.state.userData, user] })
+  }
+
+  components = {
+    header: {
+      cell: ResizeableTitle
+    }
+  };
+
+  handleSearch = (selectedKeys, confirm) => () => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  }
+
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  }
+
+  handleResize = index => (e, { size }) => {
+    this.setState(({ columns }) => {
+      const nextColumns = [...columns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width
+      };
+      return { columns: nextColumns };
+    });
+  };
+
+  openEditModal = (user) => {
+    this.setState({
+      editUser: user,
+      visible: true,
+    });
+  }
+
+  handleSave = () => {
+    this.setState({
+      userData: this.state.userData.map(user => (user.key === this.state.editUser.key ? Object.assign(this.state.editUser) : user)),
+      visible: false
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
   render() {
+    const { visible, userStatus } = this.state;
+
+    const columns = this.state.columns.map((col, index) => ({
+      ...col,
+      onHeaderCell: column => ({
+        width: column.width,
+        onResize: this.handleResize(index)
+      })
+    }));
+
     const that = this;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
@@ -130,20 +231,43 @@ class Users extends Component {
     };
 
     return (
-      <div className='userBoxList'>
-        <ReactDragListView.DragColumn {...this.dragProps}>
-          <Table
-            columns={this.state.columns}
-            pagination={false}
-            dataSource={this.state.data}
-            bordered
-          />
-        </ReactDragListView.DragColumn>
-      </div>
+      <React.Fragment>
+
+        <UserBar addUser={this.addUser} />
+
+        <Table
+          components={this.components}
+          columns={columns}
+          pagination={false}
+          dataSource={this.state.userData}
+          scroll={{ y: 500 }}
+          bordered
+        />
+
+        <Modal
+          visible={visible}
+          onCancel={this.handleCancel}
+          userStatus={userStatus}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="update" type="primary" onClick={this.handleSave}>
+              Save
+            </Button>,
+          ]}
+        >
+          <p>Name: <Input value={this.state.editUser.fullName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, fullName: e.target.value } })} placeholder='Name' /> </p>
+          <p>Email: <Input value={this.state.editUser.email} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, email: e.target.value } })} placeholder='Email' /></p>
+          <p>Username: <Input value={this.state.editUser.userName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, userName: e.target.value } })} placeholder='Username' /> </p>
+          <div>User Status:</div>
+          <span>Inactive</span>
+          <Switch style={{ margin: '0px 10px' }} checked={this.state.editUser.userStatus} onChange={(value) => this.setState({ editUser: { ...this.state.editUser, userStatus: value } })} />
+          <span>Active</span>
+        </Modal>
+      </React.Fragment>
+
     );
   }
 }
-//Bar: ViewInactie users, AddUser, Search ->ClearFunction
-//Users: UserName,FullName, Email, LoginName, UserGroups, LiscenceType, UserStatus,
-//Actions-> edit, password, subscriptions, invite deactivate
+
+
 export default Users;

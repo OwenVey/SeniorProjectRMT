@@ -3,8 +3,8 @@ import { Divider, Table, Button, Modal, Input, Icon } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-
 const { Option } = Select;
+
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -222,6 +222,7 @@ class ItemTypes extends Component {
         </div>
       </div >
     );
+
   }
 }
 export default ItemTypes;
