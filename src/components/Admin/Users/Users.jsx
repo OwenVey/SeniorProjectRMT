@@ -1,98 +1,106 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import ReactDragListView from 'react-drag-listview';
-import { Table, Tag, Modal, Button, Radio, Input } from 'antd';
+import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch } from 'antd';
+import { Resizable } from "react-resizable";
+import data from "../../../data.js";
+import "./Users.css";
+
+const ResizeableTitle = props => {
+  const { onResize, width, ...restProps } = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable width={width} height={0} onResize={onResize}>
+      <th {...restProps} />
+    </Resizable>
+  );
+};
 
 class Users extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
-      password: '',
-      email: '',
-      username: '',
+      editUser: {
+        key: '',
+        fullName: '',
+        userName: '',
+        email: '',
+        userGroups: '',
+        liscenceType: '',
+        userStatus: ''
+      },
+      searchText: '',
+      userData: data.userDataJson.splice(0, 15),
       visible: false,
-      data: [
-        {
-          index: 0,
-          name: 'Alex Tilot',
-          fullName: 'Alex Tilot',
-          email: 'alextilot@gmail.com',
-          username: 'Nezzely',
-          password: '1234',
-          userGroups: ['Purple', 'Blue', 'Brown'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          index: 1,
-          name: 'Jared Bloomfield',
-          fullName: 'Jared Bloomfield',
-          email: 'Jaredbloomfield@gmail.com',
-          username: 'Jrod744',
-          password: '1234',
-          userGroups: ['Red', 'White', 'Yellow'],
-          liscenceType: 'Developer',
-          userStatus: 'ACTIVE',
-          actions: ''
-
-        },
-        {
-          index: 2,
-          name: 'Owen Vey',
-          fullName: 'Owen Vey',
-          email: 'owenvey@gmail.com',
-          username: 'Slopeur',
-          password: '1234',
-          userGroups: ['Black', 'Pink', 'Silver'],
-          liscenceType: 'PO',
-          userStatus: 'ACTIVE',
-          actions: ''
-        },
-        {
-          index: 3,
-          name: 'Josh Debaets',
-          fullName: 'Josh Debaets',
-          email: 'joshdebaets@gmail.com',
-          username: 'Debaets',
-          password: '1234',
-          userGroups: ['Green', 'Orange', 'Cyan'],
-          liscenceType: 'Developer',
-          userStatus: 'INACTIVE',
-          actions: ''
-        }
-      ],
       columns: [
         {
           title: 'Full Name',
           dataIndex: 'fullName',
           key: 'fullname',
           defaultSortOrder: 'ascend',
+          width: 150,
           sorter: (a, b) => a.fullName.localeCompare(b.fullName),
-          render: (fullName, user) => <a onClick={() => this.openEditModal(user)}>{fullName}</a>
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => this.searchInput = ele}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.fullName.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                  fragment.toLowerCase() === searchText.toLowerCase()
+                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+                ))}
+              </span>
+            ) : text;
+          },
         },
         {
           title: 'User Name',
-          dataIndex: 'username',
-          key: 'username',
-          sorter: (a, b) => a.username.localeCompare(b.username)
+          dataIndex: 'userName',
+          key: 'userName',
+          width: 150,
+          sorter: (a, b) => a.userName.localeCompare(b.userName),
+          render: (userName, user) => <a onClick={() => this.openEditModal(user)}>{userName}</a>,
         },
         {
           title: 'Email',
           dataIndex: 'email',
           key: 'email',
+          width: 250,
           sorter: (a, b) => a.email.localeCompare(b.email)
         },
         {
           title: 'User Groups',
           dataIndex: 'userGroups',
           key: 'userGroups',
+          width: 200,
           render: tags => (
             <span>
-              {tags.map(tag => (
-                <Tag color={tag} key={tag}>
+              {tags.map((tag, index) => (
+                <Tag key={index} color={tag}>
                   {tag}
                 </Tag>
               ))}
@@ -104,49 +112,62 @@ class Users extends Component {
           title: 'Liscence Type',
           dataIndex: 'liscenceType',
           key: 'liscenceType',
+          width: 150,
           sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
         },
         {
           title: 'User Status',
           dataIndex: 'userStatus',
           key: 'userStatus',
+          width: 100,
           sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
         },
-        // {
-        //   //Actions-> edit, password, subscriptions, invite deactivate
-        //   title: 'Actions' ,
-        //   key: 'actions',
-        //   render: () => (
-        //     <span>
-        //       <a href=''>Edit</a>
-        //       <Divider type='vertical' />
-        //       <a href=''>Password</a>
-        //       <Divider type='vertical' />
-        //       <a href=''>Subscriptions</a>
-        //       <Divider type='vertical' />
-        //       <a href=''>Invite</a>
-        //       <Divider type='vertical' />
-        //       <a href=''>Deactivate</a>
-        //     </span>
-        //   ),
-
-        // }
       ]
     };
   }
 
+  components = {
+    header: {
+      cell: ResizeableTitle
+    }
+  };
+
+  handleSearch = (selectedKeys, confirm) => () => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  }
+
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  }
+
+  handleResize = index => (e, { size }) => {
+    this.setState(({ columns }) => {
+      const nextColumns = [...columns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width
+      };
+      return { columns: nextColumns };
+    });
+  };
 
   openEditModal = (user) => {
     this.setState({
-      name: user.name,
-      password: user.password,
-      email: user.email,
-      username: user.username,
+      editUser: user,
       visible: true,
     });
   }
 
-  handleOk = () => {
+  handleSave = () => {
+    console.log(this.state.editUser)
+
+    this.setState({
+      userData: this.state.userData.map(user => (user.key === this.state.editUser.key ? Object.assign(this.state.editUser) : user))
+    })
+
+
     this.setState({ visible: false })
   }
 
@@ -154,24 +175,18 @@ class Users extends Component {
     this.setState({ visible: false });
   }
 
-  activate = () => {
-    const { index } = this.state;
-    this.setState({})
-    this.state.data[index].userStatus = 'ACTIVE'
-  };
-
-  deactivate = () => {
-    const { index } = this.state;
-    this.setState({})
-    this.state.data[index].userStatus = 'INACTIVE'
-  };
-
-
   render() {
-    const that = this;
-
     const { visible, userStatus } = this.state;
 
+    const columns = this.state.columns.map((col, index) => ({
+      ...col,
+      onHeaderCell: column => ({
+        width: column.width,
+        onResize: this.handleResize(index)
+      })
+    }));
+
+    const that = this;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
         const columns = that.state.columns;
@@ -185,15 +200,17 @@ class Users extends Component {
     };
 
     return (
-      <div className='userBoxList'>
-        <ReactDragListView.DragColumn {...this.dragProps}>
+      <React.Fragment>
+        <div className="userBoxList">
           <Table
-            columns={this.state.columns}
+            components={this.components}
+            columns={columns}
             pagination={false}
-            dataSource={this.state.data}
+            dataSource={this.state.userData}
+            scroll={{ y: 500 }}
             bordered
           />
-        </ReactDragListView.DragColumn>
+        </div>
 
         <Modal
           visible={visible}
@@ -201,22 +218,22 @@ class Users extends Component {
           userStatus={userStatus}
           footer={[
             <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-            <Button key="update" type="primary" onClick={this.handleOk}>
-              Update
+            <Button key="update" type="primary" onClick={this.handleSave}>
+              Save
             </Button>,
           ]}
         >
-          <p>Name: <Input value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder='Name' /> </p>
-          <p>Password: <Input value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} placeholder='Password' /> </p>
-          <p>Email: <Input value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} placeholder='Email' /></p>
-          <p>Username: <Input value={this.state.username} onChange={(e) => this.setState({ username: e.target.value })} placeholder='Username' /> </p>
-          <p>Current Status: {
+          <p>Name: <Input value={this.state.editUser.fullName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, fullName: e.target.value } })} placeholder='Name' /> </p>
+          <p>Email: <Input value={this.state.editUser.email} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, email: e.target.value } })} placeholder='Email' /></p>
+          <p>Username: <Input value={this.state.editUser.userName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, userName: e.target.value } })} placeholder='Username' /> </p>
+          <div>User Status:</div>
+          <span>Inactive</span>
+          <Switch style={{ margin: '0px 10px' }} checked={this.state.editUser.userStatus} onChange={(value) => this.setState({ editUser: { ...this.state.editUser, userStatus: value } })} />
+          <span>Active</span>
 
-          } </p>
-          <Button key="activate" type="primary" onClick={this.activate}>ACTIVATE</Button>,
-            <Button key="deactivate" type="primary" onClick={this.deactivate}>DEACTIVATE</Button>,
+
         </Modal>
-      </div>
+      </React.Fragment>
 
     );
   }
