@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import TreeView from '../TreeView/TreeView.jsx';
+import {ObjectGroupBar, ObjectBar} from '../ProjectBars/ProjectBars.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import ObjectView from '../ObjectView/ObjectView.jsx';
 import SplitPane from 'react-split-pane';
@@ -76,7 +77,12 @@ export default class ProjectPage extends Component {
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
 
             <TreeView handleItemSelect={this.onTreeItemSelect} />
-
+            
+            <div className='projectcontent'>
+              <ObjectGroupBar currentSelectedItem={this.state.currentSelectedItem}/>
+              <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
+            </div>
+            
             <Tabs
               hideAdd
               onChange={this.onChange}
@@ -86,7 +92,7 @@ export default class ProjectPage extends Component {
             >
               {this.state.tabs.map(tab => <TabPane tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
             </Tabs>
-
+            
           </SplitPane>
         </div>
       </div >
