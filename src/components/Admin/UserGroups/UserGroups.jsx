@@ -80,6 +80,7 @@ class UserGroups extends Component {
       numUsers: '17',
       currentProjects: ['nice', 'developer'],
     }],
+    numUsers: "0",
   };
 
   /*() => {this.setState({editModalVisible:true})}*/
@@ -141,14 +142,14 @@ class UserGroups extends Component {
     this.setState({ targetKeys });
   }
 
-  addNewUserGroup = (groupType, groupName) => {
+  addNewUserGroup = (groupType, groupName, numUsers) => {
     //var index = data.length.valueOf();
     //This will be used to determine where to add the data. Currently its adding double.
     this.state.data = [...this.state.data, {
       key: '1',
       groupType: groupType,
       groupName: groupName,
-      numUsers: 'Default',
+      numUsers: numUsers,
       currentProjects: ['Development'],
     }]
   }
@@ -166,7 +167,7 @@ class UserGroups extends Component {
             //value => console.log(value)}}
             //alert(value)
             this.setState({ addModalVisible: false }),
-              this.addNewUserGroup(this.state.groupName, this.state.groupType)
+              this.addNewUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
           width="80%"
@@ -179,7 +180,6 @@ class UserGroups extends Component {
               placeholder="New User Group Type"
               onChange={(e) => this.setState({ groupType: e.target.value })}
               value={this.state.groupType}>
-
             </Input>
           </Row>
           <Row className="inputRow">
@@ -191,6 +191,16 @@ class UserGroups extends Component {
               value={this.state.groupName}>
             </Input>
           </Row>
+          <Row className="inputRow">
+            <Input
+              id="groupNumUsers"
+              title="groupNumUsers"
+              placeholder="0"
+              onChange={(e) => this.setState({ numUsers: e.target.value })}
+              value={this.state.numUsers}>
+            </Input>
+          </Row>
+
           <Divider />
           <Transfer
             dataSource={this.state.mockData}
