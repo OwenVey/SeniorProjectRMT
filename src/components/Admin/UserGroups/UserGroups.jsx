@@ -46,30 +46,50 @@ class UserGroups extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <Button>Members</Button>
+          <a>Members</a>
           <Divider type='vertical' />
-          <Button>Group</Button>
+          <a>Group</a>
           <Divider type='vertical' />
-          <Button onClick={() => { this.setState({ editModalVisible: true }) }} title="Edit">Edit</Button>
+          <Button
+            value="default" onClick={() => this.setState({ editModalVisible: true })}>Edit
+          </Button>
           <Modal
             title="Edit User Group"
             id='editGroupModal'
-            // onOk={this.editGroup()}
-            onOk={() => { this.setState({ editModalVisible: false }) }}
+            visible={this.state.editModalVisible}
+            onOk={() => {
+              this.setState({ editModalVisible: false }),
+                this.editUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers, this.state.curProjects)
+            }}
             onCancel={() => { this.setState({ editModalVisible: false }) }}
             width="80%"
             style={{ top: 20 }}
             className="editGroupModal">
             <Row className="inputRow">
+              <Input
+                id="editGroupName"
+                title="editGroupName"
+                value={this.state.groupName}
+                placeholder={this.state.groupName}
+                onChange={(e) => this.setState({ groupName: e.target.value })}>
+              </Input>
+            </Row>
+            <Row className="inputRow">
               <Form layout="vertical" />
               <FormItem label="Title" />
-              <Input title="editGroupTitle"></Input></Row>
+              <Input title="editGroupTitle">
+              </Input>
+            </Row>
             <Row className="inputRow">
-              <Input title="editGroupDescription"></Input></Row>
+              <Input title="editGroupDescription">
+              </Input>
+            </Row>
             <Divider />
           </Modal>
           <Divider type='vertical' />
-          <Button>Delete</Button>
+          <Button>
+            Delete
+          </Button>
         </span>
       ),
     }],
@@ -157,6 +177,10 @@ class UserGroups extends Component {
       numUsers: numUsers,
       currentProjects: [curProjects],
     }]
+  }
+
+  editUserGroup = () => {
+
   }
 
   render() {
