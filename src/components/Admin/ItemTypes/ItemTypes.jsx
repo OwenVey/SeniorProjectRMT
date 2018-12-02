@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import ReactDragListView from "react-drag-listview";
-import { Divider, Table, Button, Modal, Input } from "antd";
+import { Divider, Table, Button, Modal, Input, Icon } from "antd";
+// import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 
 function onChange(pagination, sorter) {
   console.log("params", pagination, sorter);
 }
+
+// const { Option, OptGroup } = Select;
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -124,7 +127,8 @@ class ItemTypes extends Component {
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
     let newItemType = {
-      icon: <FontAwesomeIcon icon='archive' />,
+      // icon: <FontAwesomeIcon icon='archive' />,
+      icon,
       display,
       plural,
       key,
@@ -145,6 +149,10 @@ class ItemTypes extends Component {
     });
   }
 
+  handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+
   render() {
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
@@ -160,10 +168,10 @@ class ItemTypes extends Component {
 
     return (
       <div>
-        <Button class="button" type="primary" onClick={this.showModal}>
-          Add item type
+        <Button id="button" onClick={this.showModal}>
+          <Icon type="plus-circle"></Icon>Add item type
         </Button>
-        <Modal title="Add item types"
+        <Modal title={<div><Icon type='bars'></Icon>Add Item Types</div>}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           footer={[
@@ -172,12 +180,31 @@ class ItemTypes extends Component {
               Add
             </Button>,
           ]}>
-          <Input placeholder='Display' value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} />
-          <Input value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
-          <Input value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />
-          <Input.TextArea value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />
-          <Input value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />
-          <Input value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
+          {/* <Select
+            style={{ width: 200 }}
+            onChange={this.handleChange}
+            placeholder='Select icon'
+          >
+            <OptGroup label="Manager">
+              <Option value={<Icon type="archive"></Icon>}>Jack</Option>
+              <Option value="lucy">Lucy</Option>
+            </OptGroup>
+            <OptGroup label="Engineer">
+              <Option value="Yiminghe">yiminghe</Option>
+            </OptGroup>
+          </Select> */}
+          <div className="labels">Display:</div>
+          <Input className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
+          <div className="labels">Plural:</div>
+          <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
+          <div className="labels">Key:</div>
+          <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />
+          <div className="labels">Description:</div>
+          <Input.TextArea className="inputFields" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />
+          <div className="labels">Id:</div>
+          <Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />
+          <div className="labels" >System:</div>
+          <Input className="inputFields" value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
         </Modal>
         <div style={{ margin: 20 }}>
           <h2>Item Types</h2>
@@ -192,7 +219,7 @@ class ItemTypes extends Component {
             />
           </ReactDragListView.DragColumn>
         </div>
-      </div>
+      </div >
     );
   }
 }
