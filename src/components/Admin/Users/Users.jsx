@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactDragListView from 'react-drag-listview';
 import { Table, Tag, Modal, Button, Radio, Input } from 'antd';
 
@@ -8,24 +8,18 @@ class Users extends Component {
     super(props);
 
     this.state = {
-      loading: false, 
+      name: '',
+      password: '',
+      email: '',
+      username: '',
       visible: false,
-      index: 0,
-      name: "FirstName LastName",
-      title:  'FirstName LastName - username',
-      email: 'email@email.com',
-      userName: 'username',
-      userGroups: 'UserGroups',
-      liscenceType: 'liscenceType',
-      userStatus: 'ACTIVE',
-
       data: [
         {
           index: 0,
           name: 'Alex Tilot',
-          fullName:  <Link to='/admin' onClick={this.setAlex}> Alex Tilot </Link>,
+          fullName: 'Alex Tilot',
           email: 'alextilot@gmail.com',
-          userName: 'Nezzely',
+          username: 'Nezzely',
           password: '1234',
           userGroups: ['Purple', 'Blue', 'Brown'],
           liscenceType: 'Developer',
@@ -35,23 +29,22 @@ class Users extends Component {
         {
           index: 1,
           name: 'Jared Bloomfield',
-          fullName: <Link to='/admin'onClick={this.setJared}> Jared Bloomfield </Link>,
-          
+          fullName: 'Jared Bloomfield',
           email: 'Jaredbloomfield@gmail.com',
-          userName: 'Jrod744',
+          username: 'Jrod744',
           password: '1234',
           userGroups: ['Red', 'White', 'Yellow'],
           liscenceType: 'Developer',
           userStatus: 'ACTIVE',
           actions: ''
-          
+
         },
         {
           index: 2,
           name: 'Owen Vey',
-          fullName: <Link to='/admin'onClick={this.setOwen}> Owen Vey </Link>,
+          fullName: 'Owen Vey',
           email: 'owenvey@gmail.com',
-          userName: 'Slopeur',
+          username: 'Slopeur',
           password: '1234',
           userGroups: ['Black', 'Pink', 'Silver'],
           liscenceType: 'PO',
@@ -61,9 +54,9 @@ class Users extends Component {
         {
           index: 3,
           name: 'Josh Debaets',
-          fullName: <Link to='/admin'onClick={this.setJosh}> Josh Debaets </Link>,
+          fullName: 'Josh Debaets',
           email: 'joshdebaets@gmail.com',
-          userName: 'Debaets',
+          username: 'Debaets',
           password: '1234',
           userGroups: ['Green', 'Orange', 'Cyan'],
           liscenceType: 'Developer',
@@ -77,13 +70,14 @@ class Users extends Component {
           dataIndex: 'fullName',
           key: 'fullname',
           defaultSortOrder: 'ascend',
-          sorter: (a, b) => a.name.localeCompare(b.fullName)
+          sorter: (a, b) => a.fullName.localeCompare(b.fullName),
+          render: (fullName, user) => <a onClick={() => this.openEditModal(user)}>{fullName}</a>
         },
         {
           title: 'User Name',
-          dataIndex: 'userName',
-          key: 'userName',
-          sorter: (a, b) => a.userName.localeCompare(b.userName)
+          dataIndex: 'username',
+          key: 'username',
+          sorter: (a, b) => a.username.localeCompare(b.username)
         },
         {
           title: 'Email',
@@ -139,63 +133,44 @@ class Users extends Component {
         // }
       ]
     };
-
-
   }
-  setAlex = () => this.setState( { index: 0},
-  this.showModal
-  );
 
-  setJared = () => this.setState( { index: 1},
-  this.showModal
-  );
-  setOwen = () => this.setState( { index: 2},
-  this.showModal
-  );
-  setJosh = () => this.setState( { index: 3},
-  this.showModal
-  );
 
-  showModal = () => this.setState( { visible: true });
+  openEditModal = (user) => {
+    this.setState({
+      name: user.name,
+      password: user.password,
+      email: user.email,
+      username: user.username,
+      visible: true,
+    });
+  }
 
-    handleOk = () => {
-      this.setState({ loading: true })
-      setTimeout(() => {
-        this.setState({ loading: false, visible: false });
-      }, 0);
-    }
+  handleOk = () => {
+    this.setState({ visible: false })
+  }
 
-    handleCancel = () => { this.setState({ visible: false })
-    ;}
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
 
-    onChangeUserName = (e) => {
-      const {index} = this.state;
-      this.state.data[index].userName = e.target.value };
-    onChangeName = (e) => {
-      const {index} = this.state;
-      this.state.data[index].name = e.target.value };
-    onChangeEmail = (e) => {
-      const {index} = this.state;
-      this.state.data[index].email = e.target.value };
-    onChangePassword = (e) => {
-      const {index} = this.state;
-      this.state.data[index].password = e.target.value };
-    
-    activate = () => {
-      const {index} = this.state;
-      this.setState({ })
-      this.state.data[index].userStatus = 'ACTIVE'};
+  activate = () => {
+    const { index } = this.state;
+    this.setState({})
+    this.state.data[index].userStatus = 'ACTIVE'
+  };
 
-    deactivate = () => {
-       const {index} = this.state;
-       this.setState({})
-      this.state.data[index].userStatus = 'INACTIVE'};
-      
+  deactivate = () => {
+    const { index } = this.state;
+    this.setState({})
+    this.state.data[index].userStatus = 'INACTIVE'
+  };
+
 
   render() {
     const that = this;
 
-    const { visible, loading, userStatus, index} = this.state;
+    const { visible, userStatus } = this.state;
 
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
@@ -222,31 +197,29 @@ class Users extends Component {
 
         <Modal
           visible={visible}
-          title= {this.state.data[index].username}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
-          userStatus = {userStatus}
+          userStatus={userStatus}
           footer={[
-            //<Button key="back" onClick={this.handleCancel}> Cancel</Button>,
-            <Button key="update" type="primary" loading={loading} onClick={this.handleOk}>
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="update" type="primary" onClick={this.handleOk}>
               Update
             </Button>,
           ]}
         >
-          <p> Name: <Input  deafultValue = "" placeholder= {this.state.data[index].name} onChange={this.onChangeName} /> </p>
-          <p> Password: <Input placeholder= {this.state.data[index].password} onChange={this.onChangePassword}/> </p>
-          <p> Email: <Input placeholder= {this.state.data[index].email} onChange={this.onChangeEmail} /></p>
-          <p> Username: <Input placeholder= {this.state.data[index].userName} onChange={this.onChangeUserName}/> </p>
-          <p> Current Status: {this.state.data[index].userStatus} </p>
-            <Button key="activate" type="primary" onClick={this.activate}>ACTIVATE</Button>,
+          <p>Name: <Input value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder='Name' /> </p>
+          <p>Password: <Input value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} placeholder='Password' /> </p>
+          <p>Email: <Input value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} placeholder='Email' /></p>
+          <p>Username: <Input value={this.state.username} onChange={(e) => this.setState({ username: e.target.value })} placeholder='Username' /> </p>
+          <p>Current Status: {
+
+          } </p>
+          <Button key="activate" type="primary" onClick={this.activate}>ACTIVATE</Button>,
             <Button key="deactivate" type="primary" onClick={this.deactivate}>DEACTIVATE</Button>,
         </Modal>
       </div>
-      
+
     );
   }
 }
-//Bar: ViewInactive users, AddUser, Search ->ClearFunction
-//Users: UserName,FullName, Email, LoginName, UserGroups, LiscenceType, UserStatus,
-//Actions-> edit, password, subscriptions, invite deactivate
+
 export default Users;
