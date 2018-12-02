@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDragListView from "react-drag-listview";
-import { Table, Tag, Divider } from "antd";
+import { Table, Tag, Input, Button, Icon, Divider } from "antd";
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
 import "./Users.css";
@@ -24,6 +24,7 @@ class Users extends Component {
     super(props);
 
     this.state = {
+      searchText: '',
       userData: data.userDataJson,
       columns: [
         {
@@ -32,7 +33,40 @@ class Users extends Component {
           key: "fullname",
           defaultSortOrder: "ascend",
           width: 150,
-          sorter: (a, b) => a.fullName.localeCompare(b.fullName)
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => this.searchInput = ele}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.fullName.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                  fragment.toLowerCase() === searchText.toLowerCase()
+                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+                ))}
+              </span>
+            ) : text;
+          },
+          
         },
         {
           title: "User Name",
@@ -87,6 +121,16 @@ class Users extends Component {
     }
   };
 
+  handleSearch = (selectedKeys, confirm) => () => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  }
+
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  }
+
   handleResize = index => (e, { size }) => {
     this.setState(({ columns }) => {
       const nextColumns = [...columns];
@@ -120,21 +164,20 @@ class Users extends Component {
       nodeSelector: "th"
     };
 
-    return (
+    return (      
       <div className="userBoxList">
-        <ReactDragListView.DragColumn {...this.dragProps}>
           <Table
             components={this.components}
             columns={columns}
             pagination={false}
             dataSource={this.state.userData}
-            scroll={{ y: 500 }}
+            scroll={{y: 500}}
             bordered
           />
-        </ReactDragListView.DragColumn>
       </div>
     );
   }
 }
-
+//<ReactDragListView.DragColumn {...this.dragProps}>
+//</ReactDragListView.DragColumn>
 export default Users;
