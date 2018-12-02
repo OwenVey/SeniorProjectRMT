@@ -151,7 +151,8 @@ class Users extends Component {
 
 
   addUser = (user) => {
-    this.setState({ data: [...this.state.data, user] })
+    this.setState({ userData: [...this.state.userData, user] })
+  }
 
   components = {
     header: {
@@ -188,19 +189,14 @@ class Users extends Component {
   }
 
   handleSave = () => {
-    console.log(this.state.editUser)
-
     this.setState({
-      userData: this.state.userData.map(user => (user.key === this.state.editUser.key ? Object.assign(this.state.editUser) : user))
+      userData: this.state.userData.map(user => (user.key === this.state.editUser.key ? Object.assign(this.state.editUser) : user)),
+      visible: false
     })
-
-
-    this.setState({ visible: false })
   }
 
   handleCancel = () => {
     this.setState({ visible: false });
-
   }
 
   render() {
@@ -228,20 +224,18 @@ class Users extends Component {
     };
 
     return (
+      <React.Fragment>
 
-      <div className='userBoxList'>
         <UserBar addUser={this.addUser} />
-       
 
-          <Table
-            components={this.components}
-            columns={columns}
-            pagination={false}
-            dataSource={this.state.userData}
-            scroll={{ y: 500 }}
-            bordered
-          />
-        </div>
+        <Table
+          components={this.components}
+          columns={columns}
+          pagination={false}
+          dataSource={this.state.userData}
+          scroll={{ y: 500 }}
+          bordered
+        />
 
         <Modal
           visible={visible}
@@ -261,13 +255,12 @@ class Users extends Component {
           <span>Inactive</span>
           <Switch style={{ margin: '0px 10px' }} checked={this.state.editUser.userStatus} onChange={(value) => this.setState({ editUser: { ...this.state.editUser, userStatus: value } })} />
           <span>Active</span>
-
-
         </Modal>
       </React.Fragment>
 
     );
   }
 }
+
 
 export default Users;
