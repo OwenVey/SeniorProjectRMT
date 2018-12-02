@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import ReactDragListView from "react-drag-listview";
 import { Divider, Table, Button, Modal, Input, Icon } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-
-function onChange(pagination, sorter) {
-  console.log("params", pagination, sorter);
-}
 
 const { Option } = Select;
 
@@ -59,7 +54,7 @@ class ItemTypes extends Component {
           title: "Item",
           dataIndex: "icon",
           defaultSortOrder: "descend",
-
+          align: 'center',
         },
         {
           title: "Display",
@@ -96,17 +91,17 @@ class ItemTypes extends Component {
           dataIndex: "action",
           render: () => (
             <span>
-              <a href='' Popup>Edit</a>
+              <a href='' >Edit</a>
               <Divider type='vertical' />
               <a href=''>Fields</a>
               <Divider type='vertical' />
               <a href=''>Views</a>
               <Divider type='vertical' />
               <a href=''>Delete</a>
-            </span>)
+            </span>
+          )
         }
-      ]
-      ,
+      ],
       visible: false,
       icon: <div></div>,
       display: "",
@@ -127,7 +122,6 @@ class ItemTypes extends Component {
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
     let newItemType = {
-      // icon: <FontAwesomeIcon icon='archive' />,
       icon,
       display,
       plural,
@@ -144,15 +138,12 @@ class ItemTypes extends Component {
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   handleChange = (value) => {
-    console.log(`selected ${value}`);
-    console.log(value);
     this.setState({
       icon: value.label,
     });
@@ -173,10 +164,14 @@ class ItemTypes extends Component {
 
     return (
       <div>
-        <Button id="button" onClick={this.showModal}>
-          <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>Add item type
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ marginBottom: 0 }}>Item Types</h2>
+          <Button id="button" onClick={this.showModal} style={{ marginRight: 0 }}>
+            <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>Add item type
         </Button>
-        <Modal title={<div><Icon type='bars'></Icon> Add Item Types</div>}
+        </div>
+        <Modal
+          title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           footer={
@@ -212,18 +207,18 @@ class ItemTypes extends Component {
           <div className="labels" >System</div>
           <Input className="inputFields" value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
         </Modal>
+
         <div style={{ margin: 20 }}>
-          <h2 className='heading'>Item Types</h2>
-          <ReactDragListView.DragColumn {...this.dragProps}>
-            <Table
-              columns={this.state.columns}
-              pagination={false}
-              dataSource={this.state.itemTypes}
-              onChange={onChange}
-              icon={<FontAwesomeIcon />}
-              bordered
-            />
-          </ReactDragListView.DragColumn>
+
+
+          <Table
+            columns={this.state.columns}
+            pagination={false}
+            dataSource={this.state.itemTypes}
+            icon={<FontAwesomeIcon />}
+            bordered
+          />
+
         </div>
       </div >
     );
