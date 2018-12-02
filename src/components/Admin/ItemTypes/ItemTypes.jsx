@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDragListView from "react-drag-listview";
 import { Divider, Table, Button, Modal, Input, Icon } from "antd";
-// import { Select } from "antd";
+import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 
@@ -9,7 +9,7 @@ function onChange(pagination, sorter) {
   console.log("params", pagination, sorter);
 }
 
-// const { Option, OptGroup } = Select;
+const { Option, OptGroup } = Select;
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -108,7 +108,7 @@ class ItemTypes extends Component {
       ]
       ,
       visible: false,
-      icon: "",
+      icon: <div></div>,
       display: "",
       plural: "",
       key: "",
@@ -127,8 +127,8 @@ class ItemTypes extends Component {
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
     let newItemType = {
-      icon: <FontAwesomeIcon icon='archive' />,
-      // icon,
+      // icon: <FontAwesomeIcon icon='archive' />,
+      icon,
       display,
       plural,
       key,
@@ -149,8 +149,12 @@ class ItemTypes extends Component {
     });
   }
 
-  handleChange(value) {
+  handleChange = (value) => {
     console.log(`selected ${value}`);
+    console.log(value);
+    this.setState({
+      icon: value.label,
+    });
   }
 
   render() {
@@ -171,7 +175,7 @@ class ItemTypes extends Component {
         <Button id="button" onClick={this.showModal}>
           <Icon type="plus-circle"></Icon>Add item type
         </Button>
-        <Modal title={<div><Icon type='bars'></Icon>Add Item Types</div>}
+        <Modal title={<div><Icon type='bars'></Icon> Add Item Types</div>}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           footer={[
@@ -180,19 +184,17 @@ class ItemTypes extends Component {
               Add
             </Button>,
           ]}>
-          {/* <Select
+          <Select
+            labelInValue
             style={{ width: 200 }}
             onChange={this.handleChange}
             placeholder='Select icon'
           >
-            <OptGroup label="Manager">
-              <Option value={<Icon type="archive"></Icon>}>Jack</Option>
-              <Option value="lucy">Lucy</Option>
-            </OptGroup>
-            <OptGroup label="Engineer">
-              <Option value="Yiminghe">yiminghe</Option>
-            </OptGroup>
-          </Select> */}
+            <Option value='archive'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
+            <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
+            <Option value="Yiminghe"><Icon><FontAwesomeIcon icon="file" /></Icon></Option>
+          </Select>
+
           <div className="labels">Display:</div>
           <Input className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
           <div className="labels">Plural:</div>
@@ -223,5 +225,4 @@ class ItemTypes extends Component {
     );
   }
 }
-
 export default ItemTypes;
