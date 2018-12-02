@@ -5,7 +5,7 @@ import TreeView from '../TreeView/TreeView.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import ObjectView from '../ObjectView/ObjectView.jsx';
 import SplitPane from 'react-split-pane';
-import { Tabs, Dropdown } from 'antd';
+import { Tabs } from 'antd';
 import './ProjectPage.css';
 const TabPane = Tabs.TabPane;
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import ReactDragListView from "react-drag-listview";
-import { Table, Tag, Input, Button, Icon, Divider } from "antd";
+import { Table, Tag, Input, Button, Icon } from "antd";
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
 import "./Users.css";
@@ -66,7 +65,7 @@ class Users extends Component {
               </span>
             ) : text;
           },
-          
+
         },
         {
           title: "User Name",
@@ -164,16 +163,16 @@ class Users extends Component {
       nodeSelector: "th"
     };
 
-    return (      
+    return (
       <div className="userBoxList">
-          <Table
-            components={this.components}
-            columns={columns}
-            pagination={false}
-            dataSource={this.state.userData}
-            scroll={{y: 500}}
-            bordered
-          />
+        <Table
+          components={this.components}
+          columns={columns}
+          pagination={false}
+          dataSource={this.state.userData}
+          scroll={{ y: 500 }}
+          bordered
+        />
       </div>
     );
   }
