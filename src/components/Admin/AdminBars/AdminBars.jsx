@@ -84,9 +84,9 @@ export class ItemTypeBar extends Component {
 
 //#region UserBar
 const userGroups = [
-  <Option key='red'>red</Option>,
-  <Option key='blue'>blue</Option>,
-  <Option key='green'>green</Option>,
+  <Option key='Red'>Red</Option>,
+  <Option key='Blue'>Blue</Option>,
+  <Option key='Green'>Green</Option>,
 ];
 
 export class UserBar extends Component {
@@ -101,19 +101,46 @@ export class UserBar extends Component {
       newEmail: '',
       newPassword: '',
       newPasswordConfirm: '',
+      newStatus: 'ACTIVE',
+      newLicenseType: 'Developer',
+      newUserGroups: [],
     }
   }
   showAddUserModal = () => {
     this.setState({
       addUserModalVisible: true,
+      newFirstName: '',
+      newLastName: '',
+      newUsername: '',
+      newEmail: '',
+      newPassword: '',
+      newPasswordConfirm: '',
+      newStatus: 'ACTIVE',
+      newLicenseType: 'Developer',
+      newUserGroups: [],
     });
   }
 
   handleOkUserModal = (e) => {
     console.log(e);
+
+    const { newFirstName, newLastName, newUsername, newEmail, newPassword, newPasswordConfirm, newStatus, newLicenseType, newUserGroups } = this.state;
+
+    let user = {
+      fullName: `${newFirstName} ${newLastName}`,
+      email: newEmail,
+      userName: newUsername,
+      userStatus: newStatus,
+      liscenceType: newLicenseType,
+      userGroups: newUserGroups,
+      actions: ''
+    }
+
     this.setState({
       addUserModalVisible: false,
     });
+
+    this.props.addUser(user);
   }
 
   handleCancelUserModal = (e) => {
@@ -123,33 +150,45 @@ export class UserBar extends Component {
     });
   }
 
-  handleFirstNameChange = (newFirstName) => {
-    this.setState({ newFirstName });
+  handleFirstNameChange = (e) => {
+    this.setState({ newFirstName: e.target.value });
   }
 
-  handleLastNameChange = (newLastName) => {
-    this.setState({ newLastName });
+  handleLastNameChange = (e) => {
+    this.setState({ newLastName: e.target.value });
   }
 
-  handleUsernameChange = (newUsername) => {
-    this.setState({ newUsername });
+  handleUsernameChange = (e) => {
+    this.setState({ newUsername: e.target.value });
   }
 
-  handleEmailChange = (newEmail) => {
-    this.setState({ newEmail });
+  handleEmailChange = (e) => {
+    this.setState({ newEmail: e.target.value });
   }
 
-  handlePasswordChange = (newPassword) => {
-    this.setState({ newPassword });
+  handlePasswordChange = (e) => {
+    this.setState({ newPassword: e.target.value });
   }
 
-  handlePasswordConfirmChange = (newPasswordConfirm) => {
-    this.setState({ newPasswordConfirm });
+  handlePasswordConfirmChange = (e) => {
+    this.setState({ newPasswordConfirm: e.target.value });
+  }
+
+  handleStatusChange = (e) => {
+    this.setState({ newStatus: e.label })
+  }
+
+  handleLicenseTypeChange = (e) => {
+    this.setState({ newLicenseType: e.label })
+  }
+
+  handleUserGroupChange = (e) => {
+    this.setState({ newLicenseType: e })
   }
 
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
         <Button onClick={this.showAddUserModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
           Add User
@@ -159,17 +198,17 @@ export class UserBar extends Component {
           visible={this.state.addUserModalVisible}
           onOk={this.handleOkUserModal}
           onCancel={this.handleCancelUserModal}
-          okText="Save"
+          okText="Add"
           maskClosable={false}
-          bodyStyle={{ maxHeight: '60vh', overflow: 'scroll', paddingTop: 5 }}
+          bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
         >
-          <div> First Name: <Input placeholder='First Name' /*value={this.state.newFirstName}*/ /> </div>
-          <div> Last Name: <Input placeholder='Last Name' /*value={this.state.newLastName}*/ /> </div>
-          <div> Email: <Input placeholder='Email' /*value={this.state.newEmail}*/ /> </div>
-          <div> Username: <Input placeholder='Username' /*value={this.state.newUsername}*/ /> </div>
-          <div> Password: <Input placeholder='Password' /*value={this.state.newEmail}*/ /> </div>
-          <div> Confirm Password: <Input placeholder='Confirm Password' /*value={this.state.newEmail}*/ /> </div>
-          <div> License Type: <Select defaultValue="Developer" style={{ width: '100%' }}>
+          <div> First Name: <Input placeholder='First Name' value={this.state.newFirstName} onChange={this.handleFirstNameChange} /> </div>
+          <div> Last Name: <Input placeholder='Last Name' value={this.state.newLastName} onChange={this.handleLastNameChange} /> </div>
+          <div> Email: <Input placeholder='Email' value={this.state.newEmail} onChange={this.handleEmailChange} /> </div>
+          <div> Username: <Input placeholder='Username' value={this.state.newUsername} onChange={this.handleUsernameChange} /> </div>
+          <div> Password: <Input placeholder='Password' type="password" value={this.state.newPassword} onChange={this.handlePasswordChange} /> </div>
+          <div> Confirm Password: <Input placeholder='Confirm Password' type="password" value={this.state.newPasswordConfirm} onChange={this.handlePasswordConfirmChange} /> </div>
+          <div> License Type: <Select labelInValue defaultValue={{ key: "Developer" }} style={{ width: '100%' }} onChange={this.handleLicenseTypeChange}>
             <Option value="Developer">Developer</Option>
             <Option value="Admin">Admin</Option>
             <Option value="ProductOwner">Product Owner</Option>
@@ -177,11 +216,11 @@ export class UserBar extends Component {
             <Option value="Client">Client</Option>
           </Select>
           </div>
-          <div>Status: <Select defaultValue="Active" style={{ width: '100%' }}>
-            <Option value="Active">Active</Option>
-            <Option value="Inactive">Inactive</Option>
+          <div>Status: <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
+            <Option value="Active">ACTIVE</Option>
+            <Option value="Inactive">INACTIVE</Option>
           </Select></div>
-          <div>User Groups: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }}>
+          <div>User Groups: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>
             {userGroups}
           </Select></div>
         </Modal>
@@ -189,6 +228,4 @@ export class UserBar extends Component {
     )
   }
 }
-
-
 // #endregion
