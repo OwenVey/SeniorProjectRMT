@@ -44,40 +44,45 @@ class UserGroups extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href=''>Members {record.name}</a>
+          <Button>Members</Button>
           <Divider type='vertical' />
-          <a href=''>Group</a>
+          <Button>Group</Button>
           <Divider type='vertical' />
-          <Button onClick={() => {this.setState({editModalVisible: true})}} title="Edit">Edit
+          <Button onClick={() => { this.setState({ editModalVisible: true }) }} title="Edit">Edit</Button>
           <Modal
             title="Edit User Group"
-            visible={this.state.editModalVisible}
-            onOk={this.editGroup()}
-//            onOk={() => {this.setState({editModalVisible:false})}}
-            onCancel={() => {this.setState({editModalVisible:false})}}
+            id='editGroupModal'
+            // onOk={this.editGroup()}
+            onOk={() => { this.setState({ editModalVisible: false }) }}
+            onCancel={() => { this.setState({ editModalVisible: false }) }}
             width="80%"
-            style={{
-              top: 20
-            }}
+            style={{ top: 20 }}
             className="editGroupModal">
             <Row className="inputRow">
-              <Form layout="vertical"/>
-              <FormItem label="Title"/>
+              <Form layout="vertical" />
+              <FormItem label="Title" />
               <Input title="editGroupTitle"></Input></Row>
             <Row className="inputRow">
               <Input title="editGroupDescription"></Input></Row>
-              <Divider/>
-            </Modal></Button>
+            <Divider />
+          </Modal>
           <Divider type='vertical' />
-          <a href=''>Delete</a>
+          <Button>Delete</Button>
         </span>
       ),
     }],
+    groupType: "",
+    groupName: "",
+    data: [{
+      key: '1',
+      groupType: 'Development',
+      groupName: 'Developer Team 2',
+      numUsers: '17',
+      currentProjects: ['nice', 'developer'],
+    }],
   };
 
-  editGroup = () => {
-    // alert("Edit Modal Opened")
-  }
+  /*() => {this.setState({editModalVisible:true})}*/
 
   addModal = () => {
     this.setState({
@@ -136,48 +141,56 @@ class UserGroups extends Component {
     this.setState({ targetKeys });
   }
 
-  addNewUserGroup = () => {
+  addNewUserGroup = (groupType, groupName) => {
     //var index = data.length.valueOf();
     //This will be used to determine where to add the data. Currently its adding double.
-    data[1] = {
-      key: '3',
-      groupType: 'Test2',
-      groupName: 'Test2',
-      numUsers: '2',
-      currentProjects: ['developer'],
-    }
-    data[2] = {
-      key: '4',
-      groupType: 'Test3',
-      groupName: 'Test3',
-      numUsers: '3',
-      currentProjects: ['dev'],
-    }
+    this.state.data = [...this.state.data, {
+      key: '1',
+      groupType: groupType,
+      groupName: groupName,
+      numUsers: 'Default',
+      currentProjects: ['Development'],
+    }]
   }
 
   render() {
     const size = this.state.size;
-  ///*onClick={() => {this.setState({addModalVisible: true})}}>Add New User Group</Button>*/
+    ///*onClick={() => {this.setState({addModalVisible: true})}}>Add New User Group</Button>*/
     return (
       <div>
-        <Button value="default" onClick={() => {this.setState({addModalVisible: true})}}>Add New User Group</Button>
+        <Button value="default" onClick={() => this.setState({ addModalVisible: true })}>Add New User Group</Button>
         <Modal
           title="Add User Group"
           visible={this.state.addModalVisible}
-          onOk={this.addNewUserGroup()}
-          onCancel={() => {this.setState({addModalVisible:false})}}
+          onOk={() => {
+            //value => console.log(value)}}
+            //alert(value)
+            this.setState({ addModalVisible: false }),
+              this.addNewUserGroup(this.state.groupName, this.state.groupType)
+          }}
+          onCancel={() => { this.setState({ addModalVisible: false }) }}
           width="80%"
           style={{ top: 20 }}
           className="userGroupModal">
           <Row className="inputRow">
-          <Input
-            id="userGroupType"
-            title="userGroupType"
-            placeholder="New User Group Type"></Input></Row>
-          <Row className="inputRow"><Input 
-            id="userGroupName"
-            title="userGroupName"
-            placeholder="New User Group Name"></Input></Row>
+            <Input
+              id="userGroupType"
+              title="userGroupType"
+              placeholder="New User Group Type"
+              onChange={(e) => this.setState({ groupType: e.target.value })}
+              value={this.state.groupType}>
+
+            </Input>
+          </Row>
+          <Row className="inputRow">
+            <Input
+              id="userGroupName"
+              title="userGroupName"
+              placeholder="New User Group Name"
+              onChange={(e) => this.setState({ groupName: e.target.value })}
+              value={this.state.groupName}>
+            </Input>
+          </Row>
           <Divider />
           <Transfer
             dataSource={this.state.mockData}
@@ -192,18 +205,10 @@ class UserGroups extends Component {
             }}
             className="transferUsers"
           /></Modal>
-      <Table bordered dataSource={data} columns={this.state.columns} />
+        <Table bordered dataSource={this.state.data} columns={this.state.columns} />
       </div>
     )
   }
 }
-
-var data = [{
-  key: '1',
-  groupType: 'Development',
-  groupName: 'Developer Team 2',
-  numUsers: '17',
-  currentProjects: ['nice', 'developer'],
-}];
 
 export default UserGroups;
