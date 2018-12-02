@@ -81,6 +81,15 @@ class Users extends Component {
                 case 'Admin':
                   color = 'red';
                   break;
+                case 'Product Owner':
+                  color = 'green';
+                  break;
+                case 'Scrum Master':
+                  color = 'purple';
+                  break;
+                case 'Customer':
+                  color = 'gold';
+                  break;
                 default:
                   color = '';
               }
@@ -91,7 +100,6 @@ class Users extends Component {
               )
             })
           ),
-
         },
         {
           title: 'Liscence Type',

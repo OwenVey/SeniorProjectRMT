@@ -136,11 +136,14 @@ export class UserBar extends Component {
       actions: ''
     }
 
-    this.setState({
-      addUserModalVisible: false,
-    });
+    if (this.validateForm()) {
+      this.setState({ addUserModalVisible: false, });
+      this.props.addUser(user);
+    }
+    else {
+      alert('Form is invalid!');
+    }
 
-    this.props.addUser(user);
   }
 
   handleCancelUserModal = (e) => {
@@ -182,8 +185,12 @@ export class UserBar extends Component {
   }
 
   handleUserGroupChange = (e) => {
-    console.log(e)
-    this.setState({ newUserGroups: e })
+    this.setState({ newUserGroups: e.map((userGroup) => userGroup.label) })
+  }
+
+  validateForm = () => {
+    return (this.state.newFirstName.length > 0 && this.state.newLastName.length > 0 && this.state.newUsername.length > 0
+      && this.state.newEmail.length > 0 && this.state.newPassword.length > 0 && this.state.newPassword == this.state.newPasswordConfirm)
   }
 
   render() {
@@ -213,14 +220,14 @@ export class UserBar extends Component {
             <Option value="Admin">Admin</Option>
             <Option value="ProductOwner">Product Owner</Option>
             <Option value="ScrumMaster">Scrum Master</Option>
-            <Option value="Client">Client</Option>
+            <Option value="Customer">Customer</Option>
           </Select>
           </div>
           <div>Status: <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
             <Option value="Active">ACTIVE</Option>
             <Option value="Inactive">INACTIVE</Option>
           </Select></div>
-          <div>User Groups: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>
+          <div>User Groups: <Select labelInValue mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>
             {userGroups}
           </Select></div>
         </Modal>
