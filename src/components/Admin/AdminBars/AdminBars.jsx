@@ -84,9 +84,11 @@ export class ItemTypeBar extends Component {
 
 //#region UserBar
 const userGroups = [
-  <Option key='Red'>Red</Option>,
-  <Option key='Blue'>Blue</Option>,
-  <Option key='Green'>Green</Option>,
+  <Option key='Developer'>Developer</Option>,
+  <Option key='Admin'>Admin</Option>,
+  <Option key='PO'>Product Owner</Option>,
+  <Option key='SM'>Scrum Master</Option>,
+  <Option key='Customer'>Customer</Option>,
 ];
 
 export class UserBar extends Component {
@@ -122,8 +124,6 @@ export class UserBar extends Component {
   }
 
   handleOkUserModal = (e) => {
-    console.log(e);
-
     const { newFirstName, newLastName, newUsername, newEmail, newPassword, newPasswordConfirm, newStatus, newLicenseType, newUserGroups } = this.state;
 
     let user = {
@@ -144,7 +144,6 @@ export class UserBar extends Component {
   }
 
   handleCancelUserModal = (e) => {
-    console.log(e);
     this.setState({
       addUserModalVisible: false,
     });
@@ -183,7 +182,8 @@ export class UserBar extends Component {
   }
 
   handleUserGroupChange = (e) => {
-    this.setState({ newLicenseType: e })
+    console.log(e)
+    this.setState({ newUserGroups: e })
   }
 
   render() {

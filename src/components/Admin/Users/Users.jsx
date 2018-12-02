@@ -22,7 +22,7 @@ class Users extends Component {
           fullName: 'Jared Bloomfield',
           email: 'Jaredbloomfield@gmail.com',
           userName: 'Jrod744',
-          userGroups: ['Red', 'White', 'Yellow'],
+          userGroups: ['Red', 'Developer', 'Yellow'],
           liscenceType: 'Developer',
           userStatus: 'ACTIVE',
           actions: ''
@@ -31,7 +31,7 @@ class Users extends Component {
           fullName: 'Owen Vey',
           email: 'owenvey@gmail.com',
           userName: 'Slopeur',
-          userGroups: ['Black', 'Pink', 'Silver'],
+          userGroups: ['Black', 'Pink', 'Admin'],
           liscenceType: 'PO',
           userStatus: 'ACTIVE',
           actions: ''
@@ -70,14 +70,26 @@ class Users extends Component {
           title: 'User Groups',
           dataIndex: 'userGroups',
           key: 'userGroups',
-          render: tags => (
-            <span>
-              {tags.map(tag => (
-                <Tag color={tag} key={tag}>
-                  {tag}
+          render: userGroups => (
+            userGroups.map(userGroup => {
+              console.log(userGroup);
+              let color;
+              switch (userGroup) {
+                case 'Developer':
+                  color = 'geekblue';
+                  break;
+                case 'Admin':
+                  color = 'red';
+                  break;
+                default:
+                  color = '';
+              }
+              return (
+                <Tag color={color}>
+                  {userGroup}
                 </Tag>
-              ))}
-            </span>
+              )
+            })
           ),
 
         },
