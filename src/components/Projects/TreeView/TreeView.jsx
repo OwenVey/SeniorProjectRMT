@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Tree, Input } from 'antd';
+import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import data from '../../../data.js';
 
 const TreeNode = Tree.TreeNode;
+
+
 
 const dataList = [];
 const generateList = (data) => {
@@ -40,11 +42,11 @@ class TreeView extends Component {
 
     this.state = {
       treeData: data.projectTreeData,
-      expandedKeys: [],
+      expandedKeys: ['0-0'],
       searchValue: '',
       autoExpandParent: true,
+      rightClickedTreeNode: null,
     };
-
     generateList(this.state.treeData);
   }
 
@@ -134,7 +136,76 @@ class TreeView extends Component {
     });
   }
 
+  onSelect = (e) => {
+    const selectedKey = e[0];
+    let selectedNode = this.getSelectedNode(selectedKey, this.state.treeData);
+    this.props.handleItemSelect(selectedNode);
+  }
+
+  getSelectedNode = (key, tree) => {
+    let selectedNode;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.key === key) {
+        selectedNode = node;
+      } else if (node.children && this.getSelectedNode(key, node.children)) {
+        selectedNode = this.getSelectedNode(key, node.children);
+      }
+    }
+    return selectedNode;
+  }
+
+  onRightClickTreeNode = ({ node }) => {
+    this.setState({ rightClickedTreeNode: node.props.eventKey })
+  }
+
+  showDeleteModal = (e) => {
+    e.domEvent.stopPropagation();
+    let selectedNode = this.getSelectedNode(this.state.rightClickedTreeNode, this.state.treeData);
+
+    Modal.confirm({
+      title: 'Delete',
+      content: selectedNode.children ? 'Are you sure delete the item "' + selectedNode.title + '" and its children?' : 'Are you sure you want to delete the item "' + selectedNode.title + '"?',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: () => { this.deleteNodeFromTree(this.state.rightClickedTreeNode) },
+    });
+  }
+
+  deleteNodeFromTree = (keyToDelete) => {
+    let newTreeData = this.recursivelyDeleteNode(this.state.treeData, keyToDelete);
+    this.setState({ treeData: newTreeData });
+  }
+
+  recursivelyDeleteNode = (tree, key) => {
+    for (var i = 0; i < tree.length; ++i) {
+      var node = tree[i];
+      if (node.key === key) {
+        tree.splice(i, 1);
+        return tree;
+      }
+      if (node.children) {
+        if (this.recursivelyDeleteNode(node.children, key)) {
+          if (node.children.length === 0) {
+            delete node.children;
+          }
+          return tree;
+        }
+      }
+    }
+  }
+
   render() {
+
+    const rightClickTreeNodeMenu = (
+      <Menu>
+        <Menu.Item key="1">Open</Menu.Item>
+        <Menu.Item key="2">Edit</Menu.Item>
+        <Menu.Item key="3" onClick={this.showDeleteModal}>Delete</Menu.Item>
+      </Menu>
+    );
+
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
 
     const loop = data => data.map((item) => {
@@ -143,12 +214,14 @@ class TreeView extends Component {
       const middleStr = item.title.substr(index, searchValue.length);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = index > -1 ? (
-        <span>
-          {beforeStr}
-          <span style={{ color: '#f50' }}>{middleStr}</span>
-          {afterStr}
-        </span>
-      ) : <span>{item.title}</span>;
+        <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}>
+          <span style={{ padding: '0px 30px', margin: '0px -30px' }}>
+            {beforeStr}
+            <span style={{ color: '#f50' }}>{middleStr}</span>
+            {afterStr}
+          </span>
+        </Dropdown>
+      ) : <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}><span style={{ padding: '0px 30px', margin: '0px -30px' }}>{item.title}</span></Dropdown>;
       if (item.children) {
         return (
           <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />}>
@@ -165,14 +238,18 @@ class TreeView extends Component {
         <Tree.DirectoryTree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}
+          defaultSelectedKeys={['0-0']}
           autoExpandParent={autoExpandParent}
           draggable
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
           showIcon
+          onSelect={this.onSelect}
+          onRightClick={this.onRightClickTreeNode}
         >
           {loop(this.state.treeData)}
         </Tree.DirectoryTree>
+
       </div>
     );
   }
