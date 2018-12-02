@@ -127,8 +127,8 @@ class ItemTypes extends Component {
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
     let newItemType = {
-      // icon: <FontAwesomeIcon icon='archive' />,
-      icon,
+      icon: <FontAwesomeIcon icon='archive' />,
+      // icon,
       display,
       plural,
       key,
