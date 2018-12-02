@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Table, Tag, Input, Button, Icon } from "antd";
+import React, { Component } from 'react';
+import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch } from 'antd';
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
 import "./Users.css";
@@ -23,14 +23,24 @@ class Users extends Component {
     super(props);
 
     this.state = {
+      editUser: {
+        key: '',
+        fullName: '',
+        userName: '',
+        email: '',
+        userGroups: '',
+        liscenceType: '',
+        userStatus: ''
+      },
       searchText: '',
-      userData: data.userDataJson,
+      userData: data.userDataJson.splice(0, 15),
+      visible: false,
       columns: [
         {
-          title: "Full Name",
-          dataIndex: "fullName",
-          key: "fullname",
-          defaultSortOrder: "ascend",
+          title: 'Full Name',
+          dataIndex: 'fullName',
+          key: 'fullname',
+          defaultSortOrder: 'ascend',
           width: 150,
           sorter: (a, b) => a.fullName.localeCompare(b.fullName),
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -65,53 +75,53 @@ class Users extends Component {
                 ))}
               </span>
             ) : text;
-
           },
-
         },
         {
-          title: "User Name",
-          dataIndex: "userName",
-          key: "userName",
+          title: 'User Name',
+          dataIndex: 'userName',
+          key: 'userName',
           width: 150,
-          sorter: (a, b) => a.userName.localeCompare(b.userName)
+          sorter: (a, b) => a.userName.localeCompare(b.userName),
+          render: (userName, user) => <a onClick={() => this.openEditModal(user)}>{userName}</a>,
         },
         {
-          title: "Email",
-          dataIndex: "email",
-          key: "email",
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email',
           width: 250,
           sorter: (a, b) => a.email.localeCompare(b.email)
         },
         {
-          title: "User Groups",
-          dataIndex: "userGroups",
-          key: "userGroups",
+          title: 'User Groups',
+          dataIndex: 'userGroups',
+          key: 'userGroups',
           width: 200,
           render: tags => (
             <span>
-              {tags.map(tag => (
-                <Tag color={tag} key={tag}>
+              {tags.map((tag, index) => (
+                <Tag key={index} color={tag}>
                   {tag}
                 </Tag>
               ))}
             </span>
-          )
+          ),
+
         },
         {
-          title: "Liscence Type",
-          dataIndex: "liscenceType",
-          key: "liscenceType",
+          title: 'Liscence Type',
+          dataIndex: 'liscenceType',
+          key: 'liscenceType',
           width: 150,
           sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
         },
         {
-          title: "User Status",
-          dataIndex: "userStatus",
-          key: "userStatus",
+          title: 'User Status',
+          dataIndex: 'userStatus',
+          key: 'userStatus',
           width: 100,
           sorter: (a, b) => a.userStatus.localeCompare(b.userStatus)
-        }
+        },
       ]
     };
   }
@@ -143,7 +153,31 @@ class Users extends Component {
     });
   };
 
+  openEditModal = (user) => {
+    this.setState({
+      editUser: user,
+      visible: true,
+    });
+  }
+
+  handleSave = () => {
+    console.log(this.state.editUser)
+
+    this.setState({
+      userData: this.state.userData.map(user => (user.key === this.state.editUser.key ? Object.assign(this.state.editUser) : user))
+    })
+
+
+    this.setState({ visible: false })
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
   render() {
+    const { visible, userStatus } = this.state;
+
     const columns = this.state.columns.map((col, index) => ({
       ...col,
       onHeaderCell: column => ({
@@ -162,20 +196,45 @@ class Users extends Component {
           columns
         });
       },
-      nodeSelector: "th"
+      nodeSelector: 'th'
     };
 
     return (
-      <div className="userBoxList">
-        <Table
-          components={this.components}
-          columns={columns}
-          pagination={false}
-          dataSource={this.state.userData}
-          scroll={{ y: 500 }}
-          bordered
-        />
-      </div>
+      <React.Fragment>
+        <div className="userBoxList">
+          <Table
+            components={this.components}
+            columns={columns}
+            pagination={false}
+            dataSource={this.state.userData}
+            scroll={{ y: 500 }}
+            bordered
+          />
+        </div>
+
+        <Modal
+          visible={visible}
+          onCancel={this.handleCancel}
+          userStatus={userStatus}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="update" type="primary" onClick={this.handleSave}>
+              Save
+            </Button>,
+          ]}
+        >
+          <p>Name: <Input value={this.state.editUser.fullName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, fullName: e.target.value } })} placeholder='Name' /> </p>
+          <p>Email: <Input value={this.state.editUser.email} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, email: e.target.value } })} placeholder='Email' /></p>
+          <p>Username: <Input value={this.state.editUser.userName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, userName: e.target.value } })} placeholder='Username' /> </p>
+          <div>User Status:</div>
+          <span>Inactive</span>
+          <Switch style={{ margin: '0px 10px' }} checked={this.state.editUser.userStatus} onChange={(value) => this.setState({ editUser: { ...this.state.editUser, userStatus: value } })} />
+          <span>Active</span>
+
+
+        </Modal>
+      </React.Fragment>
+
     );
   }
 }
