@@ -30,16 +30,18 @@ class UserGroups extends Component {
       dataIndex: 'numUsers',
       /*key: 'groupName',*/
       render: text => <a href=''>{text}</a>,
-    }, {
-      title: 'Current Projects',
-      dataIndex: 'currentProjects',
-      render: tags => (
-        <span>
-          {tags.map(tag => <Tag color='blue' key={tag}>{tag}</Tag>)}
-        </span>
-        /*key: 'tags',*/
-      ),
-    }, {
+    },
+    //{
+    //   title: 'Current Projects',
+    //   dataIndex: 'currentProjects',
+    //   render: tags => (
+    //     <span>
+    //       {tags.map(tag => <Tag color='blue' key={tag}>{tag}</Tag>)}
+    //     </span>
+    //     /*key: 'tags',*/
+    //   ),
+    // }, 
+    {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
@@ -203,30 +205,12 @@ class UserGroups extends Component {
               value={this.state.numUsers}>
             </Input>
           </Row>
-          <Row className="inputRow">
-            <p
-              id="curProjects"
-              title="curProjects"
-              placeholder="Dev Project 1"
-              onChange={(e) => this.setState({ curProjects: e.target.value })}
-              value={this.state.curProjects}
-            >Current Projects: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }}>
-                {curProjects}
-              </Select>
-            </p>
-          </Row>
           <Divider />
         </Modal>
         <Table bordered dataSource={this.state.data} columns={this.state.columns} />
-      </div>
+      </div >
     )
   }
 }
-
-const curProjects = [
-  <Option key='Dev Team 1'>Dev Team 1</Option>,
-  <Option key='Dev Team 2'>Dev Team 2</Option>,
-  <Option key='Dev Team 3'>Dev Team 3</Option>,
-];
 
 export default UserGroups;
