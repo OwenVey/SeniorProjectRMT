@@ -1,0 +1,30 @@
+#button {
+  float: right;
+  clear: both;
+  margin-right: 20px;
+  /* color: blue; */
+  /* background-color: rgb(236, 235, 235); */
+}
+
+.modal {
+  width: 100em;
+  height: 500em;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  z-index: 10;
+  border: 10em 10em 10em 10em;
+}
+
+.inputFields {
+  margin-bottom: 10px !important;
+}
+
+.labels {
+  color: black;
+}
+
+.titleIcon {
+  margin-right: 10px;
+}
