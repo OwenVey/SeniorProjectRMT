@@ -81,7 +81,10 @@ class UserGroups extends Component {
       currentProjects: ['nice', 'developer'],
     }],
     numUsers: "0",
+    curProjects: "",
   };
+
+
 
   /*() => {this.setState({editModalVisible:true})}*/
 
@@ -142,7 +145,7 @@ class UserGroups extends Component {
     this.setState({ targetKeys });
   }
 
-  addNewUserGroup = (groupType, groupName, numUsers) => {
+  addNewUserGroup = (groupType, groupName, numUsers, curProjects) => {
     //var index = data.length.valueOf();
     //This will be used to determine where to add the data. Currently its adding double.
     this.state.data = [...this.state.data, {
@@ -150,7 +153,7 @@ class UserGroups extends Component {
       groupType: groupType,
       groupName: groupName,
       numUsers: numUsers,
-      currentProjects: ['Development'],
+      currentProjects: [curProjects],
     }]
   }
 
@@ -167,7 +170,7 @@ class UserGroups extends Component {
             //value => console.log(value)}}
             //alert(value)
             this.setState({ addModalVisible: false }),
-              this.addNewUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers)
+              this.addNewUserGroup(this.state.groupName, this.state.groupType, this.state.numUsers, this.state.curProjects)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
           width="80%"
@@ -201,33 +204,29 @@ class UserGroups extends Component {
             </Input>
           </Row>
           <Row className="inputRow">
-            <Input
+            <p
               id="curProjects"
               title="curProjects"
-              placeholder="Development Project 1"
+              placeholder="Dev Project 1"
               onChange={(e) => this.setState({ curProjects: e.target.value })}
-              value={this.state.curProjects}>
-            </Input>
+              value={this.state.curProjects}
+            >Current Projects: <Select mode="multiple" placeholder="Please Select" style={{ width: '100%' }}>
+                {curProjects}
+              </Select>
+            </p>
           </Row>
-
           <Divider />
-          <Transfer
-            dataSource={this.state.mockData}
-            showSearch
-            filterOption={this.filterOption}
-            targetKeys={this.state.targetKeys}
-            onChange={this.handleChange}
-            render={item => item.title}
-            listStyle={{
-              width: 200,
-              height: 300,
-            }}
-            className="transferUsers"
-          /></Modal>
+        </Modal>
         <Table bordered dataSource={this.state.data} columns={this.state.columns} />
       </div>
     )
   }
 }
+
+const curProjects = [
+  <Option key='Dev Team 1'>Dev Team 1</Option>,
+  <Option key='Dev Team 2'>Dev Team 2</Option>,
+  <Option key='Dev Team 3'>Dev Team 3</Option>,
+];
 
 export default UserGroups;
