@@ -200,6 +200,15 @@ class UserGroups extends Component {
               value={this.state.numUsers}>
             </Input>
           </Row>
+          <Row className="inputRow">
+            <Input
+              id="curProjects"
+              title="curProjects"
+              placeholder="Development Project 1"
+              onChange={(e) => this.setState({ curProjects: e.target.value })}
+              value={this.state.curProjects}>
+            </Input>
+          </Row>
 
           <Divider />
           <Transfer
