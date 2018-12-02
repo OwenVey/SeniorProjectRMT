@@ -67,17 +67,19 @@ class UserGroups extends Component {
             className="editGroupModal">
             <Row className="inputRow">
               <Input
+                title="editGroupTitle"
+                value={document.getElementById('userGroupType')}
+              >
+              </Input>
+            </Row>
+            <Row className="inputRow">
+              <Form layout="vertical" />
+              <Input
                 id="editGroupName"
                 title="editGroupName"
                 value={this.state.groupName}
                 placeholder={this.state.groupName}
                 onChange={(e) => this.setState({ groupName: e.target.value })}>
-              </Input>
-            </Row>
-            <Row className="inputRow">
-              <Form layout="vertical" />
-              <FormItem label="Title" />
-              <Input title="editGroupTitle">
               </Input>
             </Row>
             <Row className="inputRow">
@@ -96,8 +98,8 @@ class UserGroups extends Component {
     groupType: "",
     groupName: "",
     data: [{
-      key: '1',
-      groupType: 'Development',
+      key: '0',
+      groupType: 'Dev',
       groupName: 'Developer Team 2',
       numUsers: '17',
       currentProjects: ['nice', 'developer'],
@@ -170,8 +172,9 @@ class UserGroups extends Component {
   addNewUserGroup = (groupType, groupName, numUsers, curProjects) => {
     //var index = data.length.valueOf();
     //This will be used to determine where to add the data. Currently its adding double.
+    var index = this.state.data.length
     this.state.data = [...this.state.data, {
-      key: '1',
+      key: index++,
       groupType: groupType,
       groupName: groupName,
       numUsers: numUsers,
