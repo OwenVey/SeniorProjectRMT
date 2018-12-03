@@ -18,7 +18,7 @@ class App extends Component {
     super();
 
     this.state = {
-      isAuthenticated: true
+      isAuthenticated: false
     };
   }
 
