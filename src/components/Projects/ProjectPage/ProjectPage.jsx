@@ -36,8 +36,6 @@ export default class ProjectPage extends Component {
   }
 
   onEdit = (targetKey, action) => {
-    console.log(targetKey)
-    console.log(action)
     this[action](targetKey);
   }
 

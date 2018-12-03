@@ -47,10 +47,8 @@ function showColumnSelectModal() {
     content: 'InsertColumnNamesHere',
     okText: 'Save',
     onOk() {
-      console.log('Saved!');
     },
     onCancel() {
-      console.log('Cancelled');
     },
     iconType: 'setting'
   });
@@ -62,10 +60,8 @@ function showFilterModal() {
     content: 'InsertFilterOptionsHere',
     okText: 'Save',
     onOk() {
-      console.log('Saved!');
     },
     onCancel() {
-      console.log('Cancelled');
     },
     iconType: 'filter'
   });
@@ -119,21 +115,21 @@ export class ObjectGroupBar extends Component {
         </div>
         <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
           <Dropdown overlay={groupExportMenu}>
-            <a className="ant-dropdown-link">
+            <a href='#none' className="ant-dropdown-link" >
               Export Selected <Icon type="down" />
             </a>
           </Dropdown>
         </div>
         <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
           <Dropdown overlay={groupActionMenu}>
-            <a className="ant-dropdown-link">
+            <a href='#none' className="ant-dropdown-link">
               Actions <Icon type="down" />
             </a>
           </Dropdown>
         </div>
         <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 10 }}>
           <Dropdown overlay={groupAddMenu}>
-            <a className="ant-dropdown-link">
+            <a href='#none' className="ant-dropdown-link">
               Add <Icon type="down" />
             </a>
           </Dropdown>
@@ -190,21 +186,21 @@ export class ObjectBar extends Component {
         <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor: '#f7f7f7' }}>
           <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
             <Dropdown overlay={objectExportMenu}>
-              <a className="ant-dropdown-link">
+              <a href='#none' className="ant-dropdown-link">
                 Export <Icon type="down" />
               </a>
             </Dropdown>
           </div>
           <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
             <Dropdown overlay={objectActionMenu}>
-              <a className="ant-dropdown-link">
+              <a href='#none' className="ant-dropdown-link">
                 Actions <Icon type="down" />
               </a>
             </Dropdown>
           </div>
           <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
             <Dropdown overlay={objectAddMenu}>
-              <a className="ant-dropdown-link">
+              <a href='#none' className="ant-dropdown-link">
                 Add <Icon type="down" />
               </a>
             </Dropdown>
@@ -221,7 +217,7 @@ export class ObjectBar extends Component {
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
-            {'${projectID} - ${ItemType}'}
+            {/* {'${projectID} - ${ItemType}'} */}
             <div style={{ paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', }}>
               Parent Node 1 > Parent Node 2
             </div>

@@ -91,13 +91,13 @@ class ItemTypes extends Component {
           dataIndex: "action",
           render: () => (
             <span>
-              <a href='' >Edit</a>
+              <a href='#none' >Edit</a>
               <Divider type='vertical' />
-              <a href=''>Fields</a>
+              <a href='#none'>Fields</a>
               <Divider type='vertical' />
-              <a href=''>Views</a>
+              <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <a href=''>Delete</a>
+              <a href='#none'>Delete</a>
             </span>
           )
         }

@@ -5,7 +5,6 @@ import ReactDragListView from "react-drag-listview";
 
 
 function onChange(pagination, sorter) {
-    console.log('params', pagination, sorter);
 }
 
 class ProjectTable extends Component {
@@ -70,11 +69,10 @@ class ProjectTable extends Component {
         const that = this;
         this.dragProps = {
             onDragEnd(fromIndex, toIndex) {
-                if(fromIndex > 0)
-                {
+                if (fromIndex > 0) {
                     const columns = that.state.columns;
-                    const item = columns.splice(fromIndex -1, 1)[0];
-                    columns.splice(toIndex -1, 0, item);
+                    const item = columns.splice(fromIndex - 1, 1)[0];
+                    columns.splice(toIndex - 1, 0, item);
                     that.setState({
                         columns
                     });
@@ -85,7 +83,6 @@ class ProjectTable extends Component {
 
         const rowSelection = {
             onChange: (selectedRowKeys, selectedRows) => {
-                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
             },
         };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tag, Modal, Button, Radio, Input, Icon, Switch, Divider } from 'antd';
+import { Table, Tag, Modal, Button, Input, Icon, Switch } from 'antd';
 import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
@@ -86,7 +86,7 @@ class Users extends Component {
           key: 'userName',
           width: 150,
           sorter: (a, b) => a.userName.localeCompare(b.userName),
-          render: (userName, user) => <a onClick={() => this.openEditModal(user)}>{userName}</a>,
+          render: (userName, user) => <a href='#none' onClick={() => this.openEditModal(user)}>{userName}</a>,
         },
         {
           title: 'Email',
@@ -101,7 +101,6 @@ class Users extends Component {
           key: 'userGroups',
           render: userGroups => (
             userGroups.map(userGroup => {
-              console.log(userGroup);
               let color;
               switch (userGroup) {
                 case 'Developer':

@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { Tag, Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
+import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import "./UserGroups.css"
+import './UserGroups.css'
 
 class UserGroups extends Component {
   state = {
+    editedUserGroup: {
+      key: '',
+      groupType: '',
+      groupName: '',
+      numUsers: '',
+      currentProjects: [],
+    },
     size: 'large',
     mockData: [],
     targetKeys: [],
@@ -33,55 +40,47 @@ class UserGroups extends Component {
       {
         title: 'Action',
         key: 'action',
-        render: (text, record) => (
+        render: (text, userGroup) => (
           <span>
-            <a>Members</a>
+            <a href='#none'>Members</a>
             <Divider type='vertical' />
-            <a>Group</a>
+            <a href='#none'>Group</a>
             <Divider type='vertical' />
             <Button
-              value="default" onClick={() => this.setState({ editModalVisible: true })}>Edit
+              value='default'
+              onClick={() => this.setState({ editModalVisible: true, editedUserGroup: userGroup })}>
+              Edit
           </Button>
             <Modal
-              title="Edit User Group"
+              className='editGroupModal'
+              title='Edit User Group'
               id='editGroupModal'
               visible={this.state.editModalVisible}
-              onOk={() => {
-                this.setState({ editModalVisible: false }),
-                  this.editUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers)
-              }}
               onCancel={() => { this.setState({ editModalVisible: false }) }}
-              width="80%"
-              style={{ top: 20 }}
-              className="editGroupModal">
-              <Row className="inputRow">
+              onOk={() => {
+                this.setState({ editModalVisible: false })
+                this.editUserGroup()
+              }}
+            >
+              <Row className='inputRow'>
                 <Input
-                  id="editGroupType"
-                  title="editGroupType"
-                  value={this.state.groupType}
-                  onChange={(e) => this.setState({ groupType: e.target.value })}
+                  id='editGroupType'
+                  title='editGroupType'
+                  value={this.state.editedUserGroup.groupType}
+                  onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupType: e.target.value } })}
                 >
                 </Input>
               </Row>
-              <Row className="inputRow">
-                <Form layout="vertical" />
+              <Row className='inputRow'>
+                <Form layout='vertical' />
                 <Input
-                  id="editGroupName"
-                  title="editGroupName"
-                  value={this.state.groupName}
-                  onChange={(e) => this.setState({ groupName: e.target.value })}>
+                  id='editGroupName'
+                  title='editGroupName'
+                  value={this.state.editedUserGroup.groupName}
+                  onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupName: e.target.value } })}
+                >
                 </Input>
               </Row>
-              <Row className="inputRow">
-                <Form layout="vertical" />
-                <Input
-                  id="editNumUsers"
-                  title="editNumUsers"
-                  value={this.state.numUsers}
-                  onChange={(e) => this.setState({ numUsers: e.target.value })}>
-                </Input>
-              </Row>
-              <Divider />
             </Modal>
             <Divider type='vertical' />
             <Button>
@@ -90,17 +89,16 @@ class UserGroups extends Component {
           </span>
         ),
       }],
-    groupType: "",
-    groupName: "",
-    data: [{
+    groupType: '',
+    groupName: '',
+    userGroups: [{
       key: '0',
       groupType: 'Development',
       groupName: 'Ocean\'s 8',
       numUsers: '8',
       currentProjects: ['nice', 'developer'],
     }],
-    numUsers: "0",
-    curProjects: "",
+    curProjects: '',
   };
 
 
@@ -122,14 +120,12 @@ class UserGroups extends Component {
   }
 
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -165,32 +161,31 @@ class UserGroups extends Component {
   }
 
   addNewUserGroup = (groupType, groupName, numUsers) => {
-    var index = this.state.data.length
-    this.state.data = [...this.state.data, {
-      key: index++,
-      groupType: groupType,
-      groupName: groupName,
-      numUsers: numUsers,
-    }]
+    var key = this.state.userGroups.length;
+
+    let newUserGroup = {
+      key,
+      groupType,
+      groupName,
+      numUsers,
+    }
+
+    this.setState({ userGroups: [...this.state.userGroups, newUserGroup] });
   }
 
-  editUserGroup = (groupType, groupName, numUsers) => {
-    var index = this.state.data.key
-    this.state.data[index] = {
-      key: index,
-      groupType: groupType,
-      groupName: groupName,
-      numUsers: numUsers,
-    }
+  editUserGroup = () => {
+    var index = this.state.editedUserGroup.key;
+    this.setState({
+      userGroups: this.state.userGroups.map(group => (group.key === index ? Object.assign(this.state.editedUserGroup) : group)),
+    });
   }
 
   render() {
-    const size = this.state.size;
     return (
       <React.Fragment>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
           <Button onClick={() => this.setState({ addModalVisible: true })}>
-            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            <Icon type='plus-circle' theme='filled' style={{ color: '#1890FF' }} />
             Add User Group
           </Button>
         </div >
@@ -198,36 +193,35 @@ class UserGroups extends Component {
           title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='users' /></Icon> Add User Group</div>}
           visible={this.state.addModalVisible}
           onOk={() => {
-            this.setState({ addModalVisible: false }),
-              this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers, this.state.curProjects)
+            this.setState({ addModalVisible: false })
+            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers, this.state.curProjects)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
-          width="80%"
-          style={{ top: 20 }}
-          className="userGroupModal">
-          <div className="inputRow">
+          className='userGroupModal'
+        >
+          <div className='inputRow'>
             <div>User Group Type</div>
             <Input
-              id="userGroupType"
-              title="userGroupType"
-              placeholder="New User Group Type"
+              id='userGroupType'
+              title='userGroupType'
+              placeholder='User Group Type'
               onChange={(e) => this.setState({ groupType: e.target.value })}
               value={this.state.groupType}>
             </Input>
           </div>
-          <div className="inputRow">
+          <div className='inputRow'>
             <div>Group Name</div>
             <Input
-              id="userGroupName"
-              title="userGroupName"
-              placeholder="New User Group Name"
+              id='userGroupName'
+              title='userGroupName'
+              placeholder='User Group Name'
               onChange={(e) => this.setState({ groupName: e.target.value })}
               value={this.state.groupName}>
             </Input>
           </div>
 
         </Modal>
-        <Table bordered dataSource={this.state.data} columns={this.state.columns} />
+        <Table bordered dataSource={this.state.userGroups} columns={this.state.columns} />
       </React.Fragment>
     )
   }

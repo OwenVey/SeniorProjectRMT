@@ -53,18 +53,12 @@ function showAddItemTypeModal() {
     </div>,
     okText: 'Save',
     onOk() {
-      console.log('Saved!');
     },
     onCancel() {
-      console.log('Cancelled');
     },
     iconType: 'setting'
   });
 }
-// onChangePassword = (e) => {
-//   // const {index} = this.state;
-//   // this.state.data[index].password = e.target.value 
-// };
 
 export class ItemTypeBar extends Component {
   render() {
@@ -124,7 +118,7 @@ export class UserBar extends Component {
   }
 
   handleOkUserModal = (e) => {
-    const { newFirstName, newLastName, newUsername, newEmail, newPassword, newPasswordConfirm, newStatus, newLicenseType, newUserGroups } = this.state;
+    const { newFirstName, newLastName, newUsername, newEmail, newStatus, newLicenseType, newUserGroups } = this.state;
 
     let user = {
       fullName: `${newFirstName} ${newLastName}`,
@@ -190,7 +184,7 @@ export class UserBar extends Component {
 
   validateForm = () => {
     return (this.state.newFirstName.length > 0 && this.state.newLastName.length > 0 && this.state.newUsername.length > 0
-      && this.state.newEmail.length > 0 && this.state.newPassword.length > 0 && this.state.newPassword == this.state.newPasswordConfirm)
+      && this.state.newEmail.length > 0 && this.state.newPassword.length > 0 && this.state.newPassword === this.state.newPasswordConfirm)
   }
 
   render() {
