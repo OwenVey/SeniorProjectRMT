@@ -74,7 +74,7 @@ function showFilterModal() {
 export class ObjectGroupBar extends Component {
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', margin: '0px 20px', marginBottom: 5, justifyContent: 'flex-end' }}>
         <div style={{ flex: 1, justifyContent: 'flex-start' }}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <h2>{this.props.currentSelectedItem.title}</h2>
@@ -213,10 +213,10 @@ export class ObjectBar extends Component {
             <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
           </div>
         </div>
-        <div style={{ flex: 1, justifyContent: 'flex-start', marginLeft: 20, marginRight: 20}}>
+        <div style={{ flex: 1, justifyContent: 'flex-start', marginLeft: 20, marginRight: 20 }}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <h2>{this.props.currentSelectedItem.title}</h2>
-            <div style={{paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', paddingBottom: 4 }}>
+            <div style={{ paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', paddingBottom: 4 }}>
               Version - V
             </div>
           </div>

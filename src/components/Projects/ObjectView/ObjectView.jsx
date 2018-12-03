@@ -11,7 +11,7 @@ export default class ObjectView extends Component {
 
   render() {
     return (
-      <div>{this.props.object.title}</div>
+      <div></div>
     );
   }
 }

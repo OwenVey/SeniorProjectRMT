@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import TreeView from '../TreeView/TreeView.jsx';
-import {ObjectGroupBar, ObjectBar} from '../ProjectBars/ProjectBars.jsx';
+import { ObjectGroupBar, ObjectBar } from '../ProjectBars/ProjectBars.jsx';
 import ProjectTable from '../ProjectTable/ProjectTable.jsx';
 import ObjectView from '../ObjectView/ObjectView.jsx';
 import SplitPane from 'react-split-pane';
@@ -47,7 +47,17 @@ export default class ProjectPage extends Component {
       this.setState({ activeKey: node.key });
     }
     else {
-      const content = node.children ? <ProjectTable currentSelectedItem={node} /> : <ObjectView object={node} />
+      const content = node.children ?
+
+        <div className='projectcontent'>
+          <ObjectGroupBar currentSelectedItem={node} />
+          <ProjectTable currentSelectedItem={node} />
+        </div>
+        :
+        <div className='projectcontent'>
+          <ObjectBar currentSelectedItem={node} />
+          <ObjectView object={node} />
+        </div>
       tabs.push({ title: <span><FontAwesomeIcon style={{ marginRight: '5px' }} icon={node.icon} />{node.title}</span>, content: content, key: node.key });
       this.setState({ tabs, activeKey: node.key });
     }
@@ -77,22 +87,18 @@ export default class ProjectPage extends Component {
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
 
             <TreeView handleItemSelect={this.onTreeItemSelect} />
-            
-            <div className='projectcontent'>
-              <ObjectGroupBar currentSelectedItem={this.state.currentSelectedItem}/>
-              <ProjectTable currentSelectedItem={this.state.currentSelectedItem} />
-            </div>
-            
+
             <Tabs
               hideAdd
+              style={{ margin: 0 }}
               onChange={this.onChange}
               activeKey={this.state.activeKey}
               type="editable-card"
               onEdit={this.onEdit}
             >
-              {this.state.tabs.map(tab => <TabPane tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
+              {this.state.tabs.map(tab => <TabPane style={{ margin: 0 }} tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
             </Tabs>
-            
+
           </SplitPane>
         </div>
       </div >

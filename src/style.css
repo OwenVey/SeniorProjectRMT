@@ -63,3 +63,7 @@ body {
 .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
   background: #1b1c1d
 }
+
+.ant-tabs-bar {
+  margin: 0;
+}
