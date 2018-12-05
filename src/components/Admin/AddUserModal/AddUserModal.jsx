@@ -23,16 +23,16 @@ class AddUserModal extends Component {
   }
 
   handleOkUserModal = (e) => {
-
+    this.props.hide();
     // e.preventDefault();
     // this.props.form.validateFieldsAndScroll((err, values) => {
     //   if (!err) {
     //     console.log('Received values of form: ', values);
-      //  this.setState({ addUserModalVisible: false, });
-        // this.props.addUser(user)
-      // }
-      // else{
-        // alert('Form is invalid!');
+    //    this.setState({ addUserModalVisible: false, });
+    //     this.props.addUser(user)
+    //   }
+    //   else{
+    //     alert('Form is invalid!');
     //   }
     // });
   }
@@ -41,7 +41,7 @@ class AddUserModal extends Component {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('Password')) {
       callback('Two passwords that you enter is inconsistent!');
-    } 
+    }
     else {
       callback();
     }
@@ -72,68 +72,73 @@ class AddUserModal extends Component {
     this.setState({ newUserGroups: e.map((userGroup) => userGroup.label) })
   }
 
-  render(){
+  render() {
     const { getFieldDecorator } = this.props.form;
-    return(
+    return (
       <Modal
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User</div>}
-        visible={this.props.showModal}
         onOk={this.handleOkUserModal}
+        visible={true}
         onCancel={this.props.handleCancelUserModal}
         okText="Add"
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <Form onSubmit={this.handleOkUserModal()}>
-          <FormItem label="First Name"> 
+        <Form onSubmit={this.handleOkUserModal} hideRequiredMark={true}>
+          <FormItem label="First Name">
             {getFieldDecorator('First Name', {
-              rules: [{required: true, message: 'Please input the user\'s First Name' }],
+              rules: [{ required: true, message: 'Please input the user\'s First Name' }],
             })(
-              <Input placeholder='First Name'/>
+              <Input placeholder='First Name' />
             )}
           </FormItem>
-          <FormItem label="Last Name"> 
+          <FormItem label="Last Name">
             {getFieldDecorator('Last Name', {
-              rules: [{required: true, message: 'Please input the user\'s Last Name' }],
+              rules: [{ required: true, message: 'Please input the user\'s Last Name' }],
             })(
               <Input placeholder='Last Name' />
             )}
           </FormItem>
-          <FormItem label="Email"> 
+          <FormItem label="Email">
             {getFieldDecorator('Email', {
               rules: [
-                {required: true, message: 'Please input the user\'s Email' },
-                {type: 'email', message: 'The input is not valid E-mail!'}],
+                { required: true, message: 'Please input the user\'s Email' },
+                { type: 'email', message: 'The input is not valid E-mail!' }],
             })(
               <Input placeholder='Email' />
             )}
           </FormItem>
-          <FormItem label="Username"> 
+          <FormItem label="Username">
             {getFieldDecorator('Username', {
-              rules: [{required: true, message: 'Please input the user\'s Username' }],
+              rules: [
+                { required: true, message: 'Please input the user\'s Username' },
+                { min: 4, message: 'Username too short!' }
+              ],
             })(
               <Input placeholder='Username' />
             )}
           </FormItem>
-          <FormItem label="Password"> 
+          <FormItem label="Password">
             {getFieldDecorator('Password', {
               rules: [
-                {required: true, message: 'Please input the user\'s Password' },
-                {validator: this.validateToNextPassword}],
+                { required: true, message: 'Please input the user\'s Password' },
+                { validator: this.validateToNextPassword },
+                { min: 12, message: 'Password too short!' }
+              ],
             })(
-              <Input placeholder='Password' type='password'/>
+              <Input placeholder='Password' type='password' />
             )}
           </FormItem>
-          <FormItem label="Confirm Password"> 
+          <FormItem label="Confirm Password">
             {getFieldDecorator('Confirm', {
               rules: [
-                {required: true, message: 'Please confirm the user\'s Password' },
-                {validator: this.compareToFirstPassword}],
+                { required: true, message: 'Please confirm the user\'s Password' },
+                { validator: this.compareToFirstPassword }],
             })(
-              <Input placeholder='Password' type='password' onBlur={this.handleConfirmBlur}/>
+              <Input placeholder='Password' type='password' onBlur={this.handleConfirmBlur} />
             )}
           </FormItem>
-          <FormItem label="License Type"> 
+          <FormItem label="License Type">
             <Select labelInValue defaultValue={{ key: "Developer" }} style={{ width: '100%' }} onChange={this.handleLicenseTypeChange}>
               <Option value="Developer">Developer</Option>
               <Option value="Admin">Admin</Option>
@@ -146,7 +151,7 @@ class AddUserModal extends Component {
             <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
               <Option value="Active">ACTIVE</Option>
               <Option value="Inactive">INACTIVE</Option>
-            </Select>        
+            </Select>
           </FormItem>
           <FormItem label="User Groups">
             <Select labelInValue mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>

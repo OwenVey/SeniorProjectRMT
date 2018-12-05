@@ -84,13 +84,20 @@ export class UserBar extends Component {
     super();
 
     this.state = {
-      addUserModalVisible: false,
+      showUserModal: false,
       invalidUser: false,
     }
   }
   showAddUserModal = () => {
     this.setState({
-      addUserModalVisible: true,
+      showUserModal: true,
+      invalidUser: false,
+    });
+  }
+
+  hideAddUserModal = () => {
+    this.setState({
+      showUserModal: false,
       invalidUser: false,
     });
   }
@@ -119,13 +126,13 @@ export class UserBar extends Component {
 
   handleOkModal = (e) => {
     this.setState({
-      addUserModalVisible: false,
+      showUserModal: false,
     });
   }
 
   handleCancelUserModal = (e) => {
     this.setState({
-      addUserModalVisible: false,
+      showUserModal: false,
     });
   }
 
@@ -136,7 +143,7 @@ export class UserBar extends Component {
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
           Add User
         </Button>
-        <AddUserModal showModal={this.state.addUserModalVisible} handleCancelUserModal={this.handleCancelUserModal}/>
+        {this.state.showUserModal && <AddUserModal addUser={this.props.addUser} handleCancelUserModal={this.handleCancelUserModal} hide={this.hideAddUserModal} />}
       </div>
     )
   }
