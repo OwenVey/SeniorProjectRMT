@@ -182,33 +182,7 @@ const objectActionMenu = (
 export class ObjectBar extends Component {
   render() {
     return (
-      <div>
-        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end', backgroundColor: '#f7f7f7' }}>
-          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-            <Dropdown overlay={objectExportMenu}>
-              <a href='#none' className="ant-dropdown-link">
-                Export <Icon type="down" />
-              </a>
-            </Dropdown>
-          </div>
-          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-            <Dropdown overlay={objectActionMenu}>
-              <a href='#none' className="ant-dropdown-link">
-                Actions <Icon type="down" />
-              </a>
-            </Dropdown>
-          </div>
-          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20 }}>
-            <Dropdown overlay={objectAddMenu}>
-              <a href='#none' className="ant-dropdown-link">
-                Add <Icon type="down" />
-              </a>
-            </Dropdown>
-          </div>
-          <div style={{ cursor: 'pointer', alignItems: 'center', alignSelf: 'center', paddingRight: 10 }}>
-            <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
-          </div>
-        </div>
+      <div style={{ display: 'flex', flexDirection: 'row', margin: '0px 20px', marginBottom: 5, justifyContent: 'flex-end' }}>
         <div style={{ flex: 1, justifyContent: 'flex-start', marginLeft: 20, marginRight: 20 }}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <h2>{this.props.currentSelectedItem.title}</h2>
@@ -221,6 +195,33 @@ export class ObjectBar extends Component {
             <div style={{ paddingLeft: 15, alignSelf: 'center', alignItems: 'center', alignContent: 'center', }}>
               Parent Node 1 > Parent Node 2
             </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end'}}>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20, paddingBottom: 4 }}>
+            <Dropdown overlay={objectExportMenu}>
+              <a href='#none' className="ant-dropdown-link">
+                Export <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20, paddingBottom: 4 }}>
+            <Dropdown overlay={objectActionMenu}>
+              <a href='#none' className="ant-dropdown-link">
+                Actions <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20, paddingBottom: 4 }}>
+            <Dropdown overlay={objectAddMenu}>
+              <a href='#none' className="ant-dropdown-link">
+                Add <Icon type="down" />
+              </a>
+            </Dropdown>
+          </div>
+          <div style={{ cursor: 'pointer', alignItems: 'center', alignSelf: 'center', paddingRight: 10, paddingBottom: 4 }}>
+            <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
           </div>
         </div>
       </div>
