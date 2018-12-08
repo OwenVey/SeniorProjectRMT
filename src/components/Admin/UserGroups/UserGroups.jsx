@@ -63,6 +63,7 @@ class UserGroups extends Component {
               }}
             >
               <Row className='inputRow'>
+              <div>Edit User Group Type</div>
                 <Input
                   id='editGroupType'
                   title='editGroupType'
@@ -72,6 +73,7 @@ class UserGroups extends Component {
                 </Input>
               </Row>
               <Row className='inputRow'>
+                <div>Edit User Group Name</div>
                 <Form layout='vertical' />
                 <Input
                   id='editGroupName'
@@ -79,6 +81,15 @@ class UserGroups extends Component {
                   value={this.state.editedUserGroup.groupName}
                   onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupName: e.target.value } })}
                 >
+                </Input>
+              </Row>
+              <Row className='inputRow'>
+                <div>Edit Number of Users</div>
+                <Input
+                  id='editNumUsers'
+                  title='editNumUsers'
+                  value={this.state.editedUserGroup.numUsers}
+                  onChange={(e) => this.setState({editedUserGroup: {...this.state.editedUserGroup, numUsers: e.target.value}})}>
                 </Input>
               </Row>
             </Modal>
@@ -194,7 +205,7 @@ class UserGroups extends Component {
           visible={this.state.addModalVisible}
           onOk={() => {
             this.setState({ addModalVisible: false })
-            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers, this.state.curProjects)
+            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
           className='userGroupModal'
@@ -217,6 +228,16 @@ class UserGroups extends Component {
               placeholder='User Group Name'
               onChange={(e) => this.setState({ groupName: e.target.value })}
               value={this.state.groupName}>
+            </Input>
+          </div>
+          <div className='inputRow'>
+            <div>Number of Users</div>
+            <Input
+              id='numUsers'
+              title='numUsers'
+              placeholder='0'
+              onChange={(e) => this.setState({numUsers: e.target.value})}
+              value={this.state.numUsers}>
             </Input>
           </div>
 
