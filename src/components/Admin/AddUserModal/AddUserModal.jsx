@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Input, Select, Form } from 'antd';
+import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Option = Select.Option;
@@ -40,7 +40,7 @@ class AddUserModal extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('Password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('The two passwords that you entered are inconsistent!');
     }
     else {
       callback();
@@ -50,7 +50,7 @@ class AddUserModal extends Component {
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(['Confirm'], { force: true });
     }
     callback();
   }
@@ -85,21 +85,21 @@ class AddUserModal extends Component {
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
         <Form onSubmit={this.handleOkUserModal} hideRequiredMark={true}>
-          <FormItem label="First Name">
+          <FormItem style={{ marginBottom: '0px' }} label="First Name">
             {getFieldDecorator('First Name', {
               rules: [{ required: true, message: 'Please input the user\'s First Name' }],
             })(
               <Input placeholder='First Name' />
             )}
           </FormItem>
-          <FormItem label="Last Name">
+          <FormItem style={{ marginBottom: '0px' }} label="Last Name">
             {getFieldDecorator('Last Name', {
               rules: [{ required: true, message: 'Please input the user\'s Last Name' }],
             })(
               <Input placeholder='Last Name' />
             )}
           </FormItem>
-          <FormItem label="Email">
+          <FormItem style={{ marginBottom: '0px' }} label="Email">
             {getFieldDecorator('Email', {
               rules: [
                 { required: true, message: 'Please input the user\'s Email' },
@@ -108,7 +108,7 @@ class AddUserModal extends Component {
               <Input placeholder='Email' />
             )}
           </FormItem>
-          <FormItem label="Username">
+          <FormItem style={{ marginBottom: '0px' }} label="Username">
             {getFieldDecorator('Username', {
               rules: [
                 { required: true, message: 'Please input the user\'s Username' },
@@ -118,7 +118,7 @@ class AddUserModal extends Component {
               <Input placeholder='Username' />
             )}
           </FormItem>
-          <FormItem label="Password">
+          <FormItem style={{ marginBottom: '0px' }} label="Password">
             {getFieldDecorator('Password', {
               rules: [
                 { required: true, message: 'Please input the user\'s Password' },
@@ -129,7 +129,7 @@ class AddUserModal extends Component {
               <Input placeholder='Password' type='password' />
             )}
           </FormItem>
-          <FormItem label="Confirm Password">
+          <FormItem style={{ marginBottom: '0px' }} label="Confirm Password">
             {getFieldDecorator('Confirm', {
               rules: [
                 { required: true, message: 'Please confirm the user\'s Password' },
@@ -138,7 +138,7 @@ class AddUserModal extends Component {
               <Input placeholder='Password' type='password' onBlur={this.handleConfirmBlur} />
             )}
           </FormItem>
-          <FormItem label="License Type">
+          <FormItem style={{ marginBottom: '0px' }} label="License Type">
             <Select labelInValue defaultValue={{ key: "Developer" }} style={{ width: '100%' }} onChange={this.handleLicenseTypeChange}>
               <Option value="Developer">Developer</Option>
               <Option value="Admin">Admin</Option>
@@ -147,13 +147,13 @@ class AddUserModal extends Component {
               <Option value="Customer">Customer</Option>
             </Select>
           </FormItem>
-          <FormItem label="Status">
+          <FormItem style={{ marginBottom: '0px' }} label="Status">
             <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
               <Option value="Active">ACTIVE</Option>
               <Option value="Inactive">INACTIVE</Option>
             </Select>
           </FormItem>
-          <FormItem label="User Groups">
+          <FormItem style={{ marginBottom: '0px' }} label="User Groups">
             <Select labelInValue mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>
               {userGroups}
             </Select>

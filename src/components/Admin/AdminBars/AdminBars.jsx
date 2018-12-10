@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Input, Select, Form } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Icon, Modal, Input, Select, } from 'antd';
 import AddUserModal from '../AddUserModal/AddUserModal';
 
 const Option = Select.Option;
-const FormItem = Form.Item;
 //#region ItemTypeBar
 
 function showAddItemTypeModal() {
