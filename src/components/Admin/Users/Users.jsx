@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tag, Modal, Button, Input, Icon, Switch } from 'antd';
+import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
 import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from "react-resizable";
 import data from "../../../data.js";
@@ -25,27 +25,30 @@ class Users extends Component {
     super(props);
 
     this.state = {
+
       editUser: {
         key: '',
-        fullName: '',
+        firstName: '',
+        lastName: '',
         userName: '',
         email: '',
         userGroups: '',
-        liscenceType: '',
+        licenseType: '',
         userStatus: ''
       },
+      
       searchText: '',
       userData: data.userDataJson.splice(0, 15),
       visible: false,
 
       columns: [
         {
-          title: 'Full Name',
-          dataIndex: 'fullName',
-          key: 'fullname',
+          title: 'First Name',
+          dataIndex: 'firstName',
+          key: 'firstName',
           defaultSortOrder: 'ascend',
           width: 150,
-          sorter: (a, b) => a.fullName.localeCompare(b.fullName),
+          sorter: (a, b) => a.firstName.localeCompare(b.firstName),
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className="custom-filter-dropdown">
               <Input
@@ -60,7 +63,48 @@ class Users extends Component {
             </div>
           ),
           filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-          onFilter: (value, record) => record.fullName.toLowerCase().includes(value.toLowerCase()),
+          onFilter: (value, record) => record.firstName.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                  fragment.toLowerCase() === searchText.toLowerCase()
+                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+                ))}
+              </span>
+            ) : text;
+          },
+        },
+        {
+          title: 'Last Name',
+          dataIndex: 'lastName',
+          key: 'lastName',
+          defaultSortOrder: 'ascend',
+          width: 150,
+          sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => this.searchInput = ele}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.lastName.toLowerCase().includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: (visible) => {
             if (visible) {
               setTimeout(() => {
@@ -86,7 +130,7 @@ class Users extends Component {
           key: 'userName',
           width: 150,
           sorter: (a, b) => a.userName.localeCompare(b.userName),
-          render: (userName, user) => <a href='#none' onClick={() => this.openEditModal(user)}>{userName}</a>,
+          render: (userName, user) => <Tooltip placement="topLeft" title="Edit User Info"><a href='#none' onClick={() => this.openEditModal(user)}>{userName}</a> </Tooltip>,
         },
         {
           title: 'Email',
@@ -131,11 +175,11 @@ class Users extends Component {
           ),
         },
         {
-          title: 'Liscence Type',
-          dataIndex: 'liscenceType',
-          key: 'liscenceType',
+          title: 'License Type',
+          dataIndex: 'licenseType',
+          key: 'licenseType',
           width: 150,
-          sorter: (a, b) => a.liscenceType.localeCompare(b.liscenceType)
+          sorter: (a, b) => a.licenseType.localeCompare(b.licenseType)
         },
         {
           title: 'User Status',
@@ -254,7 +298,8 @@ class Users extends Component {
             </Button>,
           ]}
         >
-          <p>Name: <Input value={this.state.editUser.fullName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, fullName: e.target.value } })} placeholder='Name' /> </p>
+          <p>First Name: <Input value={this.state.editUser.firstName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, firstName: e.target.value } })} placeholder='First Name' /> </p>
+          <p>Last Name: <Input value={this.state.editUser.lastName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, lastName: e.target.value } })} placeholder='Last Name' /> </p>
           <p>Email: <Input value={this.state.editUser.email} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, email: e.target.value } })} placeholder='Email' /></p>
           <p>Username: <Input value={this.state.editUser.userName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, userName: e.target.value } })} placeholder='Username' /> </p>
           <div>User Status:</div>

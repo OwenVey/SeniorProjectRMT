@@ -121,7 +121,8 @@ export class UserBar extends Component {
     const { newFirstName, newLastName, newUsername, newEmail, newStatus, newLicenseType, newUserGroups } = this.state;
 
     let user = {
-      fullName: `${newFirstName} ${newLastName}`,
+      firstName: newFirstName,
+      lastName: newLastName,
       email: newEmail,
       userName: newUsername,
       userStatus: newStatus === 'ACTIVE' ? true : false,
