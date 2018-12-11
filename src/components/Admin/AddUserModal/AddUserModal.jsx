@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -22,19 +23,30 @@ class AddUserModal extends Component {
     }
   }
 
+  registerUser = (registerInfo) => {
+    const url = 'https://senior-design.timblin.org/api/register'
+    axios.post(url, {
+      email: registerInfo.Email,
+      password: registerInfo.Password,
+      firstname: registerInfo.FirstName,
+      lastname: registerInfo.LastName,
+      isAdmin: registerInfo.LicenseType === 'Admin'
+    })
+      .then(
+        this.props.hide()
+      )
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   handleOkUserModal = (e) => {
-    this.props.hide();
-    // e.preventDefault();
-    // this.props.form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //     console.log('Received values of form: ', values);
-    //    this.setState({ addUserModalVisible: false, });
-    //     this.props.addUser(user)
-    //   }
-    //   else{
-    //     alert('Form is invalid!');
-    //   }
-    // });
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.registerUser(values);
+      }
+    })
   }
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -86,14 +98,14 @@ class AddUserModal extends Component {
       >
         <Form onSubmit={this.handleOkUserModal} hideRequiredMark={true}>
           <FormItem style={{ marginBottom: '0px' }} label="First Name">
-            {getFieldDecorator('First Name', {
+            {getFieldDecorator('FirstName', {
               rules: [{ required: true, message: 'Please input the user\'s First Name' }],
             })(
               <Input placeholder='First Name' />
             )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Last Name">
-            {getFieldDecorator('Last Name', {
+            {getFieldDecorator('LastName', {
               rules: [{ required: true, message: 'Please input the user\'s Last Name' }],
             })(
               <Input placeholder='Last Name' />
@@ -138,14 +150,24 @@ class AddUserModal extends Component {
               <Input placeholder='Password' type='password' onBlur={this.handleConfirmBlur} />
             )}
           </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="License Type">
-            <Select labelInValue defaultValue={{ key: "Developer" }} style={{ width: '100%' }} onChange={this.handleLicenseTypeChange}>
+          <FormItem 
+            style={{ marginBottom: '0px' }}
+            label="License Type"
+            hasFeedback
+          >
+            {getFieldDecorator('LicenseType', {
+              rules: [
+                { required: true, message: 'Please select a License Type'}
+              ],
+            })(
+            <Select placeholder="Please select a License Type" style={{ width: '100%' }}>
               <Option value="Developer">Developer</Option>
               <Option value="Admin">Admin</Option>
               <Option value="ProductOwner">Product Owner</Option>
               <Option value="ScrumMaster">Scrum Master</Option>
               <Option value="Customer">Customer</Option>
             </Select>
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Status">
             <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
