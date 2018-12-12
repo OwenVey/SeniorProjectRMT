@@ -89,7 +89,7 @@ class ItemTypes extends Component {
         {
           title: "Action",
           dataIndex: "action",
-          render: () => (
+          render: (index, itemType) => (
             <span>
               <a href='#none' >Edit</a>
               <Divider type='vertical' />
@@ -99,16 +99,18 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <Button onClick={() => this.setState({ deleteModal: true })}>Delete</Button>
               <Modal
-                id="deleteModal"
+                className="deleteModal"
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item?</div>}
                 visible={this.state.deleteModal}
-                onCancel={this.handleCancel}
+                onCancel={() => this.setState({ deleteModal: false })}
+                // onOk={() => this.handleDeleteItem(itemType.id)}
                 footer={
                   [
-                    <Button key="back" onClick={this.handleDeleteCancel}>Cancel</Button>,
-                    <Button key="submit" type="primary" onClick={this.handleAddItemType}>Yes</Button>,
-                  ]} ></Modal>
-            </span>
+                    <Button key="back" onClick={() => this.setState({ deleteModal: false })}>Cancel</Button>,
+                    <Button key="submit" type="primary" onClick={() => this.handleDeleteItem(itemType.id)}>Yes</Button>,
+                  ]
+                } ></Modal >
+            </span >
           )
         }
       ],
@@ -126,6 +128,14 @@ class ItemTypes extends Component {
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  }
+
+  handleDeleteItem = (id) => {
+    console.log(id)
+    this.setState({
+      deleteModal: false,
+      itemTypes: this.state.itemTypes.filter((itemType) => itemType.id !== id)
     });
   }
 
