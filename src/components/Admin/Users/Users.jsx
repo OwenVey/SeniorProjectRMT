@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
 import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from "react-resizable";
+import axios from 'axios';
 import data from "../../../data.js";
 import "./Users.css";
 
@@ -19,7 +20,6 @@ const ResizeableTitle = props => {
   );
 };
 
-
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -28,27 +28,27 @@ class Users extends Component {
 
       editUser: {
         key: '',
-        firstName: '',
-        lastName: '',
+        firstname: '',
+        lastname: '',
         userName: '',
         email: '',
         userGroups: '',
         licenseType: '',
         userStatus: ''
       },
-      
+
       searchText: '',
-      userData: data.userDataJson.splice(0, 15),
+      userData: [],
       visible: false,
 
       columns: [
         {
           title: 'First Name',
-          dataIndex: 'firstName',
-          key: 'firstName',
+          dataIndex: 'firstname',
+          key: 'firstname',
           defaultSortOrder: 'ascend',
           width: 150,
-          sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+          sorter: (a, b) => a.firstname.localeCompare(b.firstname),
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className="custom-filter-dropdown">
               <Input
@@ -63,7 +63,7 @@ class Users extends Component {
             </div>
           ),
           filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-          onFilter: (value, record) => record.firstName.toLowerCase().includes(value.toLowerCase()),
+          onFilter: (value, record) => record.firstname.toLowerCase().includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: (visible) => {
             if (visible) {
               setTimeout(() => {
@@ -85,11 +85,11 @@ class Users extends Component {
         },
         {
           title: 'Last Name',
-          dataIndex: 'lastName',
-          key: 'lastName',
+          dataIndex: 'lastname',
+          key: 'lastname',
           defaultSortOrder: 'ascend',
           width: 150,
-          sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+          sorter: (a, b) => a.lastname.localeCompare(b.lastname),
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className="custom-filter-dropdown">
               <Input
@@ -104,7 +104,7 @@ class Users extends Component {
             </div>
           ),
           filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-          onFilter: (value, record) => record.lastName.toLowerCase().includes(value.toLowerCase()),
+          onFilter: (value, record) => record.lastname.toLowerCase().includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: (visible) => {
             if (visible) {
               setTimeout(() => {
@@ -174,13 +174,13 @@ class Users extends Component {
             })
           ),
         },
-        {
-          title: 'License Type',
-          dataIndex: 'licenseType',
-          key: 'licenseType',
-          width: 150,
-          sorter: (a, b) => a.licenseType.localeCompare(b.licenseType)
-        },
+        // {
+        //   title: 'License Type',
+        //   dataIndex: 'licenseType',
+        //   key: 'licenseType',
+        //   width: 150,
+        //   sorter: (a, b) => a.licenseType.localeCompare(b.licenseType)
+        // },
         {
           title: 'User Status',
           dataIndex: 'userStatus',
@@ -199,6 +199,23 @@ class Users extends Component {
     };
   }
 
+  componentWillMount() {
+    this.fetchUsers();
+  }
+
+  fetchUsers = async () => {
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/user?accessToken=${this.props.accessToken}`;
+    axios.get(url)
+      .then(response => {
+        console.log(response.data);
+        let users = response.data.users.map(user => { return { ...user, userGroups: ['Developer'], userName: `${user.firstname}${user.lastname}`, userStatus: true, } })
+        this.setState({ userData: users })
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   addUser = (user) => {
     this.setState({ userData: [...this.state.userData, user] })
@@ -298,8 +315,8 @@ class Users extends Component {
             </Button>,
           ]}
         >
-          <p>First Name: <Input value={this.state.editUser.firstName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, firstName: e.target.value } })} placeholder='First Name' /> </p>
-          <p>Last Name: <Input value={this.state.editUser.lastName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, lastName: e.target.value } })} placeholder='Last Name' /> </p>
+          <p>First Name: <Input value={this.state.editUser.firstname} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, firstname: e.target.value } })} placeholder='First Name' /> </p>
+          <p>Last Name: <Input value={this.state.editUser.lastname} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, lastname: e.target.value } })} placeholder='Last Name' /> </p>
           <p>Email: <Input value={this.state.editUser.email} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, email: e.target.value } })} placeholder='Email' /></p>
           <p>Username: <Input value={this.state.editUser.userName} onChange={(e) => this.setState({ editUser: { ...this.state.editUser, userName: e.target.value } })} placeholder='Username' /> </p>
           <div>User Status:</div>

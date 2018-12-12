@@ -33,7 +33,7 @@ class AdminPage extends Component {
         selectedPage = <OrganizationDetails />;
         break;
       case "users":
-        selectedPage = <Users />;
+        selectedPage = <Users accessToken={this.props.accessToken} />;
         break;
       case "userGroups":
         selectedPage = <UserGroups />;

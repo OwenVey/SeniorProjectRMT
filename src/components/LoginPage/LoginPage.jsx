@@ -30,13 +30,14 @@ class LoginPage extends Component {
   }
 
   login = (loginInfo) => {
-    const url = 'https://senior-design.timblin.org/api/login'
+    const url = 'https://senior-design.timblin.org/api/login';
     axios.post(url, {
       email: loginInfo.email,
-      password: loginInfo.password
+      password: loginInfo.password,
     })
       .then(response => {
         console.log(response.data['accessToken']);
+        this.props.setAccessToken(response.data['accessToken']);
         this.props.onLogin();
         this.setState({ redirectToReferrer: true });
       })
