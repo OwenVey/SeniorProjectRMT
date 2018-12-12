@@ -86,23 +86,9 @@ class UserGroups extends Component {
             <Divider type='vertical' />
             <Button
               value='default'
-              onClick={() => {this.setState({deleteModalVisible: true})}}>
-              Delete
+              onClick={() => {this.deleteGroupModal(userGroup)}}>
+                Delete
             </Button>
-            <Modal
-              className='deleteGroupModal'
-              title='Delete User Group'
-              id='deleteUserGroup'
-              visible={this.state.deleteModalVisible}
-              onCancel={() => {this.setState({deleteModalVisible: false})}}
-              onOk={() => {
-                this.setState({deleteModalVisible: false})
-                this.deleteUserGroup(userGroup.key)
-              }}
-              >
-              <Row>Are you sure you want to delete?</Row>
-
-            </Modal>
           </span>
         ),
       }],
@@ -117,10 +103,6 @@ class UserGroups extends Component {
     }],
     curProjects: '',
   };
-
-
-
-  /*() => {this.setState({editModalVisible:true})}*/
 
   addModal = () => {
     this.setState({
@@ -138,12 +120,42 @@ class UserGroups extends Component {
     });
   }
 
-  deleteGroupModal = () => {
+  deleteGroupModal = (userGroup) => {
     this.setState({
       deleteModalVisible: true,
       addModalVisible: false,
       editModalVisible: false,
     })
+    Modal.confirm({
+      title: 'Delete User Group',
+      content: 'Are you sure you want to delete this user group?',
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: () => { 
+        //this.deleteUserGroup()
+        this.setState({deleteModalVisible: false})
+        this.deleteUserGroup(userGroup.key)
+      },
+      onCancel: () => {
+        this.setState({deleteModalVisible: false})
+      }
+    });
+    /*
+      <Modal
+        className='deleteGroupModal'
+        title='Delete User Group'
+        id='deleteUserGroup'
+        visible={this.state.deleteModalVisible}
+        onCancel={() => {this.setState({deleteModalVisible: false})}}
+        onOk={() => {
+          this.setState({deleteModalVisible: false})
+          this.deleteUserGroup(userGroup.key)
+        }}
+        >
+        <Row>Are you sure you want to delete?</Row>
+      </Modal>
+    */
   }
 
   handleOk = (e) => {
