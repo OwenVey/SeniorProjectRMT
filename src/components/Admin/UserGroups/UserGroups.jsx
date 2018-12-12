@@ -17,6 +17,7 @@ class UserGroups extends Component {
     targetKeys: [],
     addModalVisible: false,
     editModalVisible: false,
+    deleteModalVisible: false,
     editing: false,
     columns: [
       {
@@ -50,7 +51,7 @@ class UserGroups extends Component {
               value='default'
               onClick={() => this.setState({ editModalVisible: true, editedUserGroup: userGroup })}>
               Edit
-          </Button>
+            </Button>
             <Modal
               className='editGroupModal'
               title='Edit User Group'
@@ -83,9 +84,25 @@ class UserGroups extends Component {
               </Row>
             </Modal>
             <Divider type='vertical' />
-            <Button>
+            <Button
+              value='default'
+              onClick={() => {this.setState({deleteModalVisible: true})}}>
               Delete
-          </Button>
+            </Button>
+            <Modal
+              className='deleteGroupModal'
+              title='Delete User Group'
+              id='deleteUserGroup'
+              visible={this.state.deleteModalVisible}
+              onCancel={() => {this.setState({deleteModalVisible: false})}}
+              onOk={() => {
+                this.setState({deleteModalVisible: false})
+                this.deleteUserGroup(userGroup.key)
+              }}
+              >
+              <Row>Are you sure you want to delete?</Row>
+
+            </Modal>
           </span>
         ),
       }],
@@ -109,6 +126,7 @@ class UserGroups extends Component {
     this.setState({
       addModalVisible: true,
       editModalVisible: false,
+      deleteModalVisible: false,
     });
   }
 
@@ -116,7 +134,16 @@ class UserGroups extends Component {
     this.setState({
       addModalVisible: false,
       editModalVisible: true,
+      deleteModalVisible: false,
     });
+  }
+
+  deleteGroupModal = () => {
+    this.setState({
+      deleteModalVisible: true,
+      addModalVisible: false,
+      editModalVisible: false,
+    })
   }
 
   handleOk = (e) => {
@@ -178,6 +205,27 @@ class UserGroups extends Component {
     this.setState({
       userGroups: this.state.userGroups.map(group => (group.key === index ? Object.assign(this.state.editedUserGroup) : group)),
     });
+  }
+
+  // showDeleteModal = (key) => {
+  //   Modal.confirm({
+  //     title: 'Do you Want to delete these items?',
+  //     content: 'Some descriptions',
+  //     onOk={() => {
+  //       //this.deleteUserGroup(key);
+  //       this.setState({
+  //         userGroups: this.state.userGroups.filter((userGroup) => userGroup.key !== key)
+  //       });
+  //     }
+  //     },
+  //     onCancel() {},
+  //   });
+  // }
+
+  deleteUserGroup = (key) => {
+    this.setState({
+      userGroups: this.state.userGroups.filter((userGroup) => userGroup.key !== key)
+    })
   }
 
   render() {
