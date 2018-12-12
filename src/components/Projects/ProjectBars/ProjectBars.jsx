@@ -30,13 +30,13 @@ const groupActionMenu = (
 const groupAddMenu = (
   <Menu>
     <Menu.Item>
-      <Icon type="plus-circle" style={{ color: '#1890FF' }} />Add Object
+      <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Object
     </Menu.Item>
     <Menu.Item>
-      <Icon type="file-text" />Add Text
+      <Icon type="file-text" theme='filled' />Add Text
     </Menu.Item>
     <Menu.Item>
-      <Icon type="folder" theme='twoTone' twoToneColor='#dd9633' />Add Folder
+      <Icon type="folder" theme='filled' style={{ color: '#dd9633' }} />Add Folder
     </Menu.Item>
   </Menu>
 )
@@ -160,10 +160,10 @@ const objectExportMenu = (
 const objectAddMenu = (
   <Menu>
     <Menu.Item>
-      <Icon type="plus-circle" style={{ color: '#1890FF' }} />Add Sub-Object
+      <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Sub-Object
     </Menu.Item>
     <Menu.Item>
-      <Icon type="file-text" />Add Text
+      <Icon type="file-text" theme='filled' />Add Text
     </Menu.Item>
   </Menu>
 )
@@ -198,7 +198,7 @@ export class ObjectBar extends Component {
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end'}}>
+        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
           <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20, paddingBottom: 4 }}>
             <Dropdown overlay={objectExportMenu}>
               <a href='#none' className="ant-dropdown-link">
@@ -221,7 +221,7 @@ export class ObjectBar extends Component {
             </Dropdown>
           </div>
           <div style={{ cursor: 'pointer', alignItems: 'center', alignSelf: 'center', paddingRight: 10, paddingBottom: 4 }}>
-            <Icon type="edit" style={{ color: '#1890FF' }} /> Edit
+            <Icon type="edit" theme='filled' style={{ color: '#1890FF' }} /> Edit
           </div>
         </div>
       </div>

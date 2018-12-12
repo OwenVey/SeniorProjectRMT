@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Input, Select } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Icon, Modal, Input, Select, } from 'antd';
+import AddUserModal from '../AddUserModal/AddUserModal';
 
 const Option = Select.Option;
 //#region ItemTypeBar
@@ -65,7 +65,7 @@ export class ItemTypeBar extends Component {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 20, justifyContent: 'flex-end' }}>
         <Button onClick={showAddItemTypeModal}>
-          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
+          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
           Add Item Type
           </Button>
       </div>
@@ -77,155 +77,49 @@ export class ItemTypeBar extends Component {
 // #endregion
 
 //#region UserBar
-const userGroups = [
-  <Option key='Developer'>Developer</Option>,
-  <Option key='Admin'>Admin</Option>,
-  <Option key='PO'>Product Owner</Option>,
-  <Option key='SM'>Scrum Master</Option>,
-  <Option key='Customer'>Customer</Option>,
-];
-
 export class UserBar extends Component {
   constructor() {
     super();
 
     this.state = {
-      addUserModalVisible: false,
-      newFirstName: '',
-      newLastName: '',
-      newUsername: '',
-      newEmail: '',
-      newPassword: '',
-      newPasswordConfirm: '',
-      newStatus: 'ACTIVE',
-      newLicenseType: 'Developer',
-      newUserGroups: [],
+      showUserModal: false,
+      invalidUser: false,
     }
   }
   showAddUserModal = () => {
     this.setState({
-      addUserModalVisible: true,
-      newFirstName: '',
-      newLastName: '',
-      newUsername: '',
-      newEmail: '',
-      newPassword: '',
-      newPasswordConfirm: '',
-      newStatus: 'ACTIVE',
-      newLicenseType: 'Developer',
-      newUserGroups: [],
+      showUserModal: true,
+      invalidUser: false,
     });
   }
 
-  handleOkUserModal = (e) => {
-    const { newFirstName, newLastName, newUsername, newEmail, newStatus, newLicenseType, newUserGroups } = this.state;
+  hideAddUserModal = () => {
+    this.setState({
+      showUserModal: false,
+      invalidUser: false,
+    });
+  }
 
-    let user = {
-      firstName: newFirstName,
-      lastName: newLastName,
-      email: newEmail,
-      userName: newUsername,
-      userStatus: newStatus === 'ACTIVE' ? true : false,
-      liscenceType: newLicenseType,
-      userGroups: newUserGroups,
-      actions: ''
-    }
-
-    if (this.validateForm()) {
-      this.setState({ addUserModalVisible: false, });
-      this.props.addUser(user);
-    }
-    else {
-      alert('Form is invalid!');
-    }
-
+  handleOkModal = (e) => {
+    this.setState({
+      showUserModal: false,
+    });
   }
 
   handleCancelUserModal = (e) => {
     this.setState({
-      addUserModalVisible: false,
+      showUserModal: false,
     });
-  }
-
-  handleFirstNameChange = (e) => {
-    this.setState({ newFirstName: e.target.value });
-  }
-
-  handleLastNameChange = (e) => {
-    this.setState({ newLastName: e.target.value });
-  }
-
-  handleUsernameChange = (e) => {
-    this.setState({ newUsername: e.target.value });
-  }
-
-  handleEmailChange = (e) => {
-    this.setState({ newEmail: e.target.value });
-  }
-
-  handlePasswordChange = (e) => {
-    this.setState({ newPassword: e.target.value });
-  }
-
-  handlePasswordConfirmChange = (e) => {
-    this.setState({ newPasswordConfirm: e.target.value });
-  }
-
-  handleStatusChange = (e) => {
-    this.setState({ newStatus: e.label })
-  }
-
-  handleLicenseTypeChange = (e) => {
-    this.setState({ newLicenseType: e.label })
-  }
-
-  handleUserGroupChange = (e) => {
-    this.setState({ newUserGroups: e.map((userGroup) => userGroup.label) })
-  }
-
-  validateForm = () => {
-    return (this.state.newFirstName.length > 0 && this.state.newLastName.length > 0 && this.state.newUsername.length > 0
-      && this.state.newEmail.length > 0 && this.state.newPassword.length > 0 && this.state.newPassword === this.state.newPasswordConfirm)
   }
 
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
         <Button onClick={this.showAddUserModal}>
-          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />{/* possibly use a transfer? or checkboxes? https://ant.design/components/transfer/*/}
+          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
           Add User
         </Button>
-        <Modal
-          title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User</div>}
-          visible={this.state.addUserModalVisible}
-          onOk={this.handleOkUserModal}
-          onCancel={this.handleCancelUserModal}
-          okText="Add"
-          maskClosable={false}
-          bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
-        >
-          <div> First Name: <Input placeholder='First Name' value={this.state.newFirstName} onChange={this.handleFirstNameChange} /> </div>
-          <div> Last Name: <Input placeholder='Last Name' value={this.state.newLastName} onChange={this.handleLastNameChange} /> </div>
-          <div> Email: <Input placeholder='Email' value={this.state.newEmail} onChange={this.handleEmailChange} /> </div>
-          <div> Username: <Input placeholder='Username' value={this.state.newUsername} onChange={this.handleUsernameChange} /> </div>
-          <div> Password: <Input placeholder='Password' type="password" value={this.state.newPassword} onChange={this.handlePasswordChange} /> </div>
-          <div> Confirm Password: <Input placeholder='Confirm Password' type="password" value={this.state.newPasswordConfirm} onChange={this.handlePasswordConfirmChange} /> </div>
-          <div> License Type: <Select labelInValue defaultValue={{ key: "Developer" }} style={{ width: '100%' }} onChange={this.handleLicenseTypeChange}>
-            <Option value="Developer">Developer</Option>
-            <Option value="Admin">Admin</Option>
-            <Option value="ProductOwner">Product Owner</Option>
-            <Option value="ScrumMaster">Scrum Master</Option>
-            <Option value="Customer">Customer</Option>
-          </Select>
-          </div>
-          <div>Status: <Select labelInValue defaultValue={{ key: "Active" }} style={{ width: '100%' }} onChange={this.handleStatusChange}>
-            <Option value="Active">ACTIVE</Option>
-            <Option value="Inactive">INACTIVE</Option>
-          </Select></div>
-          <div>User Groups: <Select labelInValue mode="multiple" placeholder="Please Select" style={{ width: '100%' }} onChange={this.handleUserGroupChange}>
-            {userGroups}
-          </Select></div>
-        </Modal>
+        {this.state.showUserModal && <AddUserModal addUser={this.props.addUser} handleCancelUserModal={this.handleCancelUserModal} hide={this.hideAddUserModal} />}
       </div>
     )
   }
