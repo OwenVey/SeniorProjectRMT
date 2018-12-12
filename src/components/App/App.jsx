@@ -18,7 +18,8 @@ class App extends Component {
     super();
 
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      accessToken: '',
     };
   }
 
@@ -40,6 +41,10 @@ class App extends Component {
     }));
   };
 
+  setAccessToken = (accessToken) => {
+    this.setState({ accessToken });
+  }
+
   render() {
     return (
       <div className="app">
@@ -47,7 +52,7 @@ class App extends Component {
         <Switch>
           <Route
             path="/login"
-            render={props => <LoginPage {...props} onLogin={this.login} />}
+            render={props => <LoginPage {...props} onLogin={this.login} setAccessToken={this.setAccessToken} />}
           />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <PrivateRoute
@@ -64,6 +69,7 @@ class App extends Component {
             authed={this.state.isAuthenticated}
             path="/admin"
             component={AdminPage}
+            accessToken={this.state.accessToken}
           />
           <PrivateRoute
             authed={this.state.isAuthenticated}
