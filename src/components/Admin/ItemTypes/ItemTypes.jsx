@@ -97,7 +97,10 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <a href='#none'>Delete</a>
+              <Button>Delete</Button>
+              <Modal
+                title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Row?</div>}>
+              </Modal>
             </span>
           )
         }
@@ -118,6 +121,10 @@ class ItemTypes extends Component {
       visible: true,
     });
   }
+
+  // handleDeleteItemType = () => {
+
+  // }
 
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
@@ -209,8 +216,6 @@ class ItemTypes extends Component {
         </Modal>
 
         <div style={{ margin: 20 }}>
-
-
           <Table
             columns={this.state.columns}
             pagination={false}
@@ -218,8 +223,8 @@ class ItemTypes extends Component {
             icon={<FontAwesomeIcon />}
             bordered
           />
-
         </div>
+
       </div >
     );
 
