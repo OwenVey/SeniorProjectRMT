@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
+import { Table, Divider, Modal, Row, Button, Icon, Form, Input, InputNumber } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './UserGroups.css'
 
@@ -81,15 +81,6 @@ class UserGroups extends Component {
                   value={this.state.editedUserGroup.groupName}
                   onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupName: e.target.value } })}
                 >
-                </Input>
-              </Row>
-              <Row className='inputRow'>
-                <div>Edit Number of Users</div>
-                <Input
-                  id='editNumUsers'
-                  title='editNumUsers'
-                  value={this.state.editedUserGroup.numUsers}
-                  onChange={(e) => this.setState({editedUserGroup: {...this.state.editedUserGroup, numUsers: e.target.value}})}>
                 </Input>
               </Row>
             </Modal>
@@ -230,17 +221,6 @@ class UserGroups extends Component {
               value={this.state.groupName}>
             </Input>
           </div>
-          <div className='inputRow'>
-            <div>Number of Users</div>
-            <Input
-              id='numUsers'
-              title='numUsers'
-              placeholder='0'
-              onChange={(e) => this.setState({numUsers: e.target.value})}
-              value={this.state.numUsers}>
-            </Input>
-          </div>
-
         </Modal>
         <Table bordered dataSource={this.state.userGroups} columns={this.state.columns} />
       </React.Fragment>
