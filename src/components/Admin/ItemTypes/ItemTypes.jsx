@@ -97,10 +97,17 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <Button>Delete</Button>
+              <Button onClick={() => this.setState({ deleteModal: true })}>Delete</Button>
               <Modal
-                title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Row?</div>}>
-              </Modal>
+                id="deleteModal"
+                title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item?</div>}
+                visible={this.state.deleteModal}
+                onCancel={this.handleCancel}
+                footer={
+                  [
+                    <Button key="back" onClick={this.handleDeleteCancel}>Cancel</Button>,
+                    <Button key="submit" type="primary" onClick={this.handleAddItemType}>Yes</Button>,
+                  ]} ></Modal>
             </span>
           )
         }
@@ -122,9 +129,11 @@ class ItemTypes extends Component {
     });
   }
 
-  // handleDeleteItemType = () => {
-
-  // }
+  handleDeleteCancel = () => {
+    this.setState({
+      deleteModal: false,
+    });
+  }
 
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
@@ -137,6 +146,7 @@ class ItemTypes extends Component {
       id,
       system,
     }
+
     this.setState({
       visible: false,
       itemTypes: [...this.state.itemTypes, newItemType],
@@ -224,7 +234,6 @@ class ItemTypes extends Component {
             bordered
           />
         </div>
-
       </div >
     );
 
