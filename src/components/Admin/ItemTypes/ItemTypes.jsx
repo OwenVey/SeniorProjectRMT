@@ -104,7 +104,7 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <Button onClick={() => this.handleDeleteItem(itemType.key)}>Delete</Button>
+              <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
               {/* <Modal
                 className="deleteModal"
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
@@ -140,25 +140,30 @@ class ItemTypes extends Component {
 
   handleDeleteItem = (itemType) => {
     this.setState({
-      deleteModalVisible: true,
-      addModalVisible: false,
-      editModalVisible: false,
+      handleCancelModal: true,
     })
     Modal.confirm({
-      title: 'Delete User Group',
-      content: 'Are you sure you want to delete this user group?',
+      title: 'Delete Item Type',
+      content: 'Are you sure you want to delete this item type?',
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk: () => {
         //this.deleteUserGroup()
-        this.setState({ deleteModalVisible: false })
-        this.deleteUserGroup(itemType.id)
+        this.setState({ handleCancelModal: false })
+        this.deleteItemType(itemType.id)
       },
       onCancel: () => {
-        this.setState({ deleteModalVisible: false })
+        this.setState({ handleCancelModal: false })
       }
     });
+  }
+
+  deleteItemType = (id) => {
+    console.log(id);
+    this.setState({
+      itemTypes: this.state.itemTypes.filter((itemType) => itemType.id !== id)
+    })
   }
 
   handleDeleteCancel = () => {
