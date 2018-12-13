@@ -24,6 +24,7 @@ class AddUserModal extends Component {
   }
 
   registerUser = (registerInfo) => {
+    let valid = true
     const url = 'https://senior-design.timblin.org/api/register'
     axios.post(url, {
       email: registerInfo.Email,
@@ -32,11 +33,14 @@ class AddUserModal extends Component {
       lastname: registerInfo.LastName,
       isAdmin: registerInfo.LicenseType === 'Admin'
     })
-      .then(
-        this.props.hide()
-      )
       .catch(error => {
-        console.log(error)
+        valid = false
+        console.log(error.response)
+      })
+      .finally(() => {
+        if (valid) {
+          this.props.hide()
+        }
       })
   }
 
@@ -150,23 +154,23 @@ class AddUserModal extends Component {
               <Input placeholder='Password' type='password' onBlur={this.handleConfirmBlur} />
             )}
           </FormItem>
-          <FormItem 
+          <FormItem
             style={{ marginBottom: '0px' }}
             label="License Type"
             hasFeedback
           >
             {getFieldDecorator('LicenseType', {
               rules: [
-                { required: true, message: 'Please select a License Type'}
+                { required: true, message: 'Please select a License Type' }
               ],
             })(
-            <Select placeholder="Please select a License Type" style={{ width: '100%' }}>
-              <Option value="Developer">Developer</Option>
-              <Option value="Admin">Admin</Option>
-              <Option value="ProductOwner">Product Owner</Option>
-              <Option value="ScrumMaster">Scrum Master</Option>
-              <Option value="Customer">Customer</Option>
-            </Select>
+              <Select placeholder="Please select a License Type" style={{ width: '100%' }}>
+                <Option value="Developer">Developer</Option>
+                <Option value="Admin">Admin</Option>
+                <Option value="ProductOwner">Product Owner</Option>
+                <Option value="ScrumMaster">Scrum Master</Option>
+                <Option value="Customer">Customer</Option>
+              </Select>
             )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Status">
