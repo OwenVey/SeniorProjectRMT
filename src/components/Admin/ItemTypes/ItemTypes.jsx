@@ -104,7 +104,7 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
+              <Button onClick={() => this.handleDeleteItem(itemType.key)}>Delete</Button>
               {/* <Modal
                 className="deleteModal"
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
@@ -153,7 +153,7 @@ class ItemTypes extends Component {
       onOk: () => {
         //this.deleteUserGroup()
         this.setState({ deleteModalVisible: false })
-        this.deleteUserGroup(itemType.key)
+        this.deleteUserGroup(itemType.id)
       },
       onCancel: () => {
         this.setState({ deleteModalVisible: false })
