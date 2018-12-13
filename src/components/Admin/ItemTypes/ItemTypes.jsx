@@ -105,7 +105,7 @@ class ItemTypes extends Component {
               <a href='#none'>Views</a>
               <Divider type='vertical' />
               <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
-              <Modal
+              {/* <Modal
                 className="deleteModal"
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
                 visible={this.state.deleteModal}
@@ -116,7 +116,7 @@ class ItemTypes extends Component {
                     <Button key="back" onClick={() => this.setState({ deleteModal: false })}>Cancel</Button>,
                     <Button key="submit" type="primary" onClick={() => this.handleDeleteItem(itemType.id)}>Yes</Button>,
                   ]
-                } >Do you really want to delete the selected item type?</Modal >
+                } >Do you really want to delete the selected item type?</Modal > */}
             </span >
           )
         }
