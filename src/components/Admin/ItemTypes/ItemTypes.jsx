@@ -55,36 +55,43 @@ class ItemTypes extends Component {
           dataIndex: "icon",
           defaultSortOrder: "descend",
           align: 'center',
+          render: index => <span>{index}</span>,
         },
         {
           title: "Display",
           dataIndex: "display",
-          sorter: (a, b) => a.display.localeCompare(b.display)
+          sorter: (a, b) => a.display.localeCompare(b.display),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Plural",
           dataIndex: "plural",
-          sorter: (a, b) => a.plural.localeCompare(b.plural)
+          sorter: (a, b) => a.plural.localeCompare(b.plural),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Key",
           dataIndex: "key",
-          sorter: (a, b) => a.key.localeCompare(b.key)
+          sorter: (a, b) => a.key.localeCompare(b.key),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Description",
           dataIndex: "description",
-          sorter: (a, b) => a.description.localeCompare(b.description)
+          sorter: (a, b) => a.description.localeCompare(b.description),
+          render: index => <span>{index}</span>,
         },
         {
           title: "ID",
           dataIndex: "id",
-          sorter: (a, b) => a.id.localeCompare(b.id)
+          sorter: (a, b) => a.id.localeCompare(b.id),
+          render: index => <span>{index}</span>,
         },
         {
           title: "System",
           dataIndex: "system",
-          sorter: (a, b) => a.system.localeCompare(b.system)
+          sorter: (a, b) => a.system.localeCompare(b.system),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Action",
