@@ -249,7 +249,7 @@ class ItemTypes extends Component {
           </Select>
 
           <div className="labels">Display</div>
-          <Input required='true' className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
+          <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
           <div className="labels">Plural</div>
           <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
           <div className="labels">Key</div>
