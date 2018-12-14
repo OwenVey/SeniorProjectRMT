@@ -17,6 +17,16 @@
   border: 10em 10em 10em 10em;
 }
 
+.deleteModal {
+  /* width: 100em;
+  height: 500em; */
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  \ position: absolute;
+  justify-content: center;
+  /* display: flex;
+  z-index: 10; */
+}
+
 .inputFields {
   margin-bottom: 10px !important;
 }

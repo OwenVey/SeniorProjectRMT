@@ -55,41 +55,48 @@ class ItemTypes extends Component {
           dataIndex: "icon",
           defaultSortOrder: "descend",
           align: 'center',
+          render: index => <span>{index}</span>,
         },
         {
           title: "Display",
           dataIndex: "display",
-          sorter: (a, b) => a.display.localeCompare(b.display)
+          sorter: (a, b) => a.display.localeCompare(b.display),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Plural",
           dataIndex: "plural",
-          sorter: (a, b) => a.plural.localeCompare(b.plural)
+          sorter: (a, b) => a.plural.localeCompare(b.plural),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Key",
           dataIndex: "key",
-          sorter: (a, b) => a.key.localeCompare(b.key)
+          sorter: (a, b) => a.key.localeCompare(b.key),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Description",
           dataIndex: "description",
-          sorter: (a, b) => a.description.localeCompare(b.description)
+          sorter: (a, b) => a.description.localeCompare(b.description),
+          render: index => <span>{index}</span>,
         },
         {
           title: "ID",
           dataIndex: "id",
-          sorter: (a, b) => a.id.localeCompare(b.id)
+          sorter: (a, b) => a.id.localeCompare(b.id),
+          render: index => <span>{index}</span>,
         },
         {
           title: "System",
           dataIndex: "system",
-          sorter: (a, b) => a.system.localeCompare(b.system)
+          sorter: (a, b) => a.system.localeCompare(b.system),
+          render: index => <span>{index}</span>,
         },
         {
           title: "Action",
           dataIndex: "action",
-          render: () => (
+          render: (index, itemType) => (
             <span>
               <a href='#none' >Edit</a>
               <Divider type='vertical' />
@@ -97,8 +104,20 @@ class ItemTypes extends Component {
               <Divider type='vertical' />
               <a href='#none'>Views</a>
               <Divider type='vertical' />
-              <a href='#none'>Delete</a>
-            </span>
+              <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
+              {/* <Modal
+                className="deleteModal"
+                title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
+                visible={this.state.deleteModal}
+                onCancel={() => this.setState({ deleteModal: false })}
+                // onOk={() => this.handleDeleteItem(itemType.id)}
+                footer={
+                  [
+                    <Button key="back" onClick={() => this.setState({ deleteModal: false })}>Cancel</Button>,
+                    <Button key="submit" type="primary" onClick={() => this.handleDeleteItem(itemType.id)}>Yes</Button>,
+                  ]
+                } >Do you really want to delete the selected item type?</Modal > */}
+            </span >
           )
         }
       ],
@@ -119,6 +138,40 @@ class ItemTypes extends Component {
     });
   }
 
+  handleDeleteItem = (itemType) => {
+    this.setState({
+      handleCancelModal: true,
+    })
+    Modal.confirm({
+      title: 'Delete Item Type',
+      content: 'Are you sure you want to delete this item type?',
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: () => {
+        //this.deleteUserGroup()
+        this.setState({ handleCancelModal: false })
+        this.deleteItemType(itemType.id)
+      },
+      onCancel: () => {
+        this.setState({ handleCancelModal: false })
+      }
+    });
+  }
+
+  deleteItemType = (id) => {
+    console.log(id);
+    this.setState({
+      itemTypes: this.state.itemTypes.filter((itemType) => itemType.id !== id)
+    })
+  }
+
+  handleDeleteCancel = () => {
+    this.setState({
+      deleteModal: false,
+    });
+  }
+
   handleAddItemType = (e) => {
     const { icon, display, plural, key, description, id, system } = this.state;
     let newItemType = {
@@ -130,6 +183,7 @@ class ItemTypes extends Component {
       id,
       system,
     }
+
     this.setState({
       visible: false,
       itemTypes: [...this.state.itemTypes, newItemType],
@@ -195,7 +249,7 @@ class ItemTypes extends Component {
           </Select>
 
           <div className="labels">Display</div>
-          <Input required='true' className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
+          <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
           <div className="labels">Plural</div>
           <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
           <div className="labels">Key</div>
@@ -209,8 +263,6 @@ class ItemTypes extends Component {
         </Modal>
 
         <div style={{ margin: 20 }}>
-
-
           <Table
             columns={this.state.columns}
             pagination={false}
@@ -218,7 +270,6 @@ class ItemTypes extends Component {
             icon={<FontAwesomeIcon />}
             bordered
           />
-
         </div>
       </div >
     );
