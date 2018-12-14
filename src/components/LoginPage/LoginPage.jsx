@@ -37,6 +37,8 @@ class LoginPage extends Component {
       password: loginInfo.password,
     })
       .then(response => {
+        if (response.status !== 200)
+          throw Error();
         const accessToken = response.data.token;
         console.log(accessToken);
         this.props.setAccessToken(accessToken);
