@@ -206,10 +206,10 @@ class Users extends Component {
   fetchUsers = async () => {
     console.log(this.props.accessToken);
     const url = `https://senior-design.timblin.org/api/user?accessToken=${this.props.accessToken}`;
-    axios.get(url)
+    const url2 = `https://abortplatteville.com/api/user?accessToken=${this.props.accessToken}`
+    axios.get(url2)
       .then(response => {
-        console.log(response.data);
-        let users = response.data.users.map(user => { return { ...user, userGroups: ['Developer'], userName: `${user.firstname}${user.lastname}`, userStatus: true, } })
+        let users = response.data.message.users.map(user => { return { ...user, userGroups: ['Developer'], userName: `${user.firstname}${user.lastname}`, userStatus: true, } })
         this.setState({ userData: users })
       })
       .catch(error => {

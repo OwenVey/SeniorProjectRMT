@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox, Card, Alert } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Card, Alert, AutoComplete } from 'antd';
 import axios from 'axios';
 import './LoginPage.css';
 
@@ -31,13 +31,15 @@ class LoginPage extends Component {
 
   login = (loginInfo) => {
     const url = 'https://senior-design.timblin.org/api/login';
-    axios.post(url, {
+    const url2 = 'https://abortplatteville.com/api/login'
+    axios.post(url2, {
       email: loginInfo.email,
       password: loginInfo.password,
     })
       .then(response => {
-        console.log(response.data['accessToken']);
-        this.props.setAccessToken(response.data['accessToken']);
+        const accessToken = response.data.token;
+        console.log(accessToken);
+        this.props.setAccessToken(accessToken);
         this.props.onLogin();
         this.setState({ redirectToReferrer: true });
       })
