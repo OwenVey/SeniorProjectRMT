@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
+import { Table, Divider, Modal, Row, Button, Icon, Form, Input, InputNumber } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './UserGroups.css'
 
@@ -64,6 +64,7 @@ class UserGroups extends Component {
               }}
             >
               <Row className='inputRow'>
+              <div>Edit User Group Type</div>
                 <Input
                   id='editGroupType'
                   title='editGroupType'
@@ -73,6 +74,7 @@ class UserGroups extends Component {
                 </Input>
               </Row>
               <Row className='inputRow'>
+                <div>Edit User Group Name</div>
                 <Form layout='vertical' />
                 <Input
                   id='editGroupName'
@@ -254,7 +256,7 @@ class UserGroups extends Component {
           visible={this.state.addModalVisible}
           onOk={() => {
             this.setState({ addModalVisible: false })
-            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers, this.state.curProjects)
+            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers)
           }}
           onCancel={() => { this.setState({ addModalVisible: false }) }}
           className='userGroupModal'
@@ -279,7 +281,6 @@ class UserGroups extends Component {
               value={this.state.groupName}>
             </Input>
           </div>
-
         </Modal>
         <Table bordered dataSource={this.state.userGroups} columns={this.state.columns} />
       </React.Fragment>
