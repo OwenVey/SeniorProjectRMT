@@ -37,7 +37,7 @@ class LoginPage extends Component {
       password: loginInfo.password,
     })
       .then(response => {
-        if (response.status !== 200)
+        if (response.data.status !== 200)
           throw Error();
         const accessToken = response.data.token;
         console.log(accessToken);
@@ -46,6 +46,7 @@ class LoginPage extends Component {
         this.setState({ redirectToReferrer: true });
       })
       .catch(error => {
+        console.log('login error')
         this.setState({
           invalidLogin: true,
           loading: false,
