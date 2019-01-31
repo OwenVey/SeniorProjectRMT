@@ -60,21 +60,18 @@ export class ObjectGroupBar extends Component {
 
     this.state = {
       showAddObjectModal: false,
-      invalidUser: false,
     }
   }
 
   showAddObjectModal = () => {
     this.setState({
       showAddObjectModal: true,
-      invalidUser: false,
     });
   }
 
   hideAddObjectModal = () => {
     this.setState({
       showAddObjectModal: false,
-      invalidUser: false,
     });
   }
 
@@ -95,7 +92,7 @@ export class ObjectGroupBar extends Component {
       <Menu.Item onClick={this.showAddObjectModal}>
         <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Object
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item onClick={this.showAddObjectModal}>
         <Icon type="file-text" theme='filled' />Add Text
       </Menu.Item>
       <Menu.Item>
@@ -195,17 +192,6 @@ const objectExportMenu = (
   </Menu>
 )
 
-const objectAddMenu = (
-  <Menu>
-    <Menu.Item>
-      <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Sub-Object
-    </Menu.Item>
-    <Menu.Item>
-      <Icon type="file-text" theme='filled' />Add Text
-    </Menu.Item>
-  </Menu>
-)
-
 const objectActionMenu = (
   <Menu>
     <Menu.Item>
@@ -218,6 +204,49 @@ const objectActionMenu = (
 )
 
 export class ObjectBar extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      showAddObjectModal: false,
+    }
+  }
+
+  showAddObjectModal = () => {
+    this.setState({
+      showAddObjectModal: true,
+    });
+  }
+
+  hideAddObjectModal = () => {
+    this.setState({
+      showAddObjectModal: false,
+    });
+  }
+
+  handleAddObjectOkModal = (e) => {
+    this.setState({
+      showAddObjectModal: false,
+    });
+  }
+
+  handleCancelAddObjectModal = (e) => {
+    this.setState({
+      showAddObjectModal: false,
+    });
+  }
+
+  objectAddMenu = (
+    <Menu>
+      <Menu.Item onClick={this.showAddObjectModal}>
+        <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Sub-Object
+      </Menu.Item>
+      <Menu.Item onClick={this.showAddObjectModal}>
+        <Icon type="file-text" theme='filled' />Add Text
+      </Menu.Item>
+    </Menu>
+  )
+
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: '0px 20px', marginBottom: 5, justifyContent: 'flex-end' }}>
@@ -252,7 +281,7 @@ export class ObjectBar extends Component {
             </Dropdown>
           </div>
           <div style={{ alignItems: 'center', alignSelf: 'center', paddingRight: 20, paddingBottom: 4 }}>
-            <Dropdown overlay={objectAddMenu}>
+            <Dropdown overlay={this.objectAddMenu}>
               <a href='#none' className="ant-dropdown-link">
                 Add <Icon type="down" />
               </a>
@@ -262,6 +291,7 @@ export class ObjectBar extends Component {
             <Icon type="edit" theme='filled' style={{ color: '#1890FF' }} /> Edit
           </div>
         </div>
+        {this.state.showAddObjectModal && <AddObjectModal handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} />}
       </div>
     )
   }
