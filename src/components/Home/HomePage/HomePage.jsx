@@ -21,6 +21,14 @@ class HomePage extends Component {
     });
   }
 
+  toggleBookmark = (item) => {
+    let recentlyViewedItemsCopy = this.state.recentlyViewedItems;
+    recentlyViewedItemsCopy.find(recentlyViewedItem => recentlyViewedItem.id === item.id).bookmarked = !item.bookmarked;
+    this.setState({
+      recentlyViewedItems: recentlyViewedItemsCopy,
+    })
+  }
+
   render() {
     return (
       <div className='center-card'>
@@ -33,7 +41,7 @@ class HomePage extends Component {
               onChange={this.updateSearch}
             />
           </div>
-          <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems}></RecentlyViewedList>
+          <RecentlyViewedList filter={this.state.filter} recentlyViewedItems={this.state.recentlyViewedItems} toggleBookmark={this.toggleBookmark}></RecentlyViewedList>
         </div>
       </div>
 

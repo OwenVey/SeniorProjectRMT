@@ -19,7 +19,7 @@ class RecentlyViewedList extends Component {
         bordered
       >
         {this.filter(this.props.recentlyViewedItems)
-          .map((recentlyViewedItem) => <RecentlyViewedListItem key={recentlyViewedItem.id} recentlyViewedItem={recentlyViewedItem}></RecentlyViewedListItem>)}
+          .map((recentlyViewedItem) => <RecentlyViewedListItem key={recentlyViewedItem.id} recentlyViewedItem={recentlyViewedItem} toggleBookmark={this.props.toggleBookmark}></RecentlyViewedListItem>)}
       </List>
     )
   }

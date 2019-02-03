@@ -6,17 +6,13 @@ import './RecentlyViewedListItem.css';
 
 class RecentlyViewedListItem extends Component {
 
-  state = { isBookmarked: false };
-
   handleClick = e => {
     alert('test');
   }
 
   handleBookmark = (e) => {
     e.stopPropagation();
-    this.setState(prevState => ({
-      isBookmarked: !prevState.isBookmarked,
-    }));
+    this.props.toggleBookmark(this.props.recentlyViewedItem);
   }
 
   render() {
@@ -25,7 +21,11 @@ class RecentlyViewedListItem extends Component {
         <div className='list-content grow'>
           <div style={{ marginRight: '10px' }}><FontAwesomeIcon icon={this.props.recentlyViewedItem.icon} /></div>
           <div>{this.props.recentlyViewedItem.name}</div>
-          <div><Tooltip placement='top' title='Add Bookmark' ><FontAwesomeIcon onClick={this.handleBookmark} icon={this.state.isBookmarked ? ["fas", "bookmark"] : ["far", "bookmark"]} /></Tooltip></div>
+          <div>
+            <Tooltip placement='top' title='Add Bookmark' >
+              <FontAwesomeIcon onClick={this.handleBookmark} icon={this.props.recentlyViewedItem.bookmarked ? ["fas", "bookmark"] : ["far", "bookmark"]} />
+            </Tooltip>
+          </div>
         </div>
       </List.Item>
     );
