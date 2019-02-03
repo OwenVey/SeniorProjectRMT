@@ -168,7 +168,7 @@ export class ObjectGroupBar extends Component {
           </Dropdown>
         </div>
         {/* {this.state.showAddObjectModal && <AddObjectModal addUser={this.props.addUser} handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} />}  */}
-        {this.state.showAddObjectModal && <AddObjectModal handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} />}
+        {this.state.showAddObjectModal && <AddObjectModal handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} accessToken={this.props.accessToken}/>}
       </div>
     )
   }
@@ -291,7 +291,7 @@ export class ObjectBar extends Component {
             <Icon type="edit" theme='filled' style={{ color: '#1890FF' }} /> Edit
           </div>
         </div>
-        {this.state.showAddObjectModal && <AddObjectModal handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} />}
+        {this.state.showAddObjectModal && <AddObjectModal handleCancelAddObjectModal={this.handleCancelAddObjectModal} hide={this.hideAddObjectModal} accessToken={this.props.accessToken}/>}
       </div>
     )
   }
