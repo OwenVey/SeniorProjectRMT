@@ -5,10 +5,9 @@ class ManageAllProjects extends Component {
     super(props); 
   }
   render() {
-    console.log(this.props.accessToken)
     return (
       <div>
-        <ManageProjectBar accessToken = {this.props.accessToken} />
+        <ManageProjectBar accessToken={this.props.accessToken} />
       </div>
     )
   }
