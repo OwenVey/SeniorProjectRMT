@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import data from '../../../data.js';
+import axios from 'axios';
 
 const TreeNode = Tree.TreeNode;
 
@@ -194,6 +195,39 @@ class TreeView extends Component {
         }
       }
     }
+  }
+
+  componentWillMount() {
+    this.fetchTree();
+  }
+
+  fetchTree = async () => {
+    console.log(this.props.accessToken);
+		const url = `https://senior-design.timblin.org/api/user?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/user?accessToken=${this.props.accessToken}`;
+    axios
+			.get(url2)
+			.then(response => {
+				let treeView = response.data.message.treeView.map(treeView => {
+					return {
+            ...treeView,
+            //for method to keep searching until we find that a 'folder' has nothing inside of it
+            //save changes, with visual indication
+            //only need to send to database what was changed
+            //key: ,
+            //title: ,
+            //icon: ,
+            //children: ,
+						// userGroups: ['Developer'],
+						// userName: `${usenpm r.firstname}${user.lastname}`,
+						// userStatus: true,
+					};
+				});
+				this.setState({ userData: users });
+			})
+			.catch(error => {
+				console.log(error);
+			});
   }
 
   render() {
