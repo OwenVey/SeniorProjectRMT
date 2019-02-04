@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Icon, Modal, Input, Select, } from 'antd';
 import AddUserModal from '../AddUserModal/AddUserModal';
-
+import AddProjectModal from '../AddProjectModal/AddProjectModal';
 const Option = Select.Option;
 //#region ItemTypeBar
 
@@ -120,6 +120,53 @@ export class UserBar extends Component {
           Add User
         </Button>
         {this.state.showUserModal && <AddUserModal addUser={this.props.addUser} handleCancelUserModal={this.handleCancelUserModal} hide={this.hideAddUserModal} />}
+      </div>
+    )
+  }
+}
+// #endregion
+
+//#region ManageProjectBar
+export class ManageProjectBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showAddProjectModal: false,
+    }
+  }
+  showAddProjectModal = () => {
+    this.setState({
+      showAddProjectModal: true,
+    });
+  }
+
+  hideAddProjectModal = () => {
+    this.setState({
+      showAddProjectModal: false,
+    });
+  }
+
+  handleOkAddProjectModal = (e) => {
+    this.setState({
+      showAddProjectModal: false,
+    });
+  }
+
+  handleCancelAddProjectModal = (e) => {
+    this.setState({
+      showAddProjectModal: false,
+    });
+  }
+
+  render() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
+        <Button onClick={this.showAddProjectModal}>
+          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+          Add Project
+        </Button>
+        {this.state.showAddProjectModal && <AddProjectModal handleCancelAddProjectModal={this.handleCancelAddProjectModal} hide={this.hideAddProjectModal} accessToken={this.props.accessToken} />}
       </div>
     )
   }
