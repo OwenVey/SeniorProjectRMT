@@ -64,6 +64,7 @@ class App extends Component {
             authed={this.state.isAuthenticated}
             path="/project"
             component={ProjectPage}
+            accessToken = {this.state.accessToken}
           />
           <PrivateRoute
             authed={this.state.isAuthenticated}
@@ -80,5 +81,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;

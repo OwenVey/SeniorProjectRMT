@@ -45,7 +45,7 @@ class AdminPage extends Component {
         selectedPage = <ItemTypes />;
         break;
       case "manageAllProjects":
-        selectedPage = <ManageAllProjects />;
+        selectedPage = <ManageAllProjects accessToken = {this.props.accessToken}/>;
         break;
       default:
         selectedPage = null;
