@@ -84,7 +84,7 @@ export default class ProjectPage extends Component {
         <div className='splitpane'>
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
 
-            <TreeView handleItemSelect={this.onTreeItemSelect} />
+            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken}/>
 
             <Tabs
               hideAdd

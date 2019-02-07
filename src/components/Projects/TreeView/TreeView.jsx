@@ -38,11 +38,11 @@ const getParentKey = (key, tree) => {
 
 class TreeView extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      treeData: data.projectTreeData,
+      treeData: [],//data.projectTreeData,
       expandedKeys: ['0-0'],
       searchValue: '',
       autoExpandParent: true,
@@ -208,22 +208,18 @@ class TreeView extends Component {
     axios
 			.get(url)
 			.then(response => {
-				let treeNodes = response.data.message.treeNodes.map(treeNode => {
+				let objects = response.data.objects.map(object => {
           // if(treeNode.parent != null)
           //   treeNodes.map(treeNode.parent => {treeNode})
-          treeNodes.forEach((treeNode) => {
-              
-            }
-          )
 					return {
-            ...treeNode,
+            ...object,
             //children: treeNode.parent, //loop to get all nodes with treenode.parent
-            key: treeNode.id,
-            title: treeNode.name,
-            description: treeNode.text,
+            key: object.id,
+            title: object.name,
 					};
-				});
-				this.setState({ projectTreeData: treeNodes });
+        });
+        
+				this.setState({ treeData: objects });
 			})
 			.catch(error => {
 				console.log(error);
