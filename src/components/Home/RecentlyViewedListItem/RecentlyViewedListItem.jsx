@@ -4,32 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './RecentlyViewedListItem.css';
 
-class RecentlyViewedListItem extends Component {
+const RecentlyViewedListItem = ({ item, onBookmark, onSelect }) => (
 
-  handleClick = e => {
-    alert('test');
-  }
-
-  handleBookmark = (e) => {
-    e.stopPropagation();
-    this.props.toggleBookmark(this.props.recentlyViewedItem);
-  }
-
-  render() {
-    return (
-      <List.Item className='list-item' onClick={this.handleClick}>
-        <div className='list-content grow'>
-          <div style={{ marginRight: '10px' }}><FontAwesomeIcon icon={this.props.recentlyViewedItem.icon} /></div>
-          <div>{this.props.recentlyViewedItem.name}</div>
-          <div>
-            <Tooltip placement='top' title='Add Bookmark' >
-              <FontAwesomeIcon onClick={this.handleBookmark} icon={this.props.recentlyViewedItem.bookmarked ? ["fas", "bookmark"] : ["far", "bookmark"]} />
-            </Tooltip>
-          </div>
-        </div>
-      </List.Item>
-    );
-  }
-}
+  <List.Item className='list-item' onClick={onSelect} >
+    <div className='list-content grow'>
+      <div style={{ marginRight: '10px' }}><FontAwesomeIcon icon={item.icon} /></div>
+      <div>{item.name}</div>
+      <div>
+        <Tooltip placement='top' title='Add Bookmark' >
+          <FontAwesomeIcon onClick={onBookmark} icon={item.bookmarked ? ["fas", "bookmark"] : ["far", "bookmark"]} />
+        </Tooltip>
+      </div>
+    </div>
+  </List.Item>
+)
 
 export default RecentlyViewedListItem;
