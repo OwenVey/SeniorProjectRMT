@@ -203,32 +203,34 @@ class TreeView extends Component {
 
   fetchTree = async () => {
     console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/user?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/user?accessToken=${this.props.accessToken}`;
+		const url = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
     axios
-			.get(url2)
+			.get(url)
 			.then(response => {
-				let treeView = response.data.message.treeView.map(treeView => {
+				let treeNodes = response.data.message.treeNodes.map(treeNode => {
+          // if(treeNode.parent != null)
+          //   treeNodes.map(treeNode.parent => {treeNode})
+          treeNodes.forEach((treeNode) => {
+              
+            }
+          )
 					return {
-            ...treeView,
-            //for method to keep searching until we find that a 'folder' has nothing inside of it
-            //save changes, with visual indication
-            //only need to send to database what was changed
-            //key: ,
-            //title: ,
-            //icon: ,
-            //children: ,
-						// userGroups: ['Developer'],
-						// userName: `${usenpm r.firstname}${user.lastname}`,
-						// userStatus: true,
+            ...treeNode,
+            //children: treeNode.parent, //loop to get all nodes with treenode.parent
+            key: treeNode.id,
+            title: treeNode.name,
+            description: treeNode.text,
 					};
 				});
-				this.setState({ userData: users });
+				this.setState({ projectTreeData: treeNodes });
 			})
 			.catch(error => {
 				console.log(error);
 			});
   }
+
+  //mapParent()
 
   render() {
 
