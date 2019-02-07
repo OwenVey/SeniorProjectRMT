@@ -147,7 +147,7 @@ class TreeView extends Component {
     let selectedNode;
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
-      if (node.key === key) {
+      if (node.key == key) {
         selectedNode = node;
       } else if (node.children && this.getSelectedNode(key, node.children)) {
         selectedNode = this.getSelectedNode(key, node.children);
@@ -213,7 +213,7 @@ class TreeView extends Component {
           //   treeNodes.map(treeNode.parent => {treeNode})
 					return {
             ...object,
-            //children: treeNode.parent, //loop to get all nodes with treenode.parent
+            children: null, //treeNode.parent, //loop to get all nodes with treenode.parent
             key: object.id,
             title: object.name,
 					};
