@@ -6,7 +6,8 @@ import { bookmarkRecentlyViewedItem, selectRecentlyViewedItem } from '../actions
 const recentlyViewedItemsReducer = createReducer(data.recentlyViewedItems, {
 
   [bookmarkRecentlyViewedItem]: (state, action) => {
-    let item = state.find(item => item.id === action.payload)
+    action.payload.event.stopPropagation();
+    let item = state.find(item => item.id === action.payload.id)
     item.bookmarked = !item.bookmarked;
   },
 

@@ -17,7 +17,7 @@ const HomePage = ({ recentlyViewedItems, bookmarkRecentlyViewedItem, selectRecen
           <RecentlyViewedListItem
             key={item.id}
             item={item}
-            onBookmark={() => bookmarkRecentlyViewedItem(item.id)}
+            onBookmark={(e) => bookmarkRecentlyViewedItem({ event: e, id: item.id })}
             onSelect={() => selectRecentlyViewedItem(item.id)} />
         )}
       </RecentlyViewedList>
