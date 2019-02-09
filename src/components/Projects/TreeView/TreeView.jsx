@@ -203,27 +203,31 @@ class TreeView extends Component {
 
   fetchTree = async () => {
     console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
+    const url = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
     const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
     axios
-			.get(url)
-			.then(response => {
-				let objects = response.data.objects.map(object => {
-          // if(treeNode.parent != null)
-          //   treeNodes.map(treeNode.parent => {treeNode})
-					return {
-            ...object,
-            children: null, //treeNode.parent, //loop to get all nodes with treenode.parent
-            key: object.id,
-            title: object.name,
-					};
-        });
-        
-				this.setState({ treeData: objects });
-			})
-			.catch(error => {
-				console.log(error);
-			});
+      .get(url)
+      .then(response => {
+        let objects = this.insertLevel(null, response.data.objects)
+        this.setState({ treeData: objects });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  insertLevel = (parentID, objects) => {
+    objects.map(object => {
+      if (object.id == parentID) {
+        return {
+          ...object,
+          children: null,
+          key: object.id,
+          title: object.name,
+          parent: object.ID
+        };
+      }
+    })
   }
 
   //mapParent()
