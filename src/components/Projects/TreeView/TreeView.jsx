@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import data from '../../../data.js';
 import axios from 'axios';
 
 const TreeNode = Tree.TreeNode;
@@ -221,7 +220,8 @@ class TreeView extends Component {
     objects.map(object => {
       if (object.parent == parentID) {
         level.push({
-          children: null,
+          ...object,
+          children: this.insertLevel(object.id, objects) || null,
           key: object.id,
           title: object.name,
           parent: parentID
@@ -230,8 +230,6 @@ class TreeView extends Component {
     })
     return level;
   }
-
-  //mapParent()
 
   render() {
 
