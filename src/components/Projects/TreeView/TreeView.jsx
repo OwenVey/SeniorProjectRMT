@@ -217,14 +217,13 @@ class TreeView extends Component {
   }
 
   insertLevel = (parentID, objects) => {
-    objects.map(object => {
-      if (object.id == parentID) {
+    return objects.map(object => {
+      if (object.parent == parentID) {
         return {
-          ...object,
           children: null,
           key: object.id,
           title: object.name,
-          parent: object.ID
+          parent: parentID
         };
       }
     })
