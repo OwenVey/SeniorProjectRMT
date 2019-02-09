@@ -5,8 +5,6 @@ import axios from 'axios';
 
 const TreeNode = Tree.TreeNode;
 
-
-
 const dataList = [];
 const generateList = (data) => {
   for (let i = 0; i < data.length; i++) {
@@ -36,7 +34,6 @@ const getParentKey = (key, tree) => {
 };
 
 class TreeView extends Component {
-
   constructor(props) {
     super(props);
 
@@ -200,6 +197,9 @@ class TreeView extends Component {
     this.fetchTree();
   }
 
+  /* This uses an access token and the database URL to retrieve object information.
+   * The information is then inserted into the tree and the treeData state.
+  */
   fetchTree = async () => {
     console.log(this.props.accessToken);
     const url = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
@@ -215,6 +215,12 @@ class TreeView extends Component {
       });
   }
 
+  /* This method uses a parentID and an array of objects to determine which objects have a parent.
+   * The method inserts the child into the array at the appropriate level.
+   * If there are no children, the children field is set to null.
+   * If there are children, the correct children, keys, title, and parents are set and pushed to
+   * * the appropriate level in the tree.
+  */
   insertLevel = (parentID, objects) => {
     var level = []
     objects.map(object => {
