@@ -219,10 +219,13 @@ class TreeView extends Component {
     var level = []
     objects.map(object => {
       if (object.parent == parentID) {
+        let children = this.insertLevel(object.id, objects);
+        if (children.length == 0)
+          children = null;
         level.push({
           ...object,
-          children: this.insertLevel(object.id, objects) || null,
-          key: object.id,
+          children: children,
+          key: object.global_id,
           title: object.name,
           parent: parentID
         })
