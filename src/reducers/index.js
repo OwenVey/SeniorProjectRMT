@@ -20,9 +20,6 @@ const recentlyViewedItemsReducer = createReducer(data.recentlyViewedItems, {
 
 });
 
-
-
-
 const initialAuthenticationState = {
   accessToken: '',
   isAuthenticated: false,
