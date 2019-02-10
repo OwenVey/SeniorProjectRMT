@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import data from '../../../data.js';
+import axios from 'axios';
 
 const TreeNode = Tree.TreeNode;
-
-
-
 const dataList = [];
 const generateList = (data) => {
   for (let i = 0; i < data.length; i++) {
@@ -36,12 +33,11 @@ const getParentKey = (key, tree) => {
 };
 
 class TreeView extends Component {
-
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      treeData: data.projectTreeData,
+      treeData: [],//data.projectTreeData,
       expandedKeys: ['0-0'],
       searchValue: '',
       autoExpandParent: true,
@@ -146,7 +142,7 @@ class TreeView extends Component {
     let selectedNode;
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
-      if (node.key === key) {
+      if (node.key == key) {
         selectedNode = node;
       } else if (node.children && this.getSelectedNode(key, node.children)) {
         selectedNode = this.getSelectedNode(key, node.children);
@@ -196,8 +192,74 @@ class TreeView extends Component {
     }
   }
 
-  render() {
+  /* This ensures that fetchTree is called.
+  */
+  componentWillMount() {
+    this.fetchTree();
+  }
 
+  /* This uses an access token and the database URL to retrieve object information.
+   * The information is then inserted into the tree and the treeData state.
+  */
+  fetchTree = () => {
+    console.log(this.props.accessToken);
+    const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
+    const projectURL = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
+    axios
+      .get(projectURL)
+      .then(response => {
+        let projects = response.data.projects.map(project => {
+          let project_id = project.id;
+          const objectURL = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
+          const objectForProjectURL = `https://senior-design.timblin.org/api/object/${project_id}?accessToken=${this.props.accessToken}`;
+          var objects = null;
+          axios
+            .get(objectForProjectURL)
+            .then(response => {
+              objects = this.insertLevel(null, response.data.objects);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          return {
+            key: project.global_id,
+            title: project.name,
+            children: objects,
+          }
+        })
+        this.setState({ treeData: projects });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  /* This method uses a parentID and an array of objects to determine which objects have a parent.
+   * The method inserts the child into the array at the appropriate level.
+   * If there are no children, the children field is set to null.
+   * If there are children, the correct children, keys, title, and parents are set and pushed to
+   * * the appropriate level in the tree.
+  */
+  insertLevel = (parentID, objects) => {
+    var level = []
+    objects.map(object => {
+      if (object.parent == parentID) {
+        let children = this.insertLevel(object.id, objects);
+        if (children.length == 0)
+          children = null;
+        level.push({
+          ...object,
+          children: children,
+          key: object.global_id,
+          title: object.name,
+          parent: parentID
+        })
+      }
+    })
+    return level;
+  }
+
+  render() {
     const rightClickTreeNodeMenu = (
       <Menu>
         <Menu.Item key="1">Open</Menu.Item>

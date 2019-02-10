@@ -23,8 +23,8 @@ export default {
         title: 'Project Name',
         icon: 'archive',
         children: [{
-            title: 'Component 1',
             key: '0-0-0',
+            title: 'Component 1',
             icon: 'sitemap',
 
             children: [
