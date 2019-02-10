@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const TreeNode = Tree.TreeNode;
-
 const dataList = [];
 const generateList = (data) => {
   for (let i = 0; i < data.length; i++) {
@@ -202,22 +201,30 @@ class TreeView extends Component {
   /* This uses an access token and the database URL to retrieve object information.
    * The information is then inserted into the tree and the treeData state.
   */
-  fetchTree = async () => {
+  fetchTree = () => {
     console.log(this.props.accessToken);
     const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
-
     const projectURL = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
     axios
       .get(projectURL)
       .then(response => {
         let projects = response.data.projects.map(project => {
+          let project_id = project.id;
           const objectURL = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
-          var elems;
-          this.getObjects(elems);
+          const objectForProjectURL = `https://senior-design.timblin.org/api/object/${project_id}?accessToken=${this.props.accessToken}`;
+          var objects = null;
+          axios
+            .get(objectForProjectURL)
+            .then(response => {
+              objects = this.insertLevel(null, response.data.objects);
+            })
+            .catch(error => {
+              console.log(error);
+            });
           return {
             key: project.global_id,
             title: project.name,
-            children: elems,
+            children: objects,
           }
         })
         this.setState({ treeData: projects });
@@ -225,20 +232,6 @@ class TreeView extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
-
-  getObjects = (elems) => {
-    const objectForProjectURL = `https://senior-design.timblin.org/api/object/{project_id}?accessToken=${this.props.accessToken}`;
-    axios
-      .get(objectForProjectURL)
-      .then(response => {
-        elems = this.insertLevel(null, response.data.objects);
-        //this.setState({ treeData: objects });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    return (elems);
   }
 
   /* This method uses a parentID and an array of objects to determine which objects have a parent.
