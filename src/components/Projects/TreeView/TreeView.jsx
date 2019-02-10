@@ -204,27 +204,41 @@ class TreeView extends Component {
   */
   fetchTree = async () => {
     console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
     const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
-    const url3 = `https://senior-design.timblin.org/api/object/{project_id}?accessToken=${this.props.accessToken}`;
-    const url4 = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
+
+    const projectURL = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
     axios
-      .get(url4)
-        .then(response => {
-          let projects = this.insertIntoProject(response.data.projects)
-        })
-      .catch(error => {
-        console.log(error);
-      });
-    axios
-      .get(url)
+      .get(projectURL)
       .then(response => {
-        let objects = this.insertLevel(null, response.data.objects)
-        this.setState({ treeData: objects });
+        let projects = response.data.projects.map(project => {
+          const objectURL = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
+          var elems;
+          this.getObjects(elems);
+          return {
+            key: project.global_id,
+            title: project.name,
+            children: elems,
+          }
+        })
+        this.setState({ treeData: projects });
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  getObjects = (elems) => {
+    const objectForProjectURL = `https://senior-design.timblin.org/api/object/{project_id}?accessToken=${this.props.accessToken}`;
+    axios
+      .get(objectForProjectURL)
+      .then(response => {
+        elems = this.insertLevel(null, response.data.objects);
+        //this.setState({ treeData: objects });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    return (elems);
   }
 
   /* This method uses a parentID and an array of objects to determine which objects have a parent.
@@ -237,43 +251,6 @@ class TreeView extends Component {
     var level = []
     objects.map(object => {
       if (object.parent == parentID) {
-        let children = this.insertLevel(object.id, objects);
-        if (children.length == 0)
-          children = null;
-        level.push({
-          ...object,
-          children: children,
-          key: object.global_id,
-          title: object.name,
-          parent: parentID
-        })
-      }
-    })
-    return level;
-  }
-
-  insertIntoProject = (projects) => {
-    var projectNodes = [];
-    const url3 = `https://senior-design.timblin.org/api/object/${this.project_id}?accessToken=${this.props.accessToken}`;
-    axios
-      .get(url3)
-        .then(response => {
-          let objects = response.data.objects.map(object => {
-            return{
-              ...object,
-              projectID: response.data.object.project_id,
-            };
-            projects.map(project => {
-              if(project.id == object.project_id)
-                projectNodes.push(object);
-            })
-          })
-        })
-      .catch(error => {
-        console.log(error);
-      });
-    projects.map(project => {
-      if (project.id == object.project_id) {
         let children = this.insertLevel(object.id, objects);
         if (children.length == 0)
           children = null;
