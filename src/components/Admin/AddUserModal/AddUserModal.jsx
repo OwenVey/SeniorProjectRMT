@@ -100,7 +100,7 @@ class AddUserModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <Form onSubmit={this.handleOkUserModal} hideRequiredMark={true}>
+        <Form onSubmit={this.handleOkUserModal}>
           <FormItem style={{ marginBottom: '0px' }} label="First Name">
             {getFieldDecorator('FirstName', {
               rules: [{ required: true, message: 'Please input the user\'s First Name' }],
