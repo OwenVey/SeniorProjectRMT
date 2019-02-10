@@ -193,6 +193,8 @@ class TreeView extends Component {
     }
   }
 
+  /* This ensures that fetchTree is called.
+  */
   componentWillMount() {
     this.fetchTree();
   }
@@ -288,7 +290,6 @@ class TreeView extends Component {
   }
 
   render() {
-
     const rightClickTreeNodeMenu = (
       <Menu>
         <Menu.Item key="1">Open</Menu.Item>
