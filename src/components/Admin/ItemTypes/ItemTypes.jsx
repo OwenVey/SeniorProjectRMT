@@ -160,7 +160,6 @@ class ItemTypes extends Component {
   }
 
   deleteItemType = (id) => {
-    console.log(id);
     this.setState({
       itemTypes: this.state.itemTypes.filter((itemType) => itemType.id !== id)
     })

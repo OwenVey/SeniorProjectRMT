@@ -47,7 +47,6 @@ class AddUserModal extends Component {
   handleOkUserModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.registerUser(values);
       }
     })

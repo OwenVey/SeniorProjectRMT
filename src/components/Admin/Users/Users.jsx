@@ -84,13 +84,13 @@ class Users extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -136,13 +136,13 @@ class Users extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -233,7 +233,6 @@ class Users extends Component {
 	}
 
 	fetchUsers = async () => {
-		console.log(this.props.accessToken);
 		const url = `https://senior-design.timblin.org/api/user?accessToken=${this.props.accessToken}`;
 		const url2 = `https://abortplatteville.com/api/user?accessToken=${this.props.accessToken}`;
 		axios
