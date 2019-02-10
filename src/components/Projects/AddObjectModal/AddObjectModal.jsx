@@ -60,7 +60,7 @@ class AddObjectModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <Form onSubmit={this.handleOkAddObjectModal} hideRequiredMark={true}>
+        <Form onSubmit={this.handleOkAddObjectModal}>
           <FormItem style={{ marginBottom: '0px' }} label="Global ID">
             {getFieldDecorator('GlobalID', {
               rules: [ { max: 10, message: 'ID must be 10 characters or less!' }],
