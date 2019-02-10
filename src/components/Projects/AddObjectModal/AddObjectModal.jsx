@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form } from 'antd';
+import { Icon, Modal, Input, Select, InputNumber, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
-const Option = Select.Option;
 const FormItem = Form.Item;
 
-const userGroups = [
-  <Option key='Developer'>Developer</Option>,
-  <Option key='Admin'>Admin</Option>,
-  <Option key='PO'>Product Owner</Option>,
-  <Option key='SM'>Scrum Master</Option>,
-  <Option key='Customer'>Customer</Option>,
-];
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 14 },
+};
 
 class AddObjectModal extends Component {
   constructor(props) {
@@ -30,7 +26,7 @@ class AddObjectModal extends Component {
       text: objectInfo.Description,
       parent: null,
       project_id: 1,
-      listing:0,
+      listing:objectInfo.listing,
     })
       .catch(error => {
         valid = false
@@ -75,7 +71,10 @@ class AddObjectModal extends Component {
 
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('Name', {
-              rules: [{ required: true, message: 'Please input name' }],
+              rules: [
+                { required: true, message: 'Please input name' },
+                { max: 255, message: 'Name must be 255 characters or less!'}
+              ],
             })(
               <Input placeholder='Name' />
             )}
@@ -83,11 +82,24 @@ class AddObjectModal extends Component {
 
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('Description', {
-              rules: [{ required: true, message: 'Please input description' }],
+              rules: [
+                { required: true, message: 'Please input description' },
+                { max: 255, message: 'Description must be 255 characters or less!'}
+              ],
             })(
               <Input placeholder='Description' />
             )}
           </FormItem>
+
+          <Form.Item
+          {...formItemLayout}
+          label="Listing"
+        >
+          {getFieldDecorator('listing', { initialValue: 0 })(
+            <InputNumber min={0}/>
+          )}
+          <span className="ant-form-text"></span>
+        </Form.Item>
         </Form>
       </Modal>
     );
