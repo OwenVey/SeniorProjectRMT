@@ -1,6 +1,7 @@
+
 import React, { Component } from 'react';
 import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
-import { UserBar } from '../AdminBars/AdminBars.jsx';
+import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
 import './ManageAllProjects.css';
@@ -240,7 +241,7 @@ class ManageAllProjects extends Component {
 
 		return (
 			<React.Fragment>
-
+				<ManageProjectBar accessToken={this.props.accessToken} />
 				<Table
 					components={this.components}
 					columns={columns}
