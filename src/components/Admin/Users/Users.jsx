@@ -3,7 +3,6 @@ import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
 import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
-import data from '../../../data.js';
 import './Users.css';
 
 const ResizeableTitle = props => {

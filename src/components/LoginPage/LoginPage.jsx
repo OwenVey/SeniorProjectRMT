@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Alert, Button, Checkbox, Card, Input } from 'antd';
+import { Alert, Button, Checkbox, Card } from 'antd';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import './LoginPage.css';

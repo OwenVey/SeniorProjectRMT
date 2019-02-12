@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { List } from 'antd';
-import RecentlyViewedListItem from '../RecentlyViewedListItem/RecentlyViewedListItem.jsx';
 
 const RecentlyViewedList = ({ children }) => (
 
@@ -12,6 +11,5 @@ const RecentlyViewedList = ({ children }) => (
     {children}
   </List>
 )
-
 
 export default RecentlyViewedList;

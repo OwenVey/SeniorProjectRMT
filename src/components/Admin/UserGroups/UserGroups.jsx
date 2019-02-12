@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Divider, Modal, Row, Button, Icon, Form, Input, InputNumber } from 'antd';
+import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './UserGroups.css'
 
@@ -64,7 +64,7 @@ class UserGroups extends Component {
               }}
             >
               <Row className='inputRow'>
-              <div>Edit User Group Type</div>
+                <div>Edit User Group Type</div>
                 <Input
                   id='editGroupType'
                   title='editGroupType'
@@ -88,8 +88,8 @@ class UserGroups extends Component {
             <Divider type='vertical' />
             <Button
               value='default'
-              onClick={() => {this.deleteGroupModal(userGroup)}}>
-                Delete
+              onClick={() => { this.deleteGroupModal(userGroup) }}>
+              Delete
             </Button>
           </span>
         ),
@@ -134,13 +134,13 @@ class UserGroups extends Component {
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
-      onOk: () => { 
+      onOk: () => {
         //this.deleteUserGroup()
-        this.setState({deleteModalVisible: false})
+        this.setState({ deleteModalVisible: false })
         this.deleteUserGroup(userGroup.key)
       },
       onCancel: () => {
-        this.setState({deleteModalVisible: false})
+        this.setState({ deleteModalVisible: false })
       }
     });
     /*
