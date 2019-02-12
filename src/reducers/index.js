@@ -2,8 +2,7 @@ import { createReducer, combineReducers } from 'redux-starter-kit'
 
 import data from '../data.js';
 import { bookmarkRecentlyViewedItem, selectRecentlyViewedItem } from '../actions'
-import { loginSuccess, loginFail } from '../actions'
-
+import { loginRequest, loginSuccess, loginFailure } from '../actions'
 
 const recentlyViewedItemsReducer = createReducer(data.recentlyViewedItems, {
 
@@ -29,23 +28,24 @@ const initialAuthenticationState = {
 }
 
 const authenticationReducer = createReducer(initialAuthenticationState, {
+
+  [loginRequest]: (state, action) => {
+    state.loading = true;
+  },
+
   [loginSuccess]: (state, action) => {
-    console.log(action)
+    state.loading = false;
     state.accessToken = action.payload;
     state.isAuthenticated = true;
     state.redirectToReferrer = true;
   },
 
-  [loginFail]: (state, action) => {
-    console.log(action)
+  [loginFailure]: (state, action) => {
     state.invalidLogin = true;
     state.loading = false;
   },
 
 });
-
-
-
 
 export default combineReducers({
   recentlyViewedItems: recentlyViewedItemsReducer,

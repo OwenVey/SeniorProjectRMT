@@ -59,8 +59,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.isAuthenticated,
-  accessToken: state.accessToken,
+  isAuthenticated: state.authentication.isAuthenticated,
+  accessToken: state.authentication.accessToken,
 })
 
 export default connect(mapStateToProps, {})(App)

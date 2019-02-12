@@ -12,7 +12,7 @@ const HomePage = ({ recentlyViewedItems, bookmarkRecentlyViewedItem, selectRecen
       <div className='title-bar'>
         <h3 style={{ marginBottom: '0px' }}>Recently Viewed Items</h3>
       </div>
-      <RecentlyViewedList >
+      <RecentlyViewedList>
         {recentlyViewedItems.map(item =>
           <RecentlyViewedListItem
             key={item.id}

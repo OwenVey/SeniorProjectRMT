@@ -21,4 +21,11 @@
 
 .login-form-button {
   width: 100%;
+  margin-top: 15px;
+}
+
+.error {
+  height: 10px;
+  margin-bottom: 20px;
+  color: #f5222d;
 }
