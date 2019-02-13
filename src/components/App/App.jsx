@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -14,49 +14,39 @@ import PageNotFound from "../PageNotFound/PageNotFound.jsx";
 
 library.add(fas, far);
 
-class App extends Component {
+const App = (props) => (
 
-  handleProjectAdded = project => {
-    this.setState(prevState => ({
-      projects: [...prevState.projects, project]
-    }));
-  };
-
-  render() {
-    return (
-      <div className="app">
-        <Navbar onLogout={this.logout} />
-        <Switch>
-          <Route
-            path="/login"
-            component={LoginPage}
-          />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-          <PrivateRoute
-            authed={this.props.isAuthenticated}
-            path="/home"
-            component={HomePage}
-          />
-          <PrivateRoute
-            authed={this.props.isAuthenticated}
-            path="/project"
-            component={ProjectPage}
-          />
-          <PrivateRoute
-            authed={this.props.isAuthenticated}
-            path="/admin"
-            component={AdminPage}
-            accessToken={this.props.accessToken}
-          />
-          <PrivateRoute
-            authed={this.props.isAuthenticated}
-            component={PageNotFound}
-          />
-        </Switch>
-      </div>
-    );
-  }
-}
+  <div className="app">
+    <Navbar onLogout={props.logout} />
+    <Switch>
+      <Route
+        path="/login"
+        component={LoginPage}
+      />
+      <Route exact path="/" render={() => <Redirect to="/home" />} />
+      <PrivateRoute
+        authed={props.isAuthenticated}
+        path="/home"
+        component={HomePage}
+      />
+      <PrivateRoute
+        authed={props.isAuthenticated}
+        path="/project"
+        component={ProjectPage}
+      />
+      <PrivateRoute
+        authed={props.isAuthenticated}
+        path="/admin"
+        component={AdminPage}
+        accessToken={props.accessToken}
+      />
+      <PrivateRoute
+        authed={props.isAuthenticated}
+        component={PageNotFound}
+      />
+    </Switch>
+  </div>
+)
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.authentication.isAuthenticated,

@@ -7,6 +7,7 @@ export const selectRecentlyViewedItem = createAction('SELECT_RECENTLY_VIEWED_ITE
 export const loginRequest = createAction('LOGIN_REQUEST');
 export const loginSuccess = createAction('LOGIN_SUCCESS');
 export const loginFailure = createAction('LOGIN_FAILURE');
+
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   const url = 'https://abortplatteville.com/api/login';
