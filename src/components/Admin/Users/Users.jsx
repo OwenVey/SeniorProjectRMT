@@ -3,7 +3,6 @@ import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
 import { UserBar } from '../AdminBars/AdminBars.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
-import data from '../../../data.js';
 import './Users.css';
 
 const ResizeableTitle = props => {
@@ -27,8 +26,8 @@ class Users extends Component {
 		this.state = {
 			editUser: {
 				key: '',
-				firstname: '',
-				lastname: '',
+				firstName: '',
+				lastName: '',
 				userName: '',
 				email: '',
 				userGroups: '',
@@ -43,11 +42,11 @@ class Users extends Component {
 			columns: [
 				{
 					title: 'First Name',
-					dataIndex: 'firstname',
-					key: 'firstname',
+					dataIndex: 'firstName',
+					key: 'firstName',
 					defaultSortOrder: 'ascend',
 					width: 150,
-					sorter: (a, b) => a.firstname.localeCompare(b.firstname),
+					sorter: (a, b) => a.firstName.localeCompare(b.firstName),
 					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
 						<div className="custom-filter-dropdown">
 							<Input
@@ -64,7 +63,7 @@ class Users extends Component {
 						</div>
 					),
 					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.firstname.toLowerCase().includes(value.toLowerCase()),
+					onFilter: (value, record) => record.firstName.toLowerCase().includes(value.toLowerCase()),
 					onFilterDropdownVisibleChange: visible => {
 						if (visible) {
 							setTimeout(() => {
@@ -95,11 +94,11 @@ class Users extends Component {
 				},
 				{
 					title: 'Last Name',
-					dataIndex: 'lastname',
-					key: 'lastname',
+					dataIndex: 'lastName',
+					key: 'lastName',
 					defaultSortOrder: 'ascend',
 					width: 150,
-					sorter: (a, b) => a.lastname.localeCompare(b.lastname),
+					sorter: (a, b) => a.lastName.localeCompare(b.lastName),
 					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
 						<div className="custom-filter-dropdown">
 							<Input
@@ -208,7 +207,7 @@ class Users extends Component {
 					key: 'userStatus',
 					align: 'center',
 					width: 100,
-					sorter: (a, b) => a.userStatus.localeCompare(b.userStatus),
+					sorter: (a, b) => (+a.userStatus) - (+b.userStatus),
 					render: status => {
 						if (status)
 							return (
@@ -243,7 +242,7 @@ class Users extends Component {
 					return {
 						...user,
 						userGroups: ['Developer'],
-						userName: `${user.firstname}${user.lastname}`,
+						userName: `${user.firstName}${user.lastName}`,
 						userStatus: true,
 					};
 				});
@@ -358,9 +357,9 @@ class Users extends Component {
 					<p>
 						First Name:{' '}
 						<Input
-							value={this.state.editUser.firstname}
+							value={this.state.editUser.firstName}
 							onChange={e =>
-								this.setState({ editUser: { ...this.state.editUser, firstname: e.target.value } })
+								this.setState({ editUser: { ...this.state.editUser, firstName: e.target.value } })
 							}
 							placeholder="First Name"
 						/>{' '}
@@ -368,9 +367,9 @@ class Users extends Component {
 					<p>
 						Last Name:{' '}
 						<Input
-							value={this.state.editUser.lastname}
+							value={this.state.editUser.lastName}
 							onChange={e =>
-								this.setState({ editUser: { ...this.state.editUser, lastname: e.target.value } })
+								this.setState({ editUser: { ...this.state.editUser, lastName: e.target.value } })
 							}
 							placeholder="Last Name"
 						/>{' '}
