@@ -10,7 +10,7 @@ export const loginFailure = createAction('LOGIN_FAILURE');
 
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
-  const url = 'https://abortplatteville.com/api/login';
+  const url = 'https://api.abortplatteville.com/api/login';
   axios.post(url, {
     email,
     password
