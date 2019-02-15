@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
 import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
+import  EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
 import './ManageAllProjects.css';
@@ -25,10 +26,22 @@ class ManageAllProjects extends Component {
 		super(props);
 
 		this.state = {
-
 			searchText: '',
 			projectData: [],
 			columns: [
+				{
+					title: 'Actions',
+					dataIndex: 'id',
+					key: 'id',
+					width: 150,
+					render: (id) => (
+						<Tooltip placement="topLeft" title="Edit User Info">
+							<a href="#none" onClick={() => this.showEditProjectModal(id)}>
+								{id}
+							</a>{' '}
+						</Tooltip>
+					),
+				},
 				{
 					title: 'Global ID',
 					dataIndex: 'globalId',
@@ -104,7 +117,7 @@ class ManageAllProjects extends Component {
 						</div>
 					),
 					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.Name.toLowerCase().includes(value.toLowerCase()),
+					onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
 					onFilterDropdownVisibleChange: visible => {
 						if (visible) {
 							setTimeout(() => {
@@ -133,20 +146,221 @@ class ManageAllProjects extends Component {
 						);
 					},
 				},
-				// {
-				//   title: 'License Type',
-				//   dataIndex: 'licenseType',
-				//   key: 'licenseType',
-				//   width: 150,
-				//   sorter: (a, b) => a.licenseType.localeCompare(b.licenseType)
-				// },
+				{
+					title: 'Description',
+					dataIndex: 'description',
+					key: 'description',
+					defaultSortOrder: 'ascend',
+					width: 150,
+					sorter: (a, b) => a.description.localeCompare(b.description),
+					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+						<div className="custom-filter-dropdown">
+							<Input
+								ref={ele => (this.searchInput = ele)}
+								placeholder="Search Description"
+								value={selectedKeys[0]}
+								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+								onPressEnter={this.handleSearch(selectedKeys, confirm)}
+							/>
+							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+								Search
+							</Button>
+							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+						</div>
+					),
+					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+					onFilter: (value, record) => record.description.toLowerCase().includes(value.toLowerCase()),
+					onFilterDropdownVisibleChange: visible => {
+						if (visible) {
+							setTimeout(() => {
+								this.searchInput.focus();
+							});
+						}
+					},
+					render: text => {
+						const { searchText } = this.state;
+						return searchText ? (
+							<span>
+								{text
+									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+									.map((fragment, i) =>
+										fragment.toLowerCase() === searchText.toLowerCase() ? (
+											<span key={i} className="highlight">
+												{fragment}
+											</span>
+										) : (
+											fragment
+										) // eslint-disable-line
+									)}
+							</span>
+						) : (
+							text
+						);
+					},
+				},
+				{
+					title: 'Due Date',
+					dataIndex: 'dueDate',
+					key: 'dueDate',
+					defaultSortOrder: 'ascend',
+					width: 150,
+					sorter: (a, b) => a.dueDate.localeCompare(b.dueDate),
+					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+						<div className="custom-filter-dropdown">
+							<Input
+								ref={ele => (this.searchInput = ele)}
+								placeholder="Search Due Date"
+								value={selectedKeys[0]}
+								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+								onPressEnter={this.handleSearch(selectedKeys, confirm)}
+							/>
+							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+								Search
+							</Button>
+							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+						</div>
+					),
+					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+					onFilter: (value, record) => record.dueDate.toLowerCase().includes(value.toLowerCase()),
+					onFilterDropdownVisibleChange: visible => {
+						if (visible) {
+							setTimeout(() => {
+								this.searchInput.focus();
+							});
+						}
+					},
+					render: text => {
+						const { searchText } = this.state;
+						return searchText ? (
+							<span>
+								{text
+									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+									.map((fragment, i) =>
+										fragment.toLowerCase() === searchText.toLowerCase() ? (
+											<span key={i} className="highlight">
+												{fragment}
+											</span>
+										) : (
+											fragment
+										) // eslint-disable-line
+									)}
+							</span>
+						) : (
+							text
+						);
+					},
+				},
+				{
+					title: 'Date Created',
+					dataIndex: 'createDate',
+					key: 'createDate',
+					defaultSortOrder: 'ascend',
+					width: 150,
+					sorter: (a, b) => a.createDate.localeCompare(b.createDate),
+					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+						<div className="custom-filter-dropdown">
+							<Input
+								ref={ele => (this.searchInput = ele)}
+								placeholder="Search Date Created"
+								value={selectedKeys[0]}
+								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+								onPressEnter={this.handleSearch(selectedKeys, confirm)}
+							/>
+							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+								Search
+							</Button>
+							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+						</div>
+					),
+					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+					onFilter: (value, record) => record.createDate.toLowerCase().includes(value.toLowerCase()),
+					onFilterDropdownVisibleChange: visible => {
+						if (visible) {
+							setTimeout(() => {
+								this.searchInput.focus();
+							});
+						}
+					},
+					render: text => {
+						const { searchText } = this.state;
+						return searchText ? (
+							<span>
+								{text
+									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+									.map((fragment, i) =>
+										fragment.toLowerCase() === searchText.toLowerCase() ? (
+											<span key={i} className="highlight">
+												{fragment}
+											</span>
+										) : (
+											fragment
+										) // eslint-disable-line
+									)}
+							</span>
+						) : (
+							text
+						);
+					},
+				},
+				{
+					title: 'Date Completed',
+					dataIndex: 'completeDate',
+					key: 'completeDate',
+					defaultSortOrder: 'ascend',
+					width: 150,
+					sorter: (a, b) => a.completeDate.localeCompare(b.completeDate),
+					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+						<div className="custom-filter-dropdown">
+							<Input
+								ref={ele => (this.searchInput = ele)}
+								placeholder="Search Date Completed"
+								value={selectedKeys[0]}
+								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+								onPressEnter={this.handleSearch(selectedKeys, confirm)}
+							/>
+							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+								Search
+							</Button>
+							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+						</div>
+					),
+					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+					onFilter: (value, record) => record.completeDate.toLowerCase().includes(value.toLowerCase()),
+					onFilterDropdownVisibleChange: visible => {
+						if (visible) {
+							setTimeout(() => {
+								this.searchInput.focus();
+							});
+						}
+					},
+					render: text => {
+						const { searchText } = this.state;
+						return searchText ? (
+							<span>
+								{text
+									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+									.map((fragment, i) =>
+										fragment.toLowerCase() === searchText.toLowerCase() ? (
+											<span key={i} className="highlight">
+												{fragment}
+											</span>
+										) : (
+											fragment
+										) // eslint-disable-line
+									)}
+							</span>
+						) : (
+							text
+						);
+					},
+				},
 				{
 					title: 'Is Active',
 					dataIndex: 'isActive',
 					key: 'isActive',
 					align: 'center',
 					width: 100,
-					sorter: (a, b) => a.isActive.localeCompare(b.isActive),
+					sorter: (a, b) => (+a.isActive) - (+b.isActive),
 					render: status => {
 						if (status)
 							return (
@@ -177,13 +391,44 @@ class ManageAllProjects extends Component {
 		axios
 			.get(url2)
 			.then(response => {
-				let projects = response.data.message.projects
+				let projects = response.data.message.projects.map(project => {
+					return {
+						...project,
+						dueDate: project.dueDate.substring(0,10),
+						completeDate: project.completeDate.substring(0,10) == '0001-01-01' ? 'In Progress' : project.completeDate.substring(0,10),
+						createDate: project.createDate.substring(0,10)
+					}
+				})
 				this.setState({ projectData: projects });
 			})
 			.catch(error => {
 				console.log(error);
 			});
 	};
+
+	showEditProjectModal = () => {
+		this.setState({
+		  showEditProjectModal: true,
+		});
+	  }
+	
+	  hideEditProjectModal = () => {
+		this.setState({
+		  showEditProjectModal: false,
+		});
+	  }
+	
+	  handleOkEditProjectModal = (e) => {
+		this.setState({
+		  showEditProjectModal: false,
+		});
+	  }
+	
+	  handleCancelEditProjectModal = (e) => {
+		this.setState({
+		  showEditProjectModal: false,
+		});
+	  }
 
 	addProject = project => {
 		this.setState({ projectData: [...this.state.projectData, project] });
@@ -250,6 +495,7 @@ class ManageAllProjects extends Component {
 					scroll={{ y: 500 }}
 					bordered
 				/>
+				 {this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} />}
 			</React.Fragment>
 		);
 	}
