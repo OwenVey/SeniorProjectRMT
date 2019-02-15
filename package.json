@@ -19,10 +19,14 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.3",
     "react-split-pane": "^0.1.84",
+<<<<<<< HEAD
     "redux": "^4.0.1",
     "redux-starter-kit": "^0.4.3",
     "redux-thunk": "^2.3.0",
     "yup": "^0.26.10"
+=======
+    "terser": "^3.14.1"
+>>>>>>> master
   },
   "scripts": {
     "start": "react-scripts start",

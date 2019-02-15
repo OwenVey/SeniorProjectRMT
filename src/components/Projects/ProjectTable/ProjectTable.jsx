@@ -18,12 +18,12 @@ class ProjectTable extends Component {
                     title: "ID",
                     dataIndex: "key",
                     defaultSortOrder: 'ascend',
-                    sorter: (a, b) => a.key.localeCompare(b.key)
+                    //sorter: (a, b) => a.key.localeCompare(b.key)
                 },
                 {
                     title: "Name",
                     dataIndex: "title",
-                    sorter: (a, b) => a.title.localeCompare(b.title)
+                    //sorter: (a, b) => a.title.localeCompare(b.title)
                 },
                 {
                     title: "Description",

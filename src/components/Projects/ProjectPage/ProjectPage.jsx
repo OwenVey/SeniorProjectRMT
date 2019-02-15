@@ -48,12 +48,12 @@ export default class ProjectPage extends Component {
       const content = node.children ?
 
         <div className='projectcontent'>
-          <ObjectGroupBar currentSelectedItem={node} />
+          <ObjectGroupBar currentSelectedItem={node} accessToken={this.props.accessToken} />
           <ProjectTable currentSelectedItem={node} />
         </div>
         :
         <div className='projectcontent'>
-          <ObjectBar currentSelectedItem={node} />
+          <ObjectBar currentSelectedItem={node} accessToken={this.props.accessToken}/>
           <ObjectView object={node} />
         </div>
       tabs.push({ title: <span><FontAwesomeIcon style={{ marginRight: '5px' }} icon={node.icon} />{node.title}</span>, content: content, key: node.key });
@@ -84,7 +84,7 @@ export default class ProjectPage extends Component {
         <div className='splitpane'>
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
 
-            <TreeView handleItemSelect={this.onTreeItemSelect} />
+            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken}/>
 
             <Tabs
               hideAdd
