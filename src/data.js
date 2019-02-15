@@ -1,5 +1,4 @@
 export default {
-<<<<<<< HEAD
   recentlyViewedItems: [{
     id: 1,
     name: 'Item 1',
@@ -19,35 +18,6 @@ export default {
     bookmarked: false,
   },
   ],
-=======
-    recentlyViewedItems: [{
-        id: 1,
-        name: 'Item 1',
-        icon: 'file'
-    },
-    {
-        id: 2,
-        name: 'Item 2',
-        icon: 'file'
-    },
-    {
-        id: 3,
-        name: 'Item 3',
-        icon: 'file'
-    },
-    ],
-
-
-
-    projectTreeData: [{
-        key: '0-0',
-        title: 'Project Name',
-        icon: 'archive',
-        children: [{
-            key: '0-0-0',
-            title: 'Component 1',
-            icon: 'sitemap',
->>>>>>> master
 
 
 
