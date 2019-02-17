@@ -15,8 +15,8 @@ class ItemTypes extends Component {
         {
           icon: <FontAwesomeIcon icon='archive' />,
           display: "Projects",
-          plural: "Projects",
-          key: "AITEM",
+          //plural: "Projects",
+          //key: "AITEM",
           description: "Used for projects",
           id: "80",
           system: "No"
@@ -24,8 +24,8 @@ class ItemTypes extends Component {
         {
           icon: <FontAwesomeIcon icon='paperclip' />,
           display: "Attachment",
-          plural: "Attachments",
-          key: "ATT",
+          //plural: "Attachments",
+          //key: "ATT",
           description: "Attachment Type",
           id: "22",
           system: "Yes"
@@ -33,8 +33,8 @@ class ItemTypes extends Component {
         {
           icon: <FontAwesomeIcon icon='file-alt' />,
           display: "Requirements",
-          plural: "Requirements",
-          key: "CAUS",
+          //plural: "Requirements",
+          //key: "CAUS",
           description: "Used in the projects component",
           id: "129",
           system: "No"
@@ -42,8 +42,8 @@ class ItemTypes extends Component {
         {
           icon: <FontAwesomeIcon icon='file-signature' />,
           display: "Note",
-          plural: "Note",
-          key: "FM",
+          //plural: "Note",
+          //key: "FM",
           description: "Used in Requirements",
           id: "128",
           system: "No"
@@ -63,18 +63,18 @@ class ItemTypes extends Component {
           sorter: (a, b) => a.display.localeCompare(b.display),
           render: index => <span>{index}</span>,
         },
-        {
-          title: "Plural",
-          dataIndex: "plural",
-          sorter: (a, b) => a.plural.localeCompare(b.plural),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "Key",
-          dataIndex: "key",
-          sorter: (a, b) => a.key.localeCompare(b.key),
-          render: index => <span>{index}</span>,
-        },
+        // {
+        //   title: "Plural",
+        //   dataIndex: "plural",
+        //   sorter: (a, b) => a.plural.localeCompare(b.plural),
+        //   render: index => <span>{index}</span>,
+        // },
+        // {
+        //   title: "Key",
+        //   dataIndex: "key",
+        //   sorter: (a, b) => a.key.localeCompare(b.key),
+        //   render: index => <span>{index}</span>,
+        // },
         {
           title: "Description",
           dataIndex: "description",
@@ -124,8 +124,8 @@ class ItemTypes extends Component {
       visible: false,
       icon: <div></div>,
       display: "",
-      plural: "",
-      key: "",
+      //plural: "",
+      //key: "",
       description: "",
       id: "",
       system: "",
@@ -173,23 +173,27 @@ class ItemTypes extends Component {
   }
 
   handleAddItemType = (e) => {
-    const { icon, display, plural, key, description, id, system } = this.state;
-    let newItemType = {
-      icon,
-      display,
-      plural,
-      key,
-      description,
-      id,
-      system,
-    }
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const { icon, display,/* plural, key,*/ description, id, system } = this.state;
+        let newItemType = {
+          icon,
+          display,
+          //plural,
+          //key,
+          description,
+          id,
+          system,
+        }
+        this.setState({
+          visible: false,
+          itemTypes: [...this.state.itemTypes, newItemType],
 
-    this.setState({
-      visible: false,
-      itemTypes: [...this.state.itemTypes, newItemType],
-
-    });
+        });
+      }
+    })
   }
+
 
   handleCancel = (e) => {
     this.setState({
@@ -205,16 +209,6 @@ class ItemTypes extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 40 },
-        sm: { span: 40 },
-      },
-    };
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
         const columns = this.state.columns;
@@ -249,20 +243,18 @@ class ItemTypes extends Component {
                   { required: true, message: 'Please input icon name' },
                   { max: 255, message: 'Name must be 255 characters or less' }],
               })
-                (
-                  <Select
-                    className="inputFields"
-                    labelInValue
-                    style={{ width: 200 }}
-                    onChange={this.handleChange}
-                    placeholder='Select icon'
-                  >
-                    <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
-                    <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
-                    <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
-                    <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
-                  </Select>
-                )}
+                (<Select
+                  className="inputFields"
+                  labelInValue
+                  style={{ width: 200 }}
+                  onChange={this.handleChange}
+                  placeholder='Select icon'
+                >
+                  <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
+                  <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
+                  <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
+                  <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
+                </Select>)}
             </FormItem>
             <FormItem style={{ marginBottom: '0px' }} label="Display">
               {getFieldDecorator('name', {
@@ -270,36 +262,40 @@ class ItemTypes extends Component {
                   { required: true, message: 'Please input item type\'s name' },
                   { max: 255, message: 'Name must be 255 characters or less' }],
               })
-                (
-                  <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
-                )}
+                (<Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />)}
             </FormItem>
 
-            <FormItem style={{ marginBottom: '0px' }} label="Plural">
-              {getFieldDecorator('name', {
-                rules: [
-                  { required: true, message: 'Please input item type\'s name' },
-                  { max: 255, message: 'Name must be 255 characters or less' }],
-              })
-                (
-                  <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
-                )}
-            </FormItem>
-
-
-            <div className="labels"></div>
+            {/* <div className="labels">Plurals</div>
             <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
             <div className="labels">Key</div>
-            <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />
-            <div className="labels">Description</div>
-            <Input.TextArea className="inputFields" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />
-            <div className="labels">Id</div>
-            <Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />
-            <div className="labels" >System</div>
-            <Input className="inputFields" value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
+            <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />*/}
+
+            <FormItem style={{ marginBottom: '0px' }} label="Description">
+              {getFieldDecorator('name', {
+                rules: [
+                  { required: true, message: 'Please input item type\'s description' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (<Input.TextArea className="inputFields" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />)}
+            </FormItem>
+            <FormItem style={{ marginBottom: '0px' }} label="Id">
+              {getFieldDecorator('id', {
+                rules: [
+                  { required: true, message: 'Please input item type\'s id' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (<Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />)}
+            </FormItem>
+            <FormItem style={{ marginBottom: '0px' }} label="ProjectID">
+              {getFieldDecorator('ProjectId', {
+                rules: [
+                  { required: true, message: 'Please input item type\'s ProjectIDs' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (<Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ projectId: e.target.value })} placeholder="id" />)}
+            </FormItem>
           </Form>
         </Modal>
-
         <div style={{ margin: 20 }}>
           <Table
             columns={this.state.columns}
@@ -311,7 +307,6 @@ class ItemTypes extends Component {
         </div>
       </div >
     );
-
   }
 }
 export default ItemTypes;
