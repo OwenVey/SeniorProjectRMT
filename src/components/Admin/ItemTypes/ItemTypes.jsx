@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Divider, Table, Button, Modal, Input, Icon } from "antd";
+import { Divider, Table, Button, Modal, Input, Icon, Form } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 const { Option } = Select;
-
+const FormItem = Form.Item;
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -204,6 +204,17 @@ class ItemTypes extends Component {
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 40 },
+        sm: { span: 40 },
+      },
+    };
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
         const columns = this.state.columns;
@@ -227,39 +238,66 @@ class ItemTypes extends Component {
         <Modal
           title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}
           visible={this.state.visible}
+          onOk={this.handleAddItemType} //Needed so that hitting the Add button works
           onCancel={this.handleCancel}
-          footer={
-            [
-              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-              <Button key="submit" type="primary" onClick={this.handleAddItemType}>
-                Add
-            </Button>,
-            ]} >
-          <div className="labels">Icon</div> <Select
-            className="inputFields"
-            labelInValue
-            style={{ width: 200 }}
-            onChange={this.handleChange}
-            placeholder='Select icon'
-          >
-            <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
-            <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
-            <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
-            <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
-          </Select>
+          okText="Add Item Type"
+        >
+          <Form onOk={this.handleAddItemType}>
+            <FormItem style={{ marginBottom: '0px' }} label="Icon">
+              {getFieldDecorator('iconName', {
+                rules: [
+                  { required: true, message: 'Please input icon name' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (
+                  <Select
+                    className="inputFields"
+                    labelInValue
+                    style={{ width: 200 }}
+                    onChange={this.handleChange}
+                    placeholder='Select icon'
+                  >
+                    <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
+                    <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
+                    <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
+                    <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
+                  </Select>
+                )}
+            </FormItem>
+            <FormItem style={{ marginBottom: '0px' }} label="Display">
+              {getFieldDecorator('name', {
+                rules: [
+                  { required: true, message: 'Please input item type\'s name' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (
+                  <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
+                )}
+            </FormItem>
 
-          <div className="labels">Display</div>
-          <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
-          <div className="labels">Plural</div>
-          <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
-          <div className="labels">Key</div>
-          <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />
-          <div className="labels">Description</div>
-          <Input.TextArea className="inputFields" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />
-          <div className="labels">Id</div>
-          <Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />
-          <div className="labels" >System</div>
-          <Input className="inputFields" value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
+            <FormItem style={{ marginBottom: '0px' }} label="Plural">
+              {getFieldDecorator('name', {
+                rules: [
+                  { required: true, message: 'Please input item type\'s name' },
+                  { max: 255, message: 'Name must be 255 characters or less' }],
+              })
+                (
+                  <Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />
+                )}
+            </FormItem>
+
+
+            <div className="labels"></div>
+            <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
+            <div className="labels">Key</div>
+            <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />
+            <div className="labels">Description</div>
+            <Input.TextArea className="inputFields" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Description" />
+            <div className="labels">Id</div>
+            <Input className="inputFields" value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} placeholder="id" />
+            <div className="labels" >System</div>
+            <Input className="inputFields" value={this.state.system} onChange={(e) => this.setState({ system: e.target.value })} placeholder="system" />
+          </Form>
         </Modal>
 
         <div style={{ margin: 20 }}>
