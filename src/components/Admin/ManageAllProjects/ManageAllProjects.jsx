@@ -27,6 +27,7 @@ class ManageAllProjects extends Component {
 
 		this.state = {
 			searchText: '',
+			selectedId: '',
 			projectData: [],
 			columns: [
 				{
@@ -35,7 +36,7 @@ class ManageAllProjects extends Component {
 					key: 'id',
 					width: 150,
 					render: (id) => (
-						<Tooltip placement="topLeft" title="Edit User Info">
+						<Tooltip placement="topLeft" title="Edit Project Info">
 							<a href="#none" onClick={() => this.showEditProjectModal(id)}>
 								{id}
 							</a>{' '}
@@ -389,13 +390,13 @@ class ManageAllProjects extends Component {
 		const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
 		const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
 		axios
-			.get(url2)
+			.get(url)
 			.then(response => {
-				let projects = response.data.message.projects.map(project => {
+				let projects = response.data.projects.map(project => {
 					return {
 						...project,
 						dueDate: project.dueDate.substring(0,10),
-						completeDate: project.completeDate.substring(0,10) == '0001-01-01' ? 'In Progress' : project.completeDate.substring(0,10),
+						completeDate: project.completeDate.substring(0,10) == '9999-12-31' ? 'In Progress' : project.completeDate.substring(0,10),
 						createDate: project.createDate.substring(0,10)
 					}
 				})
@@ -406,11 +407,12 @@ class ManageAllProjects extends Component {
 			});
 	};
 
-	showEditProjectModal = () => {
+	showEditProjectModal = (id) => {
 		this.setState({
-		  showEditProjectModal: true,
+			selectedId: id,
+			showEditProjectModal: true,
 		});
-	  }
+	}
 	
 	  hideEditProjectModal = () => {
 		this.setState({
@@ -429,10 +431,6 @@ class ManageAllProjects extends Component {
 		  showEditProjectModal: false,
 		});
 	  }
-
-	addProject = project => {
-		this.setState({ projectData: [...this.state.projectData, project] });
-	};
 
 	components = {
 		header: {
@@ -486,7 +484,7 @@ class ManageAllProjects extends Component {
 
 		return (
 			<React.Fragment>
-				<ManageProjectBar accessToken={this.props.accessToken} />
+				<ManageProjectBar accessToken={this.props.accessToken}/>
 				<Table
 					components={this.components}
 					columns={columns}
@@ -495,7 +493,7 @@ class ManageAllProjects extends Component {
 					scroll={{ y: 500 }}
 					bordered
 				/>
-				 {this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} />}
+				 {this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} projectId={this.state.selectedId}/>}
 			</React.Fragment>
 		);
 	}

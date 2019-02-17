@@ -18,10 +18,10 @@ class AddProjectModal extends Component {
     let valid = true
     const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
     axios.post(url, {
-      global_id: projectInfo.global_id,
+      globalId: projectInfo.globalId,
       name: projectInfo.name,
       description: projectInfo.description,
-      due_date: projectInfo.due_date,
+      dueDate: projectInfo.dueDate,
     })
       .catch(error => {
         valid = false
@@ -67,7 +67,7 @@ class AddProjectModal extends Component {
       >
         <Form onSubmit={this.handleOkAddProjectModal}>
           <FormItem style={{ marginBottom: '0px' }} label="Global ID">
-            {getFieldDecorator('global_id', {
+            {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
             })
             (
@@ -96,11 +96,11 @@ class AddProjectModal extends Component {
             )}
           </FormItem>
           <Form.Item style={{float: 'left' }} {...formItemLayout} label="Due Date">
-            {getFieldDecorator('due_date')
+            {getFieldDecorator('dueDate')
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
             )}
-        </Form.Item>
+          </Form.Item>
         </Form>
       </Modal>
     );
