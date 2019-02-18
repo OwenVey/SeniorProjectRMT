@@ -41,6 +41,7 @@ const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [loginFailure]: (state, action) => {
+    console.log(action.payload)
     state.invalidLogin = true;
     state.loading = false;
   },

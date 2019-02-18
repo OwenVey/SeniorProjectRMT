@@ -11,12 +11,13 @@ export const loginFailure = createAction('LOGIN_FAILURE');
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   const url = 'https://api.abortplatteville.com/api/login';
-  axios.post(url, {
+  const url2 = 'https://senior-design.timblin.org/api/login'
+  axios.post(url2, {
     email,
     password
   })
     .then(response => {
-      if (response.data.status !== 200)
+      if (response.status !== 200)
         throw Error();
       dispatch(loginSuccess(response.data.token))
     })
