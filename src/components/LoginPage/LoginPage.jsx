@@ -5,7 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import './LoginPage.css';
 import { connect } from 'react-redux';
-import { login } from '../../actions'
+import { login } from '../../actions/authentication'
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()

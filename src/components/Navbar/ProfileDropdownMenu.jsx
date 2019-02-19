@@ -4,7 +4,7 @@ import { Menu, Dropdown, Icon, Avatar } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Navbar.css';
 import { connect } from 'react-redux';
-import { logout } from '../../actions'
+import { logout } from '../../actions/authentication'
 
 const ProfileDropdownMenu = (props) => {
   const dropdownMenu = (

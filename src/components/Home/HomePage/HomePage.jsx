@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RecentlyViewedList from '../RecentlyViewedList/RecentlyViewedList.jsx';
 import './HomePage.css';
 import RecentlyViewedListItem from '../RecentlyViewedListItem/RecentlyViewedListItem.jsx';
-import { bookmarkRecentlyViewedItem, selectRecentlyViewedItem } from '../../../actions'
+import { bookmarkRecentlyViewedItem, selectRecentlyViewedItem } from '../../../actions/recentlyViewedItems'
 
 const HomePage = ({ recentlyViewedItems, bookmarkRecentlyViewedItem, selectRecentlyViewedItem }) => (
 
