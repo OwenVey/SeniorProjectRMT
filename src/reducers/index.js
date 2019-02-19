@@ -2,7 +2,7 @@ import { createReducer, combineReducers } from 'redux-starter-kit'
 
 import data from '../data.js';
 import { bookmarkRecentlyViewedItem, selectRecentlyViewedItem } from '../actions'
-import { loginRequest, loginSuccess, loginFailure } from '../actions'
+import { loginRequest, loginSuccess, loginFailure, logout } from '../actions'
 
 const recentlyViewedItemsReducer = createReducer(data.recentlyViewedItems, {
 
@@ -44,6 +44,14 @@ const authenticationReducer = createReducer(initialAuthenticationState, {
     console.log(action.payload)
     state.invalidLogin = true;
     state.loading = false;
+  },
+
+  [logout]: (state, action) => {
+    state.accessToken = '';
+    state.isAuthenticated = false;
+    state.redirectToReferrer = false;
+    state.loading = false;
+    state.invalidLogin = false;
   },
 
 });

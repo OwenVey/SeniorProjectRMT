@@ -17,7 +17,7 @@ library.add(fas, far);
 const App = (props) => (
 
   <div className="app">
-    <Navbar onLogout={props.logout} />
+    <Navbar />
     <Switch>
       <Route
         path="/login"

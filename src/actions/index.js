@@ -7,6 +7,7 @@ export const selectRecentlyViewedItem = createAction('SELECT_RECENTLY_VIEWED_ITE
 export const loginRequest = createAction('LOGIN_REQUEST');
 export const loginSuccess = createAction('LOGIN_SUCCESS');
 export const loginFailure = createAction('LOGIN_FAILURE');
+export const logout = createAction('LOGOUT');
 
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
@@ -19,7 +20,7 @@ export const login = (email, password) => dispatch => {
     .then(response => {
       if (response.status !== 200)
         throw Error();
-      dispatch(loginSuccess(response.data.token))
+      dispatch(loginSuccess(response.data.accessToken))
     })
     .catch(error => {
       dispatch(loginFailure(error.message))
