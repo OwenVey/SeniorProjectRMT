@@ -2,7 +2,9 @@ import { createReducer } from "redux-starter-kit";
 import {
   fetchUsersRequest,
   fetchUsersSuccess,
-  fetchUsersFailure
+  fetchUsersFailure,
+  addUser,
+  editUser
 } from "../actions/adminPageUsers";
 
 const initialUsersState = {
@@ -11,7 +13,7 @@ const initialUsersState = {
   error: false
 };
 
-const adminPageUsersReducer = createReducer(initialUsersState, {
+export const adminPageUsersReducer = createReducer(initialUsersState, {
   [fetchUsersRequest]: (state, action) => {
     state.loading = true;
   },
