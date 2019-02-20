@@ -103,13 +103,8 @@ class AddItemTypesModal extends Component {
                                 (<Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />)}
                         </FormItem>
 
-                        {/* <div className="labels">Plurals</div>
-              <Input className="inputFields" value={this.state.plural} onChange={(e) => this.setState({ plural: e.target.value })} placeholder="Plural" />
-              <div className="labels">Key</div>
-              <Input className="inputFields" value={this.state.key} onChange={(e) => this.setState({ key: e.target.value })} placeholder="Key" />*/}
-
                         <FormItem style={{ marginBottom: '0px' }} label="Description">
-                            {getFieldDecorator('name', {
+                            {getFieldDecorator('description', {
                                 rules: [
                                     { required: true, message: 'Please input item type\'s description' },
                                     { max: 255, message: 'Name must be 255 characters or less' }],
@@ -134,15 +129,6 @@ class AddItemTypesModal extends Component {
                         </FormItem>
                     </Form>
                 </Modal>
-                {/* <div style={{ margin: 20 }}>
-                    <Table
-                        columns={this.state.columns}
-                        pagination={false}
-                        dataSource={this.state.itemTypes}
-                        icon={<FontAwesomeIcon />}
-                        bordered
-                    />
-                </div> */}
             </div >
         );
     }
