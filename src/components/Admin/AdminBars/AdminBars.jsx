@@ -6,7 +6,7 @@ import AddItemTypesModal from '../AddItemTypesModal/AddItemTypesModal';
 const Option = Select.Option;
 //#region ItemTypeBar
 
-export class ItemTypes extends Component {
+export class ItemTypesBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,9 +41,9 @@ export class ItemTypes extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
+        <h1>Item Types</h1>
         <Button onClick={this.showAddItemTypesModal}>
-          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
-          Add Item Type
+          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Item Type
         </Button>
         {this.state.showAddItemTypesModal && <AddItemTypesModal handleCancelAddItemTypesModal={this.handleCancelAddItemTypesModal} hide={this.hideAddItemTypesModal} accessToken={this.props.accessToken} />}
       </div>

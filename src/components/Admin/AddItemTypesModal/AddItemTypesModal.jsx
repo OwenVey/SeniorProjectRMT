@@ -66,7 +66,7 @@ class AddItemTypesModal extends Component {
                     <h2 style={{ marginBottom: 0 }}>Item Types</h2>
                     <Button id="button" onClick={this.showModal} style={{ marginRight: 0 }}>
                         <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>Add item type
-          </Button>
+                    </Button>
                 </div>
                 <Modal
                     title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}

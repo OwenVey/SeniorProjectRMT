@@ -3,7 +3,7 @@ import { Divider, Table, Button, Modal, Input, Icon, Form } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-
+import { ItemTypesBar } from '../AdminBars/AdminBars'
 const { Option } = Select;
 const FormItem = Form.Item;
 
@@ -226,10 +226,9 @@ class ItemTypes extends Component {
     return (
       <div>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ marginBottom: 0 }}>Item Types</h2>
-          <Button id="button" onClick={this.showModal} style={{ marginRight: 0 }}>
-            <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>ADD ITEM
-        </Button>
+
+          <ItemTypesBar />
+
         </div>
         <div style={{ margin: 20 }}>
           <Table
