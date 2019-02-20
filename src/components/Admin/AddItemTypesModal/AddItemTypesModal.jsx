@@ -63,9 +63,8 @@ class AddItemTypesModal extends Component {
         return (
             <div>
                 <div style={{ display: 'flex', flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'space-between' }}>
-                    <h2 style={{ marginBottom: 0 }}>Item Types</h2>
                     <Button id="button" onClick={this.showModal} style={{ marginRight: 0 }}>
-                        <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>Add item type
+                        <Icon type="plus-circle" theme='filled' style={{ color: "#1890ff" }}></Icon>Add Item Type
                     </Button>
                 </div>
                 <Modal
@@ -135,7 +134,7 @@ class AddItemTypesModal extends Component {
                         </FormItem>
                     </Form>
                 </Modal>
-                <div style={{ margin: 20 }}>
+                {/* <div style={{ margin: 20 }}>
                     <Table
                         columns={this.state.columns}
                         pagination={false}
@@ -143,7 +142,7 @@ class AddItemTypesModal extends Component {
                         icon={<FontAwesomeIcon />}
                         bordered
                     />
-                </div>
+                </div> */}
             </div >
         );
     }
