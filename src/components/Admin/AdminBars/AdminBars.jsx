@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, Modal, Input, Select, } from 'antd';
 import AddUserModal from '../AddUserModal/AddUserModal';
 import AddProjectModal from '../AddProjectModal/AddProjectModal';
+import AddItemTypesModal from '../AddItemTypesModal/AddItemTypesModal';
 const Option = Select.Option;
 //#region ItemTypeBar
 

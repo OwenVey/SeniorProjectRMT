@@ -209,7 +209,8 @@ class ItemTypes extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    //This doesn't work.
+    //const { getFieldDecorator } = this.props.form;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
         const columns = this.state.columns;
