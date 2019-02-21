@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-
+const ServerTimeOffset = 6;
 class AddProjectModal extends Component {
   constructor(props) {
     super(props);
@@ -18,10 +19,10 @@ class AddProjectModal extends Component {
     let valid = true
     const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
     axios.post(url, {
-      global_id: projectInfo.global_id,
+      globalId: projectInfo.globalId,
       name: projectInfo.name,
       description: projectInfo.description,
-      due_date: projectInfo.due_date,
+      dueDate: moment(projectInfo.dueDate).subtract(ServerTimeOffset, "hours"),
     })
       .catch(error => {
         valid = false
@@ -67,7 +68,7 @@ class AddProjectModal extends Component {
       >
         <Form onSubmit={this.handleOkAddProjectModal}>
           <FormItem style={{ marginBottom: '0px' }} label="Global ID">
-            {getFieldDecorator('global_id', {
+            {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
             })
             (
@@ -96,11 +97,11 @@ class AddProjectModal extends Component {
             )}
           </FormItem>
           <Form.Item style={{float: 'left' }} {...formItemLayout} label="Due Date">
-            {getFieldDecorator('due_date')
+            {getFieldDecorator('dueDate')
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
             )}
-        </Form.Item>
+          </Form.Item>
         </Form>
       </Modal>
     );
