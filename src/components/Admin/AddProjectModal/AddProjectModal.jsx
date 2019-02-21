@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-
+const ServerTimeOffset = 6;
 class AddProjectModal extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +22,7 @@ class AddProjectModal extends Component {
       globalId: projectInfo.globalId,
       name: projectInfo.name,
       description: projectInfo.description,
-      dueDate: projectInfo.dueDate,
+      dueDate: moment(projectInfo.dueDate).subtract(ServerTimeOffset, "hours"),
     })
       .catch(error => {
         valid = false

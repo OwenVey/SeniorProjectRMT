@@ -22,7 +22,7 @@ class EditProjectModal extends Component {
       name: projectInfo.name,
       description: projectInfo.description,
       dueDate: projectInfo.dueDate,
-      // createDate: projectInfo.createDate,
+      createDate: projectInfo.createDate,
       completeDate: projectInfo.completeDate,
       isActive: projectInfo.isActive
     })
@@ -67,20 +67,6 @@ class EditProjectModal extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    // const formItemLayout = {
-    //   labelCol: {
-    //     xs: { span: 24 },
-    //     sm: { span: 8 },
-    //   },
-    //   wrapperCol: {
-    //     xs: { span: 40 },
-    //     sm: { span: 40 },
-    //   },
-    // };
-    // const switchLayout = {
-    //   labelCol: { span: 40 },
-    //   wrapperCol: { span: 40 },
-    // };
     console.log(this.state);
     return (
       <Modal
@@ -121,39 +107,39 @@ class EditProjectModal extends Component {
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
-              rules: [
-                { max: 255, message: 'Description must be 255 characters or less' }
-              ],
+               rules: [
+                 { max: 255, message: 'Description must be 255 characters or less' }
+               ],
               initialValue: this.state.projectData.description
             })
             (
               <Input placeholder='Description' />
             )}
           </FormItem>
-          <Form.Item style={{float: 'left',  marginBottom: '0px'}} /*{...formItemLayout}*/ label="Due Date">
+          <Form.Item style={{float: 'left',  marginBottom: '0px'}}  label="Due Date">
             {getFieldDecorator('dueDate', {
-               initialValue: moment(this.state.projectData.dueDate)
+               initialValue: moment.utc(this.state.projectData.dueDate)
             })
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
             )}
           </Form.Item>
 
-          <Form.Item style={{float: 'right',  marginBottom: '0px'}} /*{...formItemLayout}*/ label="Date Created">
+          <Form.Item style={{float: 'right',  marginBottom: '0px'}} label="Date Created">
             {getFieldDecorator('createDate', {
                rules: [
                 { required: true, message: 'Please input Date Created' },
                ],
-               initialValue: moment(this.state.projectData.createDate)
+               initialValue: moment.utc(this.state.projectData.createDate)
             })
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
             )}
           </Form.Item>
 
-          <Form.Item style={{float: 'left',  marginBottom: '0px'}} /*{...formItemLayout}*/ label="Date Completed">
+          <Form.Item style={{float: 'left',  marginBottom: '0px'}} label="Date Completed">
             {getFieldDecorator('completeDate', {
-               initialValue: moment(this.state.projectData.completeDate)
+               initialValue: moment.utc(this.state.projectData.completeDate)
             })
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
