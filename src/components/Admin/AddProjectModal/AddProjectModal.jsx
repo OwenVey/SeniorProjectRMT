@@ -53,6 +53,15 @@ class AddProjectModal extends Component {
     })
   }
 
+  validateDueDate = (rule, value, callback) => {
+    if (value > moment() || value == null) {
+      callback();
+      return;
+    }
+    callback('Due Date must be in the future!');
+  }
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -109,7 +118,11 @@ class AddProjectModal extends Component {
             )}
           </FormItem>
           <Form.Item style={{float: 'left' }} {...formItemLayout} label="Due Date">
-            {getFieldDecorator('dueDate')
+            {getFieldDecorator('dueDate', {
+              rules: [
+                { validator: this.validateDueDate}
+              ]
+            })
             (
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
             )}

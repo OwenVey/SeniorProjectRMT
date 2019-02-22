@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
 import  EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
 import { Resizable } from 'react-resizable';
@@ -34,13 +35,21 @@ class ManageAllProjects extends Component {
 					title: 'Actions',
 					dataIndex: 'id',
 					key: 'id',
-					width: 150,
+					width: 75,
+					align: 'center',
 					render: (id) => (
-						<Tooltip placement="topLeft" title="Edit Project Info">
-							<a href="#none" onClick={() => this.showEditProjectModal(id)}>
-								{id}
-							</a>{' '}
-						</Tooltip>
+						<React.Fragment>
+							<Tooltip placement="topLeft" title="Edit Project Info">
+								<a href="#none" onClick={() => this.showEditProjectModal(id)}>
+									<Icon><FontAwesomeIcon icon='edit' /></Icon>
+								</a>{' '}
+							</Tooltip>
+							<Tooltip placement="topLeft" title="Delete Project">
+								{/* <a href="#none" onClick={() => this.showEditProjectModal(id)}> */}
+									<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
+								{/* </a>{' '} */}
+							</Tooltip>
+						</React.Fragment>
 					),
 				},
 				{
@@ -74,7 +83,7 @@ class ManageAllProjects extends Component {
 							});
 						}
 					},
-					render: text => {
+					render: (text) => {
 						const { searchText } = this.state;
 						return searchText ? (
 							<span>
