@@ -11,7 +11,7 @@ class AddProjectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirmDirty: false,
+      errorStatus: {}
     }
   }
 
@@ -27,12 +27,21 @@ class AddProjectModal extends Component {
       .catch(error => {
         valid = false
         console.log(error.response)
+        this.setErrorStatus(error)
       })
       .finally(() => {
         if (valid) {
           this.props.hide()
         }
       })
+  }
+
+  setErrorStatus = (error) => {
+    let errorStatus = {
+      code: error.response.data.code,
+      description: error.response.data.description
+     }
+    this.setState({errorStatus})
   }
 
   handleOkAddProjectModal = (e) => {
@@ -66,8 +75,11 @@ class AddProjectModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
+        <div style ={{ color: "red" }}>
+          {this.state.errorStatus.description}
+        </div>
         <Form onSubmit={this.handleOkAddProjectModal}>
-          <FormItem style={{ marginBottom: '0px' }} label="Global ID">
+          <FormItem style={{ marginBottom: '0px' }} label= "Global ID" >
             {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
             })

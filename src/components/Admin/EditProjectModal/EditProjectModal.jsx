@@ -10,7 +10,8 @@ class EditProjectModal extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      projectData: {}
+      projectData: {},
+      errorStatus: {}
     }
   }
 
@@ -29,12 +30,21 @@ class EditProjectModal extends Component {
       .catch(error => {
         valid = false
         console.log(error.response)
+        this.setErrorStatus(error)
       })
       .finally(() => {
         if (valid) {
           this.props.hide()
         }
       })
+  }
+
+  setErrorStatus = (error) => {
+    let errorStatus = {
+      code: error.response.data.code,
+      description: error.response.data.description
+     }
+    this.setState({errorStatus})
   }
 
   handleOkEditProjectModal = (e) => {
@@ -78,6 +88,9 @@ class EditProjectModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
+        <div style ={{ color: "red" }}>
+          {this.state.errorStatus.description}
+        </div>
         <Form onSubmit={this.handleOkEditProjectModal} layout = {'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Global ID">
             {getFieldDecorator('globalId', {
@@ -146,7 +159,7 @@ class EditProjectModal extends Component {
             )}
           </Form.Item>
 
-          <Form.Item style={{float: 'right' , marginBottom: '0px', paddingRight: '143px' }} /*{...switchLayout}*/ label="Is Active">
+          <Form.Item style={{float: 'right' , marginBottom: '0px', paddingRight: '143px' }} label="Is Active">
             {getFieldDecorator('isActive', { 
               initialValue: this.state.projectData.isActive,
               valuePropName: 'checked'
