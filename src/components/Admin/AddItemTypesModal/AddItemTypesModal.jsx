@@ -11,6 +11,14 @@ class AddItemTypesModal extends Component {
         super(props);
         this.state = {
             confirmDirty: false,
+            visible: false,
+            icon: <div></div>,
+            display: "",
+            //plural: "",
+            //key: "",
+            description: "",
+            id: "",
+            system: "",
         }
     }
 
@@ -27,25 +35,20 @@ class AddItemTypesModal extends Component {
     }
 
     handleAddItemType = (e) => {
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                const { icon, display,/* plural, key,*/ description, id, system } = this.state;
-                let newItemType = {
-                    icon,
-                    display,
-                    //plural,
-                    //key,
-                    description,
-                    id,
-                    system,
-                }
-                this.setState({
-                    visible: false,
-                    itemTypes: [...this.state.itemTypes, newItemType],
-
-                });
-            }
-        })
+        const { icon, display, description, id, system } = this.state;
+        let newItemType = {
+            icon,
+            display,
+            description,
+            id,
+            system,
+        }
+            // this.setState({
+            //     visible: false,
+            //     itemTypes: [...this.state.itemTypes, newItemType],
+            // })
+            ;
+        console.log("ERROR!");
     }
 
     render() {
@@ -70,17 +73,17 @@ class AddItemTypesModal extends Component {
                 <Modal
                     title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}
                     visible={this.state.visible}
-                    onOk={this.handleAddItemType} //Needed so that hitting the Add button works
-                    onCancel={this.handleCancel}
                     okText="Add Item Type"
+                    footer={[
+                        <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
+                        <Button key="submit" type="primary" onClick={this.handleAddItemType}>Add</Button>
+                    ]}
+                // onOk={this.state.handleAddItemType}
+                // onCancel={this.state.handleCancel}
                 >
                     <Form onOk={this.handleAddItemType}>
                         <FormItem style={{ marginBottom: '0px' }} label="Icon">
-                            {getFieldDecorator('iconName', {
-                                rules: [
-                                    { required: true, message: 'Please input icon name' },
-                                    { max: 255, message: 'Name must be 255 characters or less' }],
-                            })
+                            {getFieldDecorator('iconName')
                                 (<Select
                                     className="inputFields"
                                     labelInValue
@@ -102,7 +105,6 @@ class AddItemTypesModal extends Component {
                             })
                                 (<Input required={true} className="inputFields" value={this.state.display} onChange={(e) => this.setState({ display: e.target.value })} placeholder='Display' />)}
                         </FormItem>
-
                         <FormItem style={{ marginBottom: '0px' }} label="Description">
                             {getFieldDecorator('description', {
                                 rules: [

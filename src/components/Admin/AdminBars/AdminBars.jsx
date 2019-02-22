@@ -43,9 +43,6 @@ export class ItemTypesBar extends Component {
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
         <h1>Item Types</h1>
         <AddItemTypesModal></AddItemTypesModal>
-        {/* <Button onClick={this.showAddItemTypesModal}>
-          <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />Add Item Type
-        </Button> */}
         {this.state.showAddItemTypesModal && <AddItemTypesModal handleCancelAddItemTypesModal={this.handleCancelAddItemTypesModal} hide={this.hideAddItemTypesModal} accessToken={this.props.accessToken} />}
       </div>
     )

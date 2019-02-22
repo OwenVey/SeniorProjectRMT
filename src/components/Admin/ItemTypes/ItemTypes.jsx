@@ -226,9 +226,7 @@ class ItemTypes extends Component {
     return (
       <div>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'space-between' }}>
-
           <ItemTypesBar />
-
         </div>
         <div style={{ margin: 20 }}>
           <Table
