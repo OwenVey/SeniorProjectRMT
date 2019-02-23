@@ -9,8 +9,9 @@ const FormItem = Form.Item;
 class EditProjectModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      projectData: {}
+    this.state = {
+      projectData: {},
+      errorStatus: {}
     }
   }
 
@@ -29,12 +30,21 @@ class EditProjectModal extends Component {
       .catch(error => {
         valid = false
         console.log(error.response)
+        this.setErrorStatus(error)
       })
       .finally(() => {
         if (valid) {
           this.props.hide()
         }
       })
+  }
+
+  setErrorStatus = (error) => {
+    let errorStatus = {
+      code: error.response.data.code,
+      description: error.response.data.description
+    }
+    this.setState({ errorStatus })
   }
 
   handleOkEditProjectModal = (e) => {
@@ -48,22 +58,22 @@ class EditProjectModal extends Component {
 
 
   componentWillMount() {
-		this.fetchProjects();
+    this.fetchProjects();
   }
-  
+
   fetchProjects = async () => {
-		console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
-		const url2 = `https://abortplatteville.com/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
-		axios
-			.get(url)
-			.then(response => {
-				this.setState({ projectData: response.data });
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
+    axios
+      .get(url)
+      .then(response => {
+        this.setState({ projectData: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -78,7 +88,10 @@ class EditProjectModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <Form onSubmit={this.handleOkEditProjectModal} layout = {'vertical'}>
+        <div style={{ color: "red" }}>
+          {this.state.errorStatus.description}
+        </div>
+        <Form onSubmit={this.handleOkEditProjectModal} layout={'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Global ID">
             {getFieldDecorator('globalId', {
               rules: [
@@ -87,11 +100,11 @@ class EditProjectModal extends Component {
               ],
               initialValue: this.state.projectData.globalId
             })
-            (
-              <Input 
-               placeholder='Global ID' 
-              />
-            )}
+              (
+                <Input
+                  placeholder='Global ID'
+                />
+              )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
@@ -101,59 +114,59 @@ class EditProjectModal extends Component {
               ],
               initialValue: this.state.projectData.name
             })
-            (
-              <Input placeholder='Name' />
-            )}
+              (
+                <Input placeholder='Name' />
+              )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
-               rules: [
-                 { max: 255, message: 'Description must be 255 characters or less' }
-               ],
+              rules: [
+                { max: 255, message: 'Description must be 255 characters or less' }
+              ],
               initialValue: this.state.projectData.description
             })
-            (
-              <Input placeholder='Description' />
-            )}
+              (
+                <Input placeholder='Description' />
+              )}
           </FormItem>
-          <Form.Item style={{float: 'left',  marginBottom: '0px'}}  label="Due Date">
+          <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Due Date">
             {getFieldDecorator('dueDate', {
-               initialValue: moment.utc(this.state.projectData.dueDate)
+              initialValue: moment.utc(this.state.projectData.dueDate)
             })
-            (
-              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
-            )}
+              (
+                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+              )}
           </Form.Item>
 
-          <Form.Item style={{float: 'right',  marginBottom: '0px'}} label="Date Created">
+          <Form.Item style={{ float: 'right', marginBottom: '0px' }} label="Date Created">
             {getFieldDecorator('createDate', {
-               rules: [
+              rules: [
                 { required: true, message: 'Please input Date Created' },
-               ],
-               initialValue: moment.utc(this.state.projectData.createDate)
+              ],
+              initialValue: moment.utc(this.state.projectData.createDate)
             })
-            (
-              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
-            )}
+              (
+                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+              )}
           </Form.Item>
 
-          <Form.Item style={{float: 'left',  marginBottom: '0px'}} label="Date Completed">
+          <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Date Completed">
             {getFieldDecorator('completeDate', {
-               initialValue: moment.utc(this.state.projectData.completeDate)
+              initialValue: moment.utc(this.state.projectData.completeDate)
             })
-            (
-              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
-            )}
+              (
+                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+              )}
           </Form.Item>
 
-          <Form.Item style={{float: 'right' , marginBottom: '0px', paddingRight: '143px' }} /*{...switchLayout}*/ label="Is Active">
-            {getFieldDecorator('isActive', { 
+          <Form.Item style={{ float: 'right', marginBottom: '0px', paddingRight: '143px' }} label="Is Active">
+            {getFieldDecorator('isActive', {
               initialValue: this.state.projectData.isActive,
               valuePropName: 'checked'
             })
-            (
-              <Switch />
-            )}
+              (
+                <Switch />
+              )}
           </Form.Item>
         </Form>
       </Modal>
