@@ -60,7 +60,6 @@ class AddProjectModal extends Component {
     callback('Due Date must be in the future!');
   }
 
-
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {

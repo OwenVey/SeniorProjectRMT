@@ -40,7 +40,7 @@ class ManageAllProjects extends Component {
 					render: (id) => (
 						<React.Fragment>
 							<Tooltip placement="topLeft" title="Edit Project Info">
-								<a style={{ paddingRight: 20 }} href="#none" onClick={() => this.showEditProjectModal(id)}>
+								<a style={{ paddingRight: 10 }} href="#none" onClick={() => this.showEditProjectModal(id)}>
 									<Icon><FontAwesomeIcon icon='edit' /></Icon>
 								</a>
 							</Tooltip>
