@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from 'antd';
+import { Table, Tag, Button, Input, Icon, Tooltip } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
-import  EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
+import EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
 import './ManageAllProjects.css';
@@ -40,14 +40,14 @@ class ManageAllProjects extends Component {
 					render: (id) => (
 						<React.Fragment>
 							<Tooltip placement="topLeft" title="Edit Project Info">
-								<a href="#none" onClick={() => this.showEditProjectModal(id)}>
+								<a style={{ paddingRight: 20 }} href="#none" onClick={() => this.showEditProjectModal(id)}>
 									<Icon><FontAwesomeIcon icon='edit' /></Icon>
-								</a>{' '}
+								</a>
 							</Tooltip>
 							<Tooltip placement="topLeft" title="Delete Project">
-								{/* <a href="#none" onClick={() => this.showEditProjectModal(id)}> */}
+								<a href="#none" onClick={() => this.deleteProject(id)}>
 									<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
-								{/* </a>{' '} */}
+								</a>
 							</Tooltip>
 						</React.Fragment>
 					),
@@ -95,13 +95,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -147,13 +147,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -199,13 +199,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -251,13 +251,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -303,13 +303,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -355,13 +355,13 @@ class ManageAllProjects extends Component {
 												{fragment}
 											</span>
 										) : (
-											fragment
-										) // eslint-disable-line
+												fragment
+											) // eslint-disable-line
 									)}
 							</span>
 						) : (
-							text
-						);
+								text
+							);
 					},
 				},
 				{
@@ -404,9 +404,9 @@ class ManageAllProjects extends Component {
 				let projects = response.data.projects.map(project => {
 					return {
 						...project,
-						dueDate: project.dueDate.substring(0,10),
-						completeDate: project.completeDate.substring(0,10) == '9999-12-31' ? 'In Progress' : project.completeDate.substring(0,10),
-						createDate: project.createDate.substring(0,10)
+						dueDate: project.dueDate.substring(0, 10),
+						completeDate: project.completeDate.substring(0, 10) == '9999-12-31' ? 'In Progress' : project.completeDate.substring(0, 10),
+						createDate: project.createDate.substring(0, 10)
 					}
 				})
 				this.setState({ projectData: projects });
@@ -422,24 +422,35 @@ class ManageAllProjects extends Component {
 			showEditProjectModal: true,
 		});
 	}
-	
-	  hideEditProjectModal = () => {
+
+	hideEditProjectModal = () => {
 		this.setState({
-		  showEditProjectModal: false,
+			showEditProjectModal: false,
 		});
-	  }
-	
-	  handleOkEditProjectModal = (e) => {
+	}
+
+	handleOkEditProjectModal = (e) => {
 		this.setState({
-		  showEditProjectModal: false,
+			showEditProjectModal: false,
 		});
-	  }
-	
-	  handleCancelEditProjectModal = (e) => {
+	}
+
+	handleCancelEditProjectModal = (e) => {
 		this.setState({
-		  showEditProjectModal: false,
+			showEditProjectModal: false,
 		});
-	  }
+	}
+
+	deleteProject = async (projectId) => {
+		console.log(this.props.accessToken);
+		const url = `https://senior-design.timblin.org/api/project/${projectId}?accessToken=${this.props.accessToken}`;
+		const url2 = `https://abortplatteville.com/api/project/${projectId}?accessToken=${this.props.accessToken}`;
+		axios
+			.delete(url)
+			.catch(error => {
+				console.log(error);
+			});
+	};
 
 	components = {
 		header: {
@@ -493,7 +504,7 @@ class ManageAllProjects extends Component {
 
 		return (
 			<React.Fragment>
-				<ManageProjectBar accessToken={this.props.accessToken}/>
+				<ManageProjectBar accessToken={this.props.accessToken} />
 				<Table
 					components={this.components}
 					columns={columns}
@@ -502,7 +513,7 @@ class ManageAllProjects extends Component {
 					scroll={{ y: 500 }}
 					bordered
 				/>
-				 {this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} projectId={this.state.selectedId}/>}
+				{this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} projectId={this.state.selectedId} />}
 			</React.Fragment>
 		);
 	}
