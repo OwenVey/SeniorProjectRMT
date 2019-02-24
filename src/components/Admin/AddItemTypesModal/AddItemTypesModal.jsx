@@ -123,8 +123,6 @@ class AddItemTypesModal extends Component {
             visible: false,
             icon: <div></div>,
             display: "",
-            //plural: "",
-            //key: "",
             description: "",
             id: "",
             system: "",
