@@ -5,8 +5,16 @@ import { TIMBLIN_URL } from "../constants";
 export const fetchUsersRequest = createAction("FETCH_USERS_REQUEST");
 export const fetchUsersSuccess = createAction("FETCH_USERS_SUCCESS");
 export const fetchUsersFailure = createAction("FETCH_USERS_FAILURE");
-export const addUser = createAction("ADD_USER");
+
 export const editUser = createAction("EDIT_USER");
+export const showEditUserModal = createAction("SHOW_EDIT_USER_MODAL");
+export const hideEditUserModal = createAction("HIDE_EDIT_USER_MODAL");
+export const cancelEditUserModal = createAction("CANCEL_EDIT_USER_MODAL");
+
+export const addUser = createAction("ADD_USER");
+export const showAddUserModal = createAction("SHOW_ADD_USER_MODAL");
+export const hideAddUserModal = createAction("HIDE_ADD_USER_MODAL");
+export const cancelAddUserModal = createAction("CANCEL_ADD_USER_MODAL");
 
 export const fetchUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());

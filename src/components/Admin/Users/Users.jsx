@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
-import { Table, Tag, Modal, Button, Input, Icon, Switch, Tooltip } from "antd";
+import { Table, Tag, Button, Input, Icon, Switch, Tooltip } from "antd";
 import { UserBar } from "../AdminBars/AdminBars.jsx";
-import { fetchUsers, addUser, editUser } from "../../../actions/adminPageUsers";
+import {
+  fetchUsers,
+  addUser,
+  showEditUserModal
+} from "../../../actions/adminPageUsers";
+import EditUserModal from "../EditUserModal/EditUserModal";
 import "./Users.css";
 
 const ResizeableTitle = props => {
@@ -25,21 +30,6 @@ class Users extends Component {
     super(props);
 
     this.state = {
-      editUser: {
-        key: "",
-        firstName: "",
-        lastName: "",
-        userName: "",
-        email: "",
-        userGroups: "",
-        licenseType: "",
-        userStatus: ""
-      },
-
-      searchText: "",
-      userData: [],
-      visible: false,
-
       columns: [
         {
           title: "First Name",
@@ -191,7 +181,10 @@ class Users extends Component {
           sorter: (a, b) => a.userName.localeCompare(b.userName),
           render: (userName, user) => (
             <Tooltip placement="topLeft" title="Edit User Info">
-              <a href="#none" onClick={() => this.openEditModal(user)}>
+              <a
+                href="#none"
+                onClick={() => this.props.showEditUserModal(user)}
+              >
                 {userName}
               </a>{" "}
             </Tooltip>
@@ -270,12 +263,6 @@ class Users extends Component {
     this.props.fetchUsers(this.props.accessToken);
   }
 
-  components = {
-    header: {
-      cell: ResizeableTitle
-    }
-  };
-
   handleSearch = (selectedKeys, confirm) => () => {
     confirm();
     this.setState({ searchText: selectedKeys[0] });
@@ -297,31 +284,12 @@ class Users extends Component {
     });
   };
 
-  openEditModal = user => {
-    this.setState({
-      editUser: user,
-      visible: true
-    });
+  components = {
+    header: {
+      cell: ResizeableTitle
+    }
   };
-
-  handleSave = () => {
-    this.setState({
-      userData: this.state.userData.map(user =>
-        user.id === this.state.editUser.id
-          ? Object.assign(this.state.editUser)
-          : user
-      ),
-      visible: false
-    });
-  };
-
-  handleCancel = () => {
-    this.setState({ visible: false });
-  };
-
   render() {
-    const { visible, userStatus } = this.state;
-
     const columns = this.state.columns.map((col, index) => ({
       ...col,
       onHeaderCell: column => ({
@@ -346,7 +314,6 @@ class Users extends Component {
     return (
       <React.Fragment>
         <UserBar addUser={this.props.addUser} />
-
         <Table
           components={this.components}
           columns={columns}
@@ -355,84 +322,7 @@ class Users extends Component {
           scroll={{ y: 500 }}
           bordered
         />
-
-        <Modal
-          visible={visible}
-          onCancel={this.handleCancel}
-          userStatus={userStatus}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Cancel
-            </Button>,
-            <Button key="update" type="primary" onClick={this.handleSave}>
-              Save
-            </Button>
-          ]}
-        >
-          <p>
-            First Name:{" "}
-            <Input
-              value={this.state.editUser.firstName}
-              onChange={e =>
-                this.setState({
-                  editUser: {
-                    ...this.state.editUser,
-                    firstName: e.target.value
-                  }
-                })
-              }
-              placeholder="First Name"
-            />{" "}
-          </p>
-          <p>
-            Last Name:{" "}
-            <Input
-              value={this.state.editUser.lastName}
-              onChange={e =>
-                this.setState({
-                  editUser: { ...this.state.editUser, lastName: e.target.value }
-                })
-              }
-              placeholder="Last Name"
-            />{" "}
-          </p>
-          <p>
-            Email:{" "}
-            <Input
-              value={this.state.editUser.email}
-              onChange={e =>
-                this.setState({
-                  editUser: { ...this.state.editUser, email: e.target.value }
-                })
-              }
-              placeholder="Email"
-            />
-          </p>
-          <p>
-            Username:{" "}
-            <Input
-              value={this.state.editUser.userName}
-              onChange={e =>
-                this.setState({
-                  editUser: { ...this.state.editUser, userName: e.target.value }
-                })
-              }
-              placeholder="Username"
-            />{" "}
-          </p>
-          <div>User Status:</div>
-          <span>Inactive</span>
-          <Switch
-            style={{ margin: "0px 10px" }}
-            checked={this.state.editUser.userStatus}
-            onChange={value =>
-              this.setState({
-                editUser: { ...this.state.editUser, userStatus: value }
-              })
-            }
-          />
-          <span>Active</span>
-        </Modal>
+        <EditUserModal />
       </React.Fragment>
     );
   }
@@ -445,5 +335,83 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUsers, addUser, editUser }
+  { fetchUsers, addUser, showEditUserModal }
 )(Users);
+
+/* <Modal
+visible={visible}
+onCancel={this.handleCancel}
+userStatus={userStatus}
+footer={[
+  <Button key="back" onClick={this.handleCancel}>
+    Cancel
+  </Button>,
+  <Button key="update" type="primary" onClick={this.handleSave}>
+    Save
+  </Button>
+]}
+>
+<p>
+  First Name:{" "}
+  <Input
+    value={this.state.editUser.firstName}
+    onChange={e =>
+      this.setState({
+        editUser: {
+          ...this.state.editUser,
+          firstName: e.target.value
+        }
+      })
+    }
+    placeholder="First Name"
+  />{" "}
+</p>
+<p>
+  Last Name:{" "}
+  <Input
+    value={this.state.editUser.lastName}
+    onChange={e =>
+      this.setState({
+        editUser: { ...this.state.editUser, lastName: e.target.value }
+      })
+    }
+    placeholder="Last Name"
+  />{" "}
+</p>
+<p>
+  Email:{" "}
+  <Input
+    value={this.state.editUser.email}
+    onChange={e =>
+      this.setState({
+        editUser: { ...this.state.editUser, email: e.target.value }
+      })
+    }
+    placeholder="Email"
+  />
+</p>
+<p>
+  Username:{" "}
+  <Input
+    value={this.state.editUser.userName}
+    onChange={e =>
+      this.setState({
+        editUser: { ...this.state.editUser, userName: e.target.value }
+      })
+    }
+    placeholder="Username"
+  />{" "}
+</p>
+<div>User Status:</div>
+<span>Inactive</span>
+<Switch
+  style={{ margin: "0px 10px" }}
+  checked={this.state.editUser.userStatus}
+  onChange={value =>
+    this.setState({
+      editUser: { ...this.state.editUser, userStatus: value }
+    })
+  }
+/>
+<span>Active</span>
+</Modal> */
