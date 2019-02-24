@@ -13,42 +13,42 @@ class ItemTypes extends Component {
 
     this.state = {
       itemTypes: [
-        {
-          icon: <FontAwesomeIcon icon='archive' />,
-          display: "Projects",
-          //plural: "Projects",
-          //key: "AITEM",
-          description: "Used for projects",
-          id: "80",
-          system: "No"
-        },
-        {
-          icon: <FontAwesomeIcon icon='paperclip' />,
-          display: "Attachment",
-          //plural: "Attachments",
-          //key: "ATT",
-          description: "Attachment Type",
-          id: "22",
-          system: "Yes"
-        },
-        {
-          icon: <FontAwesomeIcon icon='file-alt' />,
-          display: "Requirements",
-          //plural: "Requirements",
-          //key: "CAUS",
-          description: "Used in the projects component",
-          id: "129",
-          system: "No"
-        },
-        {
-          icon: <FontAwesomeIcon icon='file-signature' />,
-          display: "Note",
-          //plural: "Note",
-          //key: "FM",
-          description: "Used in Requirements",
-          id: "128",
-          system: "No"
-        }
+        // {
+        //   icon: <FontAwesomeIcon icon='archive' />,
+        //   display: "Projects",
+        //   //plural: "Projects",
+        //   //key: "AITEM",
+        //   description: "Used for projects",
+        //   id: "80",
+        //   system: "No"
+        // },
+        // {
+        //   icon: <FontAwesomeIcon icon='paperclip' />,
+        //   display: "Attachment",
+        //   //plural: "Attachments",
+        //   //key: "ATT",
+        //   description: "Attachment Type",
+        //   id: "22",
+        //   system: "Yes"
+        // },
+        // {
+        //   icon: <FontAwesomeIcon icon='file-alt' />,
+        //   display: "Requirements",
+        //   //plural: "Requirements",
+        //   //key: "CAUS",
+        //   description: "Used in the projects component",
+        //   id: "129",
+        //   system: "No"
+        // },
+        // {
+        //   icon: <FontAwesomeIcon icon='file-signature' />,
+        //   display: "Note",
+        //   //plural: "Note",
+        //   //key: "FM",
+        //   description: "Used in Requirements",
+        //   id: "128",
+        //   system: "No"
+        // }
       ],
       columns: [
         {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form, DatePicker, Button, Table } from 'antd';
+import { Icon, Modal, Input, Select, Form, DatePicker, Button, Table, Divider } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
@@ -10,7 +10,116 @@ class AddItemTypesModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            confirmDirty: false,
+            itemTypes: [
+                // {
+                //   icon: <FontAwesomeIcon icon='archive' />,
+                //   display: "Projects",
+                //   //plural: "Projects",
+                //   //key: "AITEM",
+                //   description: "Used for projects",
+                //   id: "80",
+                //   system: "No"
+                // },
+                // {
+                //   icon: <FontAwesomeIcon icon='paperclip' />,
+                //   display: "Attachment",
+                //   //plural: "Attachments",
+                //   //key: "ATT",
+                //   description: "Attachment Type",
+                //   id: "22",
+                //   system: "Yes"
+                // },
+                // {
+                //   icon: <FontAwesomeIcon icon='file-alt' />,
+                //   display: "Requirements",
+                //   //plural: "Requirements",
+                //   //key: "CAUS",
+                //   description: "Used in the projects component",
+                //   id: "129",
+                //   system: "No"
+                // },
+                // {
+                //   icon: <FontAwesomeIcon icon='file-signature' />,
+                //   display: "Note",
+                //   //plural: "Note",
+                //   //key: "FM",
+                //   description: "Used in Requirements",
+                //   id: "128",
+                //   system: "No"
+                // }
+            ],
+            columns: [
+                {
+                    title: "Item",
+                    dataIndex: "icon",
+                    defaultSortOrder: "descend",
+                    align: 'center',
+                    render: index => <span>{index}</span>,
+                },
+                {
+                    title: "Display",
+                    dataIndex: "display",
+                    sorter: (a, b) => a.display.localeCompare(b.display),
+                    render: index => <span>{index}</span>,
+                },
+                // {
+                //   title: "Plural",
+                //   dataIndex: "plural",
+                //   sorter: (a, b) => a.plural.localeCompare(b.plural),
+                //   render: index => <span>{index}</span>,
+                // },
+                // {
+                //   title: "Key",
+                //   dataIndex: "key",
+                //   sorter: (a, b) => a.key.localeCompare(b.key),
+                //   render: index => <span>{index}</span>,
+                // },
+                {
+                    title: "Description",
+                    dataIndex: "description",
+                    sorter: (a, b) => a.description.localeCompare(b.description),
+                    render: index => <span>{index}</span>,
+                },
+                {
+                    title: "ID",
+                    dataIndex: "id",
+                    sorter: (a, b) => a.id.localeCompare(b.id),
+                    render: index => <span>{index}</span>,
+                },
+                {
+                    title: "System",
+                    dataIndex: "system",
+                    sorter: (a, b) => a.system.localeCompare(b.system),
+                    render: index => <span>{index}</span>,
+                },
+                {
+                    title: "Action",
+                    dataIndex: "action",
+                    render: (index, itemType) => (
+                        <span>
+                            <a href='#none' >Edit</a>
+                            <Divider type='vertical' />
+                            <a href='#none'>Fields</a>
+                            <Divider type='vertical' />
+                            <a href='#none'>Views</a>
+                            <Divider type='vertical' />
+                            <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
+                            {/* <Modal
+                      className="deleteModal"
+                      title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
+                      visible={this.state.deleteModal}
+                      onCancel={() => this.setState({ deleteModal: false })}
+                      // onOk={() => this.handleDeleteItem(itemType.id)}
+                      footer={
+                        [
+                          <Button key="back" onClick={() => this.setState({ deleteModal: false })}>Cancel</Button>,
+                          <Button key="submit" type="primary" onClick={() => this.handleDeleteItem(itemType.id)}>Yes</Button>,
+                        ]
+                      } >Do you really want to delete the selected item type?</Modal > */}
+                        </span >
+                    )
+                }
+            ],
             visible: false,
             icon: <div></div>,
             display: "",
@@ -19,7 +128,7 @@ class AddItemTypesModal extends Component {
             description: "",
             id: "",
             system: "",
-        }
+        };
     }
 
     showModal = () => {
@@ -43,11 +152,10 @@ class AddItemTypesModal extends Component {
             id,
             system,
         }
-            // this.setState({
-            //     visible: false,
-            //     itemTypes: [...this.state.itemTypes, newItemType],
-            // })
-            ;
+        this.setState({
+            visible: false,
+            itemTypes: [...this.state.itemTypes, newItemType],
+        });
         console.log("ERROR!");
     }
 
@@ -78,8 +186,6 @@ class AddItemTypesModal extends Component {
                         <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
                         <Button key="submit" type="primary" onClick={this.handleAddItemType}>Add</Button>
                     ]}
-                // onOk={this.state.handleAddItemType}
-                // onCancel={this.state.handleCancel}
                 >
                     <Form onOk={this.handleAddItemType}>
                         <FormItem style={{ marginBottom: '0px' }} label="Icon">
