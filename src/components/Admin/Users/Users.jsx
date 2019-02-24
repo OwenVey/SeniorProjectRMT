@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
-import { Table, Tag, Button, Input, Icon, Switch, Tooltip } from "antd";
+import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
 import { UserBar } from "../AdminBars/AdminBars.jsx";
 import {
   fetchUsers,
@@ -235,11 +235,11 @@ class Users extends Component {
         // },
         {
           title: "User Status",
-          dataIndex: "userStatus",
-          key: "userStatus",
+          dataIndex: "isActive",
+          key: "isActive",
           align: "center",
           width: 100,
-          sorter: (a, b) => +a.userStatus - +b.userStatus,
+          sorter: (a, b) => +a.isActive - +b.isActive,
           render: status => {
             if (status)
               return (
@@ -322,7 +322,7 @@ class Users extends Component {
           scroll={{ y: 500 }}
           bordered
         />
-        <EditUserModal />
+        {this.props.editModalVisible && <EditUserModal />}
       </React.Fragment>
     );
   }
@@ -330,7 +330,8 @@ class Users extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  userAdminData: state.adminPageUsers.userData
+  userAdminData: state.adminPageUsers.userData,
+  editModalVisible: state.adminPageUsers.showEditUserModal
 });
 
 export default connect(

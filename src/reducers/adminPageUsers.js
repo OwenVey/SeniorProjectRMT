@@ -25,13 +25,14 @@ const initialUsersState = {
   invalidAddUser: false,
 
   editUser: {
-    key: "",
-    firstName: "Alex",
-    lastName: "Tilot",
-    userName: "nezzely",
-    email: "alextilot@gmail.com",
+    email: "",
+    firstName: "",
+    id: "",
+    isActive: "",
+    isAdmin: "",
+    lastName: "",
     userGroups: "",
-    licenseType: "",
+    userName: "",
     userStatus: ""
   }
 };
@@ -42,6 +43,7 @@ export const adminPageUsersReducer = createReducer(initialUsersState, {
   },
 
   [fetchUsersSuccess]: (state, action) => {
+    console.log(action.payload);
     state.loading = false;
     state.userData = action.payload;
   },
@@ -86,31 +88,11 @@ export const adminPageUsersReducer = createReducer(initialUsersState, {
   },
 
   [hideEditUserModal]: (state, action) => {
-    state.editUser = {
-      key: "",
-      firstName: "",
-      lastName: "",
-      userName: "",
-      email: "",
-      userGroups: "",
-      licenseType: "",
-      userStatus: ""
-    };
     state.showEditUserModal = false;
     state.invalidEditUser = false;
   },
 
   [cancelEditUserModal]: (state, action) => {
-    state.editUser = {
-      key: "",
-      firstName: "",
-      lastName: "",
-      userName: "",
-      email: "",
-      userGroups: "",
-      licenseType: "",
-      userStatus: ""
-    };
     state.showEditUserModal = false;
   }
 });

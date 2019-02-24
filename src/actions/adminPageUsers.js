@@ -25,6 +25,7 @@ export const fetchUsers = accessToken => dispatch => {
       let users = response.data.users.map(user => {
         return {
           ...user,
+          key: user.id,
           userGroups: ["Developer"],
           userName: `${user.firstName} ${user.lastName}`,
           userStatus: true

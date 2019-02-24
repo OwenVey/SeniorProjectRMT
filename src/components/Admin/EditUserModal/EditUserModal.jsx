@@ -28,11 +28,6 @@ class EditUserModal extends Component {
     };
   }
 
-  // mapPropsToFields(props) {
-  //   return {
-  //     email: Form.createFormField(this.props.defaultUser)
-  //   };
-  // }
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -88,16 +83,16 @@ class EditUserModal extends Component {
       >
         <Modal
           title={
-            <div>
+            <React.Fragment>
               <Icon style={{ color: "#1890FF" }}>
                 <FontAwesomeIcon icon="user" />
               </Icon>
               Edit User
-            </div>
+            </React.Fragment>
           }
           onOk={this.handleOkUserModal}
-          visible={true || this.props.editModalVisible}
-          onCancel={this.props.cancelEditUserModal}
+          visible={true}
+          onCancel={() => this.props.cancelEditUserModal()}
           okText="Edit"
           maskClosable={false}
           bodyStyle={{ maxHeight: "60vh", overflowY: "scroll", paddingTop: 5 }}
@@ -110,7 +105,8 @@ class EditUserModal extends Component {
                     required: true,
                     message: "Please input the user's First Name"
                   }
-                ]
+                ],
+                initialValue: this.props.defaultUser.firstName
               })(<Input placeholder="First Name" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Last Name">
@@ -120,7 +116,8 @@ class EditUserModal extends Component {
                     required: true,
                     message: "Please input the user's Last Name"
                   }
-                ]
+                ],
+                initialValue: this.props.defaultUser.lastName
               })(<Input placeholder="Last Name" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Email">
@@ -128,7 +125,8 @@ class EditUserModal extends Component {
                 rules: [
                   { required: true, message: "Please input the user's Email" },
                   { type: "email", message: "The input is not valid E-mail!" }
-                ]
+                ],
+                initialValue: this.props.defaultUser.email
               })(<Input placeholder="Email" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Username">
@@ -139,7 +137,8 @@ class EditUserModal extends Component {
                     message: "Please input the user's Username"
                   },
                   { min: 4, message: "Username too short!" }
-                ]
+                ],
+                initialValue: this.props.defaultUser.userName
               })(<Input placeholder="Username" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Password">
@@ -179,7 +178,8 @@ class EditUserModal extends Component {
               {getFieldDecorator("LicenseType", {
                 rules: [
                   { required: true, message: "Please select a License Type" }
-                ]
+                ],
+                initialValue: "Developer"
               })(
                 <Select
                   placeholder="Please select a License Type"
@@ -194,15 +194,19 @@ class EditUserModal extends Component {
               )}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Status">
-              <Select
-                labelInValue
-                defaultValue={{ key: "Active" }}
-                style={{ width: "100%" }}
-                onChange={this.handleStatusChange}
-              >
-                <Option value="Active">ACTIVE</Option>
-                <Option value="Inactive">INACTIVE</Option>
-              </Select>
+              {getFieldDecorator("Status", {
+                initialValue: this.props.defaultUser.isActive
+                  ? "Active"
+                  : "Inactive"
+              })(
+                <Select
+                  style={{ width: "100%" }}
+                  onChange={this.handleStatusChange}
+                >
+                  <Option value="Active">Active</Option>
+                  <Option value="Inactive">Inactive</Option>
+                </Select>
+              )}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="User Groups">
               <Select
