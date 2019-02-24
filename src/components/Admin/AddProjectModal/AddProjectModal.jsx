@@ -112,7 +112,7 @@ class AddProjectModal extends Component {
               ],
             })
               (
-                <Input placeholder='Description' />
+                <Input.TextArea placeholder='Description' />
               )}
           </FormItem>
           <Form.Item style={{ float: 'left' }} {...formItemLayout} label="Due Date">

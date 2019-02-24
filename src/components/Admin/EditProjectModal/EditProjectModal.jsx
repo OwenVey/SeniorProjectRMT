@@ -126,7 +126,7 @@ class EditProjectModal extends Component {
               initialValue: this.state.projectData.description
             })
               (
-                <Input placeholder='Description' />
+                <Input.TextArea placeholder='Description' />
               )}
           </FormItem>
           <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Due Date">
