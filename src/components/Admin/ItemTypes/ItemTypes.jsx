@@ -19,7 +19,6 @@ class ItemTypes extends Component {
           //plural: "Projects",
           //key: "AITEM",
           description: "Used for projects",
-          id: "80",
           system: "No"
         },
         {
@@ -28,7 +27,6 @@ class ItemTypes extends Component {
           //plural: "Attachments",
           //key: "ATT",
           description: "Attachment Type",
-          id: "22",
           system: "Yes"
         },
         // {
@@ -37,7 +35,6 @@ class ItemTypes extends Component {
         //   //plural: "Requirements",
         //   //key: "CAUS",
         //   description: "Used in the projects component",
-        //   id: "129",
         //   system: "No"
         // },
         // {
@@ -46,7 +43,6 @@ class ItemTypes extends Component {
         //   //plural: "Note",
         //   //key: "FM",
         //   description: "Used in Requirements",
-        //   id: "128",
         //   system: "No"
         // }
       ],
@@ -80,12 +76,6 @@ class ItemTypes extends Component {
           title: "Description",
           dataIndex: "description",
           sorter: (a, b) => a.description.localeCompare(b.description),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "ID",
-          dataIndex: "id",
-          sorter: (a, b) => a.id.localeCompare(b.id),
           render: index => <span>{index}</span>,
         },
         {
@@ -224,10 +214,8 @@ class ItemTypes extends Component {
     };
 
     return (
-      <div>
-        <div style={{ display: 'flex', flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'space-between' }}>
-          <ItemTypesBar />
-        </div>
+      <React.Fragment>
+        <ItemTypesBar/>
         <div style={{ margin: 20 }}>
           <Table
             columns={this.state.columns}
@@ -237,7 +225,7 @@ class ItemTypes extends Component {
             bordered
           />
         </div>
-      </div >
+      </React.Fragment>
     );
   }
 }
