@@ -50,7 +50,7 @@ export const editExistingUser = (id, editedUser, accessToken) => dispatch => {
       email: editedUser.email,
       //password: editedUser.Password,
       isAdmin: false, //editedUser.isAdmin,
-      isActive: editedUser.isActive === "Active" ? true : false
+      isActive: editedUser.isActive
     })
     .then(response => {
       if (response.status !== 200) throw Error();

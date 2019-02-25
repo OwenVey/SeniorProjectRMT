@@ -199,15 +199,13 @@ class EditUserModal extends Component {
             <FormItem style={{ marginBottom: "0px" }} label="Status">
               {getFieldDecorator("isActive", {
                 initialValue: this.props.editableUser.isActive
-                  ? "Active"
-                  : "Inactive"
               })(
                 <Select
                   style={{ width: "100%" }}
                   onChange={this.handleStatusChange}
                 >
-                  <Option value="Active">Active</Option>
-                  <Option value="Inactive">Inactive</Option>
+                  <Option value={true}>Active</Option>
+                  <Option value={false}>Inactive</Option>
                 </Select>
               )}
             </FormItem>
