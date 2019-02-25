@@ -81,14 +81,14 @@ class AddItemTypesModal extends Component {
                         })
                             (<Input.TextArea placeholder="Description" />)}
                     </FormItem>
-                    {/* <FormItem style={{ marginBottom: '0px' }} label="ProjectID">
+                    <FormItem style={{ marginBottom: '0px' }} label="ProjectID">
                         {getFieldDecorator('ProjectId', {
                             rules: [
                                 { required: true, message: 'Please input item type\'s ProjectIDs' },
                                 { max: 255, message: 'Name must be 255 characters or less' }],
                         })
                             (<Input placeholder="Project ID" />)}
-                    </FormItem> */}
+                    </FormItem>
                 </Form>
             </Modal>
         );
