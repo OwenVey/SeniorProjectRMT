@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-
+import {
+  registerUser,
+  cancelEditUserModal
+} from "../../../actions/adminPageUsers";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -23,32 +27,32 @@ class AddUserModal extends Component {
     };
   }
 
-  registerUser = registerInfo => {
-    let valid = true;
-    const url = "https://senior-design.timblin.org/api/register";
-    axios
-      .post(url, {
-        email: registerInfo.Email,
-        password: registerInfo.Password,
-        firstname: registerInfo.FirstName,
-        lastname: registerInfo.LastName,
-        isAdmin: registerInfo.LicenseType === "Admin"
-      })
-      .catch(error => {
-        valid = false;
-        console.log(error.response);
-      })
-      .finally(() => {
-        if (valid) {
-          this.props.hide();
-        }
-      });
-  };
+  // registerUser = registerInfo => {
+  //   let valid = true;
+  //   const url = "https://senior-design.timblin.org/api/register";
+  //   axios
+  //     .post(url, {
+  //       email: registerInfo.Email,
+  //       password: registerInfo.Password,
+  //       firstname: registerInfo.FirstName,
+  //       lastname: registerInfo.LastName,
+  //       isAdmin: registerInfo.LicenseType === "Admin"
+  //     })
+  //     .catch(error => {
+  //       valid = false;
+  //       console.log(error.response);
+  //     })
+  //     .finally(() => {
+  //       if (valid) {
+  //         this.props.hide();
+  //       }
+  //     });
+  // };
 
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.registerUser(values);
+        this.props.registerUser(values, this.props.accessToken);
       }
     });
   };
@@ -108,7 +112,7 @@ class AddUserModal extends Component {
       >
         <Form onSubmit={this.handleOkUserModal}>
           <FormItem style={{ marginBottom: "0px" }} label="First Name">
-            {getFieldDecorator("FirstName", {
+            {getFieldDecorator("firstName", {
               rules: [
                 {
                   required: true,
@@ -118,14 +122,14 @@ class AddUserModal extends Component {
             })(<Input placeholder="First Name" />)}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Last Name">
-            {getFieldDecorator("LastName", {
+            {getFieldDecorator("lastName", {
               rules: [
                 { required: true, message: "Please input the user's Last Name" }
               ]
             })(<Input placeholder="Last Name" />)}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Email">
-            {getFieldDecorator("Email", {
+            {getFieldDecorator("email", {
               rules: [
                 { required: true, message: "Please input the user's Email" },
                 { type: "email", message: "The input is not valid E-mail!" }
@@ -133,7 +137,7 @@ class AddUserModal extends Component {
             })(<Input placeholder="Email" />)}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Username">
-            {getFieldDecorator("Username", {
+            {getFieldDecorator("username", {
               rules: [
                 { required: true, message: "Please input the user's Username" },
                 { min: 4, message: "Username too short!" }
@@ -141,7 +145,7 @@ class AddUserModal extends Component {
             })(<Input placeholder="Username" />)}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Password">
-            {getFieldDecorator("Password", {
+            {getFieldDecorator("password", {
               rules: [
                 { required: true, message: "Please input the user's Password" },
                 { validator: this.validateToNextPassword },
@@ -149,8 +153,8 @@ class AddUserModal extends Component {
               ]
             })(<Input placeholder="Password" type="password" />)}
           </FormItem>
-          <FormItem style={{ marginBottom: "0px" }} label="Confirm Password">
-            {getFieldDecorator("Confirm", {
+          {/* <FormItem style={{ marginBottom: "0px" }} label="Confirm Password">
+            {getFieldDecorator("confirm", {
               rules: [
                 {
                   required: true,
@@ -165,16 +169,17 @@ class AddUserModal extends Component {
                 onBlur={this.handleConfirmBlur}
               />
             )}
-          </FormItem>
+          </FormItem> */}
           <FormItem
             style={{ marginBottom: "0px" }}
             label="License Type"
             hasFeedback
           >
-            {getFieldDecorator("LicenseType", {
+            {getFieldDecorator("licenseType", {
               rules: [
                 { required: true, message: "Please select a License Type" }
-              ]
+              ],
+              initialValue: "Developer"
             })(
               <Select
                 placeholder="Please select a License Type"
@@ -189,15 +194,17 @@ class AddUserModal extends Component {
             )}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Status">
-            <Select
-              labelInValue
-              defaultValue={{ key: "Active" }}
-              style={{ width: "100%" }}
-              onChange={this.handleStatusChange}
-            >
-              <Option value="Active">ACTIVE</Option>
-              <Option value="Inactive">INACTIVE</Option>
-            </Select>
+            {getFieldDecorator("isActive", {
+              initialValue: "Active"
+            })(
+              <Select
+                style={{ width: "100%" }}
+                onChange={this.handleStatusChange}
+              >
+                <Option value="Active">ACTIVE</Option>
+                <Option value="Inactive">INACTIVE</Option>
+              </Select>
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="User Groups">
             <Select
@@ -216,4 +223,14 @@ class AddUserModal extends Component {
   }
 }
 
-export default Form.create()(AddUserModal);
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken
+});
+
+export default Form.create()(
+  connect(
+    mapStateToProps,
+    { cancelEditUserModal, registerUser }
+  )(AddUserModal)
+);
+//export default Form.create()(AddUserModal);

@@ -313,7 +313,7 @@ class Users extends Component {
 
     return (
       <React.Fragment>
-        <UserBar addUser={this.props.addUser} />
+        <UserBar />
         <Table
           components={this.components}
           columns={columns}
@@ -336,83 +336,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUsers, addUser, showEditUserModal }
+  { fetchUsers, showEditUserModal }
 )(Users);
-
-/* <Modal
-visible={visible}
-onCancel={this.handleCancel}
-userStatus={userStatus}
-footer={[
-  <Button key="back" onClick={this.handleCancel}>
-    Cancel
-  </Button>,
-  <Button key="update" type="primary" onClick={this.handleSave}>
-    Save
-  </Button>
-]}
->
-<p>
-  First Name:{" "}
-  <Input
-    value={this.state.editUser.firstName}
-    onChange={e =>
-      this.setState({
-        editUser: {
-          ...this.state.editUser,
-          firstName: e.target.value
-        }
-      })
-    }
-    placeholder="First Name"
-  />{" "}
-</p>
-<p>
-  Last Name:{" "}
-  <Input
-    value={this.state.editUser.lastName}
-    onChange={e =>
-      this.setState({
-        editUser: { ...this.state.editUser, lastName: e.target.value }
-      })
-    }
-    placeholder="Last Name"
-  />{" "}
-</p>
-<p>
-  Email:{" "}
-  <Input
-    value={this.state.editUser.email}
-    onChange={e =>
-      this.setState({
-        editUser: { ...this.state.editUser, email: e.target.value }
-      })
-    }
-    placeholder="Email"
-  />
-</p>
-<p>
-  Username:{" "}
-  <Input
-    value={this.state.editUser.userName}
-    onChange={e =>
-      this.setState({
-        editUser: { ...this.state.editUser, userName: e.target.value }
-      })
-    }
-    placeholder="Username"
-  />{" "}
-</p>
-<div>User Status:</div>
-<span>Inactive</span>
-<Switch
-  style={{ margin: "0px 10px" }}
-  checked={this.state.editUser.userStatus}
-  onChange={value =>
-    this.setState({
-      editUser: { ...this.state.editUser, userStatus: value }
-    })
-  }
-/>
-<span>Active</span>
-</Modal> */

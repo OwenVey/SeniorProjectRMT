@@ -3,43 +3,38 @@ import {
   fetchUsersRequest,
   fetchUsersSuccess,
   fetchUsersFailure,
-  addUser,
+  addUserRequest,
+  addUserSuccess,
+  addUserFailure,
   showAddUserModal,
-  hideAddUserModal,
   cancelAddUserModal,
-  editUser,
+  editUserRequest,
+  editUserSuccess,
+  editUserFailure,
   showEditUserModal,
-  hideEditUserModal,
   cancelEditUserModal
 } from "../actions/adminPageUsers";
 
 const initialUsersState = {
   userData: [],
   loading: false,
-  error: false,
+  fetchError: false,
+  postError: false,
+  patchError: false,
 
   showEditUserModal: false,
   invalidEditUser: false,
 
   showAddUserModal: false,
-  invalidAddUser: false,
 
-  editUser: {
-    email: "",
-    firstName: "",
-    id: "",
-    isActive: "",
-    isAdmin: "",
-    lastName: "",
-    userGroups: "",
-    userName: "",
-    userStatus: ""
-  }
+  editUser: ""
 };
 
 export const adminPageUsersReducer = createReducer(initialUsersState, {
+  //Fetching Users
   [fetchUsersRequest]: (state, action) => {
     state.loading = true;
+    state.fetchError = false;
   },
 
   [fetchUsersSuccess]: (state, action) => {
@@ -51,47 +46,50 @@ export const adminPageUsersReducer = createReducer(initialUsersState, {
   [fetchUsersFailure]: (state, action) => {
     console.log(action.payload);
     state.loading = false;
-    state.error = true;
+    state.fetchError = true;
   },
-
-  //add user modal
-  [addUser]: (state, action) => {
+  //-------------------------------------------------------------------
+  //Adding A User
+  //-------------------------------------------------------------------
+  [addUserRequest]: (state, action) => {
+    state.postError = false;
+  },
+  [addUserSuccess]: (state, action) => {
+    state.showAddUserModal = false;
+  },
+  [addUserFailure]: (state, action) => {
     console.log(action.payload);
-    state.userData = state.userData.push(action.payload);
+    state.postError = true;
   },
-
+  //Modal Switching
   [showAddUserModal]: (state, action) => {
     state.showAddUserModal = true;
     state.invalidAddUser = false;
   },
-
-  [hideAddUserModal]: (state, action) => {
-    state.showAddUserModal = false;
-    state.invalidAddUser = false;
-  },
-
   [cancelAddUserModal]: (state, action) => {
     state.showAddUserModal = false;
   },
-
-  //Edit user modal
-  [editUser]: (state, action) => {
+  //-------------------------------------------------------------------
+  //Exisitng User
+  //-------------------------------------------------------------------
+  [editUserRequest]: (state, action) => {
+    state.patchError = false;
+  },
+  [editUserSuccess]: (state, action) => {
     state.userData = state.userData.map(user =>
       user.id === action.payload.id ? Object.assign(action.payload) : user
     );
+    state.showEditUserModal = false;
   },
-
+  [editUserFailure]: (state, action) => {
+    console.log(action.payload);
+    state.patchError = true;
+  },
+  //Modal Switching
   [showEditUserModal]: (state, action) => {
     state.editUser = action.payload;
     state.showEditUserModal = true;
-    state.invalidEditUser = false;
   },
-
-  [hideEditUserModal]: (state, action) => {
-    state.showEditUserModal = false;
-    state.invalidEditUser = false;
-  },
-
   [cancelEditUserModal]: (state, action) => {
     state.showEditUserModal = false;
   }

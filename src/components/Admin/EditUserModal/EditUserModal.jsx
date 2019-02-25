@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  hideEditUserModal,
   cancelEditUserModal,
-  editUser
+  editExistingUser
 } from "../../../actions/adminPageUsers";
 
 const Option = Select.Option;
@@ -31,7 +30,11 @@ class EditUserModal extends Component {
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.registerUser(values);
+        this.props.editExistingUser(
+          this.props.editableUser.id,
+          values,
+          this.props.accessToken
+        );
       }
     });
   };
@@ -99,38 +102,38 @@ class EditUserModal extends Component {
         >
           <Form onSubmit={this.handleOkUserModal}>
             <FormItem style={{ marginBottom: "0px" }} label="First Name">
-              {getFieldDecorator("FirstName", {
+              {getFieldDecorator("firstName", {
                 rules: [
                   {
                     required: true,
                     message: "Please input the user's First Name"
                   }
                 ],
-                initialValue: this.props.defaultUser.firstName
+                initialValue: this.props.editableUser.firstName
               })(<Input placeholder="First Name" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Last Name">
-              {getFieldDecorator("LastName", {
+              {getFieldDecorator("lastName", {
                 rules: [
                   {
                     required: true,
                     message: "Please input the user's Last Name"
                   }
                 ],
-                initialValue: this.props.defaultUser.lastName
+                initialValue: this.props.editableUser.lastName
               })(<Input placeholder="Last Name" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Email">
-              {getFieldDecorator("Email", {
+              {getFieldDecorator("email", {
                 rules: [
                   { required: true, message: "Please input the user's Email" },
                   { type: "email", message: "The input is not valid E-mail!" }
                 ],
-                initialValue: this.props.defaultUser.email
+                initialValue: this.props.editableUser.email
               })(<Input placeholder="Email" />)}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Username">
-              {getFieldDecorator("Username", {
+              {getFieldDecorator("username", {
                 rules: [
                   {
                     required: true,
@@ -138,10 +141,10 @@ class EditUserModal extends Component {
                   },
                   { min: 4, message: "Username too short!" }
                 ],
-                initialValue: this.props.defaultUser.userName
+                initialValue: this.props.editableUser.userName
               })(<Input placeholder="Username" />)}
             </FormItem>
-            <FormItem style={{ marginBottom: "0px" }} label="Password">
+            {/* <FormItem style={{ marginBottom: "0px" }} label="Password">
               {getFieldDecorator("Password", {
                 rules: [
                   {
@@ -169,13 +172,13 @@ class EditUserModal extends Component {
                   onBlur={this.handleConfirmBlur}
                 />
               )}
-            </FormItem>
+            </FormItem> */}
             <FormItem
               style={{ marginBottom: "0px" }}
               label="License Type"
               hasFeedback
             >
-              {getFieldDecorator("LicenseType", {
+              {getFieldDecorator("licenseType", {
                 rules: [
                   { required: true, message: "Please select a License Type" }
                 ],
@@ -194,8 +197,8 @@ class EditUserModal extends Component {
               )}
             </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Status">
-              {getFieldDecorator("Status", {
-                initialValue: this.props.defaultUser.isActive
+              {getFieldDecorator("isActive", {
+                initialValue: this.props.editableUser.isActive
                   ? "Active"
                   : "Inactive"
               })(
@@ -228,14 +231,12 @@ class EditUserModal extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  userAdminData: state.adminPageUsers.userData,
-  editModalVisible: state.adminPageUsers.showEditUserModal,
-  defaultUser: state.adminPageUsers.editUser
+  editableUser: state.adminPageUsers.editUser
 });
 
 export default Form.create()(
   connect(
     mapStateToProps,
-    { hideEditUserModal, cancelEditUserModal, editUser }
+    { cancelEditUserModal, editExistingUser }
   )(EditUserModal)
 );
