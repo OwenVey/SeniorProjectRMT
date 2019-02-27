@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
-const Option = Select.Option;
 const FormItem = Form.Item;
-
+const ServerTimeOffset = 6;
 class AddProjectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirmDirty: false,
+      errorStatus: {}
     }
   }
 
@@ -18,20 +18,29 @@ class AddProjectModal extends Component {
     let valid = true
     const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
     axios.post(url, {
-      global_id: projectInfo.global_id,
+      globalId: projectInfo.globalId,
       name: projectInfo.name,
       description: projectInfo.description,
-      due_date: projectInfo.due_date,
+      dueDate: moment(projectInfo.dueDate).subtract(ServerTimeOffset, "hours"),
     })
       .catch(error => {
         valid = false
         console.log(error.response)
+        this.setErrorStatus(error)
       })
       .finally(() => {
         if (valid) {
           this.props.hide()
         }
       })
+  }
+
+  setErrorStatus = (error) => {
+    let errorStatus = {
+      code: error.response.data.code,
+      description: error.response.data.description
+    }
+    this.setState({ errorStatus })
   }
 
   handleOkAddProjectModal = (e) => {
@@ -41,6 +50,14 @@ class AddProjectModal extends Component {
         this.addProject(values);
       }
     })
+  }
+
+  validateDueDate = (rule, value, callback) => {
+    if (value > moment() || value == null) {
+      callback();
+      return;
+    }
+    callback('Due Date must be in the future!');
   }
 
   render() {
@@ -65,14 +82,17 @@ class AddProjectModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
+        <div style={{ color: "red" }}>
+          {this.state.errorStatus.description}
+        </div>
         <Form onSubmit={this.handleOkAddProjectModal}>
-          <FormItem style={{ marginBottom: '0px' }} label="Global ID">
-            {getFieldDecorator('global_id', {
+          <FormItem style={{ marginBottom: '0px' }} label="Global ID" >
+            {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
             })
-            (
-              <Input placeholder='Global ID' />
-            )}
+              (
+                <Input placeholder='Global ID' />
+              )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
@@ -81,9 +101,9 @@ class AddProjectModal extends Component {
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
             })
-            (
-              <Input placeholder='Name' />
-            )}
+              (
+                <Input placeholder='Name' />
+              )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
@@ -91,16 +111,20 @@ class AddProjectModal extends Component {
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
             })
-            (
-              <Input placeholder='Description' />
-            )}
+              (
+                <Input.TextArea placeholder='Description' />
+              )}
           </FormItem>
-          <Form.Item style={{float: 'left' }} {...formItemLayout} label="Due Date">
-            {getFieldDecorator('due_date')
-            (
-              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-            )}
-        </Form.Item>
+          <Form.Item style={{ float: 'left' }} {...formItemLayout} label="Due Date">
+            {getFieldDecorator('dueDate', {
+              rules: [
+                { validator: this.validateDueDate }
+              ]
+            })
+              (
+                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+              )}
+          </Form.Item>
         </Form>
       </Modal>
     );
