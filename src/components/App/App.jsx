@@ -11,6 +11,7 @@ import HomePage from "../Home/HomePage/HomePage.jsx";
 import ProjectPage from "../Projects/ProjectPage/ProjectPage.jsx";
 import AdminPage from "../Admin/AdminPage/AdminPage.jsx";
 import ProfilePage from "../ProfilePage/ProfilePage.jsx";
+import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 
 library.add(fas, far);
 
@@ -39,6 +40,11 @@ const App = (props) => (
         path="/admin"
         component={AdminPage}
         accessToken={props.accessToken}
+      />
+      <PrivateRoute
+        authed={props.isAuthenticated}
+        path="/profile"
+        component={ProfilePage}
       />
       <PrivateRoute
         authed={props.isAuthenticated}
