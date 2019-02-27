@@ -16,7 +16,7 @@ export const login = (email, password) => dispatch => {
     .then(response => {
       if (response.data.status !== 200)
         throw Error();
-      dispatch(loginSuccess(response.data.accessToken))
+      dispatch(loginSuccess(response.data.token))
     })
     .catch(error => {
       dispatch(loginFailure(error.message))
