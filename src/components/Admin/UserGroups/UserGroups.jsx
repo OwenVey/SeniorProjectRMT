@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Divider, Modal, Row, Button, Icon, Form, Input, InputNumber } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
 import './UserGroups.css'
 
 class UserGroups extends Component {
@@ -245,12 +246,7 @@ class UserGroups extends Component {
   render() {
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
-          <Button onClick={() => this.setState({ addModalVisible: true })}>
-            <Icon type='plus-circle' theme='filled' style={{ color: '#1890FF' }} />
-            Add User Group
-          </Button>
-        </div >
+        <UserGroupBar accessToken={this.props.accessToken} />
         <Modal
           title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='users' /></Icon> Add User Group</div>}
           visible={this.state.addModalVisible}
