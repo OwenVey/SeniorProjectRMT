@@ -9,15 +9,32 @@ const FormItem = Form.Item;
 class AddItemTypesModal extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            objectTypes: []
+        };
     }
 
     handleOk = (e) => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 //object destructuring
-                const { iconName, display, description, id, system } = values;
-                console.log("Add button clicked.");
+                /*
+                "objectTypes": [
+                    {
+                    "id": 0,
+                    "name": "string",
+                    "description": "string",
+                    "iconUrl": "string",
+                    "projectId": 0
+                    }
+                ]
+                */
+                const { name, description } = values;
                 console.log('Received values of form: ', values);
+                let newItemType = {
+                    name,
+                    description,
+                }
                 // Call add item when backend link ready
                 // console.log(values.iconName);
                 // console.log(values.iconName.key);

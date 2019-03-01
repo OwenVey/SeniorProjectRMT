@@ -29,22 +29,6 @@ class ItemTypes extends Component {
           description: "Attachment Type",
           system: "Yes"
         },
-        // {
-        //   icon: <FontAwesomeIcon icon='file-alt' />,
-        //   display: "Requirements",
-        //   //plural: "Requirements",
-        //   //key: "CAUS",
-        //   description: "Used in the projects component",
-        //   system: "No"
-        // },
-        // {
-        //   icon: <FontAwesomeIcon icon='file-signature' />,
-        //   display: "Note",
-        //   //plural: "Note",
-        //   //key: "FM",
-        //   description: "Used in Requirements",
-        //   system: "No"
-        // }
       ],
       columns: [
         {
@@ -60,18 +44,6 @@ class ItemTypes extends Component {
           sorter: (a, b) => a.display.localeCompare(b.display),
           render: index => <span>{index}</span>,
         },
-        // {
-        //   title: "Plural",
-        //   dataIndex: "plural",
-        //   sorter: (a, b) => a.plural.localeCompare(b.plural),
-        //   render: index => <span>{index}</span>,
-        // },
-        // {
-        //   title: "Key",
-        //   dataIndex: "key",
-        //   sorter: (a, b) => a.key.localeCompare(b.key),
-        //   render: index => <span>{index}</span>,
-        // },
         {
           title: "Description",
           dataIndex: "description",
@@ -115,8 +87,6 @@ class ItemTypes extends Component {
       visible: false,
       icon: <div></div>,
       display: "",
-      //plural: "",
-      //key: "",
       description: "",
       id: "",
       system: "",
@@ -166,12 +136,10 @@ class ItemTypes extends Component {
   handleAddItemType = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { icon, display,/* plural, key,*/ description, id, system } = this.state;
+        const { icon, display, description, id, system } = this.state;
         let newItemType = {
           icon,
           display,
-          //plural,
-          //key,
           description,
           id,
           system,
@@ -201,21 +169,21 @@ class ItemTypes extends Component {
   render() {
     //This doesn't work.
     //const { getFieldDecorator } = this.props.form;
-    this.dragProps = {
-      onDragEnd(fromIndex, toIndex) {
-        const columns = this.state.columns;
-        const item = columns.splice(fromIndex, 1)[0];
-        columns.splice(toIndex, 0, item);
-        this.setState({
-          columns
-        });
-      },
-      nodeSelector: "th"
-    };
+    // this.dragProps = {
+    //   onDragEnd(fromIndex, toIndex) {
+    //     const columns = this.state.columns;
+    //     const item = columns.splice(fromIndex, 1)[0];
+    //     columns.splice(toIndex, 0, item);
+    //     this.setState({
+    //       columns
+    //     });
+    //   },
+    //   nodeSelector: "th"
+    // };
 
     return (
       <React.Fragment>
-        <ItemTypesBar/>
+        <ItemTypesBar />
         <div style={{ margin: 20 }}>
           <Table
             columns={this.state.columns}
