@@ -13,13 +13,23 @@ class AddItemTypesModal extends Component {
 
     handleOk = (e) => {
         this.props.form.validateFields((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-            // Call add item when backend link ready
-            this.props.hide() //move this to call above
-          }
+            if (!err) {
+                //object destructuring
+                const { iconName, display, description, id, system } = values;
+                console.log("Add button clicked.");
+                console.log('Received values of form: ', values);
+                // Call add item when backend link ready
+                // console.log(values.iconName);
+                // console.log(values.iconName.key);
+                // console.log(values.name);
+                // console.log(values.description);
+                // console.log(values.ProjectId);
+                this.props.hide() //move this to call above
+            }
         })
-      }
+    }
+
+    //icon:iconName
 
     // handleAddItemType = (e) => {
     //     const { icon, display, description, id, system } = this.state;
