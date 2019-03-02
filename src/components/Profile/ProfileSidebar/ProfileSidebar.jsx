@@ -47,5 +47,4 @@ class ProfileSidebar extends Component {
   }
 }
 
-
 export default ProfileSidebar;
