@@ -10,59 +10,51 @@ class AddItemTypesModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            objectTypes: []
+            objectTypes: [],
+            errorStatus: {}
         };
+    }
+
+    addItemType = (itemInfo) => {
+        let valid = true;
+        const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
+        axios.post(url, {
+            projectID: itemInfo.projectID,
+            name: itemInfo.name,
+            description: itemInfo.description
+        })
+            .catch(error => {
+                valid = false
+                console.log(error.response)
+                this.setErrorStatus(error)
+            })
+            .finally(() => {
+                if (valid) {
+                    this.props.hide()
+                }
+            })
+
+        //object destructuring
+        // const { name, description } = values;
+        this.props.hide()
+    }
+
+    setErrorStatus = (error) => {
+        let errorStatus = {
+            code: error.response.data.code,
+            description: error.response.data.description
+        }
+        this.setState({ errorStatus })
     }
 
     handleOk = (e) => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                //object destructuring
-                /*
-                "objectTypes": [
-                    {
-                    "id": 0,
-                    "name": "string",
-                    "description": "string",
-                    "iconUrl": "string",
-                    "projectId": 0
-                    }
-                ]
-                */
-                const { name, description } = values;
                 console.log('Received values of form: ', values);
-                let newItemType = {
-                    name,
-                    description,
-                }
-                // Call add item when backend link ready
-                // console.log(values.iconName);
-                // console.log(values.iconName.key);
-                // console.log(values.name);
-                // console.log(values.description);
-                // console.log(values.ProjectId);
-                this.props.hide() //move this to call above
+                this.addItemType(values);
             }
         })
     }
-
-    //icon:iconName
-
-    // handleAddItemType = (e) => {
-    //     const { icon, display, description, id, system } = this.state;
-    //     let newItemType = {
-    //         icon,
-    //         display,
-    //         description,
-    //         id,
-    //         system,
-    //     }
-    //     this.setState({
-    //         visible: false,
-    //         itemTypes: [...this.state.itemTypes, newItemType],
-    //     });
-    //     console.log("ERROR!");
-    // }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -108,7 +100,7 @@ class AddItemTypesModal extends Component {
                         })
                             (<Input.TextArea placeholder="Description" />)}
                     </FormItem>
-                    <FormItem style={{ marginBottom: '0px' }} label="ProjectID">
+                    <FormItem style={{ marginBottom: '0px' }} label="ProjectID - MUST BE 6, 7, or 8">
                         {getFieldDecorator('ProjectId', {
                             rules: [
                                 { required: true, message: 'Please input item type\'s ProjectIDs' },
