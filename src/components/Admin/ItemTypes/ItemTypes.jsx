@@ -183,7 +183,7 @@ class ItemTypes extends Component {
 
     return (
       <React.Fragment>
-        <ItemTypesBar />
+        <ItemTypesBar accessToken={this.props.accessToken} />
         <div style={{ margin: 20 }}>
           <Table
             columns={this.state.columns}

@@ -41,8 +41,8 @@ class AddItemTypesModal extends Component {
 
     setErrorStatus = (error) => {
         let errorStatus = {
-            code: error.response.data.code,
-            description: error.response.data.description
+            code: error.response,
+            description: error.response
         }
         this.setState({ errorStatus })
     }
