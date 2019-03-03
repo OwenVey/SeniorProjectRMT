@@ -18,17 +18,17 @@ class ProfileSidebar extends Component {
         onSelect={this.handleItemClick}
       >
         <Menu.Item key="myDetails">
-          <Icon><FontAwesomeIcon icon='building' /></Icon>
+          <Icon><FontAwesomeIcon icon='user' /></Icon>
           <span>My Details</span>
         </Menu.Item>
 
         <Menu.Item key="mySubscriptions">
-          <Icon><FontAwesomeIcon icon='user' /></Icon>
+          <Icon><FontAwesomeIcon icon='list' /></Icon>
           <span>My Subscriptions</span>
         </Menu.Item>
 
         <Menu.Item key="myLockedItems">
-          <Icon>  <FontAwesomeIcon icon='users' /></Icon>
+          <Icon>  <FontAwesomeIcon icon='user-lock' /></Icon>
           <span>My Locked Items</span>
         </Menu.Item>
 
@@ -38,7 +38,7 @@ class ProfileSidebar extends Component {
         </Menu.Item>
 
         <Menu.Item key="reviewCenter">
-          <Icon><FontAwesomeIcon icon='list' /></Icon>
+          <Icon><FontAwesomeIcon icon='book' /></Icon>
           <span>Review Center</span>
         </Menu.Item>
 
