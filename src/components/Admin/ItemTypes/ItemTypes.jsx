@@ -143,29 +143,25 @@ class ItemTypes extends Component {
     });
   }
 
-  handleAddItemType = (e) => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        const { icon, display, description, id, system } = this.state;
-        let newItemType = {
-          icon,
-          display,
-          description,
-          id,
-          system,
-        }
-        this.setState({
-          visible: false,
-          itemTypes: [...this.state.itemTypes, newItemType],
+  // handleAddItemType = (e) => {
+  //   this.props.form.validateFields((err, values) => {
+  //     if (!err) {
+  //       const { icon, display, description, id, system } = this.state;
+  //       let newItemType = {
+  //         icon,
+  //         display,
+  //         description,
+  //         id,
+  //         system,
+  //       }
+  //       this.setState({
+  //         visible: false,
+  //         itemTypes: [...this.state.itemTypes, newItemType],
 
-        });
-      }
-    })
-  }
-
-
-
-
+  //       });
+  //     }
+  //   })
+  // }
 
   handleCancel = (e) => {
     this.setState({
