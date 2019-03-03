@@ -16,7 +16,7 @@ class AddItemTypesModal extends Component {
     }
 
     addItemType = (itemInfo) => {
-        let valid = true;
+        let valid = true
         const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
         axios.post(url, {
             projectID: itemInfo.projectID,
@@ -33,9 +33,8 @@ class AddItemTypesModal extends Component {
                     this.props.hide()
                 }
             })
-
         //object destructuring
-        // const { name, description } = values;
+        //const { name, description } = values;
         this.props.hide()
     }
 
@@ -68,7 +67,7 @@ class AddItemTypesModal extends Component {
                 maskClosable={false}
                 bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
             >
-                <Form onSubmit={this.handleOK}>
+                <Form onSubmit={this.handleOk}>
                     <FormItem style={{ marginBottom: '0px' }} label="Icon">
                         {getFieldDecorator('iconName')
                             (<Select

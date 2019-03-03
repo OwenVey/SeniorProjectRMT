@@ -3,7 +3,8 @@ import { Divider, Table, Button, Modal, Input, Icon, Form } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-import { ItemTypesBar } from '../AdminBars/AdminBars'
+import { ItemTypesBar } from '../AdminBars/AdminBars';
+import axios from 'axios';
 const { Option } = Select;
 const FormItem = Form.Item;
 
@@ -12,24 +13,7 @@ class ItemTypes extends Component {
     super(props);
 
     this.state = {
-      itemTypes: [
-        {
-          icon: <FontAwesomeIcon icon='archive' />,
-          display: "Projects",
-          //plural: "Projects",
-          //key: "AITEM",
-          description: "Used for projects",
-          system: "No"
-        },
-        {
-          icon: <FontAwesomeIcon icon='paperclip' />,
-          display: "Attachment",
-          //plural: "Attachments",
-          //key: "ATT",
-          description: "Attachment Type",
-          system: "Yes"
-        },
-      ],
+      itemTypes: [],
       columns: [
         {
           title: "Item",
@@ -93,6 +77,32 @@ class ItemTypes extends Component {
     };
   }
 
+  componentWillMount() {
+    this.fetchItemTypes();
+  }
+
+  fetchItemTypes = async () => {
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
+    axios
+      .get(url)
+      .then(response => {
+        let itemTypeData = response.data.itemTypeData.map(itemType => {
+          return {
+            ...itemType,
+            name: itemType.name.substring(0, 10),
+            description: itemType.description.substring(0, 10) == '9999-12-31' ? 'In Progress' : itemType.completeDate.substring(0, 10),
+            projectId: itemType.projectId.substring(0, 10)
+          }
+        })
+        this.setState({ itemTypes: itemTypeData });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -152,6 +162,9 @@ class ItemTypes extends Component {
       }
     })
   }
+
+
+
 
 
   handleCancel = (e) => {
