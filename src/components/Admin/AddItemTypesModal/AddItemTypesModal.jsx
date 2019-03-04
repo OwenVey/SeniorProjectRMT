@@ -17,11 +17,11 @@ class AddItemTypesModal extends Component {
 
     addItemType = (itemInfo) => {
         let valid = true
-        const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
+        const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`
         axios.post(url, {
-            projectID: itemInfo.projectID,
             name: itemInfo.name,
-            description: itemInfo.description
+            description: itemInfo.description,
+            projectId: itemInfo.projectId,
         })
             .catch(error => {
                 valid = false
@@ -100,7 +100,7 @@ class AddItemTypesModal extends Component {
                             (<Input.TextArea placeholder="Description" />)}
                     </FormItem>
                     <FormItem style={{ marginBottom: '0px' }} label="ProjectID - MUST BE 6, 7, or 8">
-                        {getFieldDecorator('ProjectId', {
+                        {getFieldDecorator('projectId', {
                             rules: [
                                 { required: true, message: 'Please input item type\'s ProjectIDs' },
                                 { max: 255, message: 'Name must be 255 characters or less' }],
