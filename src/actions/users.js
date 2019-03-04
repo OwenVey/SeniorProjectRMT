@@ -18,7 +18,7 @@ export const addUserFailure = createAction("ADD_USER_FAILURE");
 export const showAddUserModal = createAction("SHOW_ADD_USER_MODAL");
 export const cancelAddUserModal = createAction("CANCEL_ADD_USER_MODAL");
 
-export const fetchUsers = accessToken => dispatch => {
+export const getUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());
   axios
     .get(`${TIMBLIN_URL}/user?accessToken=${accessToken}`)
@@ -41,7 +41,7 @@ export const fetchUsers = accessToken => dispatch => {
     });
 };
 
-export const editExistingUser = (id, editedUser, accessToken) => dispatch => {
+export const editUser = (id, editedUser, accessToken) => dispatch => {
   dispatch(editUserRequest());
   axios
     .patch(`${TIMBLIN_URL}/user/${id}?accessToken=${accessToken}`, {
@@ -61,7 +61,7 @@ export const editExistingUser = (id, editedUser, accessToken) => dispatch => {
     });
 };
 
-export const registerUser = (registeringNewUser, accessToken) => dispatch => {
+export const addUser = (registeringNewUser, accessToken) => dispatch => {
   dispatch(addUserRequest());
   axios
     .post(`${TIMBLIN_URL}/register`, {
