@@ -1,109 +1,252 @@
 import React, { Component } from 'react';
 import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
+import axios from 'axios';
 import './UserGroups.css'
 
 class UserGroups extends Component {
-  state = {
-    editedUserGroup: {
-      key: '',
-      groupType: '',
-      groupName: '',
-      numUsers: '',
-      currentProjects: [],
-    },
-    size: 'large',
-    mockData: [],
-    targetKeys: [],
-    addModalVisible: false,
-    editModalVisible: false,
-    deleteModalVisible: false,
-    editing: false,
-    columns: [
-      {
-        title: 'Group Type',
-        dataIndex: 'groupType',
-        /*key: 'groupType',*/
-        render: text => <span>{text}</span>,
-      },
-      {
-        title: 'Group Name',
-        dataIndex: 'groupName',
-        /*key: 'groupName',*/
-        render: text => <span>{text}</span>,
-      },
-      {
-        title: '# of Users',
-        dataIndex: 'numUsers',
-        /*key: 'groupName',*/
-        render: text => <span>{text}</span>,
-      },
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, userGroup) => (
-          <span>
-            <a href='#none'>Members</a>
-            <Divider type='vertical' />
-            <a href='#none'>Group</a>
-            <Divider type='vertical' />
-            <Button
-              value='default'
-              onClick={() => this.setState({ editModalVisible: true, editedUserGroup: userGroup })}>
-              Edit
+  constructor(props) {
+    super(props);
+    this.state = {
+      size: 'large',
+      //mockData: [],
+      //targetKeys: [],
+      addModalVisible: false,
+      editModalVisible: false,
+      deleteModalVisible: false,
+      editing: false,
+      searchText: '',
+      selectedId: '',
+      groupData: [],
+      columns: [
+
+        {
+          title: 'Actions',
+          key: 'action',
+          width: 150,
+          render: (text, userGroup) => (
+            <span>
+              <a href='#none'>Members</a>
+              <Divider type='vertical' />
+            </span>
+          ),
+        },
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          defaultSortOrder: 'ascend',
+          width: 150,
+          sorter: (a, b) => a.name.localeCompare(b.name),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => (this.searchInput = ele)}
+                placeholder="Search Name"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+                Search
             </Button>
-            <Modal
-              className='editGroupModal'
-              title='Edit User Group'
-              id='editGroupModal'
-              visible={this.state.editModalVisible}
-              onCancel={() => { this.setState({ editModalVisible: false }) }}
-              onOk={() => {
-                this.setState({ editModalVisible: false })
-                this.editUserGroup()
-              }}
-            >
-              <Row className='inputRow'>
-                <div>Edit User Group Type</div>
-                <Input
-                  id='editGroupType'
-                  title='editGroupType'
-                  value={this.state.editedUserGroup.groupType}
-                  onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupType: e.target.value } })}
-                >
-                </Input>
-              </Row>
-              <Row className='inputRow'>
-                <div>Edit User Group Name</div>
-                <Form layout='vertical' />
-                <Input
-                  id='editGroupName'
-                  title='editGroupName'
-                  value={this.state.editedUserGroup.groupName}
-                  onChange={(e) => this.setState({ editedUserGroup: { ...this.state.editedUserGroup, groupName: e.target.value } })}
-                >
-                </Input>
-              </Row>
-            </Modal>
-            <Divider type='vertical' />
-            <Button
-              value='default'
-              onClick={() => { this.deleteGroupModal(userGroup) }}>
-              Delete
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text
+                  .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+                  .map((fragment, i) =>
+                    fragment.toLowerCase() === searchText.toLowerCase() ? (
+                      <span key={i} className="highlight">
+                        {fragment}
+                      </span>
+                    ) : (
+                        fragment
+                      ) // eslint-disable-line
+                  )}
+              </span>
+            ) : (
+                text
+              );
+          },
+        },
+        {
+          title: 'Description',
+          dataIndex: 'description',
+          key: 'description',
+          defaultSortOrder: 'ascend',
+          width: 150,
+          sorter: (a, b) => a.description.localeCompare(b.description),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => (this.searchInput = ele)}
+                placeholder="Search Description"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+                Search
             </Button>
-          </span>
-        ),
-      }],
-    groupType: '',
-    groupName: '',
-    userGroups: [{
-      key: '0',
-      groupType: 'Development',
-      groupName: 'Ocean\'s 8',
-      numUsers: '8',
-      currentProjects: ['nice', 'developer'],
-    }],
-    curProjects: '',
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.description.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text
+                  .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+                  .map((fragment, i) =>
+                    fragment.toLowerCase() === searchText.toLowerCase() ? (
+                      <span key={i} className="highlight">
+                        {fragment}
+                      </span>
+                    ) : (
+                        fragment
+                      ) // eslint-disable-line
+                  )}
+              </span>
+            ) : (
+                text
+              );
+          },
+        },
+        {
+          title: '# of Users',
+          dataIndex: 'numUsers',
+          width: 150,
+          /*key: 'groupName',*/
+          render: text => <span> [Unimplemented] </span>,
+        },
+        {
+          title: 'ProjectId',
+          dataIndex: 'projectId',
+          key: 'projectId',
+          defaultSortOrder: 'ascend',
+          width: 150,
+          sorter: (a, b) => a.projectId.localeCompare(b.projectId),
+          filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => (this.searchInput = ele)}
+                placeholder="Search Project Id"
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+                Search
+            </Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+          onFilter: (value, record) => record.projectId.toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus();
+              });
+            }
+          },
+          render: (text) => {
+            const { searchText } = this.state;
+            return searchText ? (
+              <span>
+                {text
+                  .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+                  .map((fragment, i) =>
+                    fragment.toLowerCase() === searchText.toLowerCase() ? (
+                      <span key={i} className="highlight">
+                        {fragment}
+                      </span>
+                    ) : (
+                        fragment
+                      ) // eslint-disable-line
+                  )}
+              </span>
+            ) : (
+                text
+              );
+          },
+        }],
+    };
+    // groupType: '',
+    // groupName: '',
+    // userGroups: [{
+    //   key: '0',
+    //   groupType: 'Development',
+    //   groupName: 'Ocean\'s 8',
+    //   numUsers: '8',
+    //   currentProjects: ['nice', 'developer'],
+    // }],
+    // curProjects: '',
+
+  };
+
+  componentWillMount() {
+    this.fetchGroups();
+  }
+
+  fetchGroups = async () => {
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/group?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/group?accessToken=${this.props.accessToken}`;
+    axios
+      .get(url)
+      .then(response => {
+        let groups = response.data.groups
+        this.setState({ groupData: groups });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleSearch = (selectedKeys, confirm) => () => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  };
+
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
+  handleResize = index => (e, { size }) => {
+    this.setState(({ columns }) => {
+      const nextColumns = [...columns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width,
+      };
+      return { columns: nextColumns };
+    });
   };
 
   addModal = () => {
@@ -245,12 +388,7 @@ class UserGroups extends Component {
   render() {
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'flex-end' }}>
-          <Button onClick={() => this.setState({ addModalVisible: true })}>
-            <Icon type='plus-circle' theme='filled' style={{ color: '#1890FF' }} />
-            Add User Group
-          </Button>
-        </div >
+        <UserGroupBar accessToken={this.props.accessToken} />
         <Modal
           title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='users' /></Icon> Add User Group</div>}
           visible={this.state.addModalVisible}
@@ -282,7 +420,7 @@ class UserGroups extends Component {
             </Input>
           </div>
         </Modal>
-        <Table bordered dataSource={this.state.userGroups} columns={this.state.columns} />
+        <Table bordered dataSource={this.state.groupData} columns={this.state.columns} />
       </React.Fragment>
     )
   }

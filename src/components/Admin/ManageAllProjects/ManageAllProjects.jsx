@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Table, Tag, Button, Input, Icon, Tooltip } from 'antd';
+import { Table, Tag, Divider, Button, Input, Icon, Tooltip } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
 import EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
@@ -40,10 +40,11 @@ class ManageAllProjects extends Component {
 					render: (id) => (
 						<React.Fragment>
 							<Tooltip placement="topLeft" title="Edit Project Info">
-								<a style={{ paddingRight: 10 }} href="#none" onClick={() => this.showEditProjectModal(id)}>
+								<a href="#none" onClick={() => this.showEditProjectModal(id)}>
 									<Icon><FontAwesomeIcon icon='edit' /></Icon>
 								</a>
 							</Tooltip>
+							<Divider type='vertical' />
 							<Tooltip placement="topLeft" title="Delete Project">
 								<a href="#none" onClick={() => this.deleteProject(id)}>
 									<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
