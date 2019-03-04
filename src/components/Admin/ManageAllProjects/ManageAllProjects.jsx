@@ -27,6 +27,7 @@ class ManageAllProjects extends Component {
 		super(props);
 
 		this.state = {
+			showEditProjectModal: false,
 			searchText: '',
 			selectedId: '',
 			projectData: [],

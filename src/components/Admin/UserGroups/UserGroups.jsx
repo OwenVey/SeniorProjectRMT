@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Divider, Modal, Button, Icon, Input} from 'antd';
+import { Table, Divider, Button, Icon, Input, Tooltip} from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
+import EditUserGroupModal from '../EditUserGroupModal/EditUserGroupModal.jsx';
 import axios from 'axios';
 import './UserGroups.css'
 
@@ -9,13 +10,7 @@ class UserGroups extends Component {
   constructor(props) {
 		super(props);
 		this.state = {
-      size: 'large',
-      //mockData: [],
-      //targetKeys: [],
-      addModalVisible: false,
-      editModalVisible: false,
-      deleteModalVisible: false,
-      editing: false,
+      showEditUserGroupModal: false,
       searchText: '',
       selectedId: '',
       groupData: [],
@@ -23,13 +18,24 @@ class UserGroups extends Component {
   
       {
         title: 'Actions',
-        key: 'action',
-        width: 150,
-        render: (text, userGroup) => (
-          <span>
-            <a href='#none'>Members</a>
-            <Divider type='vertical' />
-          </span>
+        dataIndex: 'id',
+        key: 'id',
+        width: 75,
+        align: 'center',
+        render: (id) => (
+          <React.Fragment>
+							<Tooltip placement="topLeft" title="Edit User Group Info">
+								<a href="#none" onClick={() => this.showEditUserGroupModal(id)}>
+									<Icon><FontAwesomeIcon icon='edit' /></Icon>
+								</a>
+							</Tooltip>
+							<Divider type='vertical' />
+							<Tooltip placement="topLeft" title="Manage Members">
+								<a href="#none" onClick={() => {}}>
+									<Icon><FontAwesomeIcon icon='users' color='#000000' /></Icon>
+								</a>
+							</Tooltip>
+						</React.Fragment>
         ),
       },
       {
@@ -195,18 +201,7 @@ class UserGroups extends Component {
             );
         },
       }],
-    };
-    // groupType: '',
-    // groupName: '',
-    // userGroups: [{
-    //   key: '0',
-    //   groupType: 'Development',
-    //   groupName: 'Ocean\'s 8',
-    //   numUsers: '8',
-    //   currentProjects: ['nice', 'developer'],
-    // }],
-    // curProjects: '',
-    
+    };    
   };
 
   componentWillMount() {
@@ -228,6 +223,31 @@ class UserGroups extends Component {
 			});
 	};
 
+  showEditUserGroupModal = (id) => {
+		this.setState({
+			selectedId: id,
+			showEditUserGroupModal: true,
+		});
+	}
+
+	hideEditUserGroupModal = () => {
+		this.setState({
+			showEditUserGroupModal: false,
+		});
+	}
+
+	handleOkEditUserGroupModal = (e) => {
+		this.setState({
+			showEditUserGroupModal: false,
+		});
+	}
+
+	handleCancelEditUserGroupModal = (e) => {
+		this.setState({
+			showEditUserGroupModal: false,
+		});
+	}
+
   handleSearch = (selectedKeys, confirm) => () => {
 		confirm();
 		this.setState({ searchText: selectedKeys[0] });
@@ -248,179 +268,43 @@ class UserGroups extends Component {
 			return { columns: nextColumns };
 		});
 	};
-  
-  addModal = () => {
-    this.setState({
-      addModalVisible: true,
-      editModalVisible: false,
-      deleteModalVisible: false,
-    });
-  }
-
-  loadEditModal = () => {
-    this.setState({
-      addModalVisible: false,
-      editModalVisible: true,
-      deleteModalVisible: false,
-    });
-  }
-
-  deleteGroupModal = (userGroup) => {
-    this.setState({
-      deleteModalVisible: true,
-      addModalVisible: false,
-      editModalVisible: false,
-    })
-    Modal.confirm({
-      title: 'Delete User Group',
-      content: 'Are you sure you want to delete this user group?',
-      okText: 'Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
-      onOk: () => { 
-        //this.deleteUserGroup()
-        this.setState({deleteModalVisible: false})
-        this.deleteUserGroup(userGroup.key)
-      },
-      onCancel: () => {
-        this.setState({deleteModalVisible: false})
-      }
-    });
-    /*
-      <Modal
-        className='deleteGroupModal'
-        title='Delete User Group'
-        id='deleteUserGroup'
-        visible={this.state.deleteModalVisible}
-        onCancel={() => {this.setState({deleteModalVisible: false})}}
-        onOk={() => {
-          this.setState({deleteModalVisible: false})
-          this.deleteUserGroup(userGroup.key)
-        }}
-        >
-        <Row>Are you sure you want to delete?</Row>
-      </Modal>
-    */
-  }
-
-  handleOk = (e) => {
-    this.setState({
-      visible: false,
-    });
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
-  }
-  componentDidMount() {
-    this.getMock();
-  }
-
-  getMock = () => {
-    const targetKeys = [];
-    const mockData = [];
-    for (let i = 0; i < 20; i++) {
-      const data = {
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-        chosen: Math.random() * 2 > 1,
-      };
-      if (data.chosen) {
-        targetKeys.push(data.key);
-      }
-      mockData.push(data);
-    }
-    this.setState({ mockData, targetKeys });
-  }
-
-  filterOption = (inputValue, option) => {
-    return option.description.indexOf(inputValue) > -1;
-  }
-
-  handleChange = (targetKeys) => {
-    this.setState({ targetKeys });
-  }
-
-  addNewUserGroup = (groupType, groupName, numUsers) => {
-    var key = this.state.userGroups.length;
-
-    let newUserGroup = {
-      key,
-      groupType,
-      groupName,
-      numUsers,
-    }
-
-    this.setState({ userGroups: [...this.state.userGroups, newUserGroup] });
-  }
-
-  editUserGroup = () => {
-    var index = this.state.editedUserGroup.key;
-    this.setState({
-      userGroups: this.state.userGroups.map(group => (group.key === index ? Object.assign(this.state.editedUserGroup) : group)),
-    });
-  }
-
-  // showDeleteModal = (key) => {
-  //   Modal.confirm({
-  //     title: 'Do you Want to delete these items?',
-  //     content: 'Some descriptions',
-  //     onOk={() => {
-  //       //this.deleteUserGroup(key);
-  //       this.setState({
-  //         userGroups: this.state.userGroups.filter((userGroup) => userGroup.key !== key)
-  //       });
-  //     }
-  //     },
-  //     onCancel() {},
-  //   });
-  // }
-
-  deleteUserGroup = (key) => {
-    this.setState({
-      userGroups: this.state.userGroups.filter((userGroup) => userGroup.key !== key)
-    })
-  }
 
   render() {
+
+    const columns = this.state.columns.map((col, index) => ({
+			...col,
+			onHeaderCell: column => ({
+				width: column.width,
+				onResize: this.handleResize(index),
+			}),
+		}));
+
+		const that = this;
+		this.dragProps = {
+			onDragEnd(fromIndex, toIndex) {
+				const columns = that.state.columns;
+				const item = columns.splice(fromIndex, 1)[0];
+				columns.splice(toIndex, 0, item);
+				that.setState({
+					columns,
+				});
+			},
+			nodeSelector: 'th',
+    };
+    
+
     return (
       <React.Fragment>
         <UserGroupBar accessToken={this.props.accessToken} />
-        <Modal
-          title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='users' /></Icon> Add User Group</div>}
-          visible={this.state.addModalVisible}
-          onOk={() => {
-            this.setState({ addModalVisible: false })
-            this.addNewUserGroup(this.state.groupType, this.state.groupName, this.state.numUsers)
-          }}
-          onCancel={() => { this.setState({ addModalVisible: false }) }}
-          className='userGroupModal'
-        >
-          <div className='inputRow'>
-            <div>User Group Type</div>
-            <Input
-              id='userGroupType'
-              title='userGroupType'
-              placeholder='User Group Type'
-              onChange={(e) => this.setState({ groupType: e.target.value })}
-              value={this.state.groupType}>
-            </Input>
-          </div>
-          <div className='inputRow'>
-            <div>Group Name</div>
-            <Input
-              id='userGroupName'
-              title='userGroupName'
-              placeholder='User Group Name'
-              onChange={(e) => this.setState({ groupName: e.target.value })}
-              value={this.state.groupName}>
-            </Input>
-          </div>
-        </Modal>
-        <Table bordered dataSource={this.state.groupData} columns={this.state.columns} />
+        <Table
+					components={this.components}
+					columns={columns}
+					pagination={false}
+					dataSource={this.state.groupData}
+					scroll={{ y: 500 }}
+					bordered
+				/>
+        {this.state.showEditUserGroupModal && <EditUserGroupModal handleCancelEditUserGroupModal={this.handleCancelEditUserGroupModal} hide={this.hideEditUserGroupModal} accessToken={this.props.accessToken} UserGroupId={this.state.selectedId} />}
       </React.Fragment>
     )
   }
