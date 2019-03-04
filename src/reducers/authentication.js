@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit'
-import { loginRequest, loginSuccess, loginFailure, logout } from '../actions/authentication'
+import { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutSuccess, logoutFailure } from '../actions/authentication'
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -23,17 +23,23 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [loginFailure]: (state, action) => {
-    console.log(action.payload)
     state.invalidLogin = true;
     state.loading = false;
   },
 
-  [logout]: (state, action) => {
+  [logoutRequest]: (state, action) => {
+
+  },
+
+  [logoutSuccess]: (state, action) => {
     state.accessToken = '';
     state.isAuthenticated = false;
     state.redirectToReferrer = false;
-    state.loading = false;
     state.invalidLogin = false;
+  },
+
+  [logoutFailure]: (state, action) => {
+    console.log(action.payload)
   },
 
 });

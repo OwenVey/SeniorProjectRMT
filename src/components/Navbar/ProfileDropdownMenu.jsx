@@ -28,7 +28,7 @@ const ProfileDropdownMenu = (props) => {
         </NavLink>
       </Menu.Item>
 
-      <Menu.Item key="logout" className="dropdown-item" onClick={() => props.logout()}>
+      <Menu.Item key="logout" className="dropdown-item" onClick={() => props.logout(props.accessToken)}>
         <NavLink to='/login'>
           <FontAwesomeIcon className='navbar-icon' icon='sign-out-alt' />
           Logout
@@ -54,7 +54,7 @@ const ProfileDropdownMenu = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-
+  accessToken: state.authentication.accessToken,
 })
 
 export default connect(mapStateToProps, { logout })(ProfileDropdownMenu)
