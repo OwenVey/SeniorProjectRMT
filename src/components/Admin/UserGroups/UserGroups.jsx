@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
+import { connect } from "react-redux";
 import axios from 'axios';
 import './UserGroups.css'
+import { getUserGroups } from '../../../actions/userGroups';
 
 class UserGroups extends Component {
   constructor(props) {
@@ -210,7 +212,7 @@ class UserGroups extends Component {
   };
 
   componentWillMount() {
-    this.fetchGroups();
+    this.props.getUserGroups(this.props.accessToken);
   }
 
   fetchGroups = async () => {
@@ -224,7 +226,7 @@ class UserGroups extends Component {
         this.setState({ groupData: groups });
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 
@@ -420,10 +422,16 @@ class UserGroups extends Component {
             </Input>
           </div>
         </Modal>
-        <Table bordered dataSource={this.state.groupData} columns={this.state.columns} />
+        <Table bordered dataSource={this.props.userGroups} columns={this.state.columns} />
       </React.Fragment>
     )
   }
 }
 
-export default UserGroups;
+const mapStateToProps = state => ({
+  userGroups: state.userGroups.userGroups,
+  accessToken: state.authentication.accessToken,
+});
+
+export default connect(mapStateToProps, { getUserGroups })(UserGroups);
+
