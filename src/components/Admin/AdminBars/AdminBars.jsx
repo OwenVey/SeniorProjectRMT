@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Input, Select, } from 'antd';
+import { Button, Icon, Select, } from 'antd';
 import AddUserModal from '../AddUserModal/AddUserModal';
-import AddProjectModal from '../AddProjectModal/AddProjectModal';
+import AddUserGroupModal from '../AddUserGroupModal/AddUserGroupModal';
 import AddItemTypesModal from '../AddItemTypesModal/AddItemTypesModal';
+import AddProjectModal from '../AddProjectModal/AddProjectModal';
 const Option = Select.Option;
 
 //#region UserBar
@@ -104,7 +105,7 @@ export class UserGroupBar extends Component {
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
           Add User Group
         </Button>
-        {/* {this.state.showUserGroupModal && <AddUserGroupModal addUserGroup={this.props.addUserGroup} handleCancelUserGroupModal={this.handleCancelUserGroupModal} hide={this.hideAddUserGroupModal} />} */}
+        {this.state.showUserGroupModal && <AddUserGroupModal handleCancelUserGroupModal={this.handleCancelUserGroupModal} hide={this.hideAddUserGroupModal} accessToken={this.props.accessToken}/>}
       </div>
     )
   }
