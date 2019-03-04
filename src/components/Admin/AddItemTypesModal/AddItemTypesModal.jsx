@@ -57,6 +57,7 @@ class AddItemTypesModal extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+
         return (
             <Modal
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}

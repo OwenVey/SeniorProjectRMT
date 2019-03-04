@@ -83,8 +83,8 @@ class ItemTypes extends Component {
 
   fetchItemTypes = async () => {
     console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
+    const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/objecttype?accessToken=${this.props.accessToken}`;
     axios
       .get(url)
       .then(response => {
@@ -92,7 +92,7 @@ class ItemTypes extends Component {
           return {
             ...itemType,
             name: itemType.name.substring(0, 10),
-            description: itemType.description.substring(0, 10) == '9999-12-31' ? 'In Progress' : itemType.completeDate.substring(0, 10),
+            description: itemType.description.substring(0, 10),
             projectId: itemType.projectId.substring(0, 10)
           }
         })
@@ -157,7 +157,6 @@ class ItemTypes extends Component {
   //       this.setState({
   //         visible: false,
   //         itemTypes: [...this.state.itemTypes, newItemType],
-
   //       });
   //     }
   //   })
@@ -195,6 +194,7 @@ class ItemTypes extends Component {
         <ItemTypesBar accessToken={this.props.accessToken} />
         <div style={{ margin: 20 }}>
           <Table
+            components={this.components}
             columns={this.state.columns}
             pagination={false}
             dataSource={this.state.itemTypes}
