@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 class OrganinzationDetails extends Component {
   render() {
     return (
-      <div>
-        organization details
+      <div style={{margin: 15}}>
+        <h2>Organization Details</h2>
       </div>
     )
   }
