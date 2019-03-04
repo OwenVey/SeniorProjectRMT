@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  registerUser,
-  cancelEditUserModal
-} from "../../../actions/adminPageUsers";
+import { addUser, cancelEditUserModal } from "../../../actions/users";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -51,7 +48,7 @@ class AddUserModal extends Component {
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.registerUser(values, this.props.accessToken);
+        this.props.addUser(values, this.props.accessToken);
       }
     });
   };
@@ -229,7 +226,7 @@ const mapStateToProps = state => ({
 export default Form.create()(
   connect(
     mapStateToProps,
-    { cancelEditUserModal, registerUser }
+    { cancelEditUserModal, addUser }
   )(AddUserModal)
 );
 //export default Form.create()(AddUserModal);

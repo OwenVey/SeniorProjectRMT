@@ -13,7 +13,7 @@ import {
   editUserFailure,
   showEditUserModal,
   cancelEditUserModal
-} from "../actions/adminPageUsers";
+} from "../actions/users";
 
 const initialUsersState = {
   userData: [],
@@ -30,7 +30,7 @@ const initialUsersState = {
   editUser: ""
 };
 
-export const adminPageUsersReducer = createReducer(initialUsersState, {
+export const usersReducer = createReducer(initialUsersState, {
   //Fetching Users
   [fetchUsersRequest]: (state, action) => {
     state.loading = true;
@@ -49,7 +49,7 @@ export const adminPageUsersReducer = createReducer(initialUsersState, {
     state.fetchError = true;
   },
   //-------------------------------------------------------------------
-  //Adding A User
+  // Adding A User
   //-------------------------------------------------------------------
   [addUserRequest]: (state, action) => {
     state.postError = false;
@@ -70,7 +70,7 @@ export const adminPageUsersReducer = createReducer(initialUsersState, {
     state.showAddUserModal = false;
   },
   //-------------------------------------------------------------------
-  //Exisitng User
+  // Existing User
   //-------------------------------------------------------------------
   [editUserRequest]: (state, action) => {
     state.patchError = false;

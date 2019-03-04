@@ -3,11 +3,7 @@ import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
 import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
 import { UserBar } from "../AdminBars/AdminBars.jsx";
-import {
-  fetchUsers,
-  addUser,
-  showEditUserModal
-} from "../../../actions/adminPageUsers";
+import { getUsers, showEditUserModal } from "../../../actions/users";
 import EditUserModal from "../EditUserModal/EditUserModal";
 import "./Users.css";
 
@@ -260,7 +256,7 @@ class Users extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchUsers(this.props.accessToken);
+    this.props.getUsers(this.props.accessToken);
   }
 
   handleSearch = (selectedKeys, confirm) => () => {
@@ -330,11 +326,11 @@ class Users extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  userAdminData: state.adminPageUsers.userData,
-  editModalVisible: state.adminPageUsers.showEditUserModal
+  userAdminData: state.users.userData,
+  editModalVisible: state.users.showEditUserModal
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUsers, showEditUserModal }
+  { getUsers, showEditUserModal }
 )(Users);

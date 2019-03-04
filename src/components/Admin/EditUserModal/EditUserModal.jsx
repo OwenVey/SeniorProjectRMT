@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  cancelEditUserModal,
-  editExistingUser
-} from "../../../actions/adminPageUsers";
+import { cancelEditUserModal, editUser } from "../../../actions/users";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -30,7 +27,7 @@ class EditUserModal extends Component {
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.editExistingUser(
+        this.props.editUser(
           this.props.editableUser.id,
           values,
           this.props.accessToken
@@ -229,12 +226,12 @@ class EditUserModal extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  editableUser: state.adminPageUsers.editUser
+  editableUser: state.users.editUser
 });
 
 export default Form.create()(
   connect(
     mapStateToProps,
-    { cancelEditUserModal, editExistingUser }
+    { cancelEditUserModal, editUser }
   )(EditUserModal)
 );
