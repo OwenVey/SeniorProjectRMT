@@ -49,7 +49,7 @@ export const editExistingUser = (id, editedUser, accessToken) => dispatch => {
       lastName: editedUser.lastName,
       email: editedUser.email,
       //password: editedUser.Password,
-      isAdmin: false, //editedUser.isAdmin,
+      isAdmin: false,
       isActive: editedUser.isActive
     })
     .then(response => {
@@ -70,7 +70,7 @@ export const registerUser = (registeringNewUser, accessToken) => dispatch => {
       email: registeringNewUser.email,
       password: registeringNewUser.password,
       //isAdmin: false,
-      isActive: registeringNewUser.isActive === "Active" ? true : false
+      isActive: registeringNewUser.isActive
     })
     .then(response => {
       if (response.status !== 201) throw Error();

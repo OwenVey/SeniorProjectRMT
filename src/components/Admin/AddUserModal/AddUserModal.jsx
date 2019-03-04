@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import {
   registerUser,
   cancelEditUserModal
@@ -201,8 +200,8 @@ class AddUserModal extends Component {
                 style={{ width: "100%" }}
                 onChange={this.handleStatusChange}
               >
-                <Option value="Active">ACTIVE</Option>
-                <Option value="Inactive">INACTIVE</Option>
+                <Option value={true}>ACTIVE</Option>
+                <Option value={false}>INACTIVE</Option>
               </Select>
             )}
           </FormItem>
