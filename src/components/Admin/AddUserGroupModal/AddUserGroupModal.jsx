@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const FormItem = Form.Item;
-const ServerTimeOffset = 6;
+const { Option } = Select;
+
 class AddUserGroupModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorStatus: {}
+      errorStatus: {},
+      projectData: [],
     }
   }
 
@@ -33,6 +35,21 @@ class AddUserGroupModal extends Component {
       })
   }
 
+  fetchProjects = async () => {
+		console.log(this.props.accessToken);
+		const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
+		const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
+		axios
+			.get(url)
+			.then(response => {
+        let projects = response.data.projects
+				this.setState({ projectData: projects });
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
   setErrorStatus = (error) => {
     let errorStatus = {
       code: error.response.data.code,
@@ -50,24 +67,18 @@ class AddUserGroupModal extends Component {
     })
   }
 
+  componentWillMount() {
+		this.fetchProjects();
+  }
+  
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 40 },
-        sm: { span: 40 },
-      },
-    };
     return (
       <Modal
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User Group</div>}
         onOk={this.handleOkAddUserGroupModal}
         visible={true}
-        onCancel={this.props.handleCancelAddUserGroupModal}
+        onCancel={this.props.handleCancelUserGroupModal}
         okText="Add"
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
@@ -75,7 +86,7 @@ class AddUserGroupModal extends Component {
         <div style={{ color: "red" }}>
           {this.state.errorStatus.description}
         </div>
-        <Form onSubmit={this.handleOkAddUserGroupModal}>
+        <Form>
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
               rules: [
@@ -83,7 +94,15 @@ class AddUserGroupModal extends Component {
               ],
             })
               (
-                <Input placeholder='Project' />
+                <Select 
+                  placeholder='Please select a project'
+                  showSearch
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  >
+                  {this.state.projectData.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
+                    <Option value={project.id}>{project.name}</Option>
+                  ))}
+                </Select>
               )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
