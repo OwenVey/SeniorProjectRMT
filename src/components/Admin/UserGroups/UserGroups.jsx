@@ -3,7 +3,6 @@ import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
 import { connect } from "react-redux";
-import axios from 'axios';
 import './UserGroups.css'
 import { getUserGroups } from '../../../actions/userGroups';
 
@@ -11,18 +10,11 @@ class UserGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: 'large',
-      //mockData: [],
-      //targetKeys: [],
       addModalVisible: false,
       editModalVisible: false,
       deleteModalVisible: false,
-      editing: false,
       searchText: '',
-      selectedId: '',
-      groupData: [],
       columns: [
-
         {
           title: 'Actions',
           key: 'action',
@@ -198,37 +190,11 @@ class UserGroups extends Component {
           },
         }],
     };
-    // groupType: '',
-    // groupName: '',
-    // userGroups: [{
-    //   key: '0',
-    //   groupType: 'Development',
-    //   groupName: 'Ocean\'s 8',
-    //   numUsers: '8',
-    //   currentProjects: ['nice', 'developer'],
-    // }],
-    // curProjects: '',
-
   };
 
   componentWillMount() {
     this.props.getUserGroups(this.props.accessToken);
   }
-
-  fetchGroups = async () => {
-    console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/group?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/group?accessToken=${this.props.accessToken}`;
-    axios
-      .get(url)
-      .then(response => {
-        let groups = response.data.groups
-        this.setState({ groupData: groups });
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
-  };
 
   handleSearch = (selectedKeys, confirm) => () => {
     confirm();
