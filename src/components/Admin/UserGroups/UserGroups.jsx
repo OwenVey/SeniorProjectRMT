@@ -193,7 +193,8 @@ class UserGroups extends Component {
   };
 
   componentWillMount() {
-    this.props.getUserGroups(this.props.accessToken);
+    if (this.props.userGroups.length === 0)
+      this.props.getUserGroups(this.props.accessToken);
   }
 
   handleSearch = (selectedKeys, confirm) => () => {
