@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Icon, Select, } from 'antd';
-import AddUserModal from '../AddUserModal/AddUserModal';
-import AddUserGroupModal from '../AddUserGroupModal/AddUserGroupModal';
-import AddItemTypesModal from '../AddItemTypesModal/AddItemTypesModal';
-import AddProjectModal from '../AddProjectModal/AddProjectModal';
+import AddUserModal from '../Users/AddUserModal';
+import AddUserGroupModal from '../UserGroups/AddUserGroupModal';
+import AddItemTypesModal from '../ItemTypes/AddItemTypesModal';
+import AddProjectModal from '../ManageAllProjects/AddProjectModal';
 const Option = Select.Option;
 
 //#region UserBar
@@ -45,8 +45,8 @@ export class UserBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-      <div style={{ flex: 1, justifyContent: 'flex-start' }}> 
-          <h2>Users</h2> 
+        <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <h2>Users</h2>
         </div>
         <Button onClick={this.showAddUserModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
@@ -98,14 +98,14 @@ export class UserGroupBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-      <div style={{ flex: 1, justifyContent: 'flex-start' }}> 
-          <h2>User Groups</h2> 
+        <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <h2>User Groups</h2>
         </div>
         <Button onClick={this.showAddUserGroupModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
           Add User Group
         </Button>
-        {this.state.showUserGroupModal && <AddUserGroupModal handleCancelUserGroupModal={this.handleCancelUserGroupModal} hide={this.hideAddUserGroupModal} accessToken={this.props.accessToken}/>}
+        {this.state.showUserGroupModal && <AddUserGroupModal handleCancelUserGroupModal={this.handleCancelUserGroupModal} hide={this.hideAddUserGroupModal} accessToken={this.props.accessToken} />}
       </div>
     )
   }
@@ -151,8 +151,8 @@ export class PermissionBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-      <div style={{ flex: 1, justifyContent: 'flex-start' }}> 
-          <h2>Permissions</h2> 
+        <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <h2>Permissions</h2>
         </div>
         <Button onClick={this.showAddPermissionModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
@@ -201,8 +201,8 @@ export class ItemTypesBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-        <div style={{ flex: 1, justifyContent: 'flex-start' }}> 
-          <h2>Item Types</h2> 
+        <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <h2>Item Types</h2>
         </div>
         <Button onClick={this.showAddItemTypesModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
@@ -251,8 +251,8 @@ export class ManageProjectBar extends Component {
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-      <div style={{ flex: 1, justifyContent: 'flex-start' }}> 
-          <h2>Projects</h2> 
+        <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <h2>Projects</h2>
         </div>
         <Button onClick={this.showAddProjectModal}>
           <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
