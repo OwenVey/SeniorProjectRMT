@@ -100,7 +100,7 @@ class AddUserGroupModal extends Component {
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   >
                   {this.state.projectData.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                    <Option value={project.id}>{project.name}</Option>
+                    <Option value={project.id}>{`${project.name} (${project.globalId})`}</Option>
                   ))}
                 </Select>
               )}

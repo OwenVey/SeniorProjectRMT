@@ -10,7 +10,7 @@ class EditUserGroupModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      UserGroupData: {},
+      userGroupData: {},
       projectData: [],
       errorStatus: {}
     }
@@ -18,7 +18,7 @@ class EditUserGroupModal extends Component {
 
   editUserGroup = (UserGroupInfo) => {
     let valid = true
-    const url = `https://senior-design.timblin.org/api/UserGroup/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`
+    const url = `https://senior-design.timblin.org/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`
     axios.patch(url, {
       name: UserGroupInfo.name,
       description: UserGroupInfo.description,
@@ -76,12 +76,12 @@ class EditUserGroupModal extends Component {
 
   fetchUserGroup = async () => {
     console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/UserGroup/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/UserGroup/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
+    const url = `https://senior-design.timblin.org/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
     axios
       .get(url)
       .then(response => {
-        this.setState({ UserGroupData: response.data });
+        this.setState({ userGroupData: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -110,6 +110,7 @@ class EditUserGroupModal extends Component {
               rules: [
                 { required: true, message: 'Please select a Project' }
               ],
+              initialValue: this.state.userGroupData.projectId
             })
               (
                 <Select 
@@ -118,7 +119,7 @@ class EditUserGroupModal extends Component {
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   >
                   {this.state.projectData.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                    <Option value={project.id}>{project.name}</Option>
+                    <Option value={project.id}>{`${project.name} (${project.globalId})`}</Option>
                   ))}
                 </Select>
               )}
@@ -129,7 +130,7 @@ class EditUserGroupModal extends Component {
                 { required: true, message: 'Please input Name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
-              initialValue: this.state.UserGroupData.name
+              initialValue: this.state.userGroupData.name
             })
               (
                 <Input placeholder='Name' />
@@ -140,7 +141,7 @@ class EditUserGroupModal extends Component {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
-              initialValue: this.state.UserGroupData.description
+              initialValue: this.state.userGroupData.description
             })
               (
                 <Input.TextArea placeholder='Description' />
