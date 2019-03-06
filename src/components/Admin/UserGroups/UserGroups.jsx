@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Divider, Modal, Row, Button, Icon, Form, Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
+import { UserGroupBar } from './UserGroupBar';
 import { connect } from "react-redux";
 import './UserGroups.css'
 import { getUserGroups } from '../../../actions/userGroups';

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
 import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
-import { UserBar } from "../AdminBars/AdminBars.jsx";
+import { UserBar } from "./UserBar";
 import { getUsers, showEditUserModal } from "../../../actions/users";
-import EditUserModal from "../EditUserModal/EditUserModal";
+import EditUserModal from "./EditUserModal";
 import "./Users.css";
 
 const ResizeableTitle = props => {
@@ -40,25 +40,25 @@ class Users extends Component {
             confirm,
             clearFilters
           }) => (
-            <div className="custom-filter-dropdown">
-              <Input
-                ref={ele => (this.searchInput = ele)}
-                placeholder="Search name"
-                value={selectedKeys[0]}
-                onChange={e =>
-                  setSelectedKeys(e.target.value ? [e.target.value] : [])
-                }
-                onPressEnter={this.handleSearch(selectedKeys, confirm)}
-              />
-              <Button
-                type="primary"
-                onClick={this.handleSearch(selectedKeys, confirm)}
-              >
-                Search
+              <div className="custom-filter-dropdown">
+                <Input
+                  ref={ele => (this.searchInput = ele)}
+                  placeholder="Search name"
+                  value={selectedKeys[0]}
+                  onChange={e =>
+                    setSelectedKeys(e.target.value ? [e.target.value] : [])
+                  }
+                  onPressEnter={this.handleSearch(selectedKeys, confirm)}
+                />
+                <Button
+                  type="primary"
+                  onClick={this.handleSearch(selectedKeys, confirm)}
+                >
+                  Search
               </Button>
-              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-            </div>
-          ),
+                <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+              </div>
+            ),
           filterIcon: filtered => (
             <Icon
               type="search"
@@ -89,13 +89,13 @@ class Users extends Component {
                           {fragment}
                         </span>
                       ) : (
-                        fragment
-                      ) // eslint-disable-line
+                          fragment
+                        ) // eslint-disable-line
                   )}
               </span>
             ) : (
-              text
-            );
+                text
+              );
           }
         },
         {
@@ -111,25 +111,25 @@ class Users extends Component {
             confirm,
             clearFilters
           }) => (
-            <div className="custom-filter-dropdown">
-              <Input
-                ref={ele => (this.searchInput = ele)}
-                placeholder="Search name"
-                value={selectedKeys[0]}
-                onChange={e =>
-                  setSelectedKeys(e.target.value ? [e.target.value] : [])
-                }
-                onPressEnter={this.handleSearch(selectedKeys, confirm)}
-              />
-              <Button
-                type="primary"
-                onClick={this.handleSearch(selectedKeys, confirm)}
-              >
-                Search
+              <div className="custom-filter-dropdown">
+                <Input
+                  ref={ele => (this.searchInput = ele)}
+                  placeholder="Search name"
+                  value={selectedKeys[0]}
+                  onChange={e =>
+                    setSelectedKeys(e.target.value ? [e.target.value] : [])
+                  }
+                  onPressEnter={this.handleSearch(selectedKeys, confirm)}
+                />
+                <Button
+                  type="primary"
+                  onClick={this.handleSearch(selectedKeys, confirm)}
+                >
+                  Search
               </Button>
-              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-            </div>
-          ),
+                <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+              </div>
+            ),
           filterIcon: filtered => (
             <Icon
               type="search"
@@ -160,13 +160,13 @@ class Users extends Component {
                           {fragment}
                         </span>
                       ) : (
-                        fragment
-                      ) // eslint-disable-line
+                          fragment
+                        ) // eslint-disable-line
                   )}
               </span>
             ) : (
-              text
-            );
+                text
+              );
           }
         },
         {
@@ -256,7 +256,8 @@ class Users extends Component {
   }
 
   componentWillMount() {
-    this.props.getUsers(this.props.accessToken);
+    if (this.props.userAdminData.length === 0)
+      this.props.getUsers(this.props.accessToken);
   }
 
   handleSearch = (selectedKeys, confirm) => () => {
