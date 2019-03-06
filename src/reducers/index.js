@@ -3,10 +3,12 @@ import { authenticationReducer } from "./authentication";
 import { recentlyViewedItemsReducer } from "./recentlyViewedItems";
 import { usersReducer } from "./users";
 import { userGroupsReducer } from './userGroups';
+import { projectsReducer } from './projects';
 
 export default combineReducers({
   recentlyViewedItems: recentlyViewedItemsReducer,
   authentication: authenticationReducer,
   users: usersReducer,
   userGroups: userGroupsReducer,
+  projects: projectsReducer,
 });
