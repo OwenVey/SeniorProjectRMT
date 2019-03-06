@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PermissionBar } from '../AdminBars/AdminBars.jsx';
+import { PermissionBar } from './PermissionBar'
 
 class Permissions extends Component {
   render() {

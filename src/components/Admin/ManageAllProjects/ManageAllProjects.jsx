@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { Table, Tag, Divider, Button, Input, Icon, Tooltip } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ManageProjectBar } from '../AdminBars/AdminBars.jsx';
 import EditProjectModal from './EditProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import axios from 'axios';
+import { ManageProjectBar } from './ManageProjectBar'
 import './ManageAllProjects.css';
 
 const ResizeableTitle = props => {
