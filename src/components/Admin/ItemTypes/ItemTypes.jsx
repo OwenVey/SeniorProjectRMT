@@ -3,7 +3,7 @@ import { Divider, Table, Button, Modal, Input, Icon, Form } from "antd";
 import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-import { ItemTypesBar } from '../AdminBars/AdminBars'
+import { ItemTypesBar } from './ItemTypesBar'
 const { Option } = Select;
 const FormItem = Form.Item;
 
@@ -214,7 +214,7 @@ class ItemTypes extends Component {
 
     return (
       <React.Fragment>
-        <ItemTypesBar/>
+        <ItemTypesBar />
         <div style={{ margin: 20 }}>
           <Table
             columns={this.state.columns}

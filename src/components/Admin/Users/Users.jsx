@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
 import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
-import { UserBar } from "../AdminBars/AdminBars.jsx";
+import { UserBar } from "./UserBar";
 import { getUsers, showEditUserModal } from "../../../actions/users";
 import EditUserModal from "./EditUserModal";
 import "./Users.css";
