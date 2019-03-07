@@ -1,6 +1,6 @@
 import { createAction } from "redux-starter-kit";
 
-export const fetchPermissionRequest = createAction("FETCH_PERMISSION_REQUEST");
+export const fetchPermissionsRequest = createAction("FETCH_PERMISSION_REQUEST");
 export const fetchPermissionsSuccess = createAction("FETCH_PERMISSION_SUCCESS");
 export const fetchPermissionsFailure = createAction("FETCH_PERMISSION_FAILURE");
 

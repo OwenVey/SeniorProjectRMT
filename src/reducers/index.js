@@ -4,6 +4,8 @@ import { recentlyViewedItemsReducer } from "./recentlyViewedItems";
 import { usersReducer } from "./users";
 import { userGroupsReducer } from './userGroups';
 import { projectsReducer } from './projects';
+import { permissionsReducer } from './permisions';
+import { organizationDetailsReducer } from './organizationDetails';
 
 export default combineReducers({
   recentlyViewedItems: recentlyViewedItemsReducer,
@@ -11,4 +13,6 @@ export default combineReducers({
   users: usersReducer,
   userGroups: userGroupsReducer,
   projects: projectsReducer,
+  permissions: permissionsReducer,
+  OrganizationDetails: organizationDetailsReducer,
 });
