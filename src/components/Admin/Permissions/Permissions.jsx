@@ -25,8 +25,8 @@ class Permissions extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  editPermissionModalVisible: state.users.editPermissionModalVisibility,
-  addPermissionModalVisible: state.users.addPermissionModalVisibility
+  editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
+  addPermissionModalVisible: state.permissions.addPermissionModalVisibility
 });
 
 export default connect(

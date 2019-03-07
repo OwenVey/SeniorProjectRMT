@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Divider, Button, Icon, Input } from 'antd';
-import UserGroupBar from './UserGroupBar';
 import { connect } from "react-redux";
+import { Table, Divider, Button, Icon, Input } from 'antd';
+import { getUserGroups, toggleAddUserGroupModal } from '../../../actions/userGroups';
+import AddUserGroupModal from './AddUserGroupModal';
 import './UserGroups.css'
-import { getUserGroups } from '../../../actions/userGroups';
-
 class UserGroups extends Component {
   constructor(props) {
     super(props);
@@ -206,7 +205,16 @@ class UserGroups extends Component {
   render() {
     return (
       <React.Fragment>
-        <UserGroupBar />
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <h2>User Groups</h2>
+          </div>
+          <Button onClick={() => this.props.toggleAddUserGroupModal(true)}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            Add User Group
+        </Button>
+          {this.props.showAddUserGroupModal && <AddUserGroupModal />}
+        </div>
         <Table bordered rowKey={record => record.id} dataSource={this.props.userGroups} columns={this.state.columns} />
       </React.Fragment>
     )
@@ -214,9 +222,10 @@ class UserGroups extends Component {
 }
 
 const mapStateToProps = state => ({
+  showAddUserGroupModal: state.userGroups.showAddUserGroupModal,
   userGroups: state.userGroups.userGroups,
   accessToken: state.authentication.accessToken,
 });
 
-export default connect(mapStateToProps, { getUserGroups })(UserGroups);
+export default connect(mapStateToProps, { getUserGroups, toggleAddUserGroupModal })(UserGroups);
 
