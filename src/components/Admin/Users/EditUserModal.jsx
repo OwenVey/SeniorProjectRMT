@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cancelEditUserModal, editUser } from "../../../actions/users";
+import { hideEditUserModal, editUser } from "../../../actions/users";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -92,7 +92,7 @@ class EditUserModal extends Component {
           }
           onOk={this.handleOkUserModal}
           visible={true}
-          onCancel={() => this.props.cancelEditUserModal()}
+          onCancel={() => this.props.hideEditUserModal()}
           okText="Edit"
           maskClosable={false}
           bodyStyle={{ maxHeight: "60vh", overflowY: "scroll", paddingTop: 5 }}
@@ -232,6 +232,6 @@ const mapStateToProps = state => ({
 export default Form.create()(
   connect(
     mapStateToProps,
-    { cancelEditUserModal, editUser }
+    { hideEditUserModal, editUser }
   )(EditUserModal)
 );

@@ -7,12 +7,12 @@ import {
   addUserSuccess,
   addUserFailure,
   showAddUserModal,
-  cancelAddUserModal,
+  hideAddUserModal,
   editUserRequest,
   editUserSuccess,
   editUserFailure,
   showEditUserModal,
-  cancelEditUserModal
+  hideEditUserModal
 } from "../actions/users";
 
 const initialUsersState = {
@@ -22,10 +22,13 @@ const initialUsersState = {
   postError: false,
   patchError: false,
 
+
+  addUserModalVisibility: false,
+  invalidAddUser: false,
+
   editUserModalVisibility: false,
   invalidEditUser: false,
 
-  addUserModalVisibility: false,
 
   editUser: ""
 };
@@ -60,11 +63,10 @@ export const usersReducer = createReducer(initialUsersState, {
   },
   //Modal Switching
   [showAddUserModal]: (state, action) => {
-    console.log(action.payload);
     state.addUserModalVisibility = true;
     state.invalidAddUser = false;
   },
-  [cancelAddUserModal]: (state, action) => {
+  [hideAddUserModal]: (state, action) => {
     state.addUserModalVisibility = false;
   },
   //-------------------------------------------------------------------
@@ -86,8 +88,9 @@ export const usersReducer = createReducer(initialUsersState, {
   [showEditUserModal]: (state, action) => {
     state.editUser = action.payload;
     state.editUserModalVisibility = true;
+    state.invalidEditUser = false;
   },
-  [cancelEditUserModal]: (state, action) => {
+  [hideEditUserModal]: (state, action) => {
     state.editUserModalVisibility = false;
   }
 });
