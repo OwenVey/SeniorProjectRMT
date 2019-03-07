@@ -32,7 +32,6 @@ export const logout = (accessToken) => dispatch => {
     accessToken
   })
     .then(response => {
-      console.log(response)
       if (response.status !== 200)
         throw Error();
       dispatch(logoutSuccess())

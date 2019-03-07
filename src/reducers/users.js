@@ -38,13 +38,11 @@ export const usersReducer = createReducer(initialUsersState, {
   },
 
   [fetchUsersSuccess]: (state, action) => {
-    console.log(action.payload);
     state.loading = false;
     state.userData = action.payload;
   },
 
   [fetchUsersFailure]: (state, action) => {
-    console.log(action.payload);
     state.loading = false;
     state.fetchError = true;
   },
@@ -58,7 +56,6 @@ export const usersReducer = createReducer(initialUsersState, {
     state.showAddUserModal = false;
   },
   [addUserFailure]: (state, action) => {
-    console.log(action.payload);
     state.postError = true;
   },
   //Modal Switching
@@ -82,7 +79,6 @@ export const usersReducer = createReducer(initialUsersState, {
     state.showEditUserModal = false;
   },
   [editUserFailure]: (state, action) => {
-    console.log(action.payload);
     state.patchError = true;
   },
   //Modal Switching

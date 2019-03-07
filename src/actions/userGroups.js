@@ -23,8 +23,6 @@ export const getUserGroups = accessToken => dispatch => {
 }
 
 export const addUserGroup = (accessToken, userGroup) => dispatch => {
-  console.log('add user group')
-  console.log(userGroup)
   dispatch(addUserGroupRequest());
   axios.post(`${TIMBLIN_URL}/group?accessToken=${accessToken}`,
     {

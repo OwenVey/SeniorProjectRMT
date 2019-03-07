@@ -77,7 +77,6 @@ class EditProjectModal extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    console.log(this.state);
     return (
       <Modal
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Edit Project</div>}

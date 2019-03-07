@@ -219,7 +219,7 @@ class Users extends Component {
                 default:
                   color = "";
               }
-              return <Tag color={color}>{userGroup}</Tag>;
+              return <Tag key={color} color={color}>{userGroup}</Tag>;
             })
         },
         // {
@@ -312,6 +312,7 @@ class Users extends Component {
       <React.Fragment>
         <UserBar />
         <Table
+          rowKey={record => record.id}
           components={this.components}
           columns={columns}
           pagination={false}

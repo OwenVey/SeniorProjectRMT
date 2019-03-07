@@ -7,6 +7,8 @@ import { Resizable } from 'react-resizable';
 import axios from 'axios';
 import { ManageProjectBar } from './ManageProjectBar'
 import './ManageAllProjects.css';
+import { connect } from "react-redux";
+import { getProjects } from '../../../actions/projects'
 
 const ResizeableTitle = props => {
 	const { onResize, width, ...restProps } = props;
@@ -392,30 +394,9 @@ class ManageAllProjects extends Component {
 	}
 
 	componentWillMount() {
-		this.fetchProjects();
+		if (this.props.projects.length === 0)
+			this.props.getProjects(this.props.accessToken)
 	}
-
-	fetchProjects = async () => {
-		console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
-		const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
-		axios
-			.get(url)
-			.then(response => {
-				let projects = response.data.projects.map(project => {
-					return {
-						...project,
-						dueDate: project.dueDate.substring(0, 10),
-						completeDate: project.completeDate.substring(0, 10) == '9999-12-31' ? 'In Progress' : project.completeDate.substring(0, 10),
-						createDate: project.createDate.substring(0, 10)
-					}
-				})
-				this.setState({ projectData: projects });
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
 
 	showEditProjectModal = (id) => {
 		this.setState({
@@ -510,7 +491,7 @@ class ManageAllProjects extends Component {
 					components={this.components}
 					columns={columns}
 					pagination={false}
-					dataSource={this.state.projectData}
+					dataSource={this.props.projects}
 					scroll={{ y: 500 }}
 					bordered
 				/>
@@ -520,4 +501,9 @@ class ManageAllProjects extends Component {
 	}
 }
 
-export default ManageAllProjects;
+const mapStateToProps = state => ({
+	accessToken: state.authentication.accessToken,
+	projects: state.projects.projects,
+});
+
+export default connect(mapStateToProps, { getProjects })(ManageAllProjects);

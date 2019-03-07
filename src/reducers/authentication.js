@@ -39,7 +39,6 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [logoutFailure]: (state, action) => {
-    console.log(action.payload)
   },
 
 });
