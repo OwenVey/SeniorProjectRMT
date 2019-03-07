@@ -1,77 +1,26 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import { connect } from "react-redux";
 import { getProjects } from '../../../actions/projects'
-import { addUserGroup } from '../../../actions/userGroups'
+import { addUserGroup, toggleAddUserGroupModal } from '../../../actions/userGroups'
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
 class AddUserGroupModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errorStatus: {},
-      projectData: [],
-    }
-  }
 
-  addUserGroup = (userGroupInfo) => {
-    let valid = true
-    const url = `https://senior-design.timblin.org/api/group?accessToken=${this.props.accessToken}`
-    axios.post(url, {
-      projectID: userGroupInfo.projectId,
-      name: userGroupInfo.name,
-      description: userGroupInfo.description,
-    })
-      .catch(error => {
-        valid = false
-        console.log(error.response)
-        this.setErrorStatus(error)
-      })
-      .finally(() => {
-        if (valid) {
-          this.props.hide()
-        }
-      })
-  }
-
-  fetchProjects = async () => {
-    console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/project?accessToken=${this.props.accessToken}`;
-    axios
-      .get(url)
-      .then(response => {
-        let projects = response.data.projects
-        this.setState({ projectData: projects });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  setErrorStatus = (error) => {
-    let errorStatus = {
-      code: error.response.data.code,
-      description: error.response.data.description
-    }
-    this.setState({ errorStatus })
+  componentWillMount() {
+    if (this.props.projects.length === 0)
+      this.props.getProjects(this.props.accessToken)
   }
 
   handleOkAddUserGroupModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        this.addUserGroup(values);
+        this.props.addUserGroup(this.props.accessToken, values);
       }
     })
-  }
-
-  componentWillMount() {
-    this.props.getProjects(this.props.accessToken)
   }
 
   render() {
@@ -81,14 +30,13 @@ class AddUserGroupModal extends Component {
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User Group</div>}
         onOk={this.handleOkAddUserGroupModal}
         visible={true}
-        onCancel={this.props.handleCancelUserGroupModal}
+        onCancel={() => this.props.toggleAddUserGroupModal(false)}
         okText="Add"
+        okButtonProps={{ loading: this.props.loadingAdd }}
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <div style={{ color: "red" }}>
-          {this.state.errorStatus.description}
-        </div>
+
         <Form>
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
@@ -97,15 +45,15 @@ class AddUserGroupModal extends Component {
               ],
             })
               (
-              <Select
-                placeholder='Please select a project'
-                showSearch
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              >
-                {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                  <Option value={project.id}>{project.name}</Option>
-                ))}
-              </Select>
+                <Select
+                  placeholder='Please select a project'
+                  showSearch
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
+                    <Option value={project.id}>{project.name}</Option>
+                  ))}
+                </Select>
               )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
@@ -116,7 +64,7 @@ class AddUserGroupModal extends Component {
               ],
             })
               (
-              <Input placeholder='Name' />
+                <Input placeholder='Name' />
               )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
@@ -126,20 +74,19 @@ class AddUserGroupModal extends Component {
               ],
             })
               (
-              <Input.TextArea placeholder='Description' />
+                <Input.TextArea placeholder='Description' />
               )}
           </FormItem>
         </Form>
       </Modal>
     );
   }
-
 }
 
 const mapStateToProps = state => ({
-  userGroups: state.userGroups.userGroups,
   accessToken: state.authentication.accessToken,
   projects: state.projects.projects,
+  loadingAdd: state.userGroups.loadingAdd,
 });
 
-export default connect(mapStateToProps, { getProjects, addUserGroup })(Form.create()(AddUserGroupModal));
+export default connect(mapStateToProps, { getProjects, addUserGroup, toggleAddUserGroupModal })(Form.create()(AddUserGroupModal));

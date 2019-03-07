@@ -1,8 +1,10 @@
 import { createReducer } from 'redux-starter-kit'
-import { getUserGroupsRequest, getUserGroupsSuccess, getUserGroupsFailure } from '../actions/userGroups'
+import { getUserGroupsRequest, getUserGroupsSuccess, getUserGroupsFailure, toggleAddUserGroupModal, addUserGroupRequest, addUserGroupSuccess, addUserGroupFailure } from '../actions/userGroups'
 
 const initialUserGroupsState = {
   userGroups: [],
+  loadingAdd: false,
+  showAddUserGroupModal: false,
 }
 
 export const userGroupsReducer = createReducer(initialUserGroupsState, {
@@ -16,6 +18,24 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
   },
 
   [getUserGroupsFailure]: (state, action) => {
+
+  },
+
+  [toggleAddUserGroupModal]: (state, action) => {
+    state.showAddUserGroupModal = action.payload;
+  },
+
+  [addUserGroupRequest]: (state, action) => {
+    state.loadingAdd = true;
+  },
+
+  [addUserGroupSuccess]: (state, action) => {
+    state.loadingAdd = false;
+    state.userGroups.push(action.payload);
+    state.showAddUserGroupModal = false;
+  },
+
+  [addUserGroupFailure]: (state, action) => {
 
   },
 })
