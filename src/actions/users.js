@@ -6,17 +6,19 @@ export const fetchUsersRequest = createAction("FETCH_USERS_REQUEST");
 export const fetchUsersSuccess = createAction("FETCH_USERS_SUCCESS");
 export const fetchUsersFailure = createAction("FETCH_USERS_FAILURE");
 
-export const editUserRequest = createAction("EDIT_USER_REQUEST");
-export const editUserSuccess = createAction("EDIT_USER_SUCCESS");
-export const editUserFailure = createAction("EDIT_USER_FAILURE");
-export const showEditUserModal = createAction("SHOW_EDIT_USER_MODAL");
-export const cancelEditUserModal = createAction("CANCEL_EDIT_USER_MODAL");
 
 export const addUserRequest = createAction("ADD_USER_REQUEST");
 export const addUserSuccess = createAction("ADD_USER_SUCCESS");
 export const addUserFailure = createAction("ADD_USER_FAILURE");
 export const showAddUserModal = createAction("SHOW_ADD_USER_MODAL");
 export const cancelAddUserModal = createAction("CANCEL_ADD_USER_MODAL");
+
+export const editUserRequest = createAction("EDIT_USER_REQUEST");
+export const editUserSuccess = createAction("EDIT_USER_SUCCESS");
+export const editUserFailure = createAction("EDIT_USER_FAILURE");
+export const showEditUserModal = createAction("SHOW_EDIT_USER_MODAL");
+export const cancelEditUserModal = createAction("CANCEL_EDIT_USER_MODAL");
+
 
 export const getUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());

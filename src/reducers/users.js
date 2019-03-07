@@ -22,10 +22,10 @@ const initialUsersState = {
   postError: false,
   patchError: false,
 
-  showEditUserModal: false,
+  editUserModalVisibility: false,
   invalidEditUser: false,
 
-  showAddUserModal: false,
+  addUserModalVisibility: false,
 
   editUser: ""
 };
@@ -53,18 +53,19 @@ export const usersReducer = createReducer(initialUsersState, {
     state.postError = false;
   },
   [addUserSuccess]: (state, action) => {
-    state.showAddUserModal = false;
+    state.addUserModalVisibility = false;
   },
   [addUserFailure]: (state, action) => {
     state.postError = true;
   },
   //Modal Switching
   [showAddUserModal]: (state, action) => {
-    state.showAddUserModal = true;
+    console.log(action.payload);
+    state.addUserModalVisibility = true;
     state.invalidAddUser = false;
   },
   [cancelAddUserModal]: (state, action) => {
-    state.showAddUserModal = false;
+    state.addUserModalVisibility = false;
   },
   //-------------------------------------------------------------------
   // Existing User
@@ -76,7 +77,7 @@ export const usersReducer = createReducer(initialUsersState, {
     state.userData = state.userData.map(user =>
       user.id === action.payload.id ? Object.assign(action.payload) : user
     );
-    state.showEditUserModal = false;
+    state.editUserModalVisibility = false;
   },
   [editUserFailure]: (state, action) => {
     state.patchError = true;
@@ -84,9 +85,9 @@ export const usersReducer = createReducer(initialUsersState, {
   //Modal Switching
   [showEditUserModal]: (state, action) => {
     state.editUser = action.payload;
-    state.showEditUserModal = true;
+    state.editUserModalVisibility = true;
   },
   [cancelEditUserModal]: (state, action) => {
-    state.showEditUserModal = false;
+    state.editUserModalVisibility = false;
   }
 });

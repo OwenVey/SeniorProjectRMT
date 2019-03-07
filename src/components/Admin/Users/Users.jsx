@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
 import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
-import { UserBar } from "./UserBar";
-import { getUsers, showEditUserModal } from "../../../actions/users";
+import { getUsers, showEditUserModal, showAddUserModal } from "../../../actions/users";
 import EditUserModal from "./EditUserModal";
+import AddUserModal from './AddUserModal';
 import "./Users.css";
 
 const ResizeableTitle = props => {
@@ -310,7 +310,16 @@ class Users extends Component {
 
     return (
       <React.Fragment>
-        <UserBar />
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <h2>Users</h2>
+          </div>
+          <Button onClick={() => this.props.showAddUserModal()}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            Add User
+        </Button>
+          {this.props.addUserModalVisible && <AddUserModal />}
+        </div>
         <Table
           rowKey={record => record.id}
           components={this.components}
@@ -320,7 +329,7 @@ class Users extends Component {
           scroll={{ y: 500 }}
           bordered
         />
-        {this.props.editModalVisible && <EditUserModal />}
+        {this.props.editUserModalVisible && <EditUserModal />}
       </React.Fragment>
     );
   }
@@ -329,10 +338,11 @@ class Users extends Component {
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   userAdminData: state.users.userData,
-  editModalVisible: state.users.showEditUserModal
+  editUserModalVisible: state.users.editUserModalVisibility,
+  addUserModalVisible: state.users.addUserModalVisibility
 });
 
 export default connect(
   mapStateToProps,
-  { getUsers, showEditUserModal }
+  { getUsers, showEditUserModal, showAddUserModal }
 )(Users);

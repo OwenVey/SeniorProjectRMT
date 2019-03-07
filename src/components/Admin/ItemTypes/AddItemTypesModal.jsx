@@ -93,7 +93,6 @@ class AddItemTypesModal extends Component {
             </Modal>
         );
     }
-
 }
 
 export default Form.create()(AddItemTypesModal);
