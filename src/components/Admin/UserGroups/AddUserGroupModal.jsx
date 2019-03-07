@@ -43,18 +43,17 @@ class AddUserGroupModal extends Component {
               rules: [
                 { required: true, message: 'Please select a Project' }
               ],
-            })
-              (
-                <Select
-                  placeholder='Please select a project'
-                  showSearch
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                  {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                    <Option value={project.id}>{project.name}</Option>
-                  ))}
-                </Select>
-              )}
+            })(
+              <Select
+                placeholder='Please select a project'
+                showSearch
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
+                  <Option value={project.id}>{project.name}</Option>
+                ))}
+              </Select>
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
@@ -62,20 +61,18 @@ class AddUserGroupModal extends Component {
                 { required: true, message: 'Please input Name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
-            })
-              (
-                <Input placeholder='Name' />
-              )}
+            })(
+              <Input placeholder='Name' />
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
-            })
-              (
-                <Input.TextArea placeholder='Description' />
-              )}
+            })(
+              <Input.TextArea placeholder='Description' />
+            )}
           </FormItem>
         </Form>
       </Modal>

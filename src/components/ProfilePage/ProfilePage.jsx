@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ProfileSidebar from "./ProfileSidebar/ProfileSidebar.jsx";
 import TreeView from '../Projects/TreeView/TreeView.jsx';
 import SplitPane from 'react-split-pane';
 import { Tabs } from 'antd';
@@ -17,8 +16,10 @@ export default class ProfilePage extends Component {
     super();
 
     const tabs = [
-      { tabName: 'My Details', name: 'Name: ', userName: 'Username: ', 
-      email: 'Email Address: ', title: 'Title: ', phone: 'Phone Number: ', key: '1' },
+      {
+        tabName: 'My Details', name: 'Name: ', userName: 'Username: ',
+        email: 'Email Address: ', title: 'Title: ', phone: 'Phone Number: ', key: '1'
+      },
       { tabName: 'My Subscriptions', name: 'You are currently not subscribed to any items', key: '2' },
       { tabName: 'My Locked Items', key: '3' },
       { tabName: 'System Locked Items', key: '4' },
@@ -76,19 +77,19 @@ export default class ProfilePage extends Component {
       <div className='profile-page'>
         <div className='splitpane'>
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
-            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken}/>
-              <Tabs
-                hideAdd
-                style={{ margin: 0 }}
-                onChange={this.onChange}
-                activeKey={this.state.activeKey}
-                type="editable-card"
-                onEdit={this.onEdit}
-              >
-                {this.state.tabs.map(tab => <TabPane style={{ margin: 0 }} tab={tab.tabName} key={tab.key}> 
-                <br/> {tab.name} <br/> <br/> {tab.userName} <br/> <br/> {tab.email} 
-                <br/> <br/> {tab.title} <br/> <br/> {tab.phone} </TabPane>)}
-              </Tabs>
+            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken} />
+            <Tabs
+              hideAdd
+              style={{ margin: 0 }}
+              onChange={this.onChange}
+              activeKey={this.state.activeKey}
+              type="editable-card"
+              onEdit={this.onEdit}
+            >
+              {this.state.tabs.map(tab => <TabPane style={{ margin: 0 }} tab={tab.tabName} key={tab.key}>
+                <br /> {tab.name} <br /> <br /> {tab.userName} <br /> <br /> {tab.email}
+                <br /> <br /> {tab.title} <br /> <br /> {tab.phone} </TabPane>)}
+            </Tabs>
           </SplitPane>
         </div >
       </div >

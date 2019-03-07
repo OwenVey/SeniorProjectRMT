@@ -64,7 +64,6 @@ class EditProjectModal extends Component {
   fetchProjects = async () => {
     console.log(this.props.accessToken);
     const url = `https://senior-design.timblin.org/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`;
     axios
       .get(url)
       .then(response => {
@@ -98,12 +97,11 @@ class EditProjectModal extends Component {
                 { max: 10, message: 'Global ID must be 10 characters or less' }
               ],
               initialValue: this.state.projectData.globalId
-            })
-              (
-                <Input
-                  placeholder='Global ID'
-                />
-              )}
+            })(
+              <Input
+                placeholder='Global ID'
+              />
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
@@ -112,10 +110,9 @@ class EditProjectModal extends Component {
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
               initialValue: this.state.projectData.name
-            })
-              (
-                <Input placeholder='Name' />
-              )}
+            })(
+              <Input placeholder='Name' />
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
@@ -123,18 +120,16 @@ class EditProjectModal extends Component {
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
               initialValue: this.state.projectData.description
-            })
-              (
-                <Input.TextArea placeholder='Description' />
-              )}
+            })(
+              <Input.TextArea placeholder='Description' />
+            )}
           </FormItem>
           <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Due Date">
             {getFieldDecorator('dueDate', {
               initialValue: moment.utc(this.state.projectData.dueDate)
-            })
-              (
-                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-              )}
+            })(
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            )}
           </Form.Item>
 
           <Form.Item style={{ float: 'right', marginBottom: '0px' }} label="Date Created">
@@ -143,29 +138,26 @@ class EditProjectModal extends Component {
                 { required: true, message: 'Please input Date Created' },
               ],
               initialValue: moment.utc(this.state.projectData.createDate)
-            })
-              (
-                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-              )}
+            })(
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            )}
           </Form.Item>
 
           <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Date Completed">
             {getFieldDecorator('completeDate', {
               initialValue: moment.utc(this.state.projectData.completeDate)
-            })
-              (
-                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-              )}
+            })(
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            )}
           </Form.Item>
 
           <Form.Item style={{ float: 'right', marginBottom: '0px', paddingRight: '143px' }} label="Is Active">
             {getFieldDecorator('isActive', {
               initialValue: this.state.projectData.isActive,
               valuePropName: 'checked'
-            })
-              (
-                <Switch />
-              )}
+            })(
+              <Switch />
+            )}
           </Form.Item>
         </Form>
       </Modal>

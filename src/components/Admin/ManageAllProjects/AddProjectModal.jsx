@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import { Icon, Modal, Input, Form, DatePicker } from 'antd';
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -89,10 +89,9 @@ class AddProjectModal extends Component {
           <FormItem style={{ marginBottom: '0px' }} label="Global ID" >
             {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
-            })
-              (
-                <Input placeholder='Global ID' />
-              )}
+            })(
+              <Input placeholder='Global ID' />
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
@@ -100,30 +99,27 @@ class AddProjectModal extends Component {
                 { required: true, message: 'Please input Name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
-            })
-              (
-                <Input placeholder='Name' />
-              )}
+            })(
+              <Input placeholder='Name' />
+            )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
-            })
-              (
-                <Input.TextArea placeholder='Description' />
-              )}
+            })(
+              <Input.TextArea placeholder='Description' />
+            )}
           </FormItem>
           <Form.Item style={{ float: 'left' }} {...formItemLayout} label="Due Date">
             {getFieldDecorator('dueDate', {
               rules: [
                 { validator: this.validateDueDate }
               ]
-            })
-              (
-                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-              )}
+            })(
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            )}
           </Form.Item>
         </Form>
       </Modal>

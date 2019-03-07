@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Divider, Table, Button, Modal, Input, Icon, Form } from "antd";
-import { Select } from "antd";
+import { Divider, Table, Button, Modal } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 import { ItemTypesBar } from './ItemTypesBar'
-const { Option } = Select;
-const FormItem = Form.Item;
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -14,6 +11,7 @@ class ItemTypes extends Component {
     this.state = {
       itemTypes: [
         {
+          id: 1,
           icon: <FontAwesomeIcon icon='archive' />,
           display: "Projects",
           //plural: "Projects",
@@ -22,6 +20,7 @@ class ItemTypes extends Component {
           system: "No"
         },
         {
+          id: 2,
           icon: <FontAwesomeIcon icon='paperclip' />,
           display: "Attachment",
           //plural: "Attachments",
@@ -217,6 +216,7 @@ class ItemTypes extends Component {
         <ItemTypesBar />
         <div style={{ margin: 20 }}>
           <Table
+            rowKey={record => record.id}
             columns={this.state.columns}
             pagination={false}
             dataSource={this.state.itemTypes}

@@ -426,7 +426,6 @@ class ManageAllProjects extends Component {
 	deleteProject = async (projectId) => {
 		console.log(this.props.accessToken);
 		const url = `https://senior-design.timblin.org/api/project/${projectId}?accessToken=${this.props.accessToken}`;
-		const url2 = `https://abortplatteville.com/api/project/${projectId}?accessToken=${this.props.accessToken}`;
 		axios
 			.delete(url)
 			.catch(error => {
@@ -488,6 +487,7 @@ class ManageAllProjects extends Component {
 			<React.Fragment>
 				<ManageProjectBar accessToken={this.props.accessToken} />
 				<Table
+					rowKey={record => record.id}
 					components={this.components}
 					columns={columns}
 					pagination={false}
