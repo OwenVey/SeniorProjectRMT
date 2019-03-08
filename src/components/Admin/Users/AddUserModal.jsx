@@ -23,28 +23,6 @@ class AddUserModal extends Component {
     };
   }
 
-  // registerUser = registerInfo => {
-  //   let valid = true;
-  //   const url = "https://senior-design.timblin.org/api/register";
-  //   axios
-  //     .post(url, {
-  //       email: registerInfo.Email,
-  //       password: registerInfo.Password,
-  //       firstname: registerInfo.FirstName,
-  //       lastname: registerInfo.LastName,
-  //       isAdmin: registerInfo.LicenseType === "Admin"
-  //     })
-  //     .catch(error => {
-  //       valid = false;
-  //       console.log(error.response);
-  //     })
-  //     .finally(() => {
-  //       if (valid) {
-  //         this.props.hide();
-  //       }
-  //     });
-  // };
-
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -105,8 +83,10 @@ class AddUserModal extends Component {
         okText="Add"
         maskClosable={false}
         bodyStyle={{ maxHeight: "60vh", overflowY: "scroll", paddingTop: 5 }}
+        okButtonProps={{ loading: this.props.loadingAdd }}
       >
         <Form onSubmit={this.handleOkUserModal}>
+          <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
           <FormItem style={{ marginBottom: "0px" }} label="First Name">
             {getFieldDecorator("firstName", {
               rules: [
@@ -220,7 +200,9 @@ class AddUserModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  accessToken: state.authentication.accessToken
+  accessToken: state.authentication.accessToken,
+  errorMessage: state.users.postErrorMessage,
+  loadingAdd: state.users.loading
 });
 
 export default Form.create()(

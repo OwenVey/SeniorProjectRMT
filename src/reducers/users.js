@@ -18,26 +18,22 @@ import {
 const initialUsersState = {
   userData: [],
   loading: false,
-  fetchError: false,
-  postError: false,
-  patchError: false,
-
+  fetchErrorMessage: '',
+  postErrorMessage: '',
+  patchErrorMessage: '',
 
   addUserModalVisibility: false,
-  invalidAddUser: false,
 
   editUserModalVisibility: false,
-  invalidEditUser: false,
 
-
-  editUser: ""
+  editUser: ''
 };
 
 export const usersReducer = createReducer(initialUsersState, {
   //Fetching Users
   [fetchUsersRequest]: (state, action) => {
     state.loading = true;
-    state.fetchError = false;
+    state.fetchErrorMessage = '';
   },
 
   [fetchUsersSuccess]: (state, action) => {
@@ -47,19 +43,22 @@ export const usersReducer = createReducer(initialUsersState, {
 
   [fetchUsersFailure]: (state, action) => {
     state.loading = false;
-    state.fetchError = true;
+    state.fetchErrorMessage = action.payload;
   },
   //-------------------------------------------------------------------
   // Adding A User
   //-------------------------------------------------------------------
   [addUserRequest]: (state, action) => {
-    state.postError = false;
+    state.loading = true;
+    state.postErrorMessage = '';
   },
   [addUserSuccess]: (state, action) => {
+    state.loading = false;
     state.addUserModalVisibility = false;
   },
   [addUserFailure]: (state, action) => {
-    state.postError = true;
+    state.loading = false;
+    state.postErrorMessage = action.payload;
   },
   //Modal Switching
   [showAddUserModal]: (state, action) => {
@@ -73,16 +72,19 @@ export const usersReducer = createReducer(initialUsersState, {
   // Existing User
   //-------------------------------------------------------------------
   [editUserRequest]: (state, action) => {
-    state.patchError = false;
+    state.loading = true;
+    state.patchErrorMessage = '';
   },
   [editUserSuccess]: (state, action) => {
+    state.loading = false;
     state.userData = state.userData.map(user =>
       user.id === action.payload.id ? Object.assign(action.payload) : user
     );
     state.editUserModalVisibility = false;
   },
   [editUserFailure]: (state, action) => {
-    state.patchError = true;
+    state.loading = false;
+    state.patchErrorMessage = action.payload;
   },
   //Modal Switching
   [showEditUserModal]: (state, action) => {
