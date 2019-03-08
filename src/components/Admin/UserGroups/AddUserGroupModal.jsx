@@ -36,8 +36,8 @@ class AddUserGroupModal extends Component {
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-
         <Form>
+          <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
               rules: [
@@ -84,6 +84,7 @@ const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   projects: state.projects.projects,
   loadingAdd: state.userGroups.loadingAdd,
+  errorMessage: state.userGroups.errorMessage,
 });
 
 export default connect(mapStateToProps, { getProjects, addUserGroup, toggleAddUserGroupModal })(Form.create()(AddUserGroupModal));
