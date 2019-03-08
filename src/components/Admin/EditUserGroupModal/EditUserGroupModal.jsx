@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form, DatePicker } from 'antd';
+import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class AddUserGroupModal extends Component {
+class EditUserGroupModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorStatus: {},
+      userGroupData: {},
       projectData: [],
+      errorStatus: {}
     }
   }
 
-  addUserGroup = (userGroupInfo) => {
+  editUserGroup = (UserGroupInfo) => {
     let valid = true
-    const url = `https://senior-design.timblin.org/api/group?accessToken=${this.props.accessToken}`
-    axios.post(url, {
-      projectID: userGroupInfo.projectId,
-      name: userGroupInfo.name,
-      description: userGroupInfo.description,
+    const url = `https://senior-design.timblin.org/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`
+    axios.patch(url, {
+      name: UserGroupInfo.name,
+      description: UserGroupInfo.description,
+      projectId: UserGroupInfo.projectId
     })
       .catch(error => {
         valid = false
@@ -33,6 +34,29 @@ class AddUserGroupModal extends Component {
           this.props.hide()
         }
       })
+  }
+
+  setErrorStatus = (error) => {
+    let errorStatus = {
+      code: error.response.data.code,
+      description: error.response.data.description
+    }
+    this.setState({ errorStatus })
+  }
+
+  handleOkEditUserGroupModal = (e) => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.editUserGroup(values);
+      }
+    })
+  }
+
+
+  componentWillMount() {
+    this.fetchUserGroup();
+    this.fetchProjects();
   }
 
   fetchProjects = async () => {
@@ -50,48 +74,43 @@ class AddUserGroupModal extends Component {
 			});
 	};
 
-  setErrorStatus = (error) => {
-    let errorStatus = {
-      code: error.response.data.code,
-      description: error.response.data.description
-    }
-    this.setState({ errorStatus })
-  }
+  fetchUserGroup = async () => {
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/Group/${this.props.UserGroupId}?accessToken=${this.props.accessToken}`;
+    axios
+      .get(url)
+      .then(response => {
+        this.setState({ userGroupData: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
-  handleOkAddUserGroupModal = (e) => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        this.addUserGroup(values);
-      }
-    })
-  }
-
-  componentWillMount() {
-		this.fetchProjects();
-  }
-  
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.state);
     return (
       <Modal
-        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User Group</div>}
-        onOk={this.handleOkAddUserGroupModal}
+        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Edit User Group</div>}
+        onOk={this.handleOkEditUserGroupModal}
         visible={true}
-        onCancel={this.props.handleCancelUserGroupModal}
-        okText="Add"
+        onCancel={this.props.handleCancelEditUserGroupModal}
+        okText="Save Changes"
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
         <div style={{ color: "red" }}>
           {this.state.errorStatus.description}
         </div>
-        <Form>
+        <Form onSubmit={this.handleOkEditUserGroupModal} layout={'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
               rules: [
                 { required: true, message: 'Please select a Project' }
               ],
+              initialValue: this.state.userGroupData.projectId
             })
               (
                 <Select 
@@ -111,6 +130,7 @@ class AddUserGroupModal extends Component {
                 { required: true, message: 'Please input Name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
+              initialValue: this.state.userGroupData.name
             })
               (
                 <Input placeholder='Name' />
@@ -121,11 +141,12 @@ class AddUserGroupModal extends Component {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
+              initialValue: this.state.userGroupData.description
             })
               (
                 <Input.TextArea placeholder='Description' />
               )}
-          </FormItem>
+          </FormItem>   
         </Form>
       </Modal>
     );
@@ -133,4 +154,4 @@ class AddUserGroupModal extends Component {
 
 }
 
-export default Form.create()(AddUserGroupModal);
+export default Form.create()(EditUserGroupModal);
