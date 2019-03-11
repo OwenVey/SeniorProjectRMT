@@ -4,9 +4,24 @@ import { Select } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 import { ItemTypesBar } from '../AdminBars/AdminBars';
+import { Resizable } from 'react-resizable';
 import axios from 'axios';
 const { Option } = Select;
 const FormItem = Form.Item;
+
+const ResizeableTitle = props => {
+	const { onResize, width, ...restProps } = props;
+
+	if (!width) {
+		return <th {...restProps} />;
+	}
+
+	return (
+		<Resizable width={width} height={0} onResize={onResize}>
+			<th {...restProps} />
+		</Resizable>
+	);
+};
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -17,27 +32,21 @@ class ItemTypes extends Component {
       columns: [
         {
           title: "Item",
-          dataIndex: "icon",
-          defaultSortOrder: "descend",
+          dataIndex: "iconUrl",
+          key: "iconUrl",
           align: 'center',
-          render: index => <span>{index}</span>,
+          render: iconUrl => <Icon><FontAwesomeIcon icon={iconUrl} /></Icon>
         },
         {
           title: "Display",
-          dataIndex: "display",
-          sorter: (a, b) => a.display.localeCompare(b.display),
+          dataIndex: "name",
+          sorter: (a, b) => a.name.localeCompare(b.name),
           render: index => <span>{index}</span>,
         },
         {
           title: "Description",
           dataIndex: "description",
           sorter: (a, b) => a.description.localeCompare(b.description),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "System",
-          dataIndex: "system",
-          sorter: (a, b) => a.system.localeCompare(b.system),
           render: index => <span>{index}</span>,
         },
         {
@@ -88,14 +97,7 @@ class ItemTypes extends Component {
     axios
       .get(url)
       .then(response => {
-        let itemTypeData = response.data.itemTypeData.map(itemType => {
-          return {
-            ...itemType,
-            name: itemType.name.substring(0, 10),
-            description: itemType.description.substring(0, 10),
-            projectId: itemType.projectId.substring(0, 10)
-          }
-        })
+        let itemTypeData = response.data.objectTypes
         this.setState({ itemTypes: itemTypeData });
       })
       .catch(error => {
@@ -142,26 +144,7 @@ class ItemTypes extends Component {
       deleteModal: false,
     });
   }
-
-  // handleAddItemType = (e) => {
-  //   this.props.form.validateFields((err, values) => {
-  //     if (!err) {
-  //       const { icon, display, description, id, system } = this.state;
-  //       let newItemType = {
-  //         icon,
-  //         display,
-  //         description,
-  //         id,
-  //         system,
-  //       }
-  //       this.setState({
-  //         visible: false,
-  //         itemTypes: [...this.state.itemTypes, newItemType],
-  //       });
-  //     }
-  //   })
-  // }
-
+  
   handleCancel = (e) => {
     this.setState({
       visible: false,
@@ -174,20 +157,55 @@ class ItemTypes extends Component {
     });
   }
 
+  components = {
+		header: {
+			cell: ResizeableTitle,
+		},
+  };
+  
+  handleSearch = (selectedKeys, confirm) => () => {
+		confirm();
+		this.setState({ searchText: selectedKeys[0] });
+	};
+
+	handleReset = clearFilters => () => {
+		clearFilters();
+		this.setState({ searchText: '' });
+	};
+
+  handleResize = index => (e, { size }) => {
+		this.setState(({ columns }) => {
+			const nextColumns = [...columns];
+			nextColumns[index] = {
+				...nextColumns[index],
+				width: size.width,
+			};
+			return { columns: nextColumns };
+		});
+	};
+
   render() {
-    //This doesn't work.
-    //const { getFieldDecorator } = this.props.form;
-    // this.dragProps = {
-    //   onDragEnd(fromIndex, toIndex) {
-    //     const columns = this.state.columns;
-    //     const item = columns.splice(fromIndex, 1)[0];
-    //     columns.splice(toIndex, 0, item);
-    //     this.setState({
-    //       columns
-    //     });
-    //   },
-    //   nodeSelector: "th"
-    // };
+
+    const columns = this.state.columns.map((col, index) => ({
+			...col,
+			onHeaderCell: column => ({
+				width: column.width,
+				onResize: this.handleResize(index),
+			}),
+    }));
+    
+    const that = this;
+		this.dragProps = {
+			onDragEnd(fromIndex, toIndex) {
+				const columns = that.state.columns;
+				const item = columns.splice(fromIndex, 1)[0];
+				columns.splice(toIndex, 0, item);
+				that.setState({
+					columns,
+				});
+			},
+			nodeSelector: 'th',
+		};
 
     return (
       <React.Fragment>
@@ -198,6 +216,7 @@ class ItemTypes extends Component {
             columns={this.state.columns}
             pagination={false}
             dataSource={this.state.itemTypes}
+            scroll={{ y: 500 }}
             icon={<FontAwesomeIcon />}
             bordered
           />
@@ -206,4 +225,5 @@ class ItemTypes extends Component {
     );
   }
 }
+
 export default ItemTypes;

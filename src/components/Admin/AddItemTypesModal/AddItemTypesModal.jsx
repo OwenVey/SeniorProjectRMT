@@ -10,7 +10,6 @@ class AddItemTypesModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            objectTypes: [],
             errorStatus: {}
         };
     }
@@ -22,6 +21,7 @@ class AddItemTypesModal extends Component {
             name: itemInfo.name,
             description: itemInfo.description,
             projectId: itemInfo.projectId,
+            iconUrl: itemInfo.icon,
         })
             .catch(error => {
                 valid = false
@@ -33,9 +33,6 @@ class AddItemTypesModal extends Component {
                     this.props.hide()
                 }
             })
-        //object destructuring
-        //const { name, description } = values;
-        this.props.hide()
     }
 
     setErrorStatus = (error) => {
@@ -70,18 +67,19 @@ class AddItemTypesModal extends Component {
             >
                 <Form onSubmit={this.handleOk}>
                     <FormItem style={{ marginBottom: '0px' }} label="Icon">
-                        {getFieldDecorator('iconName')
+                        {getFieldDecorator('icon', {
+                            rules: [
+                                { required: true, message: 'Please select an icon' }],
+                            })
                             (<Select
                                 className="inputFields"
-                                labelInValue
                                 style={{ width: 200 }}
-                                onChange={this.handleChange}
                                 placeholder='Select icon'
                             >
-                                <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
-                                <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
-                                <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
-                                <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
+                                <Option value='archive'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
+                                <Option value="paperclip"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
+                                <Option value="file-signature"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
+                                <Option value="file-alt"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
                             </Select>)}
                     </FormItem>
                     <FormItem style={{ marginBottom: '0px' }} label="Display">
