@@ -27,7 +27,7 @@ class ProfilePage extends Component {
 
     switch (this.state.currentPage) {
       case "myDetails":
-        selectedPage = <MyDetails />;
+        selectedPage = <MyDetails accessToken={this.props.accessToken} />;
         break;
       case "mySubscriptions":
         selectedPage = <MySubscriptions />;
