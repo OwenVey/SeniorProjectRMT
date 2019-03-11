@@ -44,7 +44,14 @@ class EditProjectModal extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Edit Project</div>}
+        title={
+          <>
+            <Icon style={{ color: '#1890FF', marginRight: 10 }}>
+              <FontAwesomeIcon icon='user' />
+            </Icon>
+            Edit Project
+          </>
+        }
         onOk={this.handleOkEditProjectModal}
         visible={true}
         onCancel={() => this.props.clickCancelEditProject()}

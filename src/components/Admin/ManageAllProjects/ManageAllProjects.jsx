@@ -24,373 +24,368 @@ const ResizeableTitle = props => {
 };
 
 class ManageAllProjects extends Component {
-	constructor(props) {
-		super(props);
 
-		this.state = {
-			showEditProjectModal: false,
-			searchText: '',
-			selectedId: '',
-			columns: [
-				{
-					title: 'Actions',
-					dataIndex: 'id',
-					key: 'id',
-					width: 75,
-					align: 'center',
-					render: (id, project) => (
-						<React.Fragment>
-							<Tooltip placement="topLeft" title="Edit Project Info">
-								<a href="#none" onClick={() => this.props.clickEditProject(project)}>
-									<Icon><FontAwesomeIcon icon='edit' /></Icon>
-								</a>
-							</Tooltip>
-							<Divider type='vertical' />
-							<Tooltip placement="topLeft" title="Delete Project">
-								<a href="#none" onClick={() => this.props.deleteProject(this.props.accessToken, id)}>
-									<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
-								</a>
-							</Tooltip>
-						</React.Fragment>
-					),
-				},
-				{
-					title: 'Global ID',
-					dataIndex: 'globalId',
-					key: 'globalId',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.globalId.localeCompare(b.globalId),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Global ID"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+	state = {
+		searchText: '',
+		columns: [
+			{
+				title: 'Actions',
+				dataIndex: 'id',
+				key: 'id',
+				width: 75,
+				align: 'center',
+				render: (id, project) => (
+					<React.Fragment>
+						<Tooltip placement="topLeft" title="Edit Project Info">
+							<a href="#none" onClick={() => this.props.clickEditProject(project)}>
+								<Icon><FontAwesomeIcon icon='edit' /></Icon>
+							</a>
+						</Tooltip>
+						<Divider type='vertical' />
+						<Tooltip placement="topLeft" title="Delete Project">
+							<a href="#none" onClick={() => this.props.deleteProject(this.props.accessToken, id)}>
+								<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
+							</a>
+						</Tooltip>
+					</React.Fragment>
+				),
+			},
+			{
+				title: 'Global ID',
+				dataIndex: 'globalId',
+				key: 'globalId',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.globalId.localeCompare(b.globalId),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Global ID"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.globalId.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: (text) => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.globalId.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Name',
-					dataIndex: 'name',
-					key: 'name',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.name.localeCompare(b.name),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Name"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+				render: (text) => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Name',
+				dataIndex: 'name',
+				key: 'name',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.name.localeCompare(b.name),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Name"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: text => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Description',
-					dataIndex: 'description',
-					key: 'description',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.description.localeCompare(b.description),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Description"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+				render: text => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Description',
+				dataIndex: 'description',
+				key: 'description',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.description.localeCompare(b.description),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Description"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.description.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: text => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.description.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Due Date',
-					dataIndex: 'dueDate',
-					key: 'dueDate',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.dueDate.localeCompare(b.dueDate),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Due Date"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+				render: text => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Due Date',
+				dataIndex: 'dueDate',
+				key: 'dueDate',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.dueDate.localeCompare(b.dueDate),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Due Date"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.dueDate.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: text => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.dueDate.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Date Created',
-					dataIndex: 'createDate',
-					key: 'createDate',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.createDate.localeCompare(b.createDate),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Date Created"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+				render: text => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Date Created',
+				dataIndex: 'createDate',
+				key: 'createDate',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.createDate.localeCompare(b.createDate),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Date Created"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.createDate.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: text => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.createDate.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Date Completed',
-					dataIndex: 'completeDate',
-					key: 'completeDate',
-					defaultSortOrder: 'ascend',
-					width: 150,
-					sorter: (a, b) => a.completeDate.localeCompare(b.completeDate),
-					filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-						<div className="custom-filter-dropdown">
-							<Input
-								ref={ele => (this.searchInput = ele)}
-								placeholder="Search Date Completed"
-								value={selectedKeys[0]}
-								onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-								onPressEnter={this.handleSearch(selectedKeys, confirm)}
-							/>
-							<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-								Search
+				render: text => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Date Completed',
+				dataIndex: 'completeDate',
+				key: 'completeDate',
+				defaultSortOrder: 'ascend',
+				width: 150,
+				sorter: (a, b) => a.completeDate.localeCompare(b.completeDate),
+				filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+					<div className="custom-filter-dropdown">
+						<Input
+							ref={ele => (this.searchInput = ele)}
+							placeholder="Search Date Completed"
+							value={selectedKeys[0]}
+							onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+							onPressEnter={this.handleSearch(selectedKeys, confirm)}
+						/>
+						<Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+							Search
 							</Button>
-							<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-						</div>
-					),
-					filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-					onFilter: (value, record) => record.completeDate.toLowerCase().includes(value.toLowerCase()),
-					onFilterDropdownVisibleChange: visible => {
-						if (visible) {
-							setTimeout(() => {
-								this.searchInput.focus();
-							});
-						}
-					},
-					render: text => {
-						const { searchText } = this.state;
-						return searchText ? (
-							<span>
-								{text
-									.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-									.map((fragment, i) =>
-										fragment.toLowerCase() === searchText.toLowerCase() ? (
-											<span key={i} className="highlight">
-												{fragment}
-											</span>
-										) : (
-												fragment
-											) // eslint-disable-line
-									)}
-							</span>
-						) : (
-								text
-							);
-					},
+						<Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+					</div>
+				),
+				filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
+				onFilter: (value, record) => record.completeDate.toLowerCase().includes(value.toLowerCase()),
+				onFilterDropdownVisibleChange: visible => {
+					if (visible) {
+						setTimeout(() => {
+							this.searchInput.focus();
+						});
+					}
 				},
-				{
-					title: 'Is Active',
-					dataIndex: 'isActive',
-					key: 'isActive',
-					align: 'center',
-					width: 100,
-					sorter: (a, b) => (+a.isActive) - (+b.isActive),
-					render: status => {
-						if (status)
-							return (
-								<Tag color="blue" style={{ width: 57 }}>
-									Active
+				render: text => {
+					const { searchText } = this.state;
+					return searchText ? (
+						<span>
+							{text
+								.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
+								.map((fragment, i) =>
+									fragment.toLowerCase() === searchText.toLowerCase() ? (
+										<span key={i} className="highlight">
+											{fragment}
+										</span>
+									) : (
+											fragment
+										) // eslint-disable-line
+								)}
+						</span>
+					) : (
+							text
+						);
+				},
+			},
+			{
+				title: 'Is Active',
+				dataIndex: 'isActive',
+				key: 'isActive',
+				align: 'center',
+				width: 100,
+				sorter: (a, b) => (+a.isActive) - (+b.isActive),
+				render: status => {
+					if (status)
+						return (
+							<Tag color="blue" style={{ width: 57 }}>
+								Active
 								</Tag>
-							);
-						else
-							return (
-								<Tag color="red" style={{ width: 57 }}>
-									Inactive
+						);
+					else
+						return (
+							<Tag color="red" style={{ width: 57 }}>
+								Inactive
 								</Tag>
-							);
-					},
+						);
 				},
-			],
-		};
-	}
+			},
+		],
+	};
 
 	componentWillMount() {
 		if (this.props.projects.length === 0)
@@ -434,19 +429,6 @@ class ManageAllProjects extends Component {
 			}),
 		}));
 
-		const that = this;
-		this.dragProps = {
-			onDragEnd(fromIndex, toIndex) {
-				const columns = that.state.columns;
-				const item = columns.splice(fromIndex, 1)[0];
-				columns.splice(toIndex, 0, item);
-				that.setState({
-					columns,
-				});
-			},
-			nodeSelector: 'th',
-		};
-
 		return (
 			<React.Fragment>
 
@@ -464,9 +446,7 @@ class ManageAllProjects extends Component {
 					rowKey={record => record.id}
 					components={this.components}
 					columns={columns}
-					pagination={false}
 					dataSource={this.props.projects}
-					scroll={{ y: 500 }}
 					bordered
 					loading={this.props.loadingProjects}
 				/>

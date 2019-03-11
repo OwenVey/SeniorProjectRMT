@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { ManageProjectBar } from '../Admin/AdminBars/AdminBars.jsx';
-import { Table } from 'antd';
-// import EditProjectModal from '../EditProjectModal/EditProjectModal.jsx';
 
 class MyDetails extends Component {
 
@@ -27,7 +23,6 @@ class MyDetails extends Component {
     fetchUser = async () => {
         console.log(this.props.accessToken);
         const url = `https://senior-design.timblin.org/api/user/me?accessToken=${this.props.accessToken}`;
-        const url2 = `https://abortplatteville.com/api/user?accessToken=${this.props.accessToken}`;
         axios
             .get(url)
             .then(response => {

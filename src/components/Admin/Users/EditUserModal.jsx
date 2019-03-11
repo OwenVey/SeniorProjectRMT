@@ -58,10 +58,6 @@ class EditUserModal extends Component {
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
-  handleStatusChange = e => {
-    this.setState({ newStatus: e.label });
-  };
-
   handleLicenseTypeChange = e => {
     this.setState({ newLicenseType: e.label });
   };
@@ -83,12 +79,12 @@ class EditUserModal extends Component {
       >
         <Modal
           title={
-            <React.Fragment>
-              <Icon style={{ color: "#1890FF" }}>
+            <>
+              <Icon style={{ color: "#1890FF", marginRight: 10 }}>
                 <FontAwesomeIcon icon="user" />
               </Icon>
               Edit User
-            </React.Fragment>
+            </>
           }
           onOk={this.handleOkUserModal}
           visible={true}
@@ -129,80 +125,15 @@ class EditUserModal extends Component {
                 initialValue: this.props.editableUser.email
               })(<Input placeholder="Email" />)}
             </FormItem>
-            <FormItem style={{ marginBottom: "0px" }} label="Username">
-              {getFieldDecorator("username", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input the user's Username"
-                  },
-                  { min: 4, message: "Username too short!" }
-                ],
-                initialValue: this.props.editableUser.userName
-              })(<Input placeholder="Username" />)}
-            </FormItem>
-            {/* <FormItem style={{ marginBottom: "0px" }} label="Password">
-              {getFieldDecorator("Password", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input the user's Password"
-                  },
-                  { validator: this.validateToNextPassword },
-                  { min: 12, message: "Password too short!" }
-                ]
-              })(<Input placeholder="Password" type="password" />)}
-            </FormItem>
-            <FormItem style={{ marginBottom: "0px" }} label="Confirm Password">
-              {getFieldDecorator("Confirm", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please confirm the user's Password"
-                  },
-                  { validator: this.compareToFirstPassword }
-                ]
-              })(
-                <Input
-                  placeholder="Password"
-                  type="password"
-                  onBlur={this.handleConfirmBlur}
-                />
-              )}
-            </FormItem> */}
-            <FormItem
-              style={{ marginBottom: "0px" }}
-              label="License Type"
-              hasFeedback
-            >
-              {getFieldDecorator("licenseType", {
-                rules: [
-                  { required: true, message: "Please select a License Type" }
-                ],
-                initialValue: "Developer"
-              })(
-                <Select
-                  placeholder="Please select a License Type"
-                  style={{ width: "100%" }}
-                >
-                  <Option value="Developer">Developer</Option>
-                  <Option value="Admin">Admin</Option>
-                  <Option value="ProductOwner">Product Owner</Option>
-                  <Option value="ScrumMaster">Scrum Master</Option>
-                  <Option value="Customer">Customer</Option>
-                </Select>
-              )}
-            </FormItem>
             <FormItem style={{ marginBottom: "0px" }} label="Status">
               {getFieldDecorator("isActive", {
-                initialValue: this.props.editableUser.isActive
+                initialValue: this.props.editableUser.isActive === true ? 'Active' : 'Inactive'
               })(
                 <Select
                   style={{ width: "100%" }}
-                  onChange={this.handleStatusChange}
                 >
-                  <Option value={true}>Active</Option>
-                  <Option value={false}>Inactive</Option>
+                  <Option value={'Active'}>Active</Option>
+                  <Option value={'Inactive'}>Inactive</Option>
                 </Select>
               )}
             </FormItem>

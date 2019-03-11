@@ -27,7 +27,14 @@ class AddUserGroupModal extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User Group</div>}
+        title={
+          <>
+            <Icon style={{ color: '#1890FF', marginRight: 10 }}>
+              <FontAwesomeIcon icon='user' />
+            </Icon>
+            Add User Group
+          </>
+        }
         onOk={this.handleOkAddUserGroupModal}
         visible={true}
         onCancel={() => this.props.clickCancelAddUserGroup()}

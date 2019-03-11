@@ -17,7 +17,7 @@ import {
 
 const initialUsersState = {
   loadingUsers: true,
-  userData: [],
+  users: [],
   loading: false,
   fetchErrorMessage: '',
   postErrorMessage: '',
@@ -41,7 +41,7 @@ export const usersReducer = createReducer(initialUsersState, {
   [fetchUsersSuccess]: (state, action) => {
     state.loadingUsers = false;
     state.loading = false;
-    state.userData = action.payload;
+    state.users = action.payload;
   },
 
   [fetchUsersFailure]: (state, action) => {
@@ -57,7 +57,9 @@ export const usersReducer = createReducer(initialUsersState, {
     state.postErrorMessage = '';
   },
   [addUserSuccess]: (state, action) => {
+    console.log(action)
     state.loading = false;
+    state.users.push(action.payload);
     state.addUserModalVisibility = false;
   },
   [addUserFailure]: (state, action) => {
@@ -81,7 +83,7 @@ export const usersReducer = createReducer(initialUsersState, {
   },
   [editUserSuccess]: (state, action) => {
     state.loading = false;
-    state.userData = state.userData.map(user =>
+    state.users = state.users.map(user =>
       user.id === action.payload.id ? Object.assign(action.payload) : user
     );
     state.editUserModalVisibility = false;

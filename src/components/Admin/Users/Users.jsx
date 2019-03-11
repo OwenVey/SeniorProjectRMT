@@ -6,6 +6,7 @@ import { getUsers, showEditUserModal, showAddUserModal } from "../../../actions/
 import EditUserModal from "./EditUserModal";
 import AddUserModal from './AddUserModal';
 import "./Users.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ResizeableTitle = props => {
   const { onResize, width, ...restProps } = props;
@@ -22,241 +23,232 @@ const ResizeableTitle = props => {
 };
 
 class Users extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      columns: [
-        {
-          title: "First Name",
-          dataIndex: "firstName",
-          key: "firstName",
-          defaultSortOrder: "ascend",
-          width: 150,
-          sorter: (a, b) => a.firstName.localeCompare(b.firstName),
-          filterDropdown: ({
-            setSelectedKeys,
-            selectedKeys,
-            confirm,
-            clearFilters
-          }) => (
-              <div className="custom-filter-dropdown">
-                <Input
-                  ref={ele => (this.searchInput = ele)}
-                  placeholder="Search name"
-                  value={selectedKeys[0]}
-                  onChange={e =>
-                    setSelectedKeys(e.target.value ? [e.target.value] : [])
-                  }
-                  onPressEnter={this.handleSearch(selectedKeys, confirm)}
-                />
-                <Button
-                  type="primary"
-                  onClick={this.handleSearch(selectedKeys, confirm)}
-                >
-                  Search
-              </Button>
-                <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-              </div>
-            ),
-          filterIcon: filtered => (
-            <Icon
-              type="search"
-              style={{ color: filtered ? "#a9a9a9" : "#a9a9a9" }}
-            />
-          ), //108ee9
-          onFilter: (value, record) =>
-            record.firstName.toLowerCase().includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus();
-              });
-            }
-          },
-          render: text => {
-            const { searchText } = this.state;
-            return searchText ? (
-              <span>
-                {text
-                  .split(
-                    new RegExp(`(?<=${searchText})|(?=${searchText})`, "i")
-                  )
-                  .map(
-                    (fragment, i) =>
-                      fragment.toLowerCase() === searchText.toLowerCase() ? (
-                        <span key={i} className="highlight">
-                          {fragment}
-                        </span>
-                      ) : (
-                          fragment
-                        ) // eslint-disable-line
-                  )}
-              </span>
-            ) : (
-                text
-              );
-          }
-        },
-        {
-          title: "Last Name",
-          dataIndex: "lastName",
-          key: "lastName",
-          defaultSortOrder: "ascend",
-          width: 150,
-          sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-          filterDropdown: ({
-            setSelectedKeys,
-            selectedKeys,
-            confirm,
-            clearFilters
-          }) => (
-              <div className="custom-filter-dropdown">
-                <Input
-                  ref={ele => (this.searchInput = ele)}
-                  placeholder="Search name"
-                  value={selectedKeys[0]}
-                  onChange={e =>
-                    setSelectedKeys(e.target.value ? [e.target.value] : [])
-                  }
-                  onPressEnter={this.handleSearch(selectedKeys, confirm)}
-                />
-                <Button
-                  type="primary"
-                  onClick={this.handleSearch(selectedKeys, confirm)}
-                >
-                  Search
-              </Button>
-                <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-              </div>
-            ),
-          filterIcon: filtered => (
-            <Icon
-              type="search"
-              style={{ color: filtered ? "#a9a9a9" : "#a9a9a9" }}
-            />
-          ), //108ee9
-          onFilter: (value, record) =>
-            record.lastname.toLowerCase().includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus();
-              });
-            }
-          },
-          render: text => {
-            const { searchText } = this.state;
-            return searchText ? (
-              <span>
-                {text
-                  .split(
-                    new RegExp(`(?<=${searchText})|(?=${searchText})`, "i")
-                  )
-                  .map(
-                    (fragment, i) =>
-                      fragment.toLowerCase() === searchText.toLowerCase() ? (
-                        <span key={i} className="highlight">
-                          {fragment}
-                        </span>
-                      ) : (
-                          fragment
-                        ) // eslint-disable-line
-                  )}
-              </span>
-            ) : (
-                text
-              );
-          }
-        },
-        {
-          title: "User Name",
-          dataIndex: "userName",
-          key: "userName",
-          width: 150,
-          sorter: (a, b) => a.userName.localeCompare(b.userName),
-          render: (userName, user) => (
-            <Tooltip placement="topLeft" title="Edit User Info">
-              <a
-                href="#none"
-                onClick={() => this.props.showEditUserModal(user)}
+  state = {
+    columns: [
+      {
+        title: 'Actions',
+        dataIndex: 'id',
+        key: 'id',
+        width: 75,
+        align: 'center',
+        render: (id, user) => (
+          <Tooltip placement="topLeft" title="Edit Project Info">
+            <a href="#none" onClick={() => this.props.showEditUserModal(user)}>
+              <Icon><FontAwesomeIcon icon='edit' /></Icon>
+            </a>
+          </Tooltip>
+        ),
+      },
+      {
+        title: "First Name",
+        dataIndex: "firstName",
+        key: "firstName",
+        defaultSortOrder: "ascend",
+        width: 150,
+        sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+        filterDropdown: ({
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => (this.searchInput = ele)}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e =>
+                  setSelectedKeys(e.target.value ? [e.target.value] : [])
+                }
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button
+                type="primary"
+                onClick={this.handleSearch(selectedKeys, confirm)}
               >
-                {userName}
-              </a>{" "}
-            </Tooltip>
-          )
-        },
-        {
-          title: "Email",
-          dataIndex: "email",
-          key: "email",
-          width: 250,
-          sorter: (a, b) => a.email.localeCompare(b.email)
-        },
-        {
-          title: "User Groups",
-          dataIndex: "userGroups",
-          key: "userGroups",
-          render: userGroups =>
-            userGroups.map(userGroup => {
-              let color;
-              switch (userGroup) {
-                case "Developer":
-                  color = "geekblue";
-                  break;
-                case "Admin":
-                  color = "red";
-                  break;
-                case "Product Owner":
-                  color = "green";
-                  break;
-                case "Scrum Master":
-                  color = "purple";
-                  break;
-                case "Customer":
-                  color = "gold";
-                  break;
-                default:
-                  color = "";
-              }
-              return <Tag key={color} color={color}>{userGroup}</Tag>;
-            })
-        },
-        // {
-        //   title: 'License Type',
-        //   dataIndex: 'licenseType',
-        //   key: 'licenseType',
-        //   width: 150,
-        //   sorter: (a, b) => a.licenseType.localeCompare(b.licenseType)
-        // },
-        {
-          title: "User Status",
-          dataIndex: "isActive",
-          key: "isActive",
-          align: "center",
-          width: 100,
-          sorter: (a, b) => +a.isActive - +b.isActive,
-          render: status => {
-            if (status)
-              return (
-                <Tag color="blue" style={{ width: 57 }}>
-                  Active
-                </Tag>
-              );
-            else
-              return (
-                <Tag color="red" style={{ width: 57 }}>
-                  Inactive
-                </Tag>
-              );
+                Search
+              </Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+        filterIcon: filtered => (
+          <Icon
+            type="search"
+            style={{ color: filtered ? "#a9a9a9" : "#a9a9a9" }}
+          />
+        ), //108ee9
+        onFilter: (value, record) =>
+          record.firstName.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+          if (visible) {
+            setTimeout(() => {
+              this.searchInput.focus();
+            });
           }
+        },
+        render: text => {
+          const { searchText } = this.state;
+          return searchText ? (
+            <span>
+              {text
+                .split(
+                  new RegExp(`(?<=${searchText})|(?=${searchText})`, "i")
+                )
+                .map(
+                  (fragment, i) =>
+                    fragment.toLowerCase() === searchText.toLowerCase() ? (
+                      <span key={i} className="highlight">
+                        {fragment}
+                      </span>
+                    ) : (
+                        fragment
+                      ) // eslint-disable-line
+                )}
+            </span>
+          ) : (
+              text
+            );
         }
-      ]
-    };
-  }
+      },
+      {
+        title: "Last Name",
+        dataIndex: "lastName",
+        key: "lastName",
+        defaultSortOrder: "ascend",
+        width: 150,
+        sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+        filterDropdown: ({
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        }) => (
+            <div className="custom-filter-dropdown">
+              <Input
+                ref={ele => (this.searchInput = ele)}
+                placeholder="Search name"
+                value={selectedKeys[0]}
+                onChange={e =>
+                  setSelectedKeys(e.target.value ? [e.target.value] : [])
+                }
+                onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              />
+              <Button
+                type="primary"
+                onClick={this.handleSearch(selectedKeys, confirm)}
+              >
+                Search
+              </Button>
+              <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            </div>
+          ),
+        filterIcon: filtered => (
+          <Icon
+            type="search"
+            style={{ color: filtered ? "#a9a9a9" : "#a9a9a9" }}
+          />
+        ),
+        onFilter: (value, record) =>
+          record.lastName.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+          if (visible) {
+            setTimeout(() => {
+              this.searchInput.focus();
+            });
+          }
+        },
+        render: text => {
+          const { searchText } = this.state;
+          return searchText ? (
+            <span>
+              {text
+                .split(
+                  new RegExp(`(?<=${searchText})|(?=${searchText})`, "i")
+                )
+                .map(
+                  (fragment, i) =>
+                    fragment.toLowerCase() === searchText.toLowerCase() ? (
+                      <span key={i} className="highlight">
+                        {fragment}
+                      </span>
+                    ) : (
+                        fragment
+                      )
+                )}
+            </span>
+          ) : (
+              text
+            );
+        }
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        width: 250,
+        sorter: (a, b) => a.email.localeCompare(b.email)
+      },
+      {
+        title: "User Groups",
+        dataIndex: "userGroups",
+        key: "userGroups",
+        render: userGroups => {
+          if (userGroups)
+            return (
+              userGroups.map(userGroup => {
+                let color;
+                switch (userGroup) {
+                  case "Developer":
+                    color = "geekblue";
+                    break;
+                  case "Admin":
+                    color = "red";
+                    break;
+                  case "Product Owner":
+                    color = "green";
+                    break;
+                  case "Scrum Master":
+                    color = "purple";
+                    break;
+                  case "Customer":
+                    color = "gold";
+                    break;
+                  default:
+                    color = "";
+                }
+                return <Tag key={color} color={color}>{userGroup}</Tag>;
+              })
+            )
+        }
+      },
+      {
+        title: "User Status",
+        dataIndex: "isActive",
+        key: "isActive",
+        align: "center",
+        width: 100,
+        sorter: (a, b) => +a.isActive - +b.isActive,
+        render: status => {
+          if (status)
+            return (
+              <Tag color="blue" style={{ width: 57 }}>
+                Active
+                </Tag>
+            );
+          else
+            return (
+              <Tag color="red" style={{ width: 57 }}>
+                Inactive
+                </Tag>
+            );
+        }
+      }
+    ]
+  };
 
   componentWillMount() {
-    if (this.props.userAdminData.length === 0)
+    if (this.props.users.length === 0)
       this.props.getUsers(this.props.accessToken);
   }
 
@@ -286,6 +278,7 @@ class Users extends Component {
       cell: ResizeableTitle
     }
   };
+
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -324,9 +317,7 @@ class Users extends Component {
           rowKey={record => record.id}
           components={this.components}
           columns={columns}
-          pagination={false}
-          dataSource={this.props.userAdminData}
-          scroll={{ y: 500 }}
+          dataSource={this.props.users}
           bordered
           loading={this.props.loadingUsers}
         />
@@ -338,13 +329,10 @@ class Users extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  userAdminData: state.users.userData,
+  users: state.users.users,
   editUserModalVisible: state.users.editUserModalVisibility,
   addUserModalVisible: state.users.addUserModalVisibility,
   loadingUsers: state.users.loadingUsers,
 });
 
-export default connect(
-  mapStateToProps,
-  { getUsers, showEditUserModal, showAddUserModal }
-)(Users);
+export default connect(mapStateToProps, { getUsers, showEditUserModal, showAddUserModal })(Users);

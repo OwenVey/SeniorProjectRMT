@@ -37,7 +37,14 @@ class AddProjectModal extends Component {
     };
     return (
       <Modal
-        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add Project</div>}
+        title={
+          <>
+            <Icon style={{ color: '#1890FF', marginRight: 10 }}>
+              <FontAwesomeIcon icon='user' />
+            </Icon>
+            Add Project
+          </>
+        }
         onOk={this.handleOkAddProjectModal}
         visible={true}
         onCancel={() => this.props.clickCancelAddProject()}

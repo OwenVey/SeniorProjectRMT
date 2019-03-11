@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Divider, Table, Button, Modal, Icon } from "antd";
+import { Divider, Table, Button, Modal, Icon, Tooltip } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 import { connect } from "react-redux";
@@ -7,58 +7,54 @@ import { getItemTypes, clickAddItemType, deleteItemType } from '../../../actions
 import AddItemTypeModal from './AddItemTypeModal';
 
 class ItemTypes extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      itemTypes: [],
-      columns: [
-        {
-          title: "Item",
-          dataIndex: "iconUrl",
-          key: "iconUrl",
-          align: 'center',
-          width: 50,
-          render: iconUrl => <Icon><FontAwesomeIcon icon={iconUrl} /></Icon>
-        },
-        {
-          title: "Name",
-          dataIndex: "name",
-          width: 80,
-          sorter: (a, b) => a.name.localeCompare(b.name),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "Description",
-          dataIndex: "description",
-          width: 80,
-          sorter: (a, b) => a.description.localeCompare(b.description),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "Action",
-          dataIndex: "action",
-          width: 150,
-          render: (index, itemType) => (
-            <span>
-              <a href='#none' >Edit</a>
-              <Divider type='vertical' />
-              <a href='#none'>Fields</a>
-              <Divider type='vertical' />
-              <a href='#none'>Views</a>
-              <Divider type='vertical' />
-              <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
-            </span >
-          )
-        }
-      ],
-      visible: false,
-      icon: <div></div>,
-      display: "",
-      description: "",
-      id: "",
-      system: "",
-    };
+  state = {
+    columns: [
+      {
+        title: 'Actions',
+        dataIndex: 'id',
+        key: 'id',
+        width: 75,
+        align: 'center',
+        render: (id, itemType) => (
+          <React.Fragment>
+            <Tooltip title="Edit Item Type">
+              <Icon onClick={() => { }}>
+                <FontAwesomeIcon icon='edit' color='#1890ff' />
+              </Icon>
+            </Tooltip>
+            <Divider type='vertical' />
+            <Tooltip title="Delete Item Type">
+              <Icon onClick={() => this.handleDeleteItem(itemType)}>
+                <FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
+              </Icon>
+            </Tooltip>
+          </React.Fragment>
+        ),
+      },
+      {
+        title: "Item",
+        dataIndex: "iconUrl",
+        key: "iconUrl",
+        align: 'center',
+        width: 50,
+        render: iconUrl => <Icon><FontAwesomeIcon icon={iconUrl} /></Icon>
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+        width: 80,
+        sorter: (a, b) => a.name.localeCompare(b.name),
+        render: index => <span>{index}</span>,
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        width: 80,
+        sorter: (a, b) => a.description.localeCompare(b.description),
+        render: index => <span>{index}</span>,
+      },
+    ]
   }
 
   componentWillMount() {
@@ -66,69 +62,20 @@ class ItemTypes extends Component {
       this.props.getItemTypes(this.props.accessToken);
   }
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-
   handleDeleteItem = (itemType) => {
-    this.setState({
-      handleCancelModal: true,
-    })
     Modal.confirm({
       title: 'Delete Item Type',
-      content: 'Are you sure you want to delete this item type?',
+      content: `Are you sure you want to delete the "${itemType.name}" item type?`,
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk: () => {
-        //this.deleteUserGroup()
-        this.setState({ handleCancelModal: false })
         this.props.deleteItemType(itemType.id)
       },
       onCancel: () => {
-        this.setState({ handleCancelModal: false })
       }
     });
   }
-
-  deleteItemType = (id) => {
-    this.setState({
-      itemTypes: this.state.itemTypes.filter((itemType) => itemType.id !== id)
-    })
-  }
-
-  handleDeleteCancel = () => {
-    this.setState({
-      deleteModal: false,
-    });
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
-  }
-
-  handleChange = (value) => {
-    this.setState({
-      icon: value.label,
-    });
-  }
-
-
-  handleSearch = (selectedKeys, confirm) => () => {
-    confirm();
-    this.setState({ searchText: selectedKeys[0] });
-  };
-
-  handleReset = clearFilters => () => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
-
-
 
   render() {
 
@@ -148,9 +95,8 @@ class ItemTypes extends Component {
         <Table
           columns={this.state.columns}
           pagination={false}
+          rowKey={record => record.id}
           dataSource={this.props.itemTypes}
-          scroll={{ y: 500 }}
-          icon={<FontAwesomeIcon />}
           bordered
           loading={this.props.loadingItemTypes}
         />

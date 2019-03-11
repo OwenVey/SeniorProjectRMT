@@ -15,18 +15,15 @@ const userGroups = [
 ];
 
 class AddUserModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      invalidUser: false,
-      confirmDirty: false
-    };
-  }
+
+  state = {
+    confirmDirty: false
+  };
 
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.addUser(values, this.props.accessToken);
+        this.props.addUser(values);
       }
     });
   };
@@ -48,19 +45,6 @@ class AddUserModal extends Component {
     callback();
   };
 
-  handleConfirmBlur = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  handleStatusChange = e => {
-    this.setState({ newStatus: e.label });
-  };
-
-  handleLicenseTypeChange = e => {
-    this.setState({ newLicenseType: e.label });
-  };
-
   handleUserGroupChange = e => {
     this.setState({ newUserGroups: e.map(userGroup => userGroup.label) });
   };
@@ -70,12 +54,12 @@ class AddUserModal extends Component {
     return (
       <Modal
         title={
-          <div>
-            <Icon style={{ color: "#1890FF" }}>
+          <>
+            <Icon style={{ color: "#1890FF", marginRight: 10 }}>
               <FontAwesomeIcon icon="user" />
-            </Icon>{" "}
+            </Icon>
             Add User
-          </div>
+          </>
         }
         onOk={this.handleOkUserModal}
         visible={true}
@@ -85,7 +69,7 @@ class AddUserModal extends Component {
         bodyStyle={{ maxHeight: "60vh", overflowY: "scroll", paddingTop: 5 }}
         okButtonProps={{ loading: this.props.loadingAdd }}
       >
-        <Form onSubmit={this.handleOkUserModal}>
+        <Form >
           <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
           <FormItem style={{ marginBottom: "0px" }} label="First Name">
             {getFieldDecorator("firstName", {
@@ -112,14 +96,6 @@ class AddUserModal extends Component {
               ]
             })(<Input placeholder="Email" />)}
           </FormItem>
-          <FormItem style={{ marginBottom: "0px" }} label="Username">
-            {getFieldDecorator("username", {
-              rules: [
-                { required: true, message: "Please input the user's Username" },
-                { min: 4, message: "Username too short!" }
-              ]
-            })(<Input placeholder="Username" />)}
-          </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Password">
             {getFieldDecorator("password", {
               rules: [
@@ -129,56 +105,15 @@ class AddUserModal extends Component {
               ]
             })(<Input placeholder="Password" type="password" />)}
           </FormItem>
-          {/* <FormItem style={{ marginBottom: "0px" }} label="Confirm Password">
-            {getFieldDecorator("confirm", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please confirm the user's Password"
-                },
-                { validator: this.compareToFirstPassword }
-              ]
-            })(
-              <Input
-                placeholder="Password"
-                type="password"
-                onBlur={this.handleConfirmBlur}
-              />
-            )}
-          </FormItem> */}
-          <FormItem
-            style={{ marginBottom: "0px" }}
-            label="License Type"
-            hasFeedback
-          >
-            {getFieldDecorator("licenseType", {
-              rules: [
-                { required: true, message: "Please select a License Type" }
-              ],
-              initialValue: "Developer"
-            })(
-              <Select
-                placeholder="Please select a License Type"
-                style={{ width: "100%" }}
-              >
-                <Option value="Developer">Developer</Option>
-                <Option value="Admin">Admin</Option>
-                <Option value="ProductOwner">Product Owner</Option>
-                <Option value="ScrumMaster">Scrum Master</Option>
-                <Option value="Customer">Customer</Option>
-              </Select>
-            )}
-          </FormItem>
           <FormItem style={{ marginBottom: "0px" }} label="Status">
             {getFieldDecorator("isActive", {
               initialValue: "Active"
             })(
               <Select
                 style={{ width: "100%" }}
-                onChange={this.handleStatusChange}
               >
-                <Option value={true}>ACTIVE</Option>
-                <Option value={false}>INACTIVE</Option>
+                <Option value={'Active'}>Active</Option>
+                <Option value={'Inactive'}>Inactive</Option>
               </Select>
             )}
           </FormItem>
@@ -205,10 +140,4 @@ const mapStateToProps = state => ({
   loadingAdd: state.users.loading
 });
 
-export default Form.create()(
-  connect(
-    mapStateToProps,
-    { hideAddUserModal, addUser }
-  )(AddUserModal)
-);
-//export default Form.create()(AddUserModal);
+export default connect(mapStateToProps, { hideAddUserModal, addUser })(Form.create()(AddUserModal));
