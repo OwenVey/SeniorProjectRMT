@@ -35,23 +35,27 @@ class ItemTypes extends Component {
           dataIndex: "iconUrl",
           key: "iconUrl",
           align: 'center',
+          width: 50,
           render: iconUrl => <Icon><FontAwesomeIcon icon={iconUrl} /></Icon>
         },
         {
-          title: "Display",
+          title: "Name",
           dataIndex: "name",
+          width: 80,
           sorter: (a, b) => a.name.localeCompare(b.name),
           render: index => <span>{index}</span>,
         },
         {
           title: "Description",
           dataIndex: "description",
+          width: 80,
           sorter: (a, b) => a.description.localeCompare(b.description),
           render: index => <span>{index}</span>,
         },
         {
           title: "Action",
           dataIndex: "action",
+          width: 150,
           render: (index, itemType) => (
             <span>
               <a href='#none' >Edit</a>
@@ -210,17 +214,15 @@ class ItemTypes extends Component {
     return (
       <React.Fragment>
         <ItemTypesBar accessToken={this.props.accessToken} />
-        <div style={{ margin: 20 }}>
-          <Table
-            components={this.components}
-            columns={this.state.columns}
-            pagination={false}
-            dataSource={this.state.itemTypes}
-            scroll={{ y: 500 }}
-            icon={<FontAwesomeIcon />}
-            bordered
-          />
-        </div>
+        <Table
+          components={this.components}
+          columns={this.state.columns}
+          pagination={false}
+          dataSource={this.state.itemTypes}
+          scroll={{ y: 500 }}
+          icon={<FontAwesomeIcon />}
+          bordered
+        />
       </React.Fragment>
     );
   }
