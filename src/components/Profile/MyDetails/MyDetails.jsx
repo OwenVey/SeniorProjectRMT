@@ -40,35 +40,12 @@ class MyDetails extends Component {
     };
 
     render() {
-
-        // const userData = this.state.userData.map((user, index) => ({
-        //     ...user,
-        //     onHeaderCell: userData => ({
-        //         width: userData.width,
-        //         onResize: this.handleResize(index),
-        //     }),
-        // }));
-
-        // const that = this;
-        // this.dragProps = {
-        //     onDragEnd(fromIndex, toIndex) {
-        //         const userData = that.state.userData;
-        //         const item = userData.splice(fromIndex, 1)[0];
-        //         userData.splice(toIndex, 0, item);
-        //         that.setState({
-        //             userData,
-        //         });
-        //     },
-        //     nodeSelector: 'th',
-        // };
-
         return (
             <React.Fragment>
-                <p>First Name: {this.state.userData.firstName}</p>
-                <p>Last Name: {this.state.userData.lastName}</p>
-                <p>email: {this.state.userData.email}</p>
-                <p>first Name: {this.state.userData.firstName}</p>
-                <p>first Name: {this.state.userData.firstName}</p>
+                <p><strong>First Name:</strong> {this.state.userData.firstName}</p>
+                <p><strong>Last Name:</strong> {this.state.userData.lastName}</p>
+                <p><strong>email:</strong> {this.state.userData.email}</p>
+                <p><strong>Date account created:</strong> {this.state.userData.createDate}</p>
             </React.Fragment>
         );
     }
