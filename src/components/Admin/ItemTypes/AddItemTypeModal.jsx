@@ -38,6 +38,24 @@ class AddItemTypeModal extends Component {
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
         <Form >
+          <FormItem style={{ marginBottom: '0px' }} label="Project" >
+            {getFieldDecorator('projectId', {
+              rules: [
+                { required: true, message: 'Select project' }
+              ],
+
+            })(
+              <Select
+                placeholder='Please select a project'
+                showSearch
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
+                  <Option key={project.id} value={project.id}>{`${project.name} (${project.globalId})`}</Option>
+                ))}
+              </Select>
+            )}
+          </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Icon">
             {getFieldDecorator('icon', {
               rules: [
@@ -53,13 +71,13 @@ class AddItemTypeModal extends Component {
               <Option value="file-alt"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
             </Select>)}
           </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="Display">
+          <FormItem style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
               rules: [
                 { required: true, message: 'Please input item type\'s name' },
                 { max: 255, message: 'Name must be 255 characters or less' }],
             })(
-              <Input placeholder='Display' />
+              <Input placeholder='Name' />
             )}
           </FormItem>
           <FormItem style={{ marginBottom: '0px' }} label="Description">
@@ -71,15 +89,6 @@ class AddItemTypeModal extends Component {
               <Input.TextArea placeholder="Description" />
             )}
           </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="ProjectID - MUST BE 6, 7, or 8">
-            {getFieldDecorator('projectId', {
-              rules: [
-                { required: true, message: 'Please input item type\'s ProjectIDs' },
-                { max: 255, message: 'Name must be 255 characters or less' }],
-            })(
-              <Input placeholder="Project ID" />
-            )}
-          </FormItem>
         </Form>
       </Modal>
     );
@@ -88,6 +97,7 @@ class AddItemTypeModal extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
+  projects: state.projects.projects,
 });
 
 export default connect(mapStateToProps, { clickCancelAddItemType, addItemType })(Form.create()(AddItemTypeModal))

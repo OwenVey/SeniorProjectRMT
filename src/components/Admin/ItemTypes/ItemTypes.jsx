@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 import { connect } from "react-redux";
 import { getItemTypes, clickAddItemType, deleteItemType } from '../../../actions/itemTypes';
+import { getProjects } from '../../../actions/projects';
 import AddItemTypeModal from './AddItemTypeModal';
 
 class ItemTypes extends Component {
@@ -60,6 +61,8 @@ class ItemTypes extends Component {
   componentWillMount() {
     if (this.props.itemTypes.length === 0)
       this.props.getItemTypes(this.props.accessToken);
+    if (this.props.projects.length === 0)
+      this.props.getProjects(this.props.accessToken);
   }
 
   handleDeleteItem = (itemType) => {
@@ -111,6 +114,7 @@ const mapStateToProps = state => ({
   itemTypes: state.itemTypes.itemTypes,
   showAddItemTypeModal: state.itemTypes.showAddItemTypeModal,
   loadingItemTypes: state.itemTypes.loadingItemTypes,
+  projects: state.projects.projects,
 });
 
-export default connect(mapStateToProps, { getItemTypes, clickAddItemType, deleteItemType })(ItemTypes)
+export default connect(mapStateToProps, { getItemTypes, clickAddItemType, deleteItemType, getProjects })(ItemTypes)
