@@ -18,7 +18,7 @@ class ItemTypes extends Component {
         width: 75,
         align: 'center',
         render: (id, itemType) => (
-          <React.Fragment>
+          <>
             <Tooltip title="Edit Item Type">
               <Icon onClick={() => { }}>
                 <FontAwesomeIcon icon='edit' color='#1890ff' />
@@ -30,7 +30,7 @@ class ItemTypes extends Component {
                 <FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
               </Icon>
             </Tooltip>
-          </React.Fragment>
+          </>
         ),
       },
       {

@@ -445,7 +445,7 @@ class ManageAllProjects extends Component {
 		}));
 
 		return (
-			<React.Fragment>
+			<>
 
 				<div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
 					<div style={{ flex: 1, justifyContent: 'flex-start' }}>
@@ -467,7 +467,7 @@ class ManageAllProjects extends Component {
 				/>
 				{this.props.showEditProjectModal && <EditProjectModal />}
 				{this.props.showAddProjectModal && <AddProjectModal />}
-			</React.Fragment>
+			</>
 		);
 	}
 }

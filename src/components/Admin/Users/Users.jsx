@@ -302,7 +302,7 @@ class Users extends Component {
     };
 
     return (
-      <React.Fragment>
+      <>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
             <h2>Users</h2>
@@ -322,7 +322,7 @@ class Users extends Component {
           loading={this.props.loadingUsers}
         />
         {this.props.editUserModalVisible && <EditUserModal />}
-      </React.Fragment>
+      </>
     );
   }
 }

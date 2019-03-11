@@ -219,7 +219,7 @@ class UserGroups extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
 
         <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
@@ -240,7 +240,7 @@ class UserGroups extends Component {
         />
         {this.props.showAddUserGroupModal && <AddUserGroupModal />}
         {this.props.showEditUserGroupModal && <EditUserGroupModal />}
-      </React.Fragment >
+      </ >
     )
   }
 }

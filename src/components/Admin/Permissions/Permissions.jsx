@@ -6,7 +6,7 @@ import { showEditPermissionModal, showAddPermissionModal } from "../../../action
 class Permissions extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
             <h2>Permissions</h2>
@@ -17,7 +17,7 @@ class Permissions extends Component {
         </Button>
           {/* {this.props.addPermissionModalVisible && <AddPermissionModal />} */}
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }
