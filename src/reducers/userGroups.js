@@ -4,9 +4,11 @@ import {
   getUserGroupsSuccess,
   getUserGroupsFailure,
   toggleAddUserGroupModal,
+  clickAddUserGroup,
+  clickCancelAddUserGroup,
   addUserGroupRequest,
   addUserGroupSuccess,
-  addUserGroupFailure
+  addUserGroupFailure,
 } from '../actions/userGroups'
 
 const initialUserGroupsState = {
@@ -34,6 +36,14 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
 
   [toggleAddUserGroupModal]: (state, action) => {
     state.showAddUserGroupModal = action.payload;
+  },
+
+  [clickAddUserGroup]: (state, action) => {
+    state.showAddUserGroupModal = true;
+  },
+
+  [clickCancelAddUserGroup]: (state, action) => {
+    state.showAddUserGroupModal = false;
   },
 
   [addUserGroupRequest]: (state, action) => {

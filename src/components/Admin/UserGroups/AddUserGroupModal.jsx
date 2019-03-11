@@ -3,7 +3,7 @@ import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { getProjects } from '../../../actions/projects'
-import { addUserGroup, toggleAddUserGroupModal } from '../../../actions/userGroups'
+import { addUserGroup, clickCancelAddUserGroup } from '../../../actions/userGroups'
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -30,7 +30,7 @@ class AddUserGroupModal extends Component {
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add User Group</div>}
         onOk={this.handleOkAddUserGroupModal}
         visible={true}
-        onCancel={() => this.props.toggleAddUserGroupModal(false)}
+        onCancel={() => this.props.clickCancelAddUserGroup()}
         okText="Add"
         okButtonProps={{ loading: this.props.loadingAdd }}
         maskClosable={false}
@@ -50,7 +50,7 @@ class AddUserGroupModal extends Component {
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
                 {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                  <Option value={project.id}>{project.name}</Option>
+                  <Option key={project.id} value={project.id}>{project.name}</Option>
                 ))}
               </Select>
             )}
@@ -87,4 +87,4 @@ const mapStateToProps = state => ({
   errorMessage: state.userGroups.errorMessage,
 });
 
-export default connect(mapStateToProps, { getProjects, addUserGroup, toggleAddUserGroupModal })(Form.create()(AddUserGroupModal));
+export default connect(mapStateToProps, { getProjects, addUserGroup, clickCancelAddUserGroup })(Form.create()(AddUserGroupModal));

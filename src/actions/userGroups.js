@@ -6,6 +6,9 @@ export const getUserGroupsRequest = createAction('GET_USER_GROUPS_REQUEST');
 export const getUserGroupsSuccess = createAction('GET_USER_GROUPS_SUCCESS');
 export const getUserGroupsFailure = createAction('GET_USER_GROUPS_FAILURE');
 
+export const clickAddUserGroup = createAction('CLICK_ADD_USER_GROUP');
+export const clickCancelAddUserGroup = createAction('CLICK_CANCEL_ADD_USER_GROUP');
+
 export const toggleAddUserGroupModal = createAction('TOGGLE_ADD_USER_GROUP_MODAL')
 export const addUserGroupRequest = createAction('ADD_USER_GROUP_REQUEST')
 export const addUserGroupSuccess = createAction('ADD_USER_GROUP_SUCCESS')

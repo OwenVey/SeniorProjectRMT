@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Table, Divider, Button, Icon, Input } from 'antd';
-import { getUserGroups, toggleAddUserGroupModal } from '../../../actions/userGroups';
+import { getUserGroups, clickAddUserGroup } from '../../../actions/userGroups';
 import AddUserGroupModal from './AddUserGroupModal';
 import './UserGroups.css'
 class UserGroups extends Component {
@@ -209,11 +209,11 @@ class UserGroups extends Component {
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
             <h2>User Groups</h2>
           </div>
-          <Button onClick={() => this.props.toggleAddUserGroupModal(true)}>
+          <Button onClick={() => this.props.clickAddUserGroup()}>
             <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
             Add User Group
         </Button>
-          {this.props.showAddUserGroupModal && <AddUserGroupModal />}
+
         </div>
         <Table
           bordered
@@ -222,6 +222,7 @@ class UserGroups extends Component {
           columns={this.state.columns}
           loading={this.props.loadingUserGroups}
         />
+        {this.props.showAddUserGroupModal && <AddUserGroupModal />}
       </React.Fragment>
     )
   }
@@ -234,5 +235,5 @@ const mapStateToProps = state => ({
   loadingUserGroups: state.userGroups.loadingUserGroups,
 });
 
-export default connect(mapStateToProps, { getUserGroups, toggleAddUserGroupModal })(UserGroups);
+export default connect(mapStateToProps, { getUserGroups, clickAddUserGroup })(UserGroups);
 
