@@ -80,8 +80,7 @@ class ItemTypes extends Component {
   render() {
 
     return (
-      <React.Fragment>
-
+      <>
         <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
             <h2>Item Types</h2>
@@ -102,8 +101,7 @@ class ItemTypes extends Component {
         />
 
         {this.props.showAddItemTypeModal && <AddItemTypeModal />}
-
-      </React.Fragment >
+      </>
     );
   }
 }
