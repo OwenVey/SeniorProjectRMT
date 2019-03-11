@@ -7,6 +7,7 @@ const initialAuthenticationState = {
   redirectToReferrer: false,
   loading: false,
   invalidLogin: false,
+  loginUser: {},
 }
 
 export const authenticationReducer = createReducer(initialAuthenticationState, {
@@ -17,7 +18,8 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
 
   [loginSuccess]: (state, action) => {
     state.loading = false;
-    state.accessToken = action.payload;
+    state.accessToken = action.payload.accessToken;
+    state.loginUser = action.payload.loginUser;
     state.isAuthenticated = true;
     state.redirectToReferrer = true;
   },

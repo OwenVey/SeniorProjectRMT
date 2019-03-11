@@ -1,6 +1,6 @@
 import { createAction } from 'redux-starter-kit'
 import axios from 'axios'
-import { TIMBLIN_URL, ABORTPLATTEVILLE_URL } from '../constants';
+import { TIMBLIN_URL } from '../constants';
 
 export const loginRequest = createAction('LOGIN_REQUEST');
 export const loginSuccess = createAction('LOGIN_SUCCESS');
@@ -12,14 +12,13 @@ export const logoutFailure = createAction('LOGOUT_FAILURE');
 
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
-  axios.post(`${ABORTPLATTEVILLE_URL}/login`, {
+  axios.post(`${TIMBLIN_URL}/login`, {
     email,
     password
   })
     .then(response => {
-      if (response.data.status !== 200)
-        throw Error();
-      dispatch(loginSuccess(response.data.token))
+      console.log(response)
+      dispatch(loginSuccess(response.data))
     })
     .catch(error => {
       dispatch(loginFailure(error.message))

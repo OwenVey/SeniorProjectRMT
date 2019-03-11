@@ -1,48 +1,19 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React from 'react'
+import { connect } from "react-redux";
 
-class MyDetails extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            userData:
-            {
-                firstname: '',
-                lastName: '',
-            }
-
-        }
-    }
-
-    componentWillMount() {
-        this.fetchUser();
-    }
-
-    fetchUser = async () => {
-        console.log(this.props.accessToken);
-        const url = `https://senior-design.timblin.org/api/user/me?accessToken=${this.props.accessToken}`;
-        axios
-            .get(url)
-            .then(response => {
-                let users = response.data
-                this.setState({ userData: users });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
-
-    render() {
-        return (
-            <>
-                <p><strong>First Name:</strong> {this.state.userData.firstName}</p>
-                <p><strong>Last Name:</strong> {this.state.userData.lastName}</p>
-                <p><strong>email:</strong> {this.state.userData.email}</p>
-                <p><strong>Date account created:</strong> {this.state.userData.createDate}</p>
-            </>
-        );
-    }
+const MyDetails = ({ loginUser }) => {
+  return (
+    <>
+      <div><strong>First Name:</strong> {loginUser.firstName}</div>
+      <div><strong>Last Name:</strong> {loginUser.lastName}</div>
+      <div><strong>Email:</strong> {loginUser.email}</div>
+      <div><strong>Account Created:</strong> {loginUser.createDate}</div>
+    </>
+  );
 }
-export default MyDetails;
+
+const mapStateToProps = state => ({
+  loginUser: state.authentication.loginUser
+});
+
+export default connect(mapStateToProps)(MyDetails);
