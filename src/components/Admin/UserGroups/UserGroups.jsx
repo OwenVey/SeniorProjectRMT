@@ -220,7 +220,6 @@ class UserGroups extends Component {
           rowKey={record => record.id}
           dataSource={this.props.userGroups}
           columns={this.state.columns}
-          loading
           loading={this.props.loadingUserGroups}
         />
       </React.Fragment>
