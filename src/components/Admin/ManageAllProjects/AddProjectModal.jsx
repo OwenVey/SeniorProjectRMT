@@ -2,52 +2,15 @@ import React, { Component } from 'react';
 import { Icon, Modal, Input, Form, DatePicker } from 'antd';
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
+import { connect } from "react-redux";
+import { clickCancelAddProject, addProject } from '../../../actions/projects'
 
-const FormItem = Form.Item;
-const ServerTimeOffset = 6;
 class AddProjectModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errorStatus: {}
-    }
-  }
-
-  addProject = (projectInfo) => {
-    let valid = true
-    const url = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`
-    axios.post(url, {
-      globalId: projectInfo.globalId,
-      name: projectInfo.name,
-      description: projectInfo.description,
-      dueDate: moment(projectInfo.dueDate).subtract(ServerTimeOffset, "hours"),
-    })
-      .catch(error => {
-        valid = false
-        console.log(error.response)
-        this.setErrorStatus(error)
-      })
-      .finally(() => {
-        if (valid) {
-          this.props.hide()
-        }
-      })
-  }
-
-  setErrorStatus = (error) => {
-    let errorStatus = {
-      code: error.response.data.code,
-      description: error.response.data.description
-    }
-    this.setState({ errorStatus })
-  }
 
   handleOkAddProjectModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        this.addProject(values);
+        this.props.addProject(this.props.accessToken, values);
       }
     })
   }
@@ -62,7 +25,7 @@ class AddProjectModal extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
+    const FormItemLayout = {
       labelCol: {
         xs: { span: 24 },
         sm: { span: 8 },
@@ -77,23 +40,22 @@ class AddProjectModal extends Component {
         title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Add Project</div>}
         onOk={this.handleOkAddProjectModal}
         visible={true}
-        onCancel={this.props.handleCancelAddProjectModal}
+        onCancel={() => this.props.clickCancelAddProject()}
         okText="Add"
+        okButtonProps={{ loading: this.props.loadingAdd }}
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <div style={{ color: "red" }}>
-          {this.state.errorStatus.description}
-        </div>
+        <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         <Form onSubmit={this.handleOkAddProjectModal}>
-          <FormItem style={{ marginBottom: '0px' }} label="Global ID" >
+          <Form.Item style={{ marginBottom: '0px' }} label="Global ID" >
             {getFieldDecorator('globalId', {
               rules: [{ max: 10, message: 'Global ID must be 10 characters or less' }],
             })(
               <Input placeholder='Global ID' />
             )}
-          </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="Name">
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
               rules: [
                 { required: true, message: 'Please input Name' },
@@ -102,8 +64,8 @@ class AddProjectModal extends Component {
             })(
               <Input placeholder='Name' />
             )}
-          </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="Description">
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
@@ -111,8 +73,8 @@ class AddProjectModal extends Component {
             })(
               <Input.TextArea placeholder='Description' />
             )}
-          </FormItem>
-          <Form.Item style={{ float: 'left' }} {...formItemLayout} label="Due Date">
+          </Form.Item>
+          <Form.Item style={{ float: 'left' }} {...FormItemLayout} label="Due Date">
             {getFieldDecorator('dueDate', {
               rules: [
                 { validator: this.validateDueDate }
@@ -128,4 +90,10 @@ class AddProjectModal extends Component {
 
 }
 
-export default Form.create()(AddProjectModal);
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken,
+  loadingAdd: state.projects.loadingAdd,
+  errorMessage: state.projects.addError,
+});
+
+export default connect(mapStateToProps, { clickCancelAddProject, addProject })(Form.create()(AddProjectModal));

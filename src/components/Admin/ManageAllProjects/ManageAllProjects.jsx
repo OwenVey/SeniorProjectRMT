@@ -3,12 +3,11 @@ import React, { Component } from 'react';
 import { Table, Tag, Divider, Button, Input, Icon, Tooltip } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProjectModal from './EditProjectModal.jsx';
+import AddProjectModal from './AddProjectModal.jsx';
 import { Resizable } from 'react-resizable';
-import axios from 'axios';
-import { ManageProjectBar } from './ManageProjectBar'
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
-import { getProjects } from '../../../actions/projects'
+import { getProjects, clickEditProject, deleteProject, clickAddProject } from '../../../actions/projects'
 
 const ResizeableTitle = props => {
 	const { onResize, width, ...restProps } = props;
@@ -31,7 +30,6 @@ class ManageAllProjects extends Component {
 		this.state = {
 			searchText: '',
 			selectedId: '',
-			projectData: [],
 			columns: [
 				{
 					title: 'Actions',
@@ -39,16 +37,16 @@ class ManageAllProjects extends Component {
 					key: 'id',
 					width: 75,
 					align: 'center',
-					render: (id) => (
+					render: (id, project) => (
 						<React.Fragment>
 							<Tooltip placement="topLeft" title="Edit Project Info">
-								<a href="#none" onClick={() => this.showEditProjectModal(id)}>
+								<a href="#none" onClick={() => this.props.clickEditProject(project)}>
 									<Icon><FontAwesomeIcon icon='edit' /></Icon>
 								</a>
 							</Tooltip>
 							<Divider type='vertical' />
 							<Tooltip placement="topLeft" title="Delete Project">
-								<a href="#none" onClick={() => this.deleteProject(id)}>
+								<a href="#none" onClick={() => this.props.deleteProject(this.props.accessToken, id)}>
 									<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
 								</a>
 							</Tooltip>
@@ -398,41 +396,6 @@ class ManageAllProjects extends Component {
 			this.props.getProjects(this.props.accessToken)
 	}
 
-	showEditProjectModal = (id) => {
-		this.setState({
-			selectedId: id,
-			showEditProjectModal: true,
-		});
-	}
-
-	hideEditProjectModal = () => {
-		this.setState({
-			showEditProjectModal: false,
-		});
-	}
-
-	handleOkEditProjectModal = (e) => {
-		this.setState({
-			showEditProjectModal: false,
-		});
-	}
-
-	handleCancelEditProjectModal = (e) => {
-		this.setState({
-			showEditProjectModal: false,
-		});
-	}
-
-	deleteProject = async (projectId) => {
-		console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/project/${projectId}?accessToken=${this.props.accessToken}`;
-		axios
-			.delete(url)
-			.catch(error => {
-				console.log(error);
-			});
-	};
-
 	components = {
 		header: {
 			cell: ResizeableTitle,
@@ -485,7 +448,17 @@ class ManageAllProjects extends Component {
 
 		return (
 			<React.Fragment>
-				<ManageProjectBar accessToken={this.props.accessToken} />
+
+				<div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+					<div style={{ flex: 1, justifyContent: 'flex-start' }}>
+						<h2>Projects</h2>
+					</div>
+					<Button onClick={() => this.props.clickAddProject()}>
+						<Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+						Add Project
+        </Button>
+				</div>
+
 				<Table
 					rowKey={record => record.id}
 					components={this.components}
@@ -494,8 +467,10 @@ class ManageAllProjects extends Component {
 					dataSource={this.props.projects}
 					scroll={{ y: 500 }}
 					bordered
+					loading={this.props.loadingProjects}
 				/>
-				{this.state.showEditProjectModal && <EditProjectModal handleCancelEditProjectModal={this.handleCancelEditProjectModal} hide={this.hideEditProjectModal} accessToken={this.props.accessToken} projectId={this.state.selectedId} />}
+				{this.props.showEditProjectModal && <EditProjectModal />}
+				{this.props.showAddProjectModal && <AddProjectModal />}
 			</React.Fragment>
 		);
 	}
@@ -504,6 +479,9 @@ class ManageAllProjects extends Component {
 const mapStateToProps = state => ({
 	accessToken: state.authentication.accessToken,
 	projects: state.projects.projects,
+	showEditProjectModal: state.projects.showEditProjectModal,
+	showAddProjectModal: state.projects.showAddProjectModal,
+	loadingProjects: state.projects.loadingProjects,
 });
 
-export default connect(mapStateToProps, { getProjects })(ManageAllProjects);
+export default connect(mapStateToProps, { getProjects, clickEditProject, deleteProject, clickAddProject })(ManageAllProjects);
