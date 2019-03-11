@@ -27,9 +27,9 @@ class ManageAllProjects extends Component {
 		super(props);
 
 		this.state = {
-			searchText: '',
-			selectedId: '',
-			projectData: [],
+			// searchText: '',
+			// selectedId: '',
+			// projectData: [],
 			columns: [
 				{
 					title: 'Actions',
