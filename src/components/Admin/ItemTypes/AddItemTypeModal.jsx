@@ -1,52 +1,18 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from "react-redux";
+import { clickCancelAddItemType, addItemType } from '../../../actions/itemTypes';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-class AddItemTypesModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            errorStatus: {}
-        };
-    }
-
-    addItemType = (itemInfo) => {
-        let valid = true
-        const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`
-        axios.post(url, {
-            name: itemInfo.name,
-            description: itemInfo.description,
-            projectId: itemInfo.projectId,
-            iconUrl: itemInfo.icon,
-        })
-            .catch(error => {
-                valid = false
-                console.log(error.response)
-                this.setErrorStatus(error)
-            })
-            .finally(() => {
-                if (valid) {
-                    this.props.hide()
-                }
-            })
-    }
-
-    setErrorStatus = (error) => {
-        let errorStatus = {
-            code: error.response,
-            description: error.response
-        }
-        this.setState({ errorStatus })
-    }
+class AddItemTypeModal extends Component {
 
     handleOk = (e) => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                this.addItemType(values);
+                this.props.addItemType(this.props.accessToken, values);
             }
         })
     }
@@ -59,7 +25,7 @@ class AddItemTypesModal extends Component {
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}
                 onOk={this.handleOk}
                 visible={true}
-                onCancel={this.props.handleCancelAddItemTypesModal}
+                onCancel={() => this.props.clickCancelAddItemType()}
                 okText="Add"
                 maskClosable={false}
                 bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
@@ -114,4 +80,10 @@ class AddItemTypesModal extends Component {
     }
 }
 
-export default Form.create()(AddItemTypesModal);
+const mapStateToProps = state => ({
+    accessToken: state.authentication.accessToken,
+});
+
+export default connect(mapStateToProps, { clickCancelAddItemType, addItemType })(Form.create()(AddItemTypeModal))
+
+

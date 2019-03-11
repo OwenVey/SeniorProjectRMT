@@ -10,7 +10,7 @@ import LoginPage from "../LoginPage/LoginPage.jsx";
 import HomePage from "../Home/HomePage/HomePage.jsx";
 import ProjectPage from "../Projects/ProjectPage/ProjectPage.jsx";
 import AdminPage from "../Admin/AdminPage/AdminPage.jsx";
-import ProfilePage from "../ProfilePage/ProfilePage.jsx";
+import ProfilePage from "../Profile/ProfilePage/ProfilePage.jsx"
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 
 library.add(fas, far);

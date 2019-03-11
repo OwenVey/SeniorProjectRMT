@@ -1,26 +1,10 @@
 import React, { Component } from "react";
-import { Divider, Table, Button, Modal } from "antd";
+import { Divider, Table, Button, Modal, Icon } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-import { ItemTypesBar } from '../AdminBars/AdminBars';
-import { Resizable } from 'react-resizable';
-import axios from 'axios';
-const { Option } = Select;
-const FormItem = Form.Item;
-
-const ResizeableTitle = props => {
-  const { onResize, width, ...restProps } = props;
-
-  if (!width) {
-    return <th {...restProps} />;
-  }
-
-  return (
-    <Resizable width={width} height={0} onResize={onResize}>
-      <th {...restProps} />
-    </Resizable>
-  );
-};
+import { connect } from "react-redux";
+import { getItemTypes, clickAddItemType, deleteItemType } from '../../../actions/itemTypes';
+import AddItemTypeModal from './AddItemTypeModal';
 
 class ItemTypes extends Component {
   constructor(props) {
@@ -64,18 +48,6 @@ class ItemTypes extends Component {
               <a href='#none'>Views</a>
               <Divider type='vertical' />
               <Button onClick={() => this.handleDeleteItem(itemType)}>Delete</Button>
-              {/* <Modal
-                className="deleteModal"
-                title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Delete Item Type?</div>}
-                visible={this.state.deleteModal}
-                onCancel={() => this.setState({ deleteModal: false })}
-                // onOk={() => this.handleDeleteItem(itemType.id)}
-                footer={
-                  [
-                    <Button key="back" onClick={() => this.setState({ deleteModal: false })}>Cancel</Button>,
-                    <Button key="submit" type="primary" onClick={() => this.handleDeleteItem(itemType.id)}>Yes</Button>,
-                  ]
-                } >Do you really want to delete the selected item type?</Modal > */}
             </span >
           )
         }
@@ -90,23 +62,9 @@ class ItemTypes extends Component {
   }
 
   componentWillMount() {
-    this.fetchItemTypes();
+    if (this.props.itemTypes.length === 0)
+      this.props.getItemTypes(this.props.accessToken);
   }
-
-  fetchItemTypes = async () => {
-    console.log(this.props.accessToken);
-    const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`;
-    const url2 = `https://abortplatteville.com/api/objecttype?accessToken=${this.props.accessToken}`;
-    axios
-      .get(url)
-      .then(response => {
-        let itemTypeData = response.data.objectTypes
-        this.setState({ itemTypes: itemTypeData });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   showModal = () => {
     this.setState({
@@ -127,7 +85,7 @@ class ItemTypes extends Component {
       onOk: () => {
         //this.deleteUserGroup()
         this.setState({ handleCancelModal: false })
-        this.deleteItemType(itemType.id)
+        this.props.deleteItemType(itemType.id)
       },
       onCancel: () => {
         this.setState({ handleCancelModal: false })
@@ -159,11 +117,6 @@ class ItemTypes extends Component {
     });
   }
 
-  components = {
-    header: {
-      cell: ResizeableTitle,
-    },
-  };
 
   handleSearch = (selectedKeys, confirm) => () => {
     confirm();
@@ -175,55 +128,45 @@ class ItemTypes extends Component {
     this.setState({ searchText: '' });
   };
 
-  handleResize = index => (e, { size }) => {
-    this.setState(({ columns }) => {
-      const nextColumns = [...columns];
-      nextColumns[index] = {
-        ...nextColumns[index],
-        width: size.width,
-      };
-      return { columns: nextColumns };
-    });
-  };
+
 
   render() {
 
-    const columns = this.state.columns.map((col, index) => ({
-      ...col,
-      onHeaderCell: column => ({
-        width: column.width,
-        onResize: this.handleResize(index),
-      }),
-    }));
-
-    const that = this;
-    this.dragProps = {
-      onDragEnd(fromIndex, toIndex) {
-        const columns = that.state.columns;
-        const item = columns.splice(fromIndex, 1)[0];
-        columns.splice(toIndex, 0, item);
-        that.setState({
-          columns,
-        });
-      },
-      nodeSelector: 'th',
-    };
-
     return (
       <React.Fragment>
-        <ItemTypesBar accessToken={this.props.accessToken} />
+
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <h2>Item Types</h2>
+          </div>
+          <Button onClick={() => this.props.clickAddItemType()}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            Add Item Type
+          </Button>
+        </div>
+
         <Table
-          components={this.components}
           columns={this.state.columns}
           pagination={false}
-          dataSource={this.state.itemTypes}
+          dataSource={this.props.itemTypes}
           scroll={{ y: 500 }}
           icon={<FontAwesomeIcon />}
           bordered
+          loading={this.props.loadingItemTypes}
         />
-      </React.Fragment>
+
+        {this.props.showAddItemTypeModal && <AddItemTypeModal />}
+
+      </React.Fragment >
     );
   }
 }
 
-export default ItemTypes;
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken,
+  itemTypes: state.itemTypes.itemTypes,
+  showAddItemTypeModal: state.itemTypes.showAddItemTypeModal,
+  loadingItemTypes: state.itemTypes.loadingItemTypes,
+});
+
+export default connect(mapStateToProps, { getItemTypes, clickAddItemType, deleteItemType })(ItemTypes)
