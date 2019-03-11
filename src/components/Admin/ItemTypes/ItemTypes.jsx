@@ -2,90 +2,59 @@ import React, { Component } from "react";
 import { Divider, Table, Button, Modal } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
-import { ItemTypesBar } from './ItemTypesBar'
+import { ItemTypesBar } from '../AdminBars/AdminBars';
+import { Resizable } from 'react-resizable';
+import axios from 'axios';
+const { Option } = Select;
+const FormItem = Form.Item;
+
+const ResizeableTitle = props => {
+  const { onResize, width, ...restProps } = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable width={width} height={0} onResize={onResize}>
+      <th {...restProps} />
+    </Resizable>
+  );
+};
 
 class ItemTypes extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      itemTypes: [
-        {
-          id: 1,
-          icon: <FontAwesomeIcon icon='archive' />,
-          display: "Projects",
-          //plural: "Projects",
-          //key: "AITEM",
-          description: "Used for projects",
-          system: "No"
-        },
-        {
-          id: 2,
-          icon: <FontAwesomeIcon icon='paperclip' />,
-          display: "Attachment",
-          //plural: "Attachments",
-          //key: "ATT",
-          description: "Attachment Type",
-          system: "Yes"
-        },
-        // {
-        //   icon: <FontAwesomeIcon icon='file-alt' />,
-        //   display: "Requirements",
-        //   //plural: "Requirements",
-        //   //key: "CAUS",
-        //   description: "Used in the projects component",
-        //   system: "No"
-        // },
-        // {
-        //   icon: <FontAwesomeIcon icon='file-signature' />,
-        //   display: "Note",
-        //   //plural: "Note",
-        //   //key: "FM",
-        //   description: "Used in Requirements",
-        //   system: "No"
-        // }
-      ],
+      itemTypes: [],
       columns: [
         {
           title: "Item",
-          dataIndex: "icon",
-          defaultSortOrder: "descend",
+          dataIndex: "iconUrl",
+          key: "iconUrl",
           align: 'center',
-          render: index => <span>{index}</span>,
+          width: 50,
+          render: iconUrl => <Icon><FontAwesomeIcon icon={iconUrl} /></Icon>
         },
         {
-          title: "Display",
-          dataIndex: "display",
-          sorter: (a, b) => a.display.localeCompare(b.display),
+          title: "Name",
+          dataIndex: "name",
+          width: 80,
+          sorter: (a, b) => a.name.localeCompare(b.name),
           render: index => <span>{index}</span>,
         },
-        // {
-        //   title: "Plural",
-        //   dataIndex: "plural",
-        //   sorter: (a, b) => a.plural.localeCompare(b.plural),
-        //   render: index => <span>{index}</span>,
-        // },
-        // {
-        //   title: "Key",
-        //   dataIndex: "key",
-        //   sorter: (a, b) => a.key.localeCompare(b.key),
-        //   render: index => <span>{index}</span>,
-        // },
         {
           title: "Description",
           dataIndex: "description",
+          width: 80,
           sorter: (a, b) => a.description.localeCompare(b.description),
-          render: index => <span>{index}</span>,
-        },
-        {
-          title: "System",
-          dataIndex: "system",
-          sorter: (a, b) => a.system.localeCompare(b.system),
           render: index => <span>{index}</span>,
         },
         {
           title: "Action",
           dataIndex: "action",
+          width: 150,
           render: (index, itemType) => (
             <span>
               <a href='#none' >Edit</a>
@@ -114,13 +83,30 @@ class ItemTypes extends Component {
       visible: false,
       icon: <div></div>,
       display: "",
-      //plural: "",
-      //key: "",
       description: "",
       id: "",
       system: "",
     };
   }
+
+  componentWillMount() {
+    this.fetchItemTypes();
+  }
+
+  fetchItemTypes = async () => {
+    console.log(this.props.accessToken);
+    const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`;
+    const url2 = `https://abortplatteville.com/api/objecttype?accessToken=${this.props.accessToken}`;
+    axios
+      .get(url)
+      .then(response => {
+        let itemTypeData = response.data.objectTypes
+        this.setState({ itemTypes: itemTypeData });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   showModal = () => {
     this.setState({
@@ -161,29 +147,6 @@ class ItemTypes extends Component {
     });
   }
 
-  handleAddItemType = (e) => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        const { icon, display,/* plural, key,*/ description, id, system } = this.state;
-        let newItemType = {
-          icon,
-          display,
-          //plural,
-          //key,
-          description,
-          id,
-          system,
-        }
-        this.setState({
-          visible: false,
-          itemTypes: [...this.state.itemTypes, newItemType],
-
-        });
-      }
-    })
-  }
-
-
   handleCancel = (e) => {
     this.setState({
       visible: false,
@@ -196,36 +159,71 @@ class ItemTypes extends Component {
     });
   }
 
+  components = {
+    header: {
+      cell: ResizeableTitle,
+    },
+  };
+
+  handleSearch = (selectedKeys, confirm) => () => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  };
+
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
+  handleResize = index => (e, { size }) => {
+    this.setState(({ columns }) => {
+      const nextColumns = [...columns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width,
+      };
+      return { columns: nextColumns };
+    });
+  };
+
   render() {
-    //This doesn't work.
-    //const { getFieldDecorator } = this.props.form;
+
+    const columns = this.state.columns.map((col, index) => ({
+      ...col,
+      onHeaderCell: column => ({
+        width: column.width,
+        onResize: this.handleResize(index),
+      }),
+    }));
+
+    const that = this;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
-        const columns = this.state.columns;
+        const columns = that.state.columns;
         const item = columns.splice(fromIndex, 1)[0];
         columns.splice(toIndex, 0, item);
-        this.setState({
-          columns
+        that.setState({
+          columns,
         });
       },
-      nodeSelector: "th"
+      nodeSelector: 'th',
     };
 
     return (
       <React.Fragment>
-        <ItemTypesBar />
-        <div style={{ margin: 20 }}>
-          <Table
-            rowKey={record => record.id}
-            columns={this.state.columns}
-            pagination={false}
-            dataSource={this.state.itemTypes}
-            icon={<FontAwesomeIcon />}
-            bordered
-          />
-        </div>
+        <ItemTypesBar accessToken={this.props.accessToken} />
+        <Table
+          components={this.components}
+          columns={this.state.columns}
+          pagination={false}
+          dataSource={this.state.itemTypes}
+          scroll={{ y: 500 }}
+          icon={<FontAwesomeIcon />}
+          bordered
+        />
       </React.Fragment>
     );
   }
 }
+
 export default ItemTypes;

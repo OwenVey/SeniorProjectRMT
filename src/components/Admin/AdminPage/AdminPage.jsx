@@ -42,7 +42,7 @@ class AdminPage extends Component {
         selectedPage = <Permissions />;
         break;
       case "itemTypes":
-        selectedPage = <ItemTypes />;
+        selectedPage = <ItemTypes accessToken={this.props.accessToken} />;
         break;
       case "manageAllProjects":
         selectedPage = <ManageAllProjects accessToken={this.props.accessToken} />;

@@ -223,7 +223,7 @@ class UserGroups extends Component {
           loading={this.props.loadingUserGroups}
         />
         {this.props.showAddUserGroupModal && <AddUserGroupModal />}
-      </React.Fragment>
+      </React.Fragment >
     )
   }
 }
