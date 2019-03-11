@@ -9,36 +9,52 @@ const FormItem = Form.Item;
 class AddItemTypesModal extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            errorStatus: {}
+        };
+    }
+
+    addItemType = (itemInfo) => {
+        let valid = true
+        const url = `https://senior-design.timblin.org/api/objecttype?accessToken=${this.props.accessToken}`
+        axios.post(url, {
+            name: itemInfo.name,
+            description: itemInfo.description,
+            projectId: itemInfo.projectId,
+            iconUrl: itemInfo.icon,
+        })
+            .catch(error => {
+                valid = false
+                console.log(error.response)
+                this.setErrorStatus(error)
+            })
+            .finally(() => {
+                if (valid) {
+                    this.props.hide()
+                }
+            })
+    }
+
+    setErrorStatus = (error) => {
+        let errorStatus = {
+            code: error.response,
+            description: error.response
+        }
+        this.setState({ errorStatus })
     }
 
     handleOk = (e) => {
         this.props.form.validateFields((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-            // Call add item when backend link ready
-            this.props.hide() //move this to call above
-          }
+            if (!err) {
+                console.log('Received values of form: ', values);
+                this.addItemType(values);
+            }
         })
-      }
-
-    // handleAddItemType = (e) => {
-    //     const { icon, display, description, id, system } = this.state;
-    //     let newItemType = {
-    //         icon,
-    //         display,
-    //         description,
-    //         id,
-    //         system,
-    //     }
-    //     this.setState({
-    //         visible: false,
-    //         itemTypes: [...this.state.itemTypes, newItemType],
-    //     });
-    //     console.log("ERROR!");
-    // }
+    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
+
         return (
             <Modal
                 title={<div><Icon type='bars' style={{ color: '#1890ff' }}></Icon> Add Item Types</div>}
@@ -49,20 +65,21 @@ class AddItemTypesModal extends Component {
                 maskClosable={false}
                 bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
             >
-                <Form onSubmit={this.handleOK}>
+                <Form onSubmit={this.handleOk}>
                     <FormItem style={{ marginBottom: '0px' }} label="Icon">
-                        {getFieldDecorator('iconName')
+                        {getFieldDecorator('icon', {
+                            rules: [
+                                { required: true, message: 'Please select an icon' }],
+                            })
                             (<Select
                                 className="inputFields"
-                                labelInValue
                                 style={{ width: 200 }}
-                                onChange={this.handleChange}
                                 placeholder='Select icon'
                             >
-                                <Option value='projects'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
-                                <Option value="attachments"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
-                                <Option value="requirements"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
-                                <Option value="note"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
+                                <Option value='archive'><Icon><FontAwesomeIcon icon="archive" /></Icon></Option>
+                                <Option value="paperclip"><Icon><FontAwesomeIcon icon="paperclip" /></Icon></Option>
+                                <Option value="file-signature"><Icon><FontAwesomeIcon icon="file-signature" /></Icon></Option>
+                                <Option value="file-alt"><Icon><FontAwesomeIcon icon="file-alt" /></Icon></Option>
                             </Select>)}
                     </FormItem>
                     <FormItem style={{ marginBottom: '0px' }} label="Display">
@@ -81,8 +98,8 @@ class AddItemTypesModal extends Component {
                         })
                             (<Input.TextArea placeholder="Description" />)}
                     </FormItem>
-                    <FormItem style={{ marginBottom: '0px' }} label="ProjectID">
-                        {getFieldDecorator('ProjectId', {
+                    <FormItem style={{ marginBottom: '0px' }} label="ProjectID - MUST BE 6, 7, or 8">
+                        {getFieldDecorator('projectId', {
                             rules: [
                                 { required: true, message: 'Please input item type\'s ProjectIDs' },
                                 { max: 255, message: 'Name must be 255 characters or less' }],
