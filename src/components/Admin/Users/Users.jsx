@@ -328,6 +328,7 @@ class Users extends Component {
           dataSource={this.props.userAdminData}
           scroll={{ y: 500 }}
           bordered
+          loading={this.props.loadingUsers}
         />
         {this.props.editUserModalVisible && <EditUserModal />}
       </React.Fragment>
@@ -339,7 +340,8 @@ const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   userAdminData: state.users.userData,
   editUserModalVisible: state.users.editUserModalVisibility,
-  addUserModalVisible: state.users.addUserModalVisibility
+  addUserModalVisible: state.users.addUserModalVisibility,
+  loadingUsers: state.users.loadingUsers,
 });
 
 export default connect(

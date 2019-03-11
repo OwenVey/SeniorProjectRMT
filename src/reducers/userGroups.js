@@ -10,6 +10,7 @@ import {
 } from '../actions/userGroups'
 
 const initialUserGroupsState = {
+  loadingUserGroups: true,
   userGroups: [],
   loadingAdd: false,
   showAddUserGroupModal: false,
@@ -23,11 +24,12 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
   },
 
   [getUserGroupsSuccess]: (state, action) => {
+    state.loadingUserGroups = false;
     state.userGroups = action.payload;
   },
 
   [getUserGroupsFailure]: (state, action) => {
-
+    state.loadingUserGroups = false;
   },
 
   [toggleAddUserGroupModal]: (state, action) => {

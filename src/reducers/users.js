@@ -16,6 +16,7 @@ import {
 } from "../actions/users";
 
 const initialUsersState = {
+  loadingUsers: true,
   userData: [],
   loading: false,
   fetchErrorMessage: '',
@@ -26,7 +27,8 @@ const initialUsersState = {
 
   editUserModalVisibility: false,
 
-  editUser: ''
+  editUser: '',
+
 };
 
 export const usersReducer = createReducer(initialUsersState, {
@@ -37,11 +39,13 @@ export const usersReducer = createReducer(initialUsersState, {
   },
 
   [fetchUsersSuccess]: (state, action) => {
+    state.loadingUsers = false;
     state.loading = false;
     state.userData = action.payload;
   },
 
   [fetchUsersFailure]: (state, action) => {
+    state.loadingUsers = false;
     state.loading = false;
     state.fetchErrorMessage = action.payload;
   },

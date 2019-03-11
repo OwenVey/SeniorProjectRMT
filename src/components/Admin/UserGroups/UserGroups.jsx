@@ -215,7 +215,14 @@ class UserGroups extends Component {
         </Button>
           {this.props.showAddUserGroupModal && <AddUserGroupModal />}
         </div>
-        <Table bordered rowKey={record => record.id} dataSource={this.props.userGroups} columns={this.state.columns} />
+        <Table
+          bordered
+          rowKey={record => record.id}
+          dataSource={this.props.userGroups}
+          columns={this.state.columns}
+          loading
+          loading={this.props.loadingUserGroups}
+        />
       </React.Fragment>
     )
   }
@@ -225,6 +232,7 @@ const mapStateToProps = state => ({
   showAddUserGroupModal: state.userGroups.showAddUserGroupModal,
   userGroups: state.userGroups.userGroups,
   accessToken: state.authentication.accessToken,
+  loadingUserGroups: state.userGroups.loadingUserGroups,
 });
 
 export default connect(mapStateToProps, { getUserGroups, toggleAddUserGroupModal })(UserGroups);
