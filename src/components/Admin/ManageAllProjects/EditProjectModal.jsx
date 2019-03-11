@@ -6,8 +6,6 @@ import axios from 'axios';
 import { connect } from "react-redux";
 import { clickCancelEditProject, editProject } from '../../../actions/projects'
 
-const FormItem = Form.Item;
-
 class EditProjectModal extends Component {
 
   editProject = (projectInfo) => {
@@ -57,7 +55,7 @@ class EditProjectModal extends Component {
       >
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         <Form onSubmit={this.handleOkEditProjectModal} layout={'vertical'}>
-          <FormItem style={{ marginBottom: '0px' }} label="Global ID">
+          <Form.Item style={{ marginBottom: '0px' }} label="Global ID">
             {getFieldDecorator('globalId', {
               rules: [
                 { required: true, message: 'Please input Global ID' },
@@ -69,8 +67,8 @@ class EditProjectModal extends Component {
                 placeholder='Global ID'
               />
             )}
-          </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="Name">
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
               rules: [
                 { required: true, message: 'Please input Name' },
@@ -80,8 +78,8 @@ class EditProjectModal extends Component {
             })(
               <Input placeholder='Name' />
             )}
-          </FormItem>
-          <FormItem style={{ marginBottom: '0px' }} label="Description">
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Description">
             {getFieldDecorator('description', {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
@@ -90,7 +88,7 @@ class EditProjectModal extends Component {
             })(
               <Input.TextArea placeholder='Description' />
             )}
-          </FormItem>
+          </Form.Item>
           <Form.Item style={{ float: 'left', marginBottom: '0px' }} label="Due Date">
             {getFieldDecorator('dueDate', {
               initialValue: moment.utc(this.props.selectedProject.dueDate)
