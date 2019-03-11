@@ -36,13 +36,13 @@ class AdminPage extends Component {
         selectedPage = <Users accessToken={this.props.accessToken} />;
         break;
       case "userGroups":
-        selectedPage = <UserGroups />;
+        selectedPage = <UserGroups accessToken={this.props.accessToken} />;
         break;
       case "permissions":
         selectedPage = <Permissions />;
         break;
       case "itemTypes":
-        selectedPage = <ItemTypes />;
+        selectedPage = <ItemTypes accessToken={this.props.accessToken} />;
         break;
       case "manageAllProjects":
         selectedPage = <ManageAllProjects accessToken={this.props.accessToken} />;
