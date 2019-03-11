@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { connect } from 'react-redux';
-import { clickCancelEditAddUserGroup, editUserGroup } from '../../../actions/userGroups';
+import { connect } from "react-redux";
+import { getProjects } from '../../../actions/projects'
+import { addUserGroup, clickCancelAddUserGroup } from '../../../actions/userGroups'
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class EditUserGroupModal extends Component {
+class AddUserGroupModal extends Component {
 
-  handleOkEditUserGroupModal = (e) => {
+  componentWillMount() {
+    if (this.props.projects.length === 0)
+      this.props.getProjects(this.props.accessToken)
+  }
+
+  handleOkAddUserGroupModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.editUserGroup(this.props.accessToken, this.props.selectedUserGroup.id, values);
+        this.props.addUserGroup(this.props.accessToken, values);
       }
     })
   }
@@ -21,22 +27,29 @@ class EditUserGroupModal extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title={<div><Icon style={{ color: '#1890FF' }}><FontAwesomeIcon icon='user' /></Icon> Edit User Group</div>}
-        onOk={this.handleOkEditUserGroupModal}
+        title={
+          <>
+            <Icon style={{ color: '#1890FF', marginRight: 10 }}>
+              <FontAwesomeIcon icon='user' />
+            </Icon>
+            Add User Group
+          </>
+        }
+        onOk={this.handleOkAddUserGroupModal}
         visible={true}
-        onCancel={() => this.props.clickCancelEditAddUserGroup()}
-        okText="Save Changes"
+        onCancel={() => this.props.clickCancelAddUserGroup()}
+        okText="Add"
+        okButtonProps={{ loading: this.props.loadingAdd }}
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
-        <div style={{ color: 'red' }}>{this.props.editError}</div>
-        <Form onSubmit={this.handleOkEditUserGroupModal} layout={'vertical'}>
+        <Form>
+          <div style={{ color: 'red' }}>{this.props.addError}</div>
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
               rules: [
                 { required: true, message: 'Please select a Project' }
               ],
-              initialValue: this.props.selectedUserGroup.projectId
             })(
               <Select
                 placeholder='Please select a project'
@@ -44,7 +57,7 @@ class EditUserGroupModal extends Component {
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
                 {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                  <Option key={project.id} value={project.id}>{`${project.name} (${project.globalId})`}</Option>
+                  <Option key={project.id} value={project.id}>{project.name}</Option>
                 ))}
               </Select>
             )}
@@ -55,7 +68,6 @@ class EditUserGroupModal extends Component {
                 { required: true, message: 'Please input Name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
-              initialValue: this.props.selectedUserGroup.name
             })(
               <Input placeholder='Name' />
             )}
@@ -65,7 +77,6 @@ class EditUserGroupModal extends Component {
               rules: [
                 { max: 255, message: 'Description must be 255 characters or less' }
               ],
-              initialValue: this.props.selectedUserGroup.description
             })(
               <Input.TextArea placeholder='Description' />
             )}
@@ -74,14 +85,13 @@ class EditUserGroupModal extends Component {
       </Modal>
     );
   }
-
 }
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   projects: state.projects.projects,
-  selectedUserGroup: state.userGroups.selectedUserGroup,
-  editError: state.userGroups.editError,
+  loadingAdd: state.userGroups.loadingAdd,
+  addError: state.userGroups.addError,
 });
 
-export default connect(mapStateToProps, { clickCancelEditAddUserGroup, editUserGroup })(Form.create()(EditUserGroupModal));
+export default connect(mapStateToProps, { getProjects, addUserGroup, clickCancelAddUserGroup })(Form.create()(AddUserGroupModal));

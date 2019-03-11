@@ -1,41 +1,38 @@
 import React, { Component } from 'react';
-import { Table, Divider, Button, Icon, Input, Tooltip} from 'antd';
+import { connect } from "react-redux";
+import { Table, Divider, Button, Icon, Input, Tooltip } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { UserGroupBar } from '../AdminBars/AdminBars.jsx';
+import { getUserGroups, clickAddUserGroup, clickEditUserGroup } from '../../../actions/userGroups';
+import { getProjects } from '../../../actions/projects';
+import AddUserGroupModal from './AddUserGroupModal';
 import EditUserGroupModal from '../EditUserGroupModal/EditUserGroupModal.jsx';
-import axios from 'axios';
 import './UserGroups.css'
 
 class UserGroups extends Component {
-  constructor(props) {
-		super(props);
-		this.state = {
-      showEditUserGroupModal: false,
-      searchText: '',
-      selectedId: '',
-      groupData: [],
-      columns: [
-  
+
+  state = {
+    searchText: '',
+    columns: [
       {
         title: 'Actions',
         dataIndex: 'id',
         key: 'id',
         width: 75,
         align: 'center',
-        render: (id) => (
-          <React.Fragment>
-							<Tooltip placement="topLeft" title="Edit User Group Info">
-								<a href="#none" onClick={() => this.showEditUserGroupModal(id)}>
-									<Icon><FontAwesomeIcon icon='edit' /></Icon>
-								</a>
-							</Tooltip>
-							<Divider type='vertical' />
-							<Tooltip placement="topLeft" title="Manage Members">
-								<a href="#none" onClick={() => {}}>
-									<Icon><FontAwesomeIcon icon='users' color='#000000' /></Icon>
-								</a>
-							</Tooltip>
-						</React.Fragment>
+        render: (id, userGroup) => (
+          <>
+            <Tooltip title="Edit User Group Info">
+              <Icon onClick={() => this.props.clickEditUserGroup(userGroup)}>
+                <FontAwesomeIcon icon='edit' color='#1890ff' />
+              </Icon>
+            </Tooltip>
+            <Divider type='vertical' />
+            <Tooltip title="Manage Members">
+              <Icon onClick={() => { }}>
+                <FontAwesomeIcon icon='users' color='#000000' />
+              </Icon>
+            </Tooltip>
+          </>
         ),
       },
       {
@@ -201,113 +198,61 @@ class UserGroups extends Component {
             );
         },
       }],
-    };    
   };
 
   componentWillMount() {
-		this.fetchGroups();
-	}
-
-	fetchGroups = async () => {
-		console.log(this.props.accessToken);
-		const url = `https://senior-design.timblin.org/api/group?accessToken=${this.props.accessToken}`;
-		const url2 = `https://abortplatteville.com/api/group?accessToken=${this.props.accessToken}`;
-		axios
-			.get(url)
-			.then(response => {
-				let groups = response.data.groups
-				this.setState({ groupData: groups });
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-
-  showEditUserGroupModal = (id) => {
-		this.setState({
-			selectedId: id,
-			showEditUserGroupModal: true,
-		});
-	}
-
-	hideEditUserGroupModal = () => {
-		this.setState({
-			showEditUserGroupModal: false,
-		});
-	}
-
-	handleOkEditUserGroupModal = (e) => {
-		this.setState({
-			showEditUserGroupModal: false,
-		});
-	}
-
-	handleCancelEditUserGroupModal = (e) => {
-		this.setState({
-			showEditUserGroupModal: false,
-		});
-	}
+    if (this.props.userGroups.length === 0)
+      this.props.getUserGroups(this.props.accessToken);
+    if (this.props.projects.length === 0)
+      this.props.getProjects(this.props.accessToken);
+  }
 
   handleSearch = (selectedKeys, confirm) => () => {
-		confirm();
-		this.setState({ searchText: selectedKeys[0] });
-	};
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  };
 
-	handleReset = clearFilters => () => {
-		clearFilters();
-		this.setState({ searchText: '' });
-	};
-
-	handleResize = index => (e, { size }) => {
-		this.setState(({ columns }) => {
-			const nextColumns = [...columns];
-			nextColumns[index] = {
-				...nextColumns[index],
-				width: size.width,
-			};
-			return { columns: nextColumns };
-		});
-	};
+  handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
 
   render() {
-
-    const columns = this.state.columns.map((col, index) => ({
-			...col,
-			onHeaderCell: column => ({
-				width: column.width,
-				onResize: this.handleResize(index),
-			}),
-		}));
-
-		const that = this;
-		this.dragProps = {
-			onDragEnd(fromIndex, toIndex) {
-				const columns = that.state.columns;
-				const item = columns.splice(fromIndex, 1)[0];
-				columns.splice(toIndex, 0, item);
-				that.setState({
-					columns,
-				});
-			},
-			nodeSelector: 'th',
-    };
-    
-
     return (
-      <React.Fragment>
-        <UserGroupBar accessToken={this.props.accessToken} />
+      <>
+
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <h2>User Groups</h2>
+          </div>
+          <Button onClick={() => this.props.clickAddUserGroup()}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            Add User Group
+        </Button>
+        </div>
+
         <Table
-					components={this.components}
-					columns={columns}
-					pagination={false}
-					dataSource={this.state.groupData}
-					scroll={{ y: 500 }}
-					bordered
-				/>
-        {this.state.showEditUserGroupModal && <EditUserGroupModal handleCancelEditUserGroupModal={this.handleCancelEditUserGroupModal} hide={this.hideEditUserGroupModal} accessToken={this.props.accessToken} UserGroupId={this.state.selectedId} />}
-      </React.Fragment>
+          bordered
+          rowKey={record => record.id}
+          dataSource={this.props.userGroups}
+          columns={this.state.columns}
+          loading={this.props.loadingUserGroups}
+        />
+        {this.props.showAddUserGroupModal && <AddUserGroupModal />}
+        {this.props.showEditUserGroupModal && <EditUserGroupModal />}
+      </ >
     )
   }
 }
 
-export default UserGroups;
+const mapStateToProps = state => ({
+  showAddUserGroupModal: state.userGroups.showAddUserGroupModal,
+  showEditUserGroupModal: state.userGroups.showEditUserGroupModal,
+  userGroups: state.userGroups.userGroups,
+  accessToken: state.authentication.accessToken,
+  loadingUserGroups: state.userGroups.loadingUserGroups,
+  projects: state.projects.projects,
+});
+
+export default connect(mapStateToProps, { getUserGroups, clickAddUserGroup, clickEditUserGroup, getProjects })(UserGroups);
+

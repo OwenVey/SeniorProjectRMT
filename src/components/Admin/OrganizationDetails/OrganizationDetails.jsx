@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
-
-class OrganinzationDetails extends Component {
+import { connect } from "react-redux";
+import { } from "../../../actions/permissions";
+class OrganizationDetails extends Component {
   render() {
     return (
-      <div style={{margin: 15}}>
+      <div style={{ margin: 15 }}>
         <h2>Organization Details</h2>
       </div>
     )
   }
 }
 
-export default OrganinzationDetails;
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(OrganizationDetails);

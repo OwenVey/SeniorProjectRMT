@@ -8,18 +8,13 @@ import ReviewCenter from "../ReviewCenter/ReviewCenter.jsx"
 import SplitPane from 'react-split-pane';
 
 class ProfilePage extends Component {
-  constructor() {
-    super();
 
-    this.state = {
-      currentPage: "myDetails"
-    };
-  }
+  state = {
+    currentPage: "myDetails"
+  };
 
   handlePageChange = page => {
-    this.setState({
-      currentPage: page
-    });
+    this.setState({ currentPage: page });
   };
 
   render() {

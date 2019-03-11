@@ -142,7 +142,7 @@ class TreeView extends Component {
     let selectedNode;
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
-      if (node.key == key) {
+      if (node.key === key) {
         selectedNode = node;
       } else if (node.children && this.getSelectedNode(key, node.children)) {
         selectedNode = this.getSelectedNode(key, node.children);
@@ -203,14 +203,12 @@ class TreeView extends Component {
   */
   fetchTree = () => {
     console.log(this.props.accessToken);
-    const url2 = `https://abortplatteville.com/api/object?accessToken=${this.props.accessToken}`;
     const projectURL = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
     axios
       .get(projectURL)
       .then(response => {
         let projects = response.data.projects.map(project => {
           let project_id = project.id;
-          const objectURL = `https://senior-design.timblin.org/api/object?accessToken=${this.props.accessToken}`;
           const objectForProjectURL = `https://senior-design.timblin.org/api/object/${project_id}?accessToken=${this.props.accessToken}`;
           var objects = null;
           axios
@@ -242,10 +240,10 @@ class TreeView extends Component {
   */
   insertLevel = (parentID, objects) => {
     var level = []
-    objects.map(object => {
-      if (object.parent == parentID) {
+    objects.forEach(object => {
+      if (object.parent === parentID) {
         let children = this.insertLevel(object.id, objects);
-        if (children.length == 0)
+        if (children.length === 0)
           children = null;
         level.push({
           ...object,

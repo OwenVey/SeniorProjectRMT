@@ -1,119 +1,73 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox, Card, Alert, AutoComplete } from 'antd';
-import axios from 'axios';
+import { Alert, Button, Checkbox, Card } from 'antd';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import './LoginPage.css';
+import { connect } from 'react-redux';
+import { login } from '../../actions/authentication'
 
-const FormItem = Form.Item;
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
+  password: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+});
 
-class LoginPage extends Component {
+const LoginPage = (props) => {
 
-  constructor(props) {
-    super(props);
+  const { from } = props.location.state || { from: { pathname: '/home' } }
 
-    this.state = {
-      redirectToReferrer: false,
-      loading: false,
-      invalidLogin: false,
-    }
+  if (props.redirectToReferrer === true) {
+    return <Redirect to={from} />
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        this.setState({ loading: true });
-        this.login(values);
-      }
-    });
-  }
+  return (
+    <div className='centered'>
 
-  login = (loginInfo) => {
-    const url = 'https://senior-design.timblin.org/api/login';
-    const url2 = 'https://abortplatteville.com/api/login'
-    axios.post(url, {
-      email: loginInfo.email,
-      password: loginInfo.password,
-    })
-      .then(response => {
-        if (response.status !== 200)
-          throw Error();
-        const accessToken = response.data.accessToken;
-        console.log(accessToken);
-        this.props.setAccessToken(accessToken);
-        this.props.onLogin();
-        this.setState({ redirectToReferrer: true });
-      })
-      .catch(error => {
-        console.log('login error')
-        this.setState({
-          invalidLogin: true,
-          loading: false,
-        });
-        console.log(error);
-      });
-  }
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={values => {
+          props.login(values.email, values.password)
+        }}
+        render={({ errors, touched }) => (
+          <Card title='Login'>
+            <Form className="login-form">
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    const { from } = this.props.location.state || { from: { pathname: '/home' } }
-    const { redirectToReferrer } = this.state;
+              {props.invalidLogin && <Alert className='error-alert' message="Invalid login" type="error" />}
 
-    if (redirectToReferrer === true) {
-      return <Redirect to={from} />
-    }
+              <div>Email</div>
+              <Field name="email" type="email" placeholder='Email' className='ant-input' />
+              <div className='error'>{errors.email}</div>
 
-    return (
-      <div className='centered'>
-        <Card title='Login'>
+              <div>Password</div>
+              <Field name="password" type='password' placeholder='Password' className='ant-input' />
+              <div className='error'>{errors.password}</div>
 
-          <Form onSubmit={this.handleSubmit} className="login-form">
-
-            {this.state.invalidLogin && <Alert className='error-alert' message="Invalid login" type="error" />}
-
-            <div>Email</div>
-            <FormItem>
-              {getFieldDecorator('email', {
-                rules: [{ required: true, message: 'Please input your email' }],
-              })(
-                <Input
-                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type='email'
-                  placeholder="Email"
-                />
-              )}
-            </FormItem>
-
-            <div>Password</div>
-            <FormItem>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your password' }],
-              })(
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            </FormItem>
-
-            <FormItem style={{ marginBottom: 0 }}>
-              {getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
-              })(
-                <Checkbox>Remember me</Checkbox>
-              )}
+              <Checkbox>Remember me</Checkbox>
               <a className="login-form-forgot" href="/">Forgot password</a>
-              <Button type="primary" htmlType="submit" className="login-form-button" loading={this.state.loading}>Log in</Button>
-            </FormItem>
 
-          </Form>
-        </Card>
-      </div>
-    );
-  }
+              <Button type="primary" htmlType="submit" className="login-form-button" loading={props.loading}>Log in</Button>
+            </Form>
+          </Card>
+        )}
+      >
+      </Formik>
+    </div>
+  );
 }
 
-export default Form.create()(LoginPage);
+const mapStateToProps = (state) => ({
+  redirectToReferrer: state.authentication.redirectToReferrer,
+  loading: state.authentication.loading,
+  invalidLogin: state.authentication.invalidLogin,
+})
+
+export default connect(mapStateToProps, { login })(LoginPage)
