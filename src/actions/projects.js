@@ -36,6 +36,22 @@ export const getProjects = accessToken => dispatch => {
     });
 }
 
+export const addProject = (accessToken, project) => dispatch => {
+  dispatch(addProjectRequest());
+  axios.post(`${TIMBLIN_URL}/project?accessToken=${accessToken}`, {
+    globalId: project.globalId,
+    name: project.name,
+    description: project.description,
+    dueDate: moment(project.dueDate).subtract(6, "hours"),
+  })
+    .then(response => {
+      dispatch(addProjectSuccess(response.data))
+    })
+    .catch(error => {
+      dispatch(addProjectFailure(error.message))
+    });
+}
+
 export const editProject = (accessToken, project) => dispatch => {
   dispatch(editProjectRequest());
   axios.patch(`${TIMBLIN_URL}/project/${project.id}?accessToken=${accessToken}`, {
@@ -52,22 +68,6 @@ export const editProject = (accessToken, project) => dispatch => {
     })
     .catch(error => {
       dispatch(editProjectFailure(error.message))
-    });
-}
-
-export const addProject = (accessToken, project) => dispatch => {
-  dispatch(addProjectRequest());
-  axios.post(`${TIMBLIN_URL}/project?accessToken=${accessToken}`, {
-    globalId: project.globalId,
-    name: project.name,
-    description: project.description,
-    dueDate: moment(project.dueDate).subtract(6, "hours"),
-  })
-    .then(response => {
-      dispatch(addProjectSuccess(response.data))
-    })
-    .catch(error => {
-      dispatch(addProjectFailure(error.message))
     });
 }
 

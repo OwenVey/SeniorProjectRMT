@@ -35,19 +35,19 @@ class ManageAllProjects extends Component {
 				width: 75,
 				align: 'center',
 				render: (id, project) => (
-					<React.Fragment>
-						<Tooltip placement="topLeft" title="Edit Project Info">
+					<>
+						<Tooltip title="Edit Project Info">
 							<Icon onClick={() => this.props.clickEditProject(project)}>
 								<FontAwesomeIcon icon='edit' color='#1890ff' />
 							</Icon>
 						</Tooltip>
 						<Divider type='vertical' />
-						<Tooltip placement="topLeft" title="Delete Project">
+						<Tooltip title="Delete Project">
 							<Icon onClick={() => this.handleDeleteProject(project)}>
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
 							</Icon>
 						</Tooltip>
-					</React.Fragment>
+					</>
 				),
 			},
 			{

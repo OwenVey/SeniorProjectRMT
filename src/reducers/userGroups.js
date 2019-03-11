@@ -3,24 +3,33 @@ import {
   getUserGroupsRequest,
   getUserGroupsSuccess,
   getUserGroupsFailure,
-  toggleAddUserGroupModal,
   clickAddUserGroup,
   clickCancelAddUserGroup,
   addUserGroupRequest,
   addUserGroupSuccess,
   addUserGroupFailure,
+  clickEditUserGroup,
+  clickCancelEditAddUserGroup,
+  editUserGroupRequest,
+  editUserGroupSuccess,
+  editUserGroupFailure,
 } from '../actions/userGroups'
 
 const initialUserGroupsState = {
   loadingUserGroups: true,
   userGroups: [],
+  selectedUserGroup: {},
   loadingAdd: false,
+  loadingEdit: false,
   showAddUserGroupModal: false,
-  errorMessage: '',
+  showEditUserGroupModal: false,
+  addError: '',
+  editError: '',
 }
 
 export const userGroupsReducer = createReducer(initialUserGroupsState, {
 
+  // GET users
   [getUserGroupsRequest]: (state, action) => {
 
   },
@@ -34,10 +43,7 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
     state.loadingUserGroups = false;
   },
 
-  [toggleAddUserGroupModal]: (state, action) => {
-    state.showAddUserGroupModal = action.payload;
-  },
-
+  // ADDING a user
   [clickAddUserGroup]: (state, action) => {
     state.showAddUserGroupModal = true;
   },
@@ -57,6 +63,35 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
   },
 
   [addUserGroupFailure]: (state, action) => {
-    state.errorMessage = action.payload;
+    state.addError = action.payload;
   },
+
+  //EDITING a user
+  [clickEditUserGroup]: (state, action) => {
+    state.showEditUserGroupModal = true;
+    state.selectedUserGroup = action.payload;
+  },
+
+  [clickCancelEditAddUserGroup]: (state, action) => {
+    state.selectedUserGroup = {};
+    state.showEditUserGroupModal = false;
+  },
+
+  [editUserGroupRequest]: (state, action) => {
+    state.loadingEdit = false;
+  },
+
+  [editUserGroupSuccess]: (state, action) => {
+    state.loadingEdit = false;
+    const index = state.userGroups.findIndex(userGroup => userGroup.id === action.payload.id);
+    state.userGroups[index] = action.payload;
+    state.showEditUserGroupModal = false;
+    state.selectedUserGroup = {};
+  },
+
+  [editUserGroupFailure]: (state, action) => {
+    state.loadingEdit = false;
+    state.editError = action.payload;
+  },
+
 })
