@@ -9,7 +9,7 @@ import LoginPage from "../LoginPage/LoginPage.jsx";
 import HomePage from "../Home/HomePage/HomePage.jsx";
 import ProjectPage from "../Projects/ProjectPage/ProjectPage.jsx";
 import AdminPage from "../Admin/AdminPage/AdminPage.jsx";
-import ProfilePage from "../ProfilePage/ProfilePage.jsx";
+import ProfilePage from "../Profile/ProfilePage/ProfilePage.jsx";
 
 library.add(fas, far);
 
@@ -64,7 +64,7 @@ class App extends Component {
             authed={this.state.isAuthenticated}
             path="/project"
             component={ProjectPage}
-            accessToken = {this.state.accessToken}
+            accessToken={this.state.accessToken}
           />
           <PrivateRoute
             authed={this.state.isAuthenticated}
@@ -74,7 +74,9 @@ class App extends Component {
           />
           <PrivateRoute
             authed={this.state.isAuthenticated}
+            path="/profile"
             component={ProfilePage}
+            accessToken={this.state.accessToken}
           />
         </Switch>
       </div>
