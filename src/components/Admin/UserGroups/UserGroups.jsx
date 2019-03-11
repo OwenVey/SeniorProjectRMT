@@ -206,6 +206,16 @@ class UserGroups extends Component {
     return (
       <React.Fragment>
 
+        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <h2>User Groups</h2>
+          </div>
+          <Button onClick={() => this.props.clickAddUserGroup()}>
+            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+            Add User Group
+        </Button>
+
+        </div>
 
         <Table
           bordered
