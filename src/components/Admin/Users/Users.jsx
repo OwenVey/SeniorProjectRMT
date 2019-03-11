@@ -34,9 +34,9 @@ class Users extends Component {
         align: 'center',
         render: (id, user) => (
           <Tooltip placement="topLeft" title="Edit Project Info">
-            <a href="#none" onClick={() => this.props.showEditUserModal(user)}>
-              <Icon><FontAwesomeIcon icon='edit' /></Icon>
-            </a>
+            <Icon onClick={() => this.props.showEditUserModal(user)}>
+              <FontAwesomeIcon icon='edit' color='#1890ff' />
+            </Icon>
           </Tooltip>
         ),
       },

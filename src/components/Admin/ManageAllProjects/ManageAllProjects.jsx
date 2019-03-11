@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Table, Tag, Divider, Button, Input, Icon, Tooltip } from 'antd';
+import { Table, Tag, Divider, Button, Input, Icon, Tooltip, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProjectModal from './EditProjectModal.jsx';
 import AddProjectModal from './AddProjectModal.jsx';
@@ -37,15 +37,15 @@ class ManageAllProjects extends Component {
 				render: (id, project) => (
 					<React.Fragment>
 						<Tooltip placement="topLeft" title="Edit Project Info">
-							<a href="#none" onClick={() => this.props.clickEditProject(project)}>
-								<Icon><FontAwesomeIcon icon='edit' /></Icon>
-							</a>
+							<Icon onClick={() => this.props.clickEditProject(project)}>
+								<FontAwesomeIcon icon='edit' color='#1890ff' />
+							</Icon>
 						</Tooltip>
 						<Divider type='vertical' />
 						<Tooltip placement="topLeft" title="Delete Project">
-							<a href="#none" onClick={() => this.props.deleteProject(this.props.accessToken, id)}>
-								<Icon><FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /></Icon>
-							</a>
+							<Icon onClick={() => this.handleDeleteProject(project)}>
+								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
+							</Icon>
 						</Tooltip>
 					</React.Fragment>
 				),
@@ -390,6 +390,21 @@ class ManageAllProjects extends Component {
 	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken)
+	}
+
+	handleDeleteProject = (project) => {
+		Modal.confirm({
+			title: 'Delete Project',
+			content: `Are you sure you want to delete the project: "${project.name}"?`,
+			okText: 'Delete',
+			okType: 'danger',
+			cancelText: 'Cancel',
+			onOk: () => {
+				this.props.deleteProject(this.props.accessToken, project.id)
+			},
+			onCancel: () => {
+			}
+		});
 	}
 
 	components = {
