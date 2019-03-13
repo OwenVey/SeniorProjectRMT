@@ -31,6 +31,7 @@ class Users extends Component {
         dataIndex: 'id',
         key: 'id',
         width: 75,
+        fixed: left,
         align: 'center',
         render: (id, user) => (
           <Tooltip title="Edit Project Info">

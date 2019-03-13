@@ -57,7 +57,6 @@ export const usersReducer = createReducer(initialUsersState, {
     state.postErrorMessage = '';
   },
   [addUserSuccess]: (state, action) => {
-    console.log(action)
     state.loading = false;
     state.users.push(action.payload);
     state.addUserModalVisibility = false;
