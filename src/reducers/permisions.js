@@ -1,8 +1,8 @@
 import { createReducer } from "redux-starter-kit";
 import {
-    fetchPermissionsRequest,
-    fetchPermissionsSuccess,
-    fetchPermissionsFailure,
+    getUserProjectPermissionsRequest,
+    getUserProjectPermissionsSuccess,
+    getUserProjectPermissionsFailure,
     showAddPermissionModal,
     hideAddPermissionModal,
     showEditPermissionModal,
@@ -20,14 +20,14 @@ const initialPermissionsState = {
 };
 
 export const permissionsReducer = createReducer(initialPermissionsState, {
-    //Fetching Permissions
-    [fetchPermissionsRequest]: (state, action) => {
+    //getting Permissions
+    [getUserProjectPermissionsRequest]: (state, action) => {
     },
 
-    [fetchPermissionsSuccess]: (state, action) => {
+    [getUserProjectPermissionsSuccess]: (state, action) => {
     },
 
-    [fetchPermissionsFailure]: (state, action) => {
+    [getUserProjectPermissionsFailure]: (state, action) => {
     },
     //-------------------------------------------------------------------
     // Adding A Permission
