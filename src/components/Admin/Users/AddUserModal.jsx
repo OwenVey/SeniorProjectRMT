@@ -101,7 +101,7 @@ class AddUserModal extends Component {
               rules: [
                 { required: true, message: "Please input the user's Password" },
                 { validator: this.validateToNextPassword },
-                { min: 12, message: "Password too short!" }
+                { min: 8, message: "Password too short!" }
               ]
             })(<Input placeholder="Password" type="password" />)}
           </FormItem>
