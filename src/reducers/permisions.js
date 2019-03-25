@@ -10,11 +10,19 @@ import {
 } from "../actions/permissions";
 
 const initialPermissionsState = {
-    permissionData: [],
-
+    loadingPermissions: true,
+    userProjectPermissions: [],
+    groupProjectPermissions: [],
+    userObjectPermissions: [],
+    groupObjectPermissions: [],
+    loadingAdd: false,
+    loadingEdit: false,
+    loading: false,
+    fetchErrorMessage: '',
     addPermissionModalVisibility: false,
     invalidAddPermission: false,
-
+    addError: '',
+    editError: '',
     editPermissionModalVisibility: false,
     invalidEditPermission: false,
 };
@@ -22,12 +30,17 @@ const initialPermissionsState = {
 export const permissionsReducer = createReducer(initialPermissionsState, {
     //getting Permissions
     [getUserProjectPermissionsRequest]: (state, action) => {
+        state.loading = true;
+        state.fetchErrorMessage = '';
     },
 
     [getUserProjectPermissionsSuccess]: (state, action) => {
+        state.loadingPermissions = false;
+        state.userProjectPermissions = action.payload;
     },
 
     [getUserProjectPermissionsFailure]: (state, action) => {
+        state.loadingPermissions = false;
     },
     //-------------------------------------------------------------------
     // Adding A Permission

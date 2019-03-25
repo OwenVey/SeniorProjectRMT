@@ -15,9 +15,10 @@ export const hideEditPermissionModal = createAction("HIDE_EDIT_PERMISSION_MODAL"
 
 export const getUserProjectPermissions = (accessToken, projectId) => dispatch => {
     dispatch(getUserProjectPermissionsRequest());
-    axios.get(`${TIMBLIN_URL}/projectpermission/${projectId}/user?accessToken=${accessToken}`) //loop through all projects
+    axios.get(`${TIMBLIN_URL}/projectpermission/3/user?accessToken=${accessToken}`) //loop through all projects
+    //axios.get(`${TIMBLIN_URL}/projectpermission/${projectId}/user?accessToken=${accessToken}`) //loop through all projects
       .then(response => {
-        dispatch(getUserProjectPermissionsSuccess(response.data.projectpermissions))
+        dispatch(getUserProjectPermissionsSuccess(response.data.permissions))
       })
       .catch(error => {
         dispatch(getUserProjectPermissionsFailure(error.message))
