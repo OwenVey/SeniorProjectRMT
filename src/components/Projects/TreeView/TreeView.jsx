@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { connect } from "react-redux";
+import { getTree } from "../../../actions/tree";
 
 const TreeNode = Tree.TreeNode;
 const dataList = [];
@@ -44,6 +46,10 @@ class TreeView extends Component {
       rightClickedTreeNode: null,
     };
     generateList(this.state.treeData);
+  }
+
+  componentWillMount() {
+    this.props.getTree(this.props.accessToken);
   }
 
   onExpand = (expandedKeys) => {
@@ -192,11 +198,7 @@ class TreeView extends Component {
     }
   }
 
-  /* This ensures that fetchTree is called.
-  */
-  componentWillMount() {
-    this.fetchTree();
-  }
+
 
   /* This uses an access token and the database URL to retrieve object information.
    * The information is then inserted into the tree and the treeData state.
@@ -315,4 +317,10 @@ class TreeView extends Component {
   }
 }
 
-export default TreeView;
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken,
+  tree: state.tree.tree,
+});
+
+export default connect(mapStateToProps, { getTree })(TreeView);
+
