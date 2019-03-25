@@ -1,8 +1,8 @@
 import { createReducer } from "redux-starter-kit";
 import {
-    fetchPermissionsRequest,
-    fetchPermissionsSuccess,
-    fetchPermissionsFailure,
+    getUserProjectPermissionsRequest,
+    getUserProjectPermissionsSuccess,
+    getUserProjectPermissionsFailure,
     showAddPermissionModal,
     hideAddPermissionModal,
     showEditPermissionModal,
@@ -10,24 +10,37 @@ import {
 } from "../actions/permissions";
 
 const initialPermissionsState = {
-    permissionData: [],
-
+    loadingPermissions: true,
+    userProjectPermissions: [],
+    groupProjectPermissions: [],
+    userObjectPermissions: [],
+    groupObjectPermissions: [],
+    loadingAdd: false,
+    loadingEdit: false,
+    loading: false,
+    fetchErrorMessage: '',
     addPermissionModalVisibility: false,
     invalidAddPermission: false,
-
+    addError: '',
+    editError: '',
     editPermissionModalVisibility: false,
     invalidEditPermission: false,
 };
 
 export const permissionsReducer = createReducer(initialPermissionsState, {
-    //Fetching Permissions
-    [fetchPermissionsRequest]: (state, action) => {
+    //getting Permissions
+    [getUserProjectPermissionsRequest]: (state, action) => {
+        state.loading = true;
+        state.fetchErrorMessage = '';
     },
 
-    [fetchPermissionsSuccess]: (state, action) => {
+    [getUserProjectPermissionsSuccess]: (state, action) => {
+        state.loadingPermissions = false;
+        state.userProjectPermissions = action.payload;
     },
 
-    [fetchPermissionsFailure]: (state, action) => {
+    [getUserProjectPermissionsFailure]: (state, action) => {
+        state.loadingPermissions = false;
     },
     //-------------------------------------------------------------------
     // Adding A Permission
