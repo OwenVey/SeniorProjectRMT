@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Table, Button, Icon, Modal, Input, Tooltip } from 'antd';
+import { Table, Button, Icon, Modal, Input } from 'antd';
 import { getProjects } from '../../../actions/projects';
 import { getUsers } from '../../../actions/users';
 import { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal } from "../../../actions/permissions";
 import { Resizable } from 'react-resizable';
+import moment from 'moment';
 
 const ResizeableTitle = props => {
 	const { onResize, width, ...restProps } = props;
@@ -167,7 +168,7 @@ class Permissions extends Component {
 								)}
 						</span>
 					) : (
-							text
+							moment(text).format('YYYY-MM-DD')
 						);
 				},
 			},
