@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Table, Button, Icon, Modal, Input, Tooltip } from 'antd';
 import { getProjects } from '../../../actions/projects';
+import { getUsers } from '../../../actions/users';
 import { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal } from "../../../actions/permissions";
 import { Resizable } from 'react-resizable';
 
@@ -57,9 +58,27 @@ class Permissions extends Component {
             userId
           )
 				},
+			},
+			{
+				title: 'User Full Name',
+				dataIndex: 'userId',
+				key: 'userId',
+				align: 'center',
+				width: 100,
+				render: userId => {
+					let name = ''
+					if (this.props.users.length !== 0)
+					{
+						let user = this.lookupUser(userId)
+						name = user.firstName + " " + user.lastName
+					}
+					return (
+						name
+          )
+				},
       },
       {
-				title: 'Project ID',
+				title: 'Project',
 				dataIndex: 'projectId',
 				key: 'projectId',
 				align: 'center',
@@ -156,13 +175,18 @@ class Permissions extends Component {
   };
   
 	lookupProject(projectId) {
-		console.log(this.props.projects.filter(project => project.id === projectId)[0])
 		return this.props.projects.filter(project => project.id === projectId)[0]
+	}
+
+	lookupUser(userId) {
+		return this.props.users.filter(user => user.id === userId)[0]
 	}
 
   componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken);
+		if (this.props.users.length === 0)
+			this.props.getUsers(this.props.accessToken);
 		if (this.props.userProjectPermissions.length === 0)
 			this.props.getUserProjectPermissions(this.props.accessToken)
 	}
@@ -241,10 +265,11 @@ const mapStateToProps = state => ({
   editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
   addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
   loadingPermissions: state.permissions.loadingPermissions,
-  projects: state.projects.projects,
+	projects: state.projects.projects,
+	users: state.users.users,
 });
 
 export default connect(
   mapStateToProps,
-  { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal, getProjects }
+  { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal, getProjects, getUsers }
 )(Permissions);
