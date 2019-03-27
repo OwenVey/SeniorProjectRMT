@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
+import { Button, Icon, } from 'antd';
 
 const MyDetails = ({ loginUser }) => {
   return (
