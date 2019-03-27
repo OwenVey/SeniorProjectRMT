@@ -9,6 +9,7 @@ const MyDetails = ({ loginUser }) => {
       <div><strong>Last Name:</strong> {loginUser.lastName}</div>
       <div><strong>Email:</strong> {loginUser.email}</div>
       <div><strong>Account Created:</strong> {loginUser.createDate}</div>
+      <div>Hello</div>
     </>
   );
 }
