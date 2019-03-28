@@ -27,10 +27,16 @@ export const getUserProjectPermissions = (accessToken) => dispatch => {
 }
 
 export const addUserProjectPermission = (accessToken, permission) => dispatch => {
+  let permissionString = permission.permissions.includes("Create") ? 'C' : ''
+  permissionString += permission.permissions.includes("Read") ? 'R' : ''
+  permissionString += permission.permissions.includes("Manage") ? 'M' : ''
+  permissionString += permission.permissions.includes("Delete") ? 'D' : ''
+  permissionString += permission.permissions.includes("Admin") ? 'A' : ''
+
   dispatch(addUserProjectPermissionRequest());
   axios.post(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`, {
-    permission: permission.permission,
-    endDate: moment(permission.dueDate).subtract(6, "hours"),
+    permission: permissionString,
+    endDate: moment(permission.endDate).subtract(6, "hours"),
   })
     .then(response => {
       dispatch(addUserProjectPermissionSuccess(response.data))

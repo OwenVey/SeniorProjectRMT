@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Form, Select, DatePicker } from 'antd';
+import { Icon, Modal, Form, Select, DatePicker, Checkbox, Row, Col } from 'antd';
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
@@ -13,7 +13,7 @@ class AddPermissionModal extends Component {
   handleOkAddPermissionModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.addPermission(this.props.accessToken, values);
+        this.props.addUserProjectPermission(this.props.accessToken, values);
       }
     })
   }
@@ -95,11 +95,19 @@ class AddPermissionModal extends Component {
             )}
           </FormItem>
           <Form.Item style={{ marginBottom: '0px' }} label="Permissions">
-            {getFieldDecorator('permission', {
+            {getFieldDecorator('permissions', {
               rules: [
               ],
             })(
-              <Input placeholder='Permission' />
+              <Checkbox.Group style={{ width: "100%"}}>
+                <Row>
+                  <Col span={8}><Checkbox value="Create">Create</Checkbox></Col>
+                  <Col span={8}><Checkbox value="Read">Read</Checkbox></Col>
+                  <Col span={8}><Checkbox value="Manage">Manage</Checkbox></Col>
+                  <Col span={8}><Checkbox value="Delete">Delete</Checkbox></Col>
+                  <Col span={8}><Checkbox value="Admin">Admin</Checkbox></Col>
+                </Row>
+              </Checkbox.Group>
             )}
           </Form.Item>
           <Form.Item style={{ float: 'left' }} {...FormItemLayout} label="End Date">
