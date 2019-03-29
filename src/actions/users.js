@@ -18,7 +18,7 @@ export const editUserRequest = createAction("EDIT_USER_REQUEST");
 export const editUserSuccess = createAction("EDIT_USER_SUCCESS");
 export const editUserFailure = createAction("EDIT_USER_FAILURE");
 
-export const editProfile = createAction("SHOW_EDIT_PROFILE");
+//export const editProfile = createAction("SHOW_EDIT_PROFILE");
 
 export const getUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());

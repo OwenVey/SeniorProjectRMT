@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit'
-import { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutSuccess, logoutFailure } from '../actions/authentication'
+import { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutSuccess, logoutFailure, showEditProfileModal, clickCancelEditProfile } from '../actions/authentication'
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -8,6 +8,8 @@ const initialAuthenticationState = {
   loading: false,
   invalidLogin: false,
   loginUser: {},
+  showEditProfileModal: false,
+  clickCancelEditProfile: true,
 }
 
 export const authenticationReducer = createReducer(initialAuthenticationState, {
@@ -42,5 +44,15 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
 
   [logoutFailure]: (state, action) => {
   },
+
+  [showEditProfileModal]: (state, action) => {
+    state.showEditProfileModal = true;
+  },
+
+  [clickCancelEditProfile]: (state, action) => {
+    state.clickCancelEditProfile = true;
+  }
+
+
 
 });

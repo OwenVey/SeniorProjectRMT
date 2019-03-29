@@ -34,7 +34,7 @@ class Users extends Component {
         fixed: 'left',
         align: 'center',
         render: (id, user) => (
-          <Tooltip title="Edit Project Info">
+          <Tooltip title="Edit User Info">
             <Icon onClick={() => this.props.showEditUserModal(user)}>
               <FontAwesomeIcon icon='edit' color='#1890ff' />
             </Icon>
