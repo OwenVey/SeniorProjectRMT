@@ -7,7 +7,7 @@ const initialAuthenticationState = {
   redirectToReferrer: false,
   loading: false,
   invalidLogin: false,
-  loginUser: [],
+  loginUser: {},
   showEditProfileModal: false,
   clickCancelEditProfile: true,
 }
