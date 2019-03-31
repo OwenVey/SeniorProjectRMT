@@ -27,7 +27,7 @@ const AdminSidebar = (props) => {
       </Menu.Item>
 
       <Menu.Item key="permissions">
-        <Icon><FontAwesomeIcon icon='shield-alt' /></Icon>
+        <Icon><FontAwesomeIcon icon='unlock-alt' /></Icon>
         <span>Permissions</span>
       </Menu.Item>
 

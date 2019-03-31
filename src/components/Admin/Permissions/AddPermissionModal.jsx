@@ -43,7 +43,7 @@ class AddPermissionModal extends Component {
         title={
           <>
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-              <FontAwesomeIcon icon='user' />
+              <FontAwesomeIcon icon='unlock-alt' />
             </Icon>
             Add Permission
           </>
