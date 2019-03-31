@@ -7,7 +7,7 @@ const initialAuthenticationState = {
   redirectToReferrer: false,
   loading: false,
   invalidLogin: false,
-  loginUser: {},
+  loginUser: [],
   showEditProfileModal: false,
   clickCancelEditProfile: true,
 }
@@ -52,7 +52,5 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   [clickCancelEditProfile]: (state, action) => {
     state.clickCancelEditProfile = true;
   }
-
-
 
 });
