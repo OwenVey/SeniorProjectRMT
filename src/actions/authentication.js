@@ -1,6 +1,10 @@
-import { createAction } from 'redux-starter-kit'
+import {
+  createAction
+} from 'redux-starter-kit'
 import axios from 'axios'
-import { TIMBLIN_URL } from '../constants';
+import {
+  TIMBLIN_URL
+} from '../constants';
 
 export const loginRequest = createAction('LOGIN_REQUEST');
 export const loginSuccess = createAction('LOGIN_SUCCESS');
@@ -20,9 +24,9 @@ export const clickCancelEditProfile = createAction('CANCEL_EDIT_PROFILE');
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   axios.post(`${TIMBLIN_URL}/login`, {
-    email,
-    password
-  })
+      email,
+      password
+    })
     .then(response => {
       dispatch(loginSuccess(response.data))
     })
@@ -34,8 +38,8 @@ export const login = (email, password) => dispatch => {
 export const logout = (accessToken) => dispatch => {
   dispatch(logoutRequest());
   axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
-    accessToken
-  })
+      accessToken
+    })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -46,11 +50,12 @@ export const logout = (accessToken) => dispatch => {
     });
 }
 
-export const confirmEditProfile = (accessToken, userID, profile) => dispatch => {
+export const confirmEditProfile = (accessToken, userID) => dispatch => {
   dispatch(editProfileRequest());
-  axios.patch(`${TIMBLIN_URL}/user/${userID}?accessToken=${accessToken}`, {
-    profile
-  })
+  console.log(userID);
+  axios.patch(`${TIMBLIN_URL}/user/${userID.id}?accessToken=${accessToken}`, {
+      userID
+    })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -60,4 +65,3 @@ export const confirmEditProfile = (accessToken, userID, profile) => dispatch => 
       dispatch(editProfileFailure(error.message))
     });
 }
-

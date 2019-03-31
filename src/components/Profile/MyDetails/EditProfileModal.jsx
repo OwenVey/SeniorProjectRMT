@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Select, Form } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Modal, Input, Select, Form } from 'antd';
 import { connect } from 'react-redux';
 import { clickCancelEditProfile, confirmEditProfile } from "../../../actions/authentication";
 
@@ -9,13 +8,6 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 class EditProfileModal extends Component {
-    handleOk = (e) => {
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                this.props.addItemType(this.props.accessToken, values);
-            }
-        })
-    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -23,7 +15,7 @@ class EditProfileModal extends Component {
             <>
                 <Modal
                     title={"Hello"}
-                    onOk={this.props.confirmEditProfile()}
+                    onOk={this.props.confirmEditProfile(this.props.accessToken, this.props.id)}
                     visible={true}
                     onCancel={() => this.props.clickCancelEditProfile()}
                     okText="Confirm"
@@ -58,6 +50,8 @@ const mapStateToProps = state => ({
     loginUser: state.authentication.loginUser,
     editProfileModalVisibility: state.authentication.editProfileModalVisibility,
     clickCancelEditProfile: state.authentication.clickCancelEditProfile,
+    confirmEditProfile: state.authentication.confirmEditProfile,
+    id: state.authentication.loginUser,
 });
 
 //export default connect(mapStateToProps, { showEditProfileModal, clickCancelEditProfile })(Form.create()(EditProfileModal))

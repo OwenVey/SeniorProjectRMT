@@ -22,7 +22,6 @@ const initialAuthenticationState = {
   loginUser: {},
   editProfileModalVisibility: false,
   clickCancelEditProfile: true,
-  confirmEditProfile: false,
 }
 
 export const authenticationReducer = createReducer(initialAuthenticationState, {
@@ -66,7 +65,6 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [confirmEditProfile]: (state, action) => {
-    state.confirmEditProfile = true;
     state.editProfileModalVisibility = false;
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Divider, Table, Button, Modal, Icon, Tooltip } from "antd";
+import { Button, Icon } from "antd";
 import { showEditProfileModal } from "../../../actions/authentication";
 import { connect } from "react-redux";
 import EditProfileModal from './EditProfileModal';
