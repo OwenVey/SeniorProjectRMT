@@ -33,3 +33,4 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { showEditProfileModal, clickCancelEditProfile })(MyDetails);
+

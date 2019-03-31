@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Table, Button, Icon, Modal, Input } from 'antd';
+import { Table, Button, Icon, Modal, Input, Tooltip, Divider } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProjects } from '../../../actions/projects';
 import { getUsers } from '../../../actions/users';
-import { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal } from "../../../actions/permissions";
+import AddPermissionModal from './AddPermissionModal.jsx';
+import EditPermissionModal from './EditPermissionModal.jsx';
+import { getUserProjectPermissions, showEditPermissionModal, deletePermission, showAddPermissionModal } from "../../../actions/permissions";
 import { Resizable } from 'react-resizable';
 import moment from 'moment';
 
@@ -26,44 +29,32 @@ class Permissions extends Component {
   state = {
 		searchText: '',
 		columns: [
-	// 		{
-	// 			title: 'Actions',
-	// 			dataIndex: 'id',
-	// 			key: 'id',
-	// 			width: 75,
-	// 			align: 'center',
-	// 			render: (id, permission) => (
-	// 				<>
-	// 					<Tooltip title="Edit Project Permission">
-	// 						<Icon onClick={() => this.props.clickEdit(permission)}>
-	// 							<FontAwesomeIcon icon='edit' color='#1890ff' />
-	// 						</Icon>
-	// 					</Tooltip>
-	// 					<Divider type='vertical' />
-	// 					<Tooltip title="Delete Project Permission">
-	// 						<Icon onClick={() => this.handleDeleteUserProjectPermission(permission)}>
-	// 							<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
-	// 						</Icon>
-	// 					</Tooltip>
-	// 				</>
-	// 			),
-    //   },	
-      {
-				title: 'User ID',
-				dataIndex: 'userId',
-				key: 'userId',
-				align: 'center',
-				width: 100,
-				render: userId => {
-					return (
-            userId
-          )
-				},
-			},
 			{
-				title: 'User Full Name',
+				title: 'Actions',
+				dataIndex: 'id',
+				rowKey: 'id',
+				width: 75,
+				align: 'center',
+				render: (id, permission) => (
+					<>
+						<Tooltip title="Edit Project Permission">
+							<Icon onClick={() => this.props.showEditPermissionModal(permission)}>
+								<FontAwesomeIcon icon='edit' color='#1890ff' />
+							</Icon>
+						</Tooltip>
+						<Divider type='vertical' />
+						<Tooltip title="Delete Project Permission">
+							<Icon onClick={() => this.props.deletePermission(this.props.accessToken, permission)}>
+								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
+							</Icon>
+						</Tooltip>
+					</>
+				),
+      },	
+			{
+        title: 'User',
+        key: 'userId',
 				dataIndex: 'userId',
-				key: 'userId',
 				align: 'center',
 				width: 100,
 				render: userId => {
@@ -71,10 +62,10 @@ class Permissions extends Component {
 					if (this.props.users.length !== 0)
 					{
 						let user = this.lookupUser(userId)
-						name = user.firstName + " " + user.lastName
+						name = `${user.firstName} ${user.lastName}`
 					}
 					return (
-						name
+						`${name} (${userId})`
           )
 				},
       },
@@ -94,7 +85,7 @@ class Permissions extends Component {
 				},
 			},
 			{
-				title: 'permission',
+				title: 'Permission',
 				dataIndex: 'permission',
 				key: 'permission',
 				defaultSortOrder: 'ascend',
@@ -248,29 +239,29 @@ class Permissions extends Component {
         </div>
 		<Table
           bordered
-        //   rowKey={record => record.id}
+          rowKey={record => record.userId}
           dataSource={this.props.userProjectPermissions}
           columns={this.state.columns}
           loading={this.props.loadingPermissions}
         />
-        {/* {this.props.showAddUserGroupModal && <AddUserGroupModal />} */}
-        {/* {this.props.showEditUserGroupModal && <EditUserGroupModal />} */}
+		{this.props.editPermissionModalVisible && <EditPermissionModal />}
+        {this.props.addPermissionModalVisible && <AddPermissionModal />}
       </>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  accessToken: state.authentication.accessToken,
-  userProjectPermissions: state.permissions.userProjectPermissions,
-  editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
-  addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
-  loadingPermissions: state.permissions.loadingPermissions,
-	projects: state.projects.projects,
-	users: state.users.users,
+  	accessToken: state.authentication.accessToken,
+  	userProjectPermissions: state.permissions.userProjectPermissions,
+  	editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
+  	addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
+  	loadingPermissions: state.permissions.loadingPermissions,
+	  projects: state.projects.projects,
+	  users: state.users.users,
 });
 
 export default connect(
   mapStateToProps,
-  { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal, getProjects, getUsers }
+  { getUserProjectPermissions, showAddPermissionModal, showEditPermissionModal, deletePermission, getProjects, getUsers }
 )(Permissions);

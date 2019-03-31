@@ -3,10 +3,20 @@ import {
     getUserProjectPermissionsRequest,
     getUserProjectPermissionsSuccess,
     getUserProjectPermissionsFailure,
+    addUserProjectPermissionRequest,
+    addUserProjectPermissionSuccess,
+    addUserProjectPermissionFailure,
+    editUserProjectPermissionRequest,
+    editUserProjectPermissionSuccess,
+    editUserProjectPermissionFailure,
+    deletePermissionRequest,
+    deletePermissionSuccess,
+    deletePermissionFailure,
     showAddPermissionModal,
-    hideAddPermissionModal,
     showEditPermissionModal,
-    hideEditPermissionModal
+    clickCancelAddPermission,
+    clickCancelEditPermission,
+
 } from "../actions/permissions";
 
 const initialPermissionsState = {
@@ -25,6 +35,7 @@ const initialPermissionsState = {
     editError: '',
     editPermissionModalVisibility: false,
     invalidEditPermission: false,
+    selectedPermission: {}
 };
 
 export const permissionsReducer = createReducer(initialPermissionsState, {
@@ -46,23 +57,70 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     // Adding A Permission
     //-------------------------------------------------------------------
     //Modal Switching
-    [showAddPermissionModal]: (state, action) => {
-        state.addPermissionModalVisibility = true;
-        state.invalidAddPermission = false;
+    [addUserProjectPermissionRequest]: (state, action) => {
+        state.loadingAdd = true;
     },
-    [hideAddPermissionModal]: (state, action) => {
+
+    [addUserProjectPermissionSuccess]: (state, action) => {
+        state.loadingAdd = false;
+        state.userProjectPermissions.push(action.payload);
         state.addPermissionModalVisibility = false;
     },
+
+    [addUserProjectPermissionFailure]: (state, action) => {
+        state.loadingAdd = false;
+        state.addError = action.payload;
+    },
+
+    [showAddPermissionModal]: (state, action) => {
+        state.addPermissionModalVisibility = true;
+    },
+
+    [clickCancelAddPermission]: (state, action) => {
+        state.addPermissionModalVisibility = false;
+    },
+
     //-------------------------------------------------------------------
-    // Existing Permission
+    // Edit A Permission
     //-------------------------------------------------------------------
     //Modal Switching
     [showEditPermissionModal]: (state, action) => {
-        state.editPermission = action.payload;
+        state.selectedPermission = action.payload;
         state.editPermissionModalVisibility = true;
-        state.invalidEditPermission = false;
-    },
-    [hideEditPermissionModal]: (state, action) => {
+    }, 
+    
+    [clickCancelEditPermission]: (state, action) => {
+        state.selectedPermission = {};
         state.editPermissionModalVisibility = false;
-    }
+    },
+    
+    [editUserProjectPermissionRequest]: (state, action) => {
+        state.loadingEdit = true;
+    },
+    
+    [editUserProjectPermissionSuccess]: (state, action) => {
+        state.loadingEdit = false;
+        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId); //add projectId / permissionID when available
+        state.userProjectPermissions[index] = action.payload;
+        state.editPermissionModalVisibility = false;
+    },
+    
+    [editUserProjectPermissionFailure]: (state, action) => {
+        state.loadingEdit = false;
+        state.editError = action.payload;
+    },
+
+    //-------------------------------------------------------------------
+    // Delete A Permission
+    //-------------------------------------------------------------------
+    [deletePermissionRequest]: (state, action) => {
+    },
+  
+    [deletePermissionSuccess]: (state, action) => {
+      const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
+      state.userProjectPermissions.splice(index, 1);
+    },
+  
+    [deletePermissionFailure]: (state, action) => {
+    },
 });
