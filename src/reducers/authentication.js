@@ -1,5 +1,17 @@
-import { createReducer } from 'redux-starter-kit'
-import { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutSuccess, logoutFailure, showEditProfileModal, clickCancelEditProfile } from '../actions/authentication'
+import {
+  createReducer
+} from 'redux-starter-kit'
+import {
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+  logoutRequest,
+  logoutSuccess,
+  logoutFailure,
+  showEditProfileModal,
+  clickCancelEditProfile,
+  confirmEditProfile
+} from '../actions/authentication'
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -10,6 +22,7 @@ const initialAuthenticationState = {
   loginUser: {},
   editProfileModalVisibility: false,
   clickCancelEditProfile: true,
+  confirmEditProfile: false,
 }
 
 export const authenticationReducer = createReducer(initialAuthenticationState, {
@@ -42,8 +55,7 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.invalidLogin = false;
   },
 
-  [logoutFailure]: (state, action) => {
-  },
+  [logoutFailure]: (state, action) => {},
 
   [showEditProfileModal]: (state, action) => {
     state.editProfileModalVisibility = true;
@@ -51,5 +63,11 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
 
   [clickCancelEditProfile]: (state, action) => {
     state.editProfileModalVisibility = false;
+  },
+
+  [confirmEditProfile]: (state, action) => {
+    state.confirmEditProfile = true;
+    state.editProfileModalVisibility = false;
   }
+
 });
