@@ -1,5 +1,22 @@
-import { createReducer } from 'redux-starter-kit'
-import { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutSuccess, logoutFailure, showEditProfileModal, clickCancelEditProfile } from '../actions/authentication'
+import {
+  createReducer
+} from 'redux-starter-kit'
+import {
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+  logoutRequest,
+  logoutSuccess,
+  logoutFailure,
+  showEditProfileModal,
+  clickCancelEditProfile,
+  editProfileSuccess,
+  editProfileRequest,
+  editProfileFailure
+} from '../actions/authentication'
+import {
+  bindActionCreators
+} from 'redux';
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -8,7 +25,7 @@ const initialAuthenticationState = {
   loading: false,
   invalidLogin: false,
   loginUser: {},
-  showEditProfileModal: false,
+  editProfileModalVisibility: false,
   clickCancelEditProfile: true,
 }
 
@@ -42,15 +59,36 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.invalidLogin = false;
   },
 
-  [logoutFailure]: (state, action) => {
+  [logoutFailure]: (state, action) => {},
+
+  /*
+  -----------------------------------------------
+  Edit User Profile
+  -----------------------------------------------
+  */
+  [editProfileSuccess]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editProfileModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [editProfileRequest]: (state, action) => {
+
+  },
+
+  [editProfileFailure]: (state, action) => {
+
   },
 
   [showEditProfileModal]: (state, action) => {
-    state.showEditProfileModal = true;
+    state.editProfileModalVisibility = true;
   },
 
   [clickCancelEditProfile]: (state, action) => {
-    state.clickCancelEditProfile = true;
-  }
+    state.editProfileModalVisibility = false;
+  },
 
 });
