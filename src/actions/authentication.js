@@ -10,6 +10,10 @@ export const logoutRequest = createAction('LOGOUT_REQUEST');
 export const logoutSuccess = createAction('LOGOUT_SUCCESS');
 export const logoutFailure = createAction('LOGOUT_FAILURE');
 
+export const editProfileRequest = createAction('EDIT_PROFILE_REQUEST');
+export const editProfileSuccess = createAction('EDIT_PROFILE_SUCCESS');
+export const editProfileFailure = createAction('EDIT_PROFILE_FAILURE');
+
 export const showEditProfileModal = createAction('SHOW_EDIT_PROFILE_MODAL');
 export const clickCancelEditProfile = createAction('CANCEL_EDIT_PROFILE');
 
@@ -41,3 +45,19 @@ export const logout = (accessToken) => dispatch => {
       dispatch(logoutFailure(error.message))
     });
 }
+
+export const confirmEditProfile = (accessToken, userID, profile) => dispatch => {
+  dispatch(editProfileRequest());
+  axios.patch(`${TIMBLIN_URL}/user/${userID}?accessToken=${accessToken}`, {
+    profile
+  })
+    .then(response => {
+      if (response.status !== 200)
+        throw Error();
+      dispatch(editProfileSuccess())
+    })
+    .catch(error => {
+      dispatch(editProfileFailure(error.message))
+    });
+}
+
