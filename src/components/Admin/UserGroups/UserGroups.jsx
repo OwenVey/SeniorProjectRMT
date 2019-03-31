@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getUserGroups, clickAddUserGroup, clickEditUserGroup } from '../../../actions/userGroups';
 import { getProjects } from '../../../actions/projects';
 import AddUserGroupModal from './AddUserGroupModal';
-import EditUserGroupModal from '../EditUserGroupModal/EditUserGroupModal.jsx';
+import EditUserGroupModal from './EditUserGroupModal.jsx';
 import './UserGroups.css'
 
 class UserGroups extends Component {

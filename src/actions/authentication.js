@@ -10,6 +10,9 @@ export const logoutRequest = createAction('LOGOUT_REQUEST');
 export const logoutSuccess = createAction('LOGOUT_SUCCESS');
 export const logoutFailure = createAction('LOGOUT_FAILURE');
 
+export const showEditProfileModal = createAction('SHOW_EDIT_PROFILE_MODAL');
+export const clickCancelEditProfile = createAction('CANCEL_EDIT_PROFILE');
+
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   axios.post(`${TIMBLIN_URL}/login`, {

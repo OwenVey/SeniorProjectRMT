@@ -7,7 +7,8 @@ import Permissions from "../Permissions/Permissions.jsx";
 import ItemTypes from "../ItemTypes/ItemTypes.jsx";
 import ManageAllProjects from "../ManageAllProjects/ManageAllProjects.jsx";
 import SplitPane from "react-split-pane";
-
+import { connect } from "react-redux";
+import NoPermissionToAccess from '../../NoPermissionToAccess/NoPermissionToAccess';
 import "./AdminPage.css";
 
 class AdminPage extends Component {
@@ -27,7 +28,6 @@ class AdminPage extends Component {
 
   render() {
     let selectedPage = null;
-
     switch (this.state.currentPage) {
       case "organizationDetails":
         selectedPage = <OrganizationDetails />;
@@ -53,13 +53,20 @@ class AdminPage extends Component {
 
     return (
       <div className="admin-page">
-        <SplitPane minSize={200} maxSize={-100} defaultSize={"20%"}>
-          <AdminSidebar handlePageChange={this.handlePageChange} />
-          {selectedPage}
-        </SplitPane>
+        {this.props.adminAccess &&
+          <SplitPane minSize={200} maxSize={-100} defaultSize={"20%"}>
+            <AdminSidebar handlePageChange={this.handlePageChange} />
+            {selectedPage}
+          </SplitPane>}
+        <NoPermissionToAccess />
       </div>
     );
   }
 }
 
-export default AdminPage;
+const mapStateToProps = (state) => ({
+  adminAccess: state.authentication.loginUser.isAdmin,
+
+})
+
+export default connect(mapStateToProps)(AdminPage)

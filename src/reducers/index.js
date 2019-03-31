@@ -15,6 +15,6 @@ export default combineReducers({
   userGroups: userGroupsReducer,
   projects: projectsReducer,
   permissions: permissionsReducer,
-  OrganizationDetails: organizationDetailsReducer,
+  organizationDetails: organizationDetailsReducer,
   itemTypes: itemTypesReducer,
 });
