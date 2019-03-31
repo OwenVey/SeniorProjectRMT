@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Table, Button, Icon, Modal, Input } from 'antd';
 import { getProjects } from '../../../actions/projects';
 import { getUsers } from '../../../actions/users';
+import AddPermissionModal from './AddPermissionModal.jsx';
 import { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal } from "../../../actions/permissions";
 import { Resizable } from 'react-resizable';
 import moment from 'moment';
@@ -253,24 +254,24 @@ class Permissions extends Component {
           columns={this.state.columns}
           loading={this.props.loadingPermissions}
         />
-        {/* {this.props.showAddUserGroupModal && <AddUserGroupModal />} */}
-        {/* {this.props.showEditUserGroupModal && <EditUserGroupModal />} */}
+        {this.props.addPermissionModalVisibility && <AddPermissionModal />}
       </>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  accessToken: state.authentication.accessToken,
-  userProjectPermissions: state.permissions.userProjectPermissions,
-  editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
-  addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
-  loadingPermissions: state.permissions.loadingPermissions,
+  	accessToken: state.authentication.accessToken,
+  	userProjectPermissions: state.permissions.userProjectPermissions,
+  	editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
+  	addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
+  	loadingPermissions: state.permissions.loadingPermissions,
 	projects: state.projects.projects,
 	users: state.users.users,
+	addPermissionModalVisibility: state.permissions.addPermissionModalVisibility,
 });
 
 export default connect(
   mapStateToProps,
-  { getUserProjectPermissions, showEditPermissionModal, showAddPermissionModal, getProjects, getUsers }
+  { getUserProjectPermissions, showAddPermissionModal, getProjects, getUsers }
 )(Permissions);

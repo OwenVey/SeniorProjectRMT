@@ -3,10 +3,12 @@ import {
     getUserProjectPermissionsRequest,
     getUserProjectPermissionsSuccess,
     getUserProjectPermissionsFailure,
+    addUserProjectPermissionRequest,
+    addUserProjectPermissionSuccess,
+    addUserProjectPermissionFailure,
     showAddPermissionModal,
-    hideAddPermissionModal,
-    showEditPermissionModal,
-    hideEditPermissionModal
+    clickCancelAddPermission,
+
 } from "../actions/permissions";
 
 const initialPermissionsState = {
@@ -46,23 +48,26 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     // Adding A Permission
     //-------------------------------------------------------------------
     //Modal Switching
-    [showAddPermissionModal]: (state, action) => {
-        state.addPermissionModalVisibility = true;
-        state.invalidAddPermission = false;
+    [addUserProjectPermissionRequest]: (state, action) => {
+        state.loadingAdd = true;
     },
-    [hideAddPermissionModal]: (state, action) => {
+
+    [addUserProjectPermissionSuccess]: (state, action) => {
+        state.loadingAdd = false;
+        state.userProjectPermissions.push(action.payload);
         state.addPermissionModalVisibility = false;
     },
-    //-------------------------------------------------------------------
-    // Existing Permission
-    //-------------------------------------------------------------------
-    //Modal Switching
-    [showEditPermissionModal]: (state, action) => {
-        state.editPermission = action.payload;
-        state.editPermissionModalVisibility = true;
-        state.invalidEditPermission = false;
+
+    [addUserProjectPermissionFailure]: (state, action) => {
+        state.loadingAdd = false;
+        state.addError = action.payload;
     },
-    [hideEditPermissionModal]: (state, action) => {
-        state.editPermissionModalVisibility = false;
-    }
+
+    [showAddPermissionModal]: (state, action) => {
+        state.addPermissionModalVisibility = true;
+    },
+
+    [clickCancelAddPermission]: (state, action) => {
+        state.addPermissionModalVisibility = false;
+    },
 });
