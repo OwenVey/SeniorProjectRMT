@@ -13,7 +13,7 @@ class Navbar extends Component {
     let href = window.location.pathname;
     return (
       this.props.navBarVisibility &&
-      <Header style={{ justifyContent: 'center' }} className='header'>
+      <Header style={{ justifyContent: 'center', display: 'inline' }} className='header'>
 
         <div className='logo-group'>
           <FontAwesomeIcon size='2x' color='#1890ff' icon='pencil-alt' />
@@ -23,9 +23,10 @@ class Navbar extends Component {
         <Menu
           theme='dark'
           mode='horizontal'
-          selectedKeys={[href]}>
+          selectedKeys={[href]}
+          styles={{ verticalAlign: 'top' }}>
 
-          <Menu.Item className='menu-item' key='/home'>
+          <Menu.Item className='menu-item' key='/home' >
             <NavLink to='/home'>
               <FontAwesomeIcon className='navbar-icon' icon='home' />
               Home
@@ -45,6 +46,7 @@ class Navbar extends Component {
                 Admin
                 </NavLink>
             </Menu.Item>}
+
           <Menu.Item key="/profile" style={{ float: 'right' }} className="profile-menu">
             <ProfileDropdownMenu />
           </Menu.Item>
