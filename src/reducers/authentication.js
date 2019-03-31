@@ -10,8 +10,13 @@ import {
   logoutFailure,
   showEditProfileModal,
   clickCancelEditProfile,
-  confirmEditProfile
+  editProfileSuccess,
+  editProfileRequest,
+  editProfileFailure
 } from '../actions/authentication'
+import {
+  bindActionCreators
+} from 'redux';
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -56,6 +61,28 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
 
   [logoutFailure]: (state, action) => {},
 
+  /*
+  -----------------------------------------------
+  Edit User Profile
+  -----------------------------------------------
+  */
+  [editProfileSuccess]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editProfileModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [editProfileRequest]: (state, action) => {
+
+  },
+
+  [editProfileFailure]: (state, action) => {
+
+  },
+
   [showEditProfileModal]: (state, action) => {
     state.editProfileModalVisibility = true;
   },
@@ -63,9 +90,5 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   [clickCancelEditProfile]: (state, action) => {
     state.editProfileModalVisibility = false;
   },
-
-  [confirmEditProfile]: (state, action) => {
-    state.editProfileModalVisibility = false;
-  }
 
 });

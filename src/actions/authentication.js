@@ -15,8 +15,8 @@ export const logoutSuccess = createAction('LOGOUT_SUCCESS');
 export const logoutFailure = createAction('LOGOUT_FAILURE');
 
 export const editProfileRequest = createAction('EDIT_PROFILE_REQUEST');
-export const editProfileSuccess = createAction('EDIT_PROFILE_SUCCESS');
 export const editProfileFailure = createAction('EDIT_PROFILE_FAILURE');
+export const editProfileSuccess = createAction('EDIT_PROFILE_SUCCESS');
 
 export const showEditProfileModal = createAction('SHOW_EDIT_PROFILE_MODAL');
 export const clickCancelEditProfile = createAction('CANCEL_EDIT_PROFILE');
@@ -50,16 +50,21 @@ export const logout = (accessToken) => dispatch => {
     });
 }
 
-export const confirmEditProfile = (accessToken, userID) => dispatch => {
+export const editProfile = (accessToken, userId, user) => dispatch => {
+  let newPassword;
+  if (user.password) {
+    newPassword = user.password
+  }
   dispatch(editProfileRequest());
-  console.log(userID);
-  axios.patch(`${TIMBLIN_URL}/user/${userID.id}?accessToken=${accessToken}`, {
-      userID
+  console.log(user);
+  axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: newPassword
     })
     .then(response => {
-      if (response.status !== 200)
-        throw Error();
-      dispatch(editProfileSuccess())
+      dispatch(editProfileSuccess(response.data))
     })
     .catch(error => {
       dispatch(editProfileFailure(error.message))

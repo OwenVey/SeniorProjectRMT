@@ -30,7 +30,6 @@ class MyDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  accessToken: state.authentication.accessToken,
   users: state.users.users,
   loginUser: state.authentication.loginUser,
   editProfileModalVisibility: state.authentication.editProfileModalVisibility,
