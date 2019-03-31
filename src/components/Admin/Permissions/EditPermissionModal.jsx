@@ -32,27 +32,6 @@ class EditPermissionModal extends Component {
     checkboxes.push(permissionString.includes('M') ? 'Manage' : null)
     checkboxes.push(permissionString.includes('D') ? 'Delete' : null)
     checkboxes.push(permissionString.includes('A') ? 'Admin' : null)
-    // if(permissionString.includes('C'))
-    // {
-    //   checkboxes.push('Create')
-    // }
-    // if(permissionString.includes('R'))
-    // {
-    //   checkboxes.push('Read')
-    // }
-    // if(permissionString.includes('M'))
-    // {
-    //   checkboxes.push('Manage')
-    // }
-    // if(permissionString.includes('D'))
-    // {
-    //   checkboxes.push('Delete')
-    // }
-    // if(permissionString.includes('A'))
-    // {
-    //   checkboxes.push('Admin')
-    // }
-
     return checkboxes;
   }
 
