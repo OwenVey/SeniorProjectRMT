@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
-import { login, showEditProfileModal, clickCancelEditProfile } from "../../../actions/authentication";
+import {  showEditProfileModal, clickCancelEditProfile } from "../../../actions/authentication";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -29,7 +29,21 @@ class EditProfileModal extends Component {
                 bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
             >
                 <Form>
-
+                    <FormItem style={{ marginBottom: "0px" }} label="First Name">
+                        <Input text={this.props.loginUser.firstName} />
+                    </FormItem>
+                    <FormItem style={{ marginBottom: "0px" }} label="Last Name">
+                        <Input text={this.props.loginUser.lastName} />
+                    </FormItem>
+                    <FormItem style={{ marginBottom: "0px" }} label="Email">
+                        <Input text={this.props.loginUser.email} />
+                    </FormItem>
+                    <FormItem style={{ marginBottom: "0px" }} label="Password">
+                        <Input text={this.props.loginUser.password} />
+                    </FormItem>
+                    <FormItem style={{ marginBottom: "0px" }} label="Verify Password">
+                        <Input text={this.props.loginUser.password} />
+                    </FormItem>
                 </Form>
             </Modal>
         );
@@ -39,7 +53,7 @@ class EditProfileModal extends Component {
 const mapStateToProps = state => ({
     accessToken: state.authentication.accessToken,
     loginUser: state.authentication.loginUser,
-    showEditProfileModal: state.authentication.showEditProfileModal,
+    editProfileModalVisibility: state.authentication.editProfileModalVisibility,
     clickCancelEditProfile: state.authentication.clickCancelEditProfile,
 });
 

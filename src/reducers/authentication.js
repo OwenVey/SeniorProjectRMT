@@ -8,7 +8,7 @@ const initialAuthenticationState = {
   loading: false,
   invalidLogin: false,
   loginUser: {},
-  showEditProfileModal: false,
+  editProfileModalVisibility: false,
   clickCancelEditProfile: true,
 }
 
@@ -46,13 +46,10 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [showEditProfileModal]: (state, action) => {
-    state.showEditProfileModal = true;
+    state.editProfileModalVisibility = true;
   },
 
   [clickCancelEditProfile]: (state, action) => {
-    state.clickCancelEditProfile = true;
+    state.editProfileModalVisibility = false;
   }
-
-
-
 });
