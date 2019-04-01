@@ -6,8 +6,8 @@ export const getItemTypesRequest = createAction('GET_ITEM_TYPES_REQUEST');
 export const getItemTypesSuccess = createAction('GET_ITEM_TYPES_SUCCESS');
 export const getItemTypesFailure = createAction('GET_ITEM_TYPES_FAILURE');
 
-export const clickAddItemType = createAction('CLICK_ADD_ITEM_TYPE');
-export const clickCancelAddItemType = createAction('CLICK_CANCEL_ADD_ITEM_TYPE');
+export const showAddItemTypeModal = createAction('CLICK_ADD_ITEM_TYPE');
+export const hideAddItemTypeModal = createAction('CLICK_CANCEL_ADD_ITEM_TYPE');
 
 export const clickEditItemType = createAction('CLICK_EDIT_ITEM_TYPE');
 export const clickCancelEditItemType = createAction('CLICK_CANCEL_EDIT_ITEM_TYPE');
@@ -15,6 +15,9 @@ export const clickCancelEditItemType = createAction('CLICK_CANCEL_EDIT_ITEM_TYPE
 export const addItemTypeRequest = createAction('ADD_ITEM_TYPE_REQUEST');
 export const addItemTypeSuccess = createAction('ADD_ITEM_TYPE_SUCCESS');
 export const addItemTypeFailure = createAction('ADD_ITEM_TYPE_FAILURE');
+
+export const showEditItemTypeModal = createAction("SHOW_EDIT_ITEM_TYPE_MODAL");
+export const hideEditItemTypeModal = createAction("HIDE_EDIT_ITEM_TYPE_MODAL");
 
 export const editItemTypeRequest = createAction('EDIT_ITEM_TYPE_REQUEST');
 export const editItemTypeSuccess = createAction('EDIT_ITEM_TYPE_SUCCESS');
@@ -26,9 +29,18 @@ export const deleteItemTypeFailure = createAction('DELETE_ITEM_TYPE_FAILURE');
 
 export const getItemTypes = accessToken => dispatch => {
   dispatch(getItemTypesRequest());
-  axios.get(`${TIMBLIN_URL}/objecttype?accessToken=${accessToken}`)
+  axios
+    .get(`${TIMBLIN_URL}/objecttype?accessToken=${accessToken}`)
     .then(response => {
-      dispatch(getItemTypesSuccess(response.data.objectTypes))
+      let objectTypes = response.data.objectTypes.map(objectType => {
+        return {
+          ...objectType,      
+        };
+    });
+    if (response.status !== 200) throw Error();
+    console.log(objectTypes)
+      dispatch(getItemTypesSuccess(objectTypes));
+
     })
     .catch(error => {
       dispatch(getItemTypesFailure(error.message))
@@ -52,9 +64,9 @@ export const addItemType = (accessToken, itemType) => dispatch => {
     });
 }
 
-export const editItemType = (projectId, editedItemType, accessToken) => dispatch => {
+export const editItemType = (id, editedItemType, accessToken) => dispatch => {
   dispatch(editItemTypeRequest());
-  axios.patch(`${TIMBLIN_URL}/objectType/${projectId}?accessToken=${accessToken}`, {
+  axios.patch(`${TIMBLIN_URL}/objecttype/${id}?accessToken=${accessToken}`, {
     name: editedItemType.name,
     description: editedItemType.description,
     projectId: editedItemType.projectId,
@@ -68,11 +80,11 @@ export const editItemType = (projectId, editedItemType, accessToken) => dispatch
     });
 };
 
-export const deleteItemType = (accessToken, projectId) => dispatch => {
+export const deleteItemType = (accessToken, itemTypeId) => dispatch => {
   dispatch(deleteItemTypeRequest());
-  axios.delete(`${TIMBLIN_URL}/objectType/${projectId}?accessToken=${accessToken}`)
+  axios.delete(`${TIMBLIN_URL}/objecttype/${itemTypeId}?accessToken=${accessToken}`)
     .then(response => {
-      dispatch(deleteItemTypeSuccess(projectId))
+      dispatch(deleteItemTypeSuccess(itemTypeId))
     })
     .catch(error => {
       dispatch(deleteItemTypeFailure(error.message))

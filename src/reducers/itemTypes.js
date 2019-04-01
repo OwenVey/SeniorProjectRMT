@@ -3,8 +3,6 @@ import {
   getItemTypesRequest,
   getItemTypesSuccess,
   getItemTypesFailure,
-  clickEditItemType,
-  clickCancelEditItemType,
   editItemTypeRequest,
   editItemTypeSuccess,
   editItemTypeFailure,
@@ -14,8 +12,10 @@ import {
   addItemTypeRequest,
   addItemTypeSuccess,
   addItemTypeFailure,
-  clickAddItemType,
-  clickCancelAddItemType,
+  showEditItemTypeModal,
+  showAddItemTypeModal,
+  hideEditItemTypeModal,
+  hideAddItemTypeModal,
 
 } from '../actions/itemTypes'
 
@@ -23,86 +23,88 @@ const initialItemTypesState = {
   loadingItemTypes: true,
   itemTypes: [],
   selectedItemType: {},
-  showEditItemTypeModal: false,
-  showAddItemTypeModal: false,
+
+  editItemTypeModalVisibility: false,
+  addItemTypeModalVisibility: false,
   loadingEdit: false,
-  editError: '',
-  addError: '',
+  patchErrorMessage: '',
+  postErrorMessage: '',
   loadingAdd: false,
+  editItemType: '',
 }
 
 export const itemTypesReducer = createReducer(initialItemTypesState, {
 
   [getItemTypesRequest]: (state, action) => {
-
+    state.loading = true;
+    state.fetchErrorMessage = '';
   },
-
   [getItemTypesSuccess]: (state, action) => {
     state.loadingItemTypes = false;
+    state.loading = false;
     state.itemTypes = action.payload;
   },
-
   [getItemTypesFailure]: (state, action) => {
     state.loadingItemTypes = false;
+    state.loading = false;
+    state.fetchErrorMessage = action.payload;
   },
-
-  [clickEditItemType]: (state, action) => {
-    state.selectedItemType = action.payload;
-    state.showEditItemTypeModal = true;
+  //-------------------------------------------------------------------
+  // Adding An Item Type
+  //-------------------------------------------------------------------
+  [addItemTypeRequest]: (state, action) => {
+    state.loading = true;
+    state.postErrorMessage = '';
   },
-
-  [clickCancelEditItemType]: (state, action) => {
-    state.selectedItemType = {};
-    state.showEditItemTypeModal = false;
+  [addItemTypeSuccess]: (state, action) => {
+    state.loading = false;
+    state.itemTypes.push(action.payload);
+    state.addItemTypeModalVisibility = false;
   },
-
+  [addItemTypeFailure]: (state, action) => {
+    state.loading = false;
+    state.postErrorMessage = action.payload;
+  },
+  [showAddItemTypeModal]: (state, action) => {
+    state.addItemTypeModalVisibility = true;
+  },
+  [hideAddItemTypeModal]: (state, action) => {
+    state.addItemTypeModalVisibility = false;
+  },
+  //-------------------------------------------------------------------
+  // Existing Item Type
+  //-------------------------------------------------------------------
   [editItemTypeRequest]: (state, action) => {
-    state.loadingEdit = true;
+    state.loading = true;
+    state.patchErrorMessage = '';
   },
-
   [editItemTypeSuccess]: (state, action) => {
-    state.loadingEdit = false;
-    const index = state.itemTypes.findIndex(itemType => itemType.projectId === action.payload.projectId);
-    state.projects[index] = action.payload;
-    state.showEditItemTypeModal = false;
+    state.loading = false;
+    state.itemTypes = state.itemTypes.map(itemType =>
+      itemType.id === action.payload.id ? Object.assign(action.payload) : itemType
+    );
+    state.editItemTypeModalVisibility = false;
   },
-
   [editItemTypeFailure]: (state, action) => {
-    state.loadingEdit = false;
-    state.editError = action.payload;
+    state.loading = false;
+    state.patchErrorMessage = action.payload;
   },
-
+  //Modal Switching
+  [showEditItemTypeModal]: (state, action) => {
+    state.editItemType = action.payload;
+    state.editItemTypeModalVisibility = true;
+    state.invalidEditItemType = false;
+  },
+  [hideEditItemTypeModal]: (state, action) => {
+    state.editItemTypeModalVisibility = false;
+  },
+  //Deleting
   [deleteItemTypeRequest]: (state, action) => {
   },
-
   [deleteItemTypeSuccess]: (state, action) => {
     const index = state.itemTypes.findIndex(itemType => itemType.projectId === action.payload);
     state.itemTypes.splice(index, 1);
   },
-
   [deleteItemTypeFailure]: (state, action) => {
-  },
-
-  [addItemTypeRequest]: (state, action) => {
-    state.loadingAdd = true;
-  },
-
-  [addItemTypeSuccess]: (state, action) => {
-    state.loadingAdd = false;
-    state.itemTypes.push(action.payload);
-    state.showAddItemTypeModal = false;
-  },
-
-  [addItemTypeFailure]: (state, action) => {
-    state.loadingAdd = false;
-    state.addError = action.payload;
-  },
-
-  [clickAddItemType]: (state, action) => {
-    state.showAddItemTypeModal = true;
-  },
-
-  [clickCancelAddItemType]: (state, action) => {
-    state.showAddItemTypeModal = false;
   },
 })
