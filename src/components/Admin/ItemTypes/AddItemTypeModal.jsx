@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { Icon, Modal, Input, Select, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
-import { clickCancelAddItemType, addItemType } from '../../../actions/itemTypes';
+import { hideAddItemTypeModal, addItemType } from '../../../actions/itemTypes';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
 class AddItemTypeModal extends Component {
 
-  handleOk = (e) => {
+  handleOk = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.addItemType(this.props.accessToken, values);
       }
-    })
-  }
+    });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -32,10 +32,11 @@ class AddItemTypeModal extends Component {
         }
         onOk={this.handleOk}
         visible={true}
-        onCancel={() => this.props.clickCancelAddItemType()}
+        onCancel={() => this.props.hideAddItemTypeModal()}
         okText="Add"
         maskClosable={false}
         bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
+        okButtonProps={{ loading: this.props.loadingAdd }}
       >
         <Form >
           <FormItem style={{ marginBottom: '0px' }} label="Project" >
@@ -50,7 +51,7 @@ class AddItemTypeModal extends Component {
                 showSearch
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
-                {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
+                {this.props.projects.map(project => (
                   <Option key={project.id} value={project.id}>{`${project.name} (${project.globalId})`}</Option>
                 ))}
               </Select>
@@ -98,8 +99,9 @@ class AddItemTypeModal extends Component {
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   projects: state.projects.projects,
+  loadingAdd: state.itemTypes.loading,
 });
 
-export default connect(mapStateToProps, { clickCancelAddItemType, addItemType })(Form.create()(AddItemTypeModal))
+export default connect(mapStateToProps, { hideAddItemTypeModal, addItemType })(Form.create()(AddItemTypeModal));
 
 
