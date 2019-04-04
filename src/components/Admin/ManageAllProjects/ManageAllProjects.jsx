@@ -8,6 +8,7 @@ import { Resizable } from 'react-resizable';
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
 import { getProjects, clickEditProject, deleteProject, clickAddProject } from '../../../actions/projects'
+import moment from 'moment';
 
 const ResizeableTitle = props => {
 	const { onResize, width, ...restProps } = props;
@@ -306,7 +307,7 @@ class ManageAllProjects extends Component {
 								)}
 						</span>
 					) : (
-							text
+							moment(text).format('MM-DD-YYYY')
 						);
 				},
 			},
@@ -358,7 +359,7 @@ class ManageAllProjects extends Component {
 								)}
 						</span>
 					) : (
-							text
+							text == '0001-01-01' ? moment(text).format('MM-DD-YYYY') : "Not Yet Completed"
 						);
 				},
 			},

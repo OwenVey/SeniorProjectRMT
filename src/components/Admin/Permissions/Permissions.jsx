@@ -159,7 +159,7 @@ class Permissions extends Component {
 								)}
 						</span>
 					) : (
-							moment(text).format('YYYY-MM-DD')
+							moment(text).format('MM-DD-YYYY')
 						);
 				},
 			},
