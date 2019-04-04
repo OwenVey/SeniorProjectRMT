@@ -33,7 +33,7 @@ class EditItemTypeModal extends Component {
             title={
               <>
                 <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-                  <FontAwesomeIcon icon='user' />
+                  <FontAwesomeIcon icon='list' />
                 </Icon>
                 Edit Item Type
               </>

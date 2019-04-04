@@ -47,7 +47,7 @@ class EditProjectModal extends Component {
         title={
           <>
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-              <FontAwesomeIcon icon='user' />
+              <FontAwesomeIcon icon='project-diagram' />
             </Icon>
             Edit Project
           </>

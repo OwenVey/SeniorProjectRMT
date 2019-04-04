@@ -255,7 +255,7 @@ class ManageAllProjects extends Component {
 								)}
 						</span>
 					) : (
-							text
+							moment(text).format('MM-DD-YYYY')
 						);
 				},
 			},
