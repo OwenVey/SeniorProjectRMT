@@ -37,7 +37,7 @@ const AdminSidebar = (props) => {
       </Menu.Item>
 
       <Menu.Item key="manageAllProjects">
-        <Icon><FontAwesomeIcon icon='cogs' /></Icon>
+        <Icon><FontAwesomeIcon icon='project-diagram' /></Icon>
         <span>Manage All Projects</span>
       </Menu.Item>
 

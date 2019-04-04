@@ -30,7 +30,7 @@ class AddUserGroupModal extends Component {
         title={
           <>
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-              <FontAwesomeIcon icon='user' />
+              <FontAwesomeIcon icon='users' />
             </Icon>
             Add User Group
           </>
