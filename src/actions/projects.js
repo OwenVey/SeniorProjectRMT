@@ -19,11 +19,18 @@ export const addProjectRequest = createAction('ADD_PROJECT_REQUEST');
 export const addProjectSuccess = createAction('ADD_PROJECT_SUCCESS');
 export const addProjectFailure = createAction('ADD_PROJECT_FAILURE');
 
+export const branchProjectRequest = createAction('BRANCH_PROJECT_REQUEST');
+export const branchProjectSuccess = createAction('BRANCH_PROJECT_SUCCESS');
+export const branchProjectFailure = createAction('BRANCH_PROJECT_FAILURE');
+
 export const clickEditProject = createAction('CLICK_EDIT_PROJECT');
 export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 
 export const clickAddProject = createAction('CLICK_ADD_PROJECT');
 export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
+
+export const clickAddBranchProject = createAction('CLICK_ADD_BRANCH_PROJECT');
+export const clickCancelAddBranchProject = createAction('CLICK_CANCEL_ADD_BRANCH_PROJECT');
 
 export const getProjects = accessToken => dispatch => {
   dispatch(getProjectsRequest());
@@ -68,6 +75,23 @@ export const editProject = (accessToken, project) => dispatch => {
     })
     .catch(error => {
       dispatch(editProjectFailure(error.message))
+    });
+}
+
+export const branchProject = (accessToken, project) => dispatch => {
+  dispatch(branchProjectRequest());
+  axios.patch(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`, {
+      // globalId: branchInfo.globalId,
+      // name: branchInfo.name,
+      // ownerId: branchInfo.ownerId,
+      // projectId: branchInfo.projectId,
+      // trunkId: branchInfo.trunkId,
+  })
+    .then(response => {
+      dispatch(branchProjectSuccess(response.data))
+    })
+    .catch(error => {
+      dispatch(branchProjectFailure(error.message))
     });
 }
 

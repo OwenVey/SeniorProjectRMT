@@ -16,6 +16,8 @@ import {
   addProjectFailure,
   clickAddProject,
   clickCancelAddProject,
+  clickAddBranchProject,
+  clickCancelAddBranchProject,
 
 } from '../actions/projects'
 
@@ -25,6 +27,7 @@ const initialProjectsState = {
   selectedProject: {},
   showEditProjectModal: false,
   showAddProjectModal: false,
+  showAddBranchProjectModal: false,
   loadingEdit: false,
   editError: '',
   addError: '',
@@ -104,5 +107,13 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [clickCancelAddProject]: (state, action) => {
     state.showAddProjectModal = false;
+  },
+
+  [clickAddBranchProject]: (state, action) => {
+    state.showAddBranchProjectModal = true;
+  },
+
+  [clickCancelAddBranchProject]: (state, action) => {
+    state.showAddBranchProjectModal = false;
   },
 })

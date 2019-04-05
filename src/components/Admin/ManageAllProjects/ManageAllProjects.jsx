@@ -4,10 +4,11 @@ import { Table, Tag, Divider, Button, Input, Icon, Tooltip, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProjectModal from './EditProjectModal.jsx';
 import AddProjectModal from './AddProjectModal.jsx';
+import AddBranchProjectModal from './AddBranchProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
-import { getProjects, clickEditProject, deleteProject, clickAddProject } from '../../../actions/projects'
+import { getProjects, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject} from '../../../actions/projects'
 import moment from 'moment';
 
 const ResizeableTitle = props => {
@@ -33,7 +34,7 @@ class ManageAllProjects extends Component {
 				title: 'Actions',
 				dataIndex: 'id',
 				key: 'id',
-				width: 75,
+				width: 95,
 				align: 'center',
 				render: (id, project) => (
 					<>
@@ -46,6 +47,12 @@ class ManageAllProjects extends Component {
 						<Tooltip title="Delete Project">
 							<Icon onClick={() => this.handleDeleteProject(project)}>
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
+							</Icon>
+						</Tooltip>
+						<Divider type='vertical' />
+						<Tooltip title="Branch Project">
+							<Icon onClick={() => this.props.clickAddBranchProject(project)}>
+								<FontAwesomeIcon icon='code-branch' color='#370682' />
 							</Icon>
 						</Tooltip>
 					</>
@@ -468,6 +475,8 @@ class ManageAllProjects extends Component {
 				/>
 				{this.props.showEditProjectModal && <EditProjectModal />}
 				{this.props.showAddProjectModal && <AddProjectModal />}
+				{this.props.showAddBranchProjectModal && <AddBranchProjectModal />}
+				{}
 			</>
 		);
 	}
@@ -478,7 +487,8 @@ const mapStateToProps = state => ({
 	projects: state.projects.projects,
 	showEditProjectModal: state.projects.showEditProjectModal,
 	showAddProjectModal: state.projects.showAddProjectModal,
+	showAddBranchProjectModal: state.projects.showAddBranchProjectModal,
 	loadingProjects: state.projects.loadingProjects,
 });
 
-export default connect(mapStateToProps, { getProjects, clickEditProject, deleteProject, clickAddProject })(ManageAllProjects);
+export default connect(mapStateToProps, { getProjects, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);
