@@ -4,7 +4,8 @@ class SystemLockedItems extends Component {
     render() {
         return (
             <div>
-                System Locked Items
+                <h1>System Locked Items</h1>
+                <h2>If fully implemented, this page will show information on what objects a user is currently locked from editing.</h2>
             </div>
         )
     }
