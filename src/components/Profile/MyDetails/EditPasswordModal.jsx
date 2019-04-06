@@ -53,7 +53,7 @@ class EditPasswordModal extends Component {
                         <FormItem style={{ marginBottom: "0px" }} label="Verify Password">
                             {getFieldDecorator('password', {
                                 rules: [
-
+                                    { required: true, message: 'Please enter new password' }
                                 ],
                             })(< Input />)
                             }
