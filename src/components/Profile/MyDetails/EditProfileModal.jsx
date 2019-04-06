@@ -22,7 +22,7 @@ class EditProfileModal extends Component {
         return (
             <>
                 <Modal
-                    title={"Hello"}
+                    title={"Edit Profile Details"}
                     onOk={this.handleOkEditProfileModal}
                     visible={true}
                     onCancel={() => this.props.clickCancelEditProfile()}
@@ -91,5 +91,4 @@ const mapStateToProps = state => ({
     id: state.authentication.loginUser,
 });
 
-//export default connect(mapStateToProps, { showEditProfileModal, clickCancelEditProfile })(Form.create()(EditProfileModal))
 export default connect(mapStateToProps, { editProfile, clickCancelEditProfile })(Form.create()(EditProfileModal))

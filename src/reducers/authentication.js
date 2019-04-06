@@ -12,7 +12,12 @@ import {
   clickCancelEditProfile,
   editProfileSuccess,
   editProfileRequest,
-  editProfileFailure
+  editProfileFailure,
+  showEditPasswordModal,
+  clickCancelEditPassword,
+  editPasswordRequest,
+  editPasswordSuccess,
+  editPasswordFailure
 } from '../actions/authentication'
 import {
   bindActionCreators
@@ -26,6 +31,8 @@ const initialAuthenticationState = {
   invalidLogin: false,
   loginUser: {},
   editProfileModalVisibility: false,
+  editPasswordModalVisibility: false,
+  clickCancelEditPassword: true,
   clickCancelEditProfile: true,
 }
 
@@ -59,7 +66,7 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.invalidLogin = false;
   },
 
-  [logoutFailure]: (state, action) => {},
+  [logoutFailure]: (state, action) => { },
 
   /*
   -----------------------------------------------
@@ -89,6 +96,31 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
 
   [clickCancelEditProfile]: (state, action) => {
     state.editProfileModalVisibility = false;
+  },
+
+  [editPasswordSuccess]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editPasswordModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [showEditPasswordModal]: (state, action) => {
+    state.editPasswordModalVisibility = true;
+  },
+
+  [clickCancelEditPassword]: (state, action) => {
+    state.editPasswordModalVisibility = false;
+  },
+
+  [editPasswordRequest]: (state, action) => {
+
+  },
+
+  [editPasswordFailure]: (state, action) => {
+
   },
 
 });
