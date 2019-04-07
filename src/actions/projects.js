@@ -29,9 +29,23 @@ export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 export const clickAddProject = createAction('CLICK_ADD_PROJECT');
 export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
 
+export const getBranchesRequest = createAction('GET_BRANCHES_REQUEST');
+export const getBranchesSuccess = createAction('GET_BRANCHES_SUCCESS');
+export const getBranchesFailure = createAction('GET_BRANCHES_FAILURE');
+
 export const clickAddBranchProject = createAction('CLICK_ADD_BRANCH_PROJECT');
 export const clickCancelAddBranchProject = createAction('CLICK_CANCEL_ADD_BRANCH_PROJECT');
 
+export const getBranches = accessToken => dispatch => {
+  dispatch(getBranchesRequest());
+  axios.get(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`)
+    .then(response => {
+      dispatch(getBranchesSuccess(response.data.branches))
+    })
+    .catch(error => {
+      dispatch(getBranchesFailure(error.message))
+    });
+}
 export const getProjects = accessToken => dispatch => {
   dispatch(getProjectsRequest());
   axios.get(`${TIMBLIN_URL}/project?accessToken=${accessToken}`)
@@ -78,14 +92,14 @@ export const editProject = (accessToken, project) => dispatch => {
     });
 }
 
-export const branchProject = (accessToken, project) => dispatch => {
+export const branchProject = (accessToken, branchInfo, currentUserId, projectId ) => dispatch => {
   dispatch(branchProjectRequest());
-  axios.patch(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`, {
-      // globalId: branchInfo.globalId,
-      // name: branchInfo.name,
-      // ownerId: branchInfo.ownerId,
-      // projectId: branchInfo.projectId,
-      // trunkId: branchInfo.trunkId,
+  axios.post(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`, {
+       globalId: branchInfo.globalId ? branchInfo.globalId: null,
+       name: branchInfo.name,
+       ownerId: currentUserId,
+       projectId: projectId,
+       trunkId: branchInfo.trunkId,
   })
     .then(response => {
       dispatch(branchProjectSuccess(response.data))

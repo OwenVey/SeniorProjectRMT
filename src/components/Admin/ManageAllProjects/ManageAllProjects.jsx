@@ -8,7 +8,7 @@ import AddBranchProjectModal from './AddBranchProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
-import { getProjects, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject} from '../../../actions/projects'
+import { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject} from '../../../actions/projects'
 import moment from 'moment';
 
 const ResizeableTitle = props => {
@@ -24,6 +24,27 @@ const ResizeableTitle = props => {
 		</Resizable>
 	);
 };
+
+/*
+function NestedTable() {
+	const expandedRowRender = () => {
+	  const columns = [
+		{ title: 'Date', dataIndex: 'date', key: 'date' },
+		{ title: 'Name', dataIndex: 'name', key: 'name' },
+		{ title: 'Status', key: 'state', render: () => <span><Badge status="success" />Finished</span> },
+		{ title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+	  ];
+  
+	  return (
+		<Table
+		  columns={columns}
+		  dataSource={data}
+		  pagination={false}
+		/>
+	  );
+	};
+}
+*/
 
 class ManageAllProjects extends Component {
 
@@ -398,6 +419,8 @@ class ManageAllProjects extends Component {
 	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken)
+		if (this.props.branches.length === 0)
+			this.props.getBranches(this.props.accessToken)	
 	}
 
 	handleDeleteProject = (project) => {
@@ -485,10 +508,11 @@ class ManageAllProjects extends Component {
 const mapStateToProps = state => ({
 	accessToken: state.authentication.accessToken,
 	projects: state.projects.projects,
+	branches: state.projects.branches,
 	showEditProjectModal: state.projects.showEditProjectModal,
 	showAddProjectModal: state.projects.showAddProjectModal,
 	showAddBranchProjectModal: state.projects.showAddBranchProjectModal,
 	loadingProjects: state.projects.loadingProjects,
 });
 
-export default connect(mapStateToProps, { getProjects, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);
+export default connect(mapStateToProps, { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);
