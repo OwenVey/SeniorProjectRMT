@@ -8,21 +8,13 @@ const { Option } = Select;
 
 class EditPasswordModal extends Component {
 
-    handleOkEditPasswordModal = (e) => {
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                this.props.EditPasswordModal(this.props.accessToken, this.props.loginUser.id, values);
-            }
-        })
-    }
-
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
             <>
                 <Modal
                     title={"Edit Password"}
-                    onOk={this.handleOkEditPasswordModal}
+                    onOk={this.editPassword}
                     visible={true}
                     onCancel={() => this.props.clickCancelEditPassword()}
                     okText="Confirm"
