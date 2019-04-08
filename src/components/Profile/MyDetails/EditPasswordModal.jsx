@@ -31,31 +31,31 @@ class EditPasswordModal extends Component {
                 >
                     <Form>
                         <FormItem style={{ marginBottom: "0px" }} label="Current Password">
-                            {getFieldDecorator('password', {
+                            {getFieldDecorator('currentPassword', {
                                 rules: [
                                     { required: true, message: 'Please enter new password' }
                                 ],
                                 initialValue: this.props.loginUser.password
                             })
-                                (< Input />)
+                                (< Input type="password" />)
                             }
                         </FormItem>
                         <FormItem style={{ marginBottom: "0px" }} label="New Password">
-                            {getFieldDecorator('password', {
+                            {getFieldDecorator('newPassword', {
                                 rules: [
                                     { required: true, message: 'Please enter new password' }
                                 ],
-                                //initialValue: this.props.loginUser.password
                             })
-                                (< Input />)
+                                (< Input type="password" />)
                             }
                         </FormItem>
                         <FormItem style={{ marginBottom: "0px" }} label="Verify Password">
-                            {getFieldDecorator('password', {
+                            {getFieldDecorator('confirmPassword', {
                                 rules: [
                                     { required: true, message: 'Please enter new password' }
                                 ],
-                            })(< Input />)
+                            })
+                                (< Input type="password" />)
                             }
                         </FormItem>
                     </Form>

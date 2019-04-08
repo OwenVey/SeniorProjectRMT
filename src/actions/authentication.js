@@ -59,9 +59,9 @@ export const logout = (accessToken) => dispatch => {
 
 export const editProfile = (accessToken, userId, user) => dispatch => {
   let newPassword;
-  if (user.password) {
-    newPassword = user.password
-  }
+  // if (user.password) {
+  //   newPassword = user.password
+  // }
   dispatch(editProfileRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
@@ -79,17 +79,18 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
 }
 
 export const editPassword = (accessToken, userId, user) => dispatch => {
-  let newPassword;
+  let confirmPassword;
   if (user.password) {
-    newPassword = user.password
+    if (user.newPassword != user.currentPassword && user.newPassword == user.confirmPassword) {
+      confirmPassword = user.confirmPassword
+    } else {
+      dispatch(editPasswordFailure)
+    }
   }
   dispatch(editPasswordRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
-    // firstName: user.firstName,
-    // lastName: user.lastName,
-    // email: user.email,
-    password: newPassword
+    password: confirmPassword
   })
     .then(response => {
       dispatch(editPasswordSuccess(response.data))
