@@ -14,9 +14,6 @@ import {
   editProfileRequest,
   editProfileFailure
 } from '../actions/authentication'
-import {
-  bindActionCreators
-} from 'redux';
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -59,7 +56,12 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.invalidLogin = false;
   },
 
-  [logoutFailure]: (state, action) => {},
+  [logoutFailure]: (state, action) => {
+    state.accessToken = '';
+    state.isAuthenticated = false;
+    state.redirectToReferrer = false;
+    state.invalidLogin = false;
+  },
 
   /*
   -----------------------------------------------
