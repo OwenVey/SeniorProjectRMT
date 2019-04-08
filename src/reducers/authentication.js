@@ -98,6 +98,12 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.editProfileModalVisibility = false;
   },
 
+  /*
+  -----------------------------------------------
+  Edit User Profile
+  -----------------------------------------------
+  */
+
   [editPasswordSuccess]: (state, action) => {
     if (state.users && state.users.users) {
       const index = state.users.users.findIndex(user => user.id === action.payload.id);
