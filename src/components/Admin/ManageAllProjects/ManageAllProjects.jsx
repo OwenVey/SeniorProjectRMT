@@ -25,27 +25,6 @@ const ResizeableTitle = props => {
 	);
 };
 
-/*
-function NestedTable() {
-	const expandedRowRender = () => {
-	  const columns = [
-		{ title: 'Date', dataIndex: 'date', key: 'date' },
-		{ title: 'Name', dataIndex: 'name', key: 'name' },
-		{ title: 'Status', key: 'state', render: () => <span><Badge status="success" />Finished</span> },
-		{ title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
-	  ];
-  
-	  return (
-		<Table
-		  columns={columns}
-		  dataSource={data}
-		  pagination={false}
-		/>
-	  );
-	};
-}
-*/
-
 class ManageAllProjects extends Component {
 
 	state = {
@@ -55,7 +34,7 @@ class ManageAllProjects extends Component {
 				title: 'Actions',
 				dataIndex: 'id',
 				key: 'id',
-				width: 95,
+				width: 110,
 				align: 'center',
 				render: (id, project) => (
 					<>
@@ -416,6 +395,25 @@ class ManageAllProjects extends Component {
 		],
 	};
 
+  expandedRowRender = (projectId) => {
+	  const columns = [
+		{ title: 'Global ID', dataIndex: 'globalId', key: 'globalId' },
+		{ title: 'Name', dataIndex: 'name', key: 'name' },
+		{ title: 'Owner ID', dataIndex: 'ownerId', key: 'ownerId' },
+    { title: 'Create Date', dataIndex: 'createDate', key: 'createDate' },
+    //{ title: 'Is Locked', dataIndex: 'isLocked', key: 'isLocked' },
+    //{ title: 'Locked By', dataIndex: 'lockedById', key: 'lockedById' },
+    { title: 'Trunk ID', dataIndex: 'trunkId', key: 'trunkId' },
+	  ];
+  
+	  return (
+		<Table
+		  columns={columns}
+		  dataSource={this.props.branches.filter(branch => branch.projectId == projectId)}
+		/>
+	  );
+  };
+  
 	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken)
@@ -492,7 +490,8 @@ class ManageAllProjects extends Component {
 					rowKey={record => record.id}
 					components={this.components}
 					columns={columns}
-					dataSource={this.props.projects}
+          dataSource={this.props.projects}
+          expandedRowRender={record => this.expandedRowRender(record.id)}
 					bordered
 					loading={this.props.loadingProjects}
 				/>
