@@ -66,7 +66,12 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
     state.invalidLogin = false;
   },
 
-  [logoutFailure]: (state, action) => { },
+  [logoutFailure]: (state, action) => {
+    state.accessToken = '';
+    state.isAuthenticated = false;
+    state.redirectToReferrer = false;
+    state.invalidLogin = false;
+  },
 
   /*
   -----------------------------------------------
@@ -97,12 +102,6 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   [clickCancelEditProfile]: (state, action) => {
     state.editProfileModalVisibility = false;
   },
-
-  /*
-  -----------------------------------------------
-  Edit User Profile
-  -----------------------------------------------
-  */
 
   [editPasswordSuccess]: (state, action) => {
     if (state.users && state.users.users) {
