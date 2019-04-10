@@ -4,10 +4,11 @@ import { Table, Tag, Divider, Button, Input, Icon, Tooltip, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProjectModal from './EditProjectModal.jsx';
 import AddProjectModal from './AddProjectModal.jsx';
+import AddBranchProjectModal from './AddBranchProjectModal.jsx';
 import { Resizable } from 'react-resizable';
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
-import { getProjects, clickEditProject, deleteProject, clickAddProject } from '../../../actions/projects'
+import { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject} from '../../../actions/projects'
 import moment from 'moment';
 
 const ResizeableTitle = props => {
@@ -33,7 +34,7 @@ class ManageAllProjects extends Component {
 				title: 'Actions',
 				dataIndex: 'id',
 				key: 'id',
-				width: 75,
+				width: 110,
 				align: 'center',
 				render: (id, project) => (
 					<>
@@ -46,6 +47,12 @@ class ManageAllProjects extends Component {
 						<Tooltip title="Delete Project">
 							<Icon onClick={() => this.handleDeleteProject(project)}>
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
+							</Icon>
+						</Tooltip>
+						<Divider type='vertical' />
+						<Tooltip title="Branch Project">
+							<Icon onClick={() => this.props.clickAddBranchProject(project)}>
+								<FontAwesomeIcon icon='code-branch' color='#370682' />
 							</Icon>
 						</Tooltip>
 					</>
@@ -388,9 +395,30 @@ class ManageAllProjects extends Component {
 		],
 	};
 
+  expandedRowRender = (projectId) => {
+	  const columns = [
+		{ title: 'Global ID', dataIndex: 'globalId', key: 'globalId' },
+		{ title: 'Name', dataIndex: 'name', key: 'name' },
+		{ title: 'Owner ID', dataIndex: 'ownerId', key: 'ownerId' },
+    { title: 'Create Date', dataIndex: 'createDate', key: 'createDate' },
+    //{ title: 'Is Locked', dataIndex: 'isLocked', key: 'isLocked' },
+    //{ title: 'Locked By', dataIndex: 'lockedById', key: 'lockedById' },
+    { title: 'Trunk ID', dataIndex: 'trunkId', key: 'trunkId' },
+	  ];
+  
+	  return (
+		<Table
+		  columns={columns}
+		  dataSource={this.props.branches.filter(branch => branch.projectId == projectId)}
+		/>
+	  );
+  };
+  
 	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken)
+		if (this.props.branches.length === 0)
+			this.props.getBranches(this.props.accessToken)	
 	}
 
 	handleDeleteProject = (project) => {
@@ -462,12 +490,15 @@ class ManageAllProjects extends Component {
 					rowKey={record => record.id}
 					components={this.components}
 					columns={columns}
-					dataSource={this.props.projects}
+          dataSource={this.props.projects}
+          expandedRowRender={record => this.expandedRowRender(record.id)}
 					bordered
 					loading={this.props.loadingProjects}
 				/>
 				{this.props.showEditProjectModal && <EditProjectModal />}
 				{this.props.showAddProjectModal && <AddProjectModal />}
+				{this.props.showAddBranchProjectModal && <AddBranchProjectModal />}
+				{}
 			</>
 		);
 	}
@@ -476,9 +507,11 @@ class ManageAllProjects extends Component {
 const mapStateToProps = state => ({
 	accessToken: state.authentication.accessToken,
 	projects: state.projects.projects,
+	branches: state.projects.branches,
 	showEditProjectModal: state.projects.showEditProjectModal,
 	showAddProjectModal: state.projects.showAddProjectModal,
+	showAddBranchProjectModal: state.projects.showAddBranchProjectModal,
 	loadingProjects: state.projects.loadingProjects,
 });
 
-export default connect(mapStateToProps, { getProjects, clickEditProject, deleteProject, clickAddProject })(ManageAllProjects);
+export default connect(mapStateToProps, { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);

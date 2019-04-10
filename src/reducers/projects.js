@@ -16,19 +16,33 @@ import {
   addProjectFailure,
   clickAddProject,
   clickCancelAddProject,
+  branchProjectRequest,
+  branchProjectSuccess,
+  branchProjectFailure,
+  clickAddBranchProject,
+  clickCancelAddBranchProject,
+  getBranchesRequest,
+  getBranchesSuccess,
+  getBranchesFailure,
 
 } from '../actions/projects'
 
 const initialProjectsState = {
   loadingProjects: true,
+  loadingBranches: true,
   projects: [],
+  branches: [],
   selectedProject: {},
   showEditProjectModal: false,
   showAddProjectModal: false,
+  showAddBranchProjectModal: false,
   loadingEdit: false,
   editError: '',
   addError: '',
+  editBranchError: '',
+  addBranchError: '',
   loadingAdd: false,
+  loadingAddBranch: false,
 }
 
 export const projectsReducer = createReducer(initialProjectsState, {
@@ -104,5 +118,46 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [clickCancelAddProject]: (state, action) => {
     state.showAddProjectModal = false;
+  },
+
+  //--------Branch Stuff ------------------------
+
+  [getBranchesRequest]: (state, action) => {
+
+  },
+
+  [getBranchesSuccess]: (state, action) => {
+    state.loadingBranches = false;
+    state.branches = action.payload;
+  },
+
+  [getBranchesFailure]: (state, action) => {
+    state.selectedProject = {};
+    state.loadingBranches = false;
+  },
+
+  [branchProjectRequest]: (state, action) => {
+    state.loadingAddBranch = true;
+  },
+
+  [branchProjectSuccess]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.branches.push(action.payload);
+    state.showAddBranchProjectModal = false;
+  },
+
+  [branchProjectFailure]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.addBranchError = action.payload;
+  },
+
+  [clickAddBranchProject]: (state, action) => {
+    state.selectedProject = action.payload;
+    state.showAddBranchProjectModal = true;
+  },
+
+  [clickCancelAddBranchProject]: (state, action) => {
+    state.selectedProject = {};
+    state.showAddBranchProjectModal = false;
   },
 })
