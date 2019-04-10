@@ -33,6 +33,7 @@ const initialProjectsState = {
   projects: [],
   branches: [],
   selectedProject: {},
+  selectedBranch: {},
   showEditProjectModal: false,
   showAddProjectModal: false,
   showAddBranchProjectModal: false,
@@ -152,12 +153,12 @@ export const projectsReducer = createReducer(initialProjectsState, {
   },
 
   [clickAddBranchProject]: (state, action) => {
-    state.selectedProject = action.payload;
+    state.selectedBranch = action.payload;
     state.showAddBranchProjectModal = true;
   },
 
   [clickCancelAddBranchProject]: (state, action) => {
-    state.selectedProject = {};
+    state.selectedBranch = {};
     state.showAddBranchProjectModal = false;
   },
 })

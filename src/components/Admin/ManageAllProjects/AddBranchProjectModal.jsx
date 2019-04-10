@@ -11,7 +11,7 @@ class AddBranchProjectModal extends Component {
   handleOkAddBranchProjectModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.branchProject(this.props.accessToken, values, this.props.currentUserId, this.props.selectedProject.id);
+        this.props.branchProject(this.props.accessToken, values, this.props.currentUserId, this.props.selectedBranch);
       }
     })
   }
@@ -34,7 +34,7 @@ class AddBranchProjectModal extends Component {
         okText="Create Branch"
         okButtonProps={{ loading: this.props.loadingAddBranch }}
         maskClosable={false}
-        bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
+        bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', overflowX: 'scroll', paddingTop: 5 }}
       >
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         <Form onSubmit={this.handleOkAddBranchProjectModal} layout={'vertical'}>
@@ -57,24 +57,6 @@ class AddBranchProjectModal extends Component {
               <Input placeholder='Name' />
             )}
           </Form.Item>
-          
-          <Form.Item style={{ marginBottom: '0px' }} label="Trunk" >
-            {getFieldDecorator('trunkId', {
-              rules: [
-                { required: true, message: 'Please select a Trunk' }
-              ],
-            })(
-              <Select
-                placeholder='Please select a trunk'
-                showSearch
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              >
-                {this.props.projectBranches.filter(projectBranch => projectBranch.projectId == this.props.selectedProject.id).map(projectBranch => (
-                  <Option key={projectBranch.id} value={projectBranch.id}>{`${projectBranch.name} (${projectBranch.globalId})`}</Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item> 
         </Form>
       </Modal>
     );
@@ -85,7 +67,7 @@ const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   currentUserId: state.authentication.loginUser.id,
   projectBranches: state.projects.branches,
-  selectedProject: state.projects.selectedProject,
+  selectedBranch: state.projects.selectedBranch,
   loadingAddBranch: state.projects.loadingAddBranch,
   errorMessage: state.projects.addBranchError,
 });

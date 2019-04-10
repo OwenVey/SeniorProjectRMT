@@ -92,14 +92,14 @@ export const editProject = (accessToken, project) => dispatch => {
     });
 }
 
-export const branchProject = (accessToken, branchInfo, currentUserId, projectId ) => dispatch => {
+export const branchProject = (accessToken, branchInfo, currentUserId, trunk ) => dispatch => {
   dispatch(branchProjectRequest());
   axios.post(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`, {
        globalId: branchInfo.globalId ? branchInfo.globalId: null,
        name: branchInfo.name,
        ownerId: currentUserId,
-       projectId: projectId,
-       trunkId: branchInfo.trunkId,
+       projectId: trunk.projectId,
+       trunkId: trunk.id,
   })
     .then(response => {
       dispatch(branchProjectSuccess(response.data))

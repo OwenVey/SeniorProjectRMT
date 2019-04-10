@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
-import { Table, Tag, Divider, Button, Input, Icon, Tooltip, Modal } from 'antd';
+import { Table, Tag, Divider, Button, Input, Icon, Tooltip, Modal, Dropdown, Menu } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProjectModal from './EditProjectModal.jsx';
 import AddProjectModal from './AddProjectModal.jsx';
 import AddBranchProjectModal from './AddBranchProjectModal.jsx';
 import { Resizable } from 'react-resizable';
+import { getUsers } from '../../../actions/users';
 import './ManageAllProjects.css';
 import { connect } from "react-redux";
 import { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject} from '../../../actions/projects'
@@ -49,12 +50,11 @@ class ManageAllProjects extends Component {
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
 							</Icon>
 						</Tooltip>
-						<Divider type='vertical' />
-						<Tooltip title="Branch Project">
+						{/* <Tooltip title="Branch Project">
 							<Icon onClick={() => this.props.clickAddBranchProject(project)}>
 								<FontAwesomeIcon icon='code-branch' color='#370682' />
 							</Icon>
-						</Tooltip>
+						</Tooltip> */}
 					</>
 				),
 			},
@@ -366,7 +366,7 @@ class ManageAllProjects extends Component {
 								)}
 						</span>
 					) : (
-							text == '0001-01-01' ? moment(text).format('MM-DD-YYYY') : "Not Yet Completed"
+							text == '0001-01-01T00:00:00' ? "Not Yet Completed" : moment(text).format('MM-DD-YYYY')
 						);
 				},
 			},
@@ -375,7 +375,6 @@ class ManageAllProjects extends Component {
 				dataIndex: 'isActive',
 				key: 'isActive',
 				align: 'center',
-				width: 100,
 				sorter: (a, b) => (+a.isActive) - (+b.isActive),
 				render: status => {
 					if (status)
@@ -395,19 +394,96 @@ class ManageAllProjects extends Component {
 		],
 	};
 
+  lookupUser(userId) {
+		return this.props.users.filter(user => user.id === userId)[0]
+  }
+
+  branchMenuDropdown = (
+    <Menu>
+      <Menu.Item onClick={(branch) => this.props.clickAddBranchProject(branch)}> 
+        <FontAwesomeIcon  icon='code-branch' color='#370682' /> Branch
+      </Menu.Item>
+      <Menu.Item>
+      <FontAwesomeIcon icon='code-branch' color='#1aa526' /> Merge
+      </Menu.Item>
+      <Menu.Item>
+      <FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /> Delete
+      </Menu.Item>
+    </Menu>
+  )
+  
   expandedRowRender = (projectId) => {
 	  const columns = [
+      {
+				title: 'Actions',
+				dataIndex: 'id',
+				key: 'id',
+				width: 110,
+				align: 'center',
+				render: (id, branch) => (
+					<>
+						<Tooltip title="Edit Project Info">
+							<Icon /*onClick={() => this.props.clickEditProject(branch)}*/>
+								<FontAwesomeIcon icon='edit' color='#1890ff' />
+							</Icon>
+						</Tooltip>
+						<Divider type='vertical' />
+            <Dropdown 
+            overlay={<Menu>
+              <Menu.Item onClick={() => this.props.clickAddBranchProject(branch)}> 
+                <FontAwesomeIcon  icon='code-branch' color='#370682' /> Branch
+              </Menu.Item>
+              <Menu.Item>
+              <FontAwesomeIcon icon='code-branch' color='#1aa526' /> Merge
+              </Menu.Item>
+              <Menu.Item>
+              <FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /> Delete
+              </Menu.Item>
+              </Menu>}>
+              <a href='#none' className="ant-dropdown-link">
+                  <Icon type="down" />
+              </a>
+            </Dropdown>
+					</>
+				),
+			},
 		{ title: 'Global ID', dataIndex: 'globalId', key: 'globalId' },
-		{ title: 'Name', dataIndex: 'name', key: 'name' },
-		{ title: 'Owner ID', dataIndex: 'ownerId', key: 'ownerId' },
-    { title: 'Create Date', dataIndex: 'createDate', key: 'createDate' },
+		{ title: 'Name',  dataIndex: 'name', key: 'name' },
+		{ 
+			title: 'Owner ',  
+			dataIndex: 'ownerId', 
+			key: 'ownerId', 
+		  render: ownerId => {
+        let name = ''
+        if (this.props.users.length !== 0)
+        {
+          let user = this.lookupUser(ownerId)
+          name = `${user.firstName} ${user.lastName}`
+        }
+        return (
+          `${name} (${ownerId})`)
+      }, 
+    },
+
+    { 
+      title: 'Create Date',  
+      dataIndex: 'createDate', 
+      key: 'createDate',
+      render: text => {
+        return moment(text).format('MM-DD-YYYY')
+      }
+    },
+
     //{ title: 'Is Locked', dataIndex: 'isLocked', key: 'isLocked' },
     //{ title: 'Locked By', dataIndex: 'lockedById', key: 'lockedById' },
-    { title: 'Trunk ID', dataIndex: 'trunkId', key: 'trunkId' },
+
+    { title: 'Trunk ID',  dataIndex: 'trunkId', key: 'trunkId' },
 	  ];
   
 	  return (
 		<Table
+		  pagination={{ pageSize: 10 }}
+		  //scroll={{ y: 240 }}
 		  columns={columns}
 		  dataSource={this.props.branches.filter(branch => branch.projectId == projectId)}
 		/>
@@ -416,7 +492,9 @@ class ManageAllProjects extends Component {
   
 	componentWillMount() {
 		if (this.props.projects.length === 0)
-			this.props.getProjects(this.props.accessToken)
+      this.props.getProjects(this.props.accessToken)
+    if (this.props.users.length === 0)
+			this.props.getUsers(this.props.accessToken);
 		if (this.props.branches.length === 0)
 			this.props.getBranches(this.props.accessToken)	
 	}
@@ -483,15 +561,17 @@ class ManageAllProjects extends Component {
 					<Button onClick={() => this.props.clickAddProject()}>
 						<Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
 						Add Project
-        </Button>
+        			</Button>
 				</div>
 
 				<Table
+					scroll={{ x: 400, y: 600 }}
 					rowKey={record => record.id}
+					pagination={{ pageSize: 10 }}
 					components={this.components}
 					columns={columns}
-          dataSource={this.props.projects}
-          expandedRowRender={record => this.expandedRowRender(record.id)}
+          			dataSource={this.props.projects}
+          			expandedRowRender={record => this.expandedRowRender(record.id)}
 					bordered
 					loading={this.props.loadingProjects}
 				/>
@@ -507,11 +587,12 @@ class ManageAllProjects extends Component {
 const mapStateToProps = state => ({
 	accessToken: state.authentication.accessToken,
 	projects: state.projects.projects,
-	branches: state.projects.branches,
+  branches: state.projects.branches,
+  users: state.users.users,
 	showEditProjectModal: state.projects.showEditProjectModal,
 	showAddProjectModal: state.projects.showAddProjectModal,
 	showAddBranchProjectModal: state.projects.showAddBranchProjectModal,
 	loadingProjects: state.projects.loadingProjects,
 });
 
-export default connect(mapStateToProps, { getProjects, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);
+export default connect(mapStateToProps, { getProjects, getUsers, getBranches, clickEditProject, deleteProject, clickAddProject, clickAddBranchProject})(ManageAllProjects);

@@ -54,12 +54,13 @@ class AdminPage extends Component {
     return (
       <div className="admin-page">
         {this.props.adminAccess &&
-          <SplitPane minSize={200} maxSize={-100} defaultSize={"20%"}>
+          <SplitPane minSize={185} maxSize={185} defaultSize={185}>
             <AdminSidebar handlePageChange={this.handlePageChange} />
             {selectedPage}
           </SplitPane>}
         <NoPermissionToAccess />
       </div>
+      
     );
   }
 }
