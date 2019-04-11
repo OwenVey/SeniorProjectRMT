@@ -78,7 +78,7 @@ class Permissions extends Component {
 				render: projectId => {
 					let name = ''
 					if (this.props.projects.length !== 0)
-						name = this.lookupProject(3).name
+						name = this.lookupProject(projectId).name
 					return (
 						name
           )
