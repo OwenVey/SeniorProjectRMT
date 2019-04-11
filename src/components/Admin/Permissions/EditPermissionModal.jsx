@@ -20,7 +20,7 @@ class EditPermissionModal extends Component {
   handleOkEditPermissionModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.editUserProjectPermission(this.props.accessToken, this.props.selectedPermission.userId, values);
+        this.props.editUserProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
       }
     })
   }

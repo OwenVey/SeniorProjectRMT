@@ -27,10 +27,10 @@ export const deletePermissionFailure = createAction('DELETE_PERMISSION_FAILURE')
 
 export const getUserProjectPermissions = (accessToken) => dispatch => {
     dispatch(getUserProjectPermissionsRequest());
-    axios.get(`${TIMBLIN_URL}/projectpermission/3/user?accessToken=${accessToken}`)
-    //axios.get(`${TIMBLIN_URL}/projectpermission/${projectId}/user?accessToken=${accessToken}`) //loop through all projects
+    //axios.get(`${TIMBLIN_URL}/projectpermission/3/user?accessToken=${accessToken}`)
+    axios.get(`${TIMBLIN_URL}/projectpermission?accessToken=${accessToken}`) //loop through all projects
       .then(response => {
-        dispatch(getUserProjectPermissionsSuccess(response.data.permissions))
+        dispatch(getUserProjectPermissionsSuccess(response.data.userPermissions))
       })
       .catch(error => {
         dispatch(getUserProjectPermissionsFailure(error.message))
@@ -67,7 +67,7 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
     });
 }
 
-export const editUserProjectPermission = (accessToken, userProjectPermissionUserId, permission) => dispatch => {
+export const editUserProjectPermission = (accessToken, userProjectPermission, permission) => dispatch => {
   let permissionString = "";
   if(permission.permissions)
   {
@@ -85,8 +85,8 @@ export const editUserProjectPermission = (accessToken, userProjectPermissionUser
   }
 
   dispatch(editUserProjectPermissionRequest());
-  // axios.patch(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`, {
-    axios.patch(`${TIMBLIN_URL}/projectpermission/3/user/${userProjectPermissionUserId}?accessToken=${accessToken}`, {
+   axios.patch(`${TIMBLIN_URL}/projectpermission/${userProjectPermission.projectId}/user/${userProjectPermission.userId}?accessToken=${accessToken}`, {
+  //  axios.patch(`${TIMBLIN_URL}/projectpermission/3/user/${userProjectPermissionUserId}?accessToken=${accessToken}`, {
     permission: permissionString,
     endDate: endDate,
   })
@@ -100,8 +100,8 @@ export const editUserProjectPermission = (accessToken, userProjectPermissionUser
 
 export const deletePermission = (accessToken, permission) => dispatch => {
   dispatch(deletePermissionRequest());
-  // axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`)
-  axios.delete(`${TIMBLIN_URL}/projectpermission/3/user/${permission.userId}?accessToken=${accessToken}`)
+   axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`)
+  //axios.delete(`${TIMBLIN_URL}/projectpermission/3/user/${permission.userId}?accessToken=${accessToken}`)
     .then(response => {
       dispatch(deletePermissionSuccess(permission))
     })
