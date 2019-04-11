@@ -20,7 +20,7 @@ export const editUserFailure = createAction("EDIT_USER_FAILURE");
 
 export const getUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());
-  axios
+  return axios
     .get(`${TIMBLIN_URL}/user?accessToken=${accessToken}`)
     .then(response => {
       //adds additional information to the user array.
@@ -31,7 +31,7 @@ export const getUsers = accessToken => dispatch => {
         };
       });
       if (response.status !== 200) throw Error();
-      dispatch(fetchUsersSuccess(users));
+      dispatch(fetchUsersSuccess(response.data.users));
     })
     .catch(error => {
       dispatch(fetchUsersFailure(error.message));
@@ -40,7 +40,7 @@ export const getUsers = accessToken => dispatch => {
 
 export const addUser = user => dispatch => {
   dispatch(addUserRequest());
-  axios.post(`${TIMBLIN_URL}/register`, {
+  return axios.post(`${TIMBLIN_URL}/register`, {
     email: user.email,
     password: user.password,
     firstName: user.firstName,
@@ -57,7 +57,7 @@ export const addUser = user => dispatch => {
 
 export const editUser = (id, editedUser, accessToken) => dispatch => {
   dispatch(editUserRequest());
-  axios.patch(`${TIMBLIN_URL}/user/${id}?accessToken=${accessToken}`, {
+  return axios.patch(`${TIMBLIN_URL}/user/${id}?accessToken=${accessToken}`, {
     firstName: editedUser.firstName,
     lastName: editedUser.lastName,
     email: editedUser.email,
@@ -65,7 +65,7 @@ export const editUser = (id, editedUser, accessToken) => dispatch => {
     isActive: editedUser.isActive === 'Active' ? true : false,
   })
     .then(response => {
-      dispatch(editUserSuccess(editedUser));
+      dispatch(editUserSuccess(response.data));
     })
     .catch(error => {
       dispatch(editUserFailure(error.message));
