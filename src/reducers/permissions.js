@@ -1,8 +1,8 @@
 import { createReducer } from "redux-starter-kit";
 import {
-    getUserProjectPermissionsRequest,
-    getUserProjectPermissionsSuccess,
-    getUserProjectPermissionsFailure,
+    getProjectPermissionsRequest,
+    getProjectPermissionsSuccess,
+    getProjectPermissionsFailure,
     addUserProjectPermissionRequest,
     addUserProjectPermissionSuccess,
     addUserProjectPermissionFailure,
@@ -23,33 +23,30 @@ const initialPermissionsState = {
     loadingPermissions: false,
     userProjectPermissions: [],
     groupProjectPermissions: [],
-    userObjectPermissions: [],
-    groupObjectPermissions: [],
     loadingAdd: false,
     loadingEdit: false,
     fetchErrorMessage: '',
     addPermissionModalVisibility: false,
-    invalidAddPermission: false,
     addError: '',
     editError: '',
     editPermissionModalVisibility: false,
-    invalidEditPermission: false,
     selectedPermission: {}
 };
 
 export const permissionsReducer = createReducer(initialPermissionsState, {
     //getting Permissions
-    [getUserProjectPermissionsRequest]: (state, action) => {
+    [getProjectPermissionsRequest]: (state, action) => {
         state.loadingPermissions = true;
         state.fetchErrorMessage = '';
     },
 
-    [getUserProjectPermissionsSuccess]: (state, action) => {
+    [getProjectPermissionsSuccess]: (state, action) => {
         state.loadingPermissions = false;
-        state.userProjectPermissions = action.payload;
+        state.userProjectPermissions = action.payload.userProjectPermissions;
+        state.groupProjectPermissions = action.payload.groupProjectPermissions;
     },
 
-    [getUserProjectPermissionsFailure]: (state, action) => {
+    [getProjectPermissionsFailure]: (state, action) => {
         state.loadingPermissions = false;
         state.fetchErrorMessage = action.payload;
     },
@@ -59,6 +56,7 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     //Modal Switching
     [addUserProjectPermissionRequest]: (state, action) => {
         state.loadingAdd = true;
+        state.addError = '';
     },
 
     [addUserProjectPermissionSuccess]: (state, action) => {
