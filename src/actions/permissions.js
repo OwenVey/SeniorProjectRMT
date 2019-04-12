@@ -37,14 +37,6 @@ export const getProjectPermissions = (accessToken) => dispatch => {
 }
 
 export const addUserProjectPermission = (accessToken, permission) => dispatch => {
-  let permissionString = "";
-  if (permission.permission) {
-    permissionString = permission.permission.includes("Create") ? 'C' : ''
-    permissionString += permission.permission.includes("Read") ? 'R' : ''
-    permissionString += permission.permission.includes("Manage") ? 'M' : ''
-    permissionString += permission.permission.includes("Delete") ? 'D' : ''
-    permissionString += permission.permission.includes("Admin") ? 'A' : ''
-  }
 
   let endDate;
   if (permission.endDate) {
@@ -53,7 +45,7 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
 
   dispatch(addUserProjectPermissionRequest());
   return axios.post(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`, {
-    permission: permissionString,
+    permission: permission.permission,
     endDate: endDate,
   })
     .then(response => {
@@ -65,15 +57,6 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
 }
 
 export const editUserProjectPermission = (accessToken, userProjectPermission, permission) => dispatch => {
-  let permissionString = "";
-  if (permission.permission) {
-    permissionString = permission.permission.includes("Create") ? 'C' : ''
-    permissionString += permission.permission.includes("Read") ? 'R' : ''
-    permissionString += permission.permission.includes("Manage") ? 'M' : ''
-    permissionString += permission.permission.includes("Delete") ? 'D' : ''
-    permissionString += permission.permission.includes("Admin") ? 'A' : ''
-  }
-
   let endDate;
   if (permission.endDate) {
     endDate = moment(permission.endDate).subtract(6, "hours")
@@ -81,7 +64,7 @@ export const editUserProjectPermission = (accessToken, userProjectPermission, pe
 
   dispatch(editUserProjectPermissionRequest());
   return axios.patch(`${TIMBLIN_URL}/projectpermission/${userProjectPermission.projectId}/user/${userProjectPermission.userId}?accessToken=${accessToken}`, {
-    permission: permissionString,
+    permission: permission.permission,
     endDate: endDate,
   })
     .then(response => {
