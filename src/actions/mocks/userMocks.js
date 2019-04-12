@@ -172,7 +172,7 @@ export const getUsersMock = {
 }
 
 export const addUserMock = {
-  "id": 15,
+  id: 15,
   "firstName": "test",
   "lastName": "test",
   "email": "test5@test.com",
@@ -182,8 +182,28 @@ export const addUserMock = {
 }
 
 export const editUserMock = {
-  "id": 5,
+  id: 5,
   "firstName": "testttt",
+  "lastName": "Williams",
+  "email": "williams.alex@abort.com",
+  "createDate": "2019-04-04T12:44:35",
+  "isAdmin": false,
+  "isActive": true
+}
+
+export const editUserMock2 = {
+  id: 5,
+  "firstName": "test",
+  "lastName": "Williams",
+  "email": "williams.alex@abort.com",
+  "createDate": "2019-04-04T12:44:35",
+  "isAdmin": false,
+  "isActive": true
+}
+
+export const editUserMock3 = {
+  id: 6,
+  "firstName": "test",
   "lastName": "Williams",
   "email": "williams.alex@abort.com",
   "createDate": "2019-04-04T12:44:35",

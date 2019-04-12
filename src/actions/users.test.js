@@ -38,6 +38,27 @@ describe('User async actions', () => {
     });
   });
 
+  it('creates GET_USERS_FAILURE after failing to fetching users', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: getUsersMock,
+      });
+    });
+
+    const expectedActions = [
+      { type: actions.fetchUsersRequest.toString(), payload: undefined },
+      { type: actions.fetchUsersFailure.toString(), payload: 'Request failed with status code 400' },
+    ];
+
+    const store = mockStore({ users: { users: [] } })
+
+    return store.dispatch(actions.getUsers('2f5426d0-0912-4555-9b24-f637638aba70')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('creates ADD_USER_SUCCESS after successfuly adding a user', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -56,11 +77,41 @@ describe('User async actions', () => {
 
 
     const user = {
-      "firstName": "test",
-      "lastName": "test",
-      "email": "test5@test.com",
-      "password": 'test',
-      "isActive": true
+      firstName: 'test',
+      lastName: 'test',
+      email: 'test5@test.com',
+      password: 'test',
+      isActive: 'Active'
+    }
+
+    return store.dispatch(actions.addUser(user)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('creates ADD_USER_FAILURE after failing to add a user', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: addUserMock,
+      });
+    });
+
+    const expectedActions = [
+      { type: actions.addUserRequest.toString(), payload: undefined },
+      { type: actions.addUserFailure.toString(), payload: 'Request failed with status code 400' },
+    ];
+
+    const store = mockStore({ users: { users: [] } })
+
+
+    const user = {
+      'firstName': 'test',
+      'lastName': 'test',
+      'email': 'test5@test.com',
+      'password': 'test',
+      'isActive': true
     }
 
     return store.dispatch(actions.addUser(user)).then(() => {
@@ -86,7 +137,35 @@ describe('User async actions', () => {
 
 
     const user = {
-      firstName: "testttt",
+      firstName: 'testttt',
+      isActive: 'Active',
+    }
+
+    return store.dispatch(actions.editUser(5, user, '2f5426d0-0912-4555-9b24-f637638aba70')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+
+  it('creates EDIT_USER_FAILURE after failing to edit a user', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: editUserMock,
+      });
+    });
+
+    const expectedActions = [
+      { type: actions.editUserRequest.toString(), payload: undefined },
+      { type: actions.editUserFailure.toString(), payload: 'Request failed with status code 400' },
+    ];
+
+    const store = mockStore({ users: { users: [] } })
+
+
+    const user = {
+      firstName: 'testttt',
     }
 
     return store.dispatch(actions.editUser(5, user, '2f5426d0-0912-4555-9b24-f637638aba70')).then(() => {

@@ -1,6 +1,6 @@
 import { usersReducer } from './users';
 import * as actions from '../actions/users';
-import { getUsersMock, addUserMock, editUserMock } from '../actions/mocks/userMocks';
+import { getUsersMock, addUserMock, editUserMock, editUserMock2, editUserMock3 } from '../actions/mocks/userMocks';
 
 describe('Users Reducer', () => {
 
@@ -128,12 +128,12 @@ describe('Users Reducer', () => {
   it('should handle EDIT_USER_SUCCESS', () => {
     const action = {
       type: actions.editUserSuccess.toString(),
-      payload: editUserMock,
+      payload: editUserMock2,
     };
 
-    expect(usersReducer({ users: [editUserMock] }, action)).toEqual({
+    expect(usersReducer({ users: [editUserMock, editUserMock3] }, action)).toEqual({
       loading: false,
-      users: [action.payload],
+      users: [editUserMock2, editUserMock3],
       editUserModalVisibility: false,
     });
   })

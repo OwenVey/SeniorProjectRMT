@@ -30,7 +30,6 @@ export const getUsers = accessToken => dispatch => {
           userGroups: ["Developer"],
         };
       });
-      if (response.status !== 200) throw Error();
       dispatch(fetchUsersSuccess(response.data.users));
     })
     .catch(error => {
