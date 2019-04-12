@@ -128,42 +128,42 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   //--------Branch Stuff ------------------------
 
-  // [getBranchesRequest]: (state, action) => {
+  [getBranchesRequest]: (state, action) => {
 
-  // },
+  },
 
-  // [getBranchesSuccess]: (state, action) => {
-  //   state.loadingBranches = false;
-  //   state.branches = action.payload;
-  // },
+  [getBranchesSuccess]: (state, action) => {
+    state.loadingBranches = false;
+    state.branches = action.payload;
+  },
 
-  // [getBranchesFailure]: (state, action) => {
-  //   state.selectedProject = {};
-  //   state.loadingBranches = false;
-  // },
+  [getBranchesFailure]: (state, action) => {
+    state.selectedProject = {};
+    state.loadingBranches = false;
+  },
 
-  // [branchProjectRequest]: (state, action) => {
-  //   state.loadingAddBranch = true;
-  // },
+  [branchProjectRequest]: (state, action) => {
+    state.loadingAddBranch = true;
+  },
 
-  // [branchProjectSuccess]: (state, action) => {
-  //   state.loadingAddBranch = false;
-  //   state.branches.push(action.payload);
-  //   state.showAddBranchProjectModal = false;
-  // },
+  [branchProjectSuccess]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.branches.push(action.payload);
+    state.showAddBranchProjectModal = false;
+  },
 
-  // [branchProjectFailure]: (state, action) => {
-  //   state.loadingAddBranch = false;
-  //   state.addBranchError = action.payload;
-  // },
+  [branchProjectFailure]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.addBranchError = action.payload;
+  },
 
-  // [clickAddBranchProject]: (state, action) => {
-  //   state.selectedBranch = action.payload;
-  //   state.showAddBranchProjectModal = true;
-  // },
+  [clickAddBranchProject]: (state, action) => {
+    state.selectedBranch = action.payload;
+    state.showAddBranchProjectModal = true;
+  },
 
-  // [clickCancelAddBranchProject]: (state, action) => {
-  //   state.selectedBranch = {};
-  //   state.showAddBranchProjectModal = false;
-  // },
+  [clickCancelAddBranchProject]: (state, action) => {
+    state.selectedBranch = {};
+    state.showAddBranchProjectModal = false;
+  },
 })
