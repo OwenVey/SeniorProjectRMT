@@ -38,12 +38,12 @@ export const getProjectPermissions = (accessToken) => dispatch => {
 
 export const addUserProjectPermission = (accessToken, permission) => dispatch => {
   let permissionString = "";
-  if (permission.permissions) {
-    permissionString = permission.permissions.includes("Create") ? 'C' : ''
-    permissionString += permission.permissions.includes("Read") ? 'R' : ''
-    permissionString += permission.permissions.includes("Manage") ? 'M' : ''
-    permissionString += permission.permissions.includes("Delete") ? 'D' : ''
-    permissionString += permission.permissions.includes("Admin") ? 'A' : ''
+  if (permission.permission) {
+    permissionString = permission.permission.includes("Create") ? 'C' : ''
+    permissionString += permission.permission.includes("Read") ? 'R' : ''
+    permissionString += permission.permission.includes("Manage") ? 'M' : ''
+    permissionString += permission.permission.includes("Delete") ? 'D' : ''
+    permissionString += permission.permission.includes("Admin") ? 'A' : ''
   }
 
   let endDate;
@@ -66,12 +66,12 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
 
 export const editUserProjectPermission = (accessToken, userProjectPermission, permission) => dispatch => {
   let permissionString = "";
-  if (permission.permissions) {
-    permissionString = permission.permissions.includes("Create") ? 'C' : ''
-    permissionString += permission.permissions.includes("Read") ? 'R' : ''
-    permissionString += permission.permissions.includes("Manage") ? 'M' : ''
-    permissionString += permission.permissions.includes("Delete") ? 'D' : ''
-    permissionString += permission.permissions.includes("Admin") ? 'A' : ''
+  if (permission.permission) {
+    permissionString = permission.permission.includes("Create") ? 'C' : ''
+    permissionString += permission.permission.includes("Read") ? 'R' : ''
+    permissionString += permission.permission.includes("Manage") ? 'M' : ''
+    permissionString += permission.permission.includes("Delete") ? 'D' : ''
+    permissionString += permission.permission.includes("Admin") ? 'A' : ''
   }
 
   let endDate;

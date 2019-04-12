@@ -32,8 +32,8 @@ export const addUserProjectPermissionMock = {
 export const editUserProjectPermissionMock = {
   "userId": 3,
   "projectId": 2,
-  "permission": "CRMD",
-  "endDate": "2019-04-12T16:41:24"
+  "permission": "CRMDA",
+  "endDate": "2020-04-12T16:41:24"
 }
 
 export const deletePermissionMock = {

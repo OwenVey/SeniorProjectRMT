@@ -60,12 +60,12 @@ class EditPermissionModal extends Component {
         <div style={{ color: 'red' }}>{this.props.editError}</div>
         <Form onSubmit={this.handleOkEditPermissionModal} layout={'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Permissions">
-            {getFieldDecorator('permissions', {
+            {getFieldDecorator('permission', {
               rules: [
               ],
               initialValue: this.getPermissionCheckboxes(this.props.selectedPermission.permission)
             })(
-              <Checkbox.Group style={{ width: "100%"}}>
+              <Checkbox.Group style={{ width: "100%" }}>
                 <Row>
                   <Col span={8}><Checkbox value="Create">Create</Checkbox></Col>
                   <Col span={8}><Checkbox value="Read">Read</Checkbox></Col>

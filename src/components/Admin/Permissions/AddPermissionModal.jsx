@@ -58,7 +58,7 @@ class AddPermissionModal extends Component {
       >
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         <Form onSubmit={this.handleOkAddPermissionModal}>
-        <FormItem style={{ marginBottom: '0px' }} label="Project" >
+          <FormItem style={{ marginBottom: '0px' }} label="Project" >
             {getFieldDecorator('projectId', {
               rules: [
                 { required: true, message: 'Please select a Project' }
@@ -70,7 +70,7 @@ class AddPermissionModal extends Component {
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
                 {/* {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => ( */}
-                  {this.props.projects.map(project => (
+                {this.props.projects.map(project => (
                   <Option key={project.id} value={project.id}>{`${project.name} (${project.globalId})`}</Option>
                 ))}
               </Select>
@@ -88,18 +88,18 @@ class AddPermissionModal extends Component {
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
                 {/* {this.props.users.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(user => ( */}
-                  {this.props.users.map(user => (
+                {this.props.users.map(user => (
                   <Option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName} (${user.id})`}</Option>
                 ))}
               </Select>
             )}
           </FormItem>
           <Form.Item style={{ marginBottom: '0px' }} label="Permissions">
-            {getFieldDecorator('permissions', {
+            {getFieldDecorator('permission', {
               rules: [
               ],
             })(
-              <Checkbox.Group style={{ width: "100%"}}>
+              <Checkbox.Group style={{ width: "100%" }}>
                 <Row>
                   <Col span={8}><Checkbox value="Create">Create</Checkbox></Col>
                   <Col span={8}><Checkbox value="Read">Read</Checkbox></Col>
@@ -131,7 +131,7 @@ const mapStateToProps = state => ({
   loadingAdd: state.permissions.loadingAdd,
   errorMessage: state.permissions.addError,
   projects: state.projects.projects,
-	users: state.users.users,
+  users: state.users.users,
 });
 
 export default connect(mapStateToProps, { clickCancelAddPermission, addUserProjectPermission })(Form.create()(AddPermissionModal));

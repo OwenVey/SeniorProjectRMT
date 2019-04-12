@@ -113,7 +113,13 @@ describe('Permission async actions', () => {
 
     const store = mockStore({ permissions: { userProjectPermissions: [], groupProjectPermissions: [] } })
 
-    return store.dispatch(actions.addUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', addUserProjectPermissionMock)).then(() => {
+    const userProjectPermission = {
+      "userId": 3,
+      "projectId": 2,
+      "permission": "",
+    }
+
+    return store.dispatch(actions.addUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -135,14 +141,15 @@ describe('Permission async actions', () => {
     const store = mockStore({ permissions: { userProjectPermsissions: [] } })
 
     const userProjectPermission = {
-      "permission": "CRMD",
+      "permission": "CRMDA",
+      "endDate": "2020-04-12T16:41:24"
     }
 
     const oldPermission = {
-      userId: 3,
-      projectId: 2,
-      permission: "CRD",
-      endDate: "2019-04-12T16:41:24"
+      "userId": 3,
+      "projectId": 2,
+      "permission": "CRD",
+      "endDate": "2019-04-12T16:41:24"
     }
 
     return store.dispatch(actions.editUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
@@ -168,14 +175,18 @@ describe('Permission async actions', () => {
 
     const store = mockStore({ permissions: { userProjectPermissions: [], groupProjectPermissions: [] } })
 
-    const oldPermission = {
-      userId: 3,
-      projectId: 2,
-      permission: "CRD",
-      endDate: "2019-04-12T16:41:24"
+    const userProjectPermission = {
+      "permission": "",
     }
 
-    return store.dispatch(actions.editUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, { permission: 'RMCDA' })).then(() => {
+    const oldPermission = {
+      "userId": 3,
+      "projectId": 2,
+      "permission": "CRD",
+      "endDate": "2019-04-12T16:41:24"
+    }
+
+    return store.dispatch(actions.editUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
