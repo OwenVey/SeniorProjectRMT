@@ -32,7 +32,7 @@ describe('Project async actions', () => {
     
         const projectsStore = mockStore({ projects: { projects: [] } })
     
-        return projectsStore.dispatch(actions.getProjects('2f5426d0-0912-4555-9b24-f637638aba70')).then(() => {
+        return projectsStore.dispatch(actions.getProjects('3r285qk7-9538-6533-7e96-u549021crn76')).then(() => {
           expect(projectsStore.getActions()).toEqual(expectedActions);
         });
       });
@@ -61,7 +61,7 @@ describe('Project async actions', () => {
             "description": "Test",
         }
     
-        return projectStore.dispatch(actions.addProject('2f5426d0-0912-4555-9b24-f637638aba70',project)).then(() => {
+        return projectStore.dispatch(actions.addProject('3r285qk7-9538-6533-7e96-u549021crn76',project)).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
       });
@@ -87,7 +87,7 @@ describe('Project async actions', () => {
           name: "projectTest",
         }
     
-        return projectStore.dispatch(actions.editProject('2f5426d0-0912-4555-9b24-f637638aba70', project )).then(() => {
+        return projectStore.dispatch(actions.editProject('3r285qk7-9538-6533-7e96-u549021crn76', project )).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
     });
@@ -113,7 +113,7 @@ describe('Project async actions', () => {
             id: 5
         }
     
-        return projectStore.dispatch(actions.deleteProject('2f5426d0-0912-4555-9b24-f637638aba70', projectToDelete.id )).then(() => {
+        return projectStore.dispatch(actions.deleteProject('3r285qk7-9538-6533-7e96-u549021crn76', projectToDelete.id )).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
     });
@@ -144,7 +144,7 @@ describe('Project Failure async actions', () => {
     
         const projectsStore = mockStore({ projects: { projects: [] } })
     
-        return projectsStore.dispatch(actions.getProjects('2f5426d0-0912-4555-9b24-f637638aba70')).then(() => {
+        return projectsStore.dispatch(actions.getProjects('3r285qk7-9538-6533-7e96-u549021crn76')).then(() => {
           expect(projectsStore.getActions()).toEqual(expectedActions);
         });
       });
@@ -173,7 +173,7 @@ describe('Project Failure async actions', () => {
             "description": "Test",
         }
     
-        return projectStore.dispatch(actions.addProject('2f5426d0-0912-4555-9b24-f637638aba70', project)).then(() => {
+        return projectStore.dispatch(actions.addProject('3r285qk7-9538-6533-7e96-u549021crn76', project)).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
       });
@@ -199,7 +199,7 @@ describe('Project Failure async actions', () => {
           name: "projectTest",
         }
     
-        return projectStore.dispatch(actions.editProject('2f5426d0-0912-4555-9b24-f637638aba70', project )).then(() => {
+        return projectStore.dispatch(actions.editProject('3r285qk7-9538-6533-7e96-u549021crn76', project )).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
     });
@@ -225,7 +225,7 @@ describe('Project Failure async actions', () => {
             id: 5
         }
     
-        return projectStore.dispatch(actions.deleteProject('2f5426d0-0912-4555-9b24-f637638aba70', projectToDelete.id )).then(() => {
+        return projectStore.dispatch(actions.deleteProject('3r285qk7-9538-6533-7e96-u549021crn76', projectToDelete.id )).then(() => {
           expect(projectStore.getActions()).toEqual(expectedActions);
         });
     });
