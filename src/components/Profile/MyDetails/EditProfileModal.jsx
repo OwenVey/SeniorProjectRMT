@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Input, Select, Form } from 'antd';
+import { Modal, Input, Select, Form, Alert } from 'antd';
 import { connect } from 'react-redux';
 import { clickCancelEditProfile, editProfile } from "../../../actions/authentication";
 
@@ -13,9 +13,14 @@ class EditProfileModal extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.editProfile(this.props.accessToken, this.props.loginUser.id, values);
+                console.log("EDIT_PROFILE_SUCCESS");
             }
         })
     }
+
+    onClose = (e) => {
+        console.log(e, 'I was closed.');
+    };
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -49,33 +54,6 @@ class EditProfileModal extends Component {
                                 initialValue: this.props.loginUser.lastName
                             })
                                 (< Input />)
-                            }
-                        </FormItem>
-                        <FormItem style={{ marginBottom: "0px" }} label="Email">
-                            {getFieldDecorator('email', {
-                                rules: [
-                                    { required: true, message: 'Please enter email' }
-                                ],
-                                initialValue: this.props.loginUser.email
-                            })
-                                (< Input />)
-                            }
-                        </FormItem>
-                        <FormItem style={{ marginBottom: "0px" }} label="Password">
-                            {getFieldDecorator('password', {
-                                rules: [
-
-                                ],
-                            })
-                                (< Input />)
-                            }
-                        </FormItem>
-                        <FormItem style={{ marginBottom: "0px" }} label="Verify Password">
-                            {getFieldDecorator('password', {
-                                rules: [
-
-                                ],
-                            })(< Input />)
                             }
                         </FormItem>
                     </Form>

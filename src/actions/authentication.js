@@ -58,20 +58,15 @@ export const logout = (accessToken) => dispatch => {
 }
 
 export const editProfile = (accessToken, userId, user) => dispatch => {
-  let newPassword;
-  // if (user.password) {
-  //   newPassword = user.password
-  // }
   dispatch(editProfileRequest());
-  console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
+
       firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: newPassword
+      lastName: user.lastName
     })
     .then(response => {
       dispatch(editProfileSuccess(response.data))
+
     })
     .catch(error => {
       dispatch(editProfileFailure(error.message))
