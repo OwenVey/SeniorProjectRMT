@@ -8,6 +8,21 @@ const { Option } = Select;
 
 class EditPasswordModal extends Component {
 
+    state = {
+        newPassword: '',
+        confirmPassword: '',
+    }
+
+    // handleSubmit = () => {
+    //     const { password, confirmPassword } = this.state;
+    //     // perform all neccassary validations
+    //     if (password !== confirmPassword) {
+    //         alert("Passwords don't match");
+    //     } else {
+    //         // make API call
+    //     }
+    // }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (

@@ -31,9 +31,9 @@ export const clickCancelEditPassword = createAction('CANCEL_EDIT_PASSWORD');
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   axios.post(`${TIMBLIN_URL}/login`, {
-    email,
-    password
-  })
+      email,
+      password
+    })
     .then(response => {
       dispatch(loginSuccess(response.data))
     })
@@ -45,8 +45,8 @@ export const login = (email, password) => dispatch => {
 export const logout = (accessToken) => dispatch => {
   dispatch(logoutRequest());
   axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
-    accessToken
-  })
+      accessToken
+    })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -65,11 +65,11 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
   dispatch(editProfileRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: newPassword
-  })
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: newPassword
+    })
     .then(response => {
       dispatch(editProfileSuccess(response.data))
     })
@@ -83,6 +83,7 @@ export const editPassword = (accessToken, userId, user) => dispatch => {
   if (user.password) {
     if (user.newPassword != user.currentPassword && user.newPassword == user.confirmPassword) {
       confirmPassword = user.confirmPassword
+      console.log("confirmed!")
     } else {
       dispatch(editPasswordFailure)
     }
@@ -90,8 +91,8 @@ export const editPassword = (accessToken, userId, user) => dispatch => {
   dispatch(editPasswordRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
-    password: confirmPassword
-  })
+      password: confirmPassword
+    })
     .then(response => {
       dispatch(editPasswordSuccess(response.data))
     })
