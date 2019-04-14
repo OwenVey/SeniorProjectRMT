@@ -3,9 +3,10 @@ import { Divider, Table, Button, Modal, Icon, Tooltip } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ItemTypes.css';
 import { connect } from "react-redux";
-import { getItemTypes, clickAddItemType, deleteItemType } from '../../../actions/itemTypes';
+import { getItemTypes, showEditItemTypeModal, showAddItemTypeModal, deleteItemType } from '../../../actions/itemTypes';
 import { getProjects } from '../../../actions/projects';
 import AddItemTypeModal from './AddItemTypeModal';
+import EditItemTypeModal from "./EditItemTypeModal";
 
 class ItemTypes extends Component {
 
@@ -20,7 +21,7 @@ class ItemTypes extends Component {
         render: (id, itemType) => (
           <>
             <Tooltip title="Edit Item Type">
-              <Icon onClick={() => { }}>
+              <Icon onClick={() => this.props.showEditItemTypeModal(itemType)}>
                 <FontAwesomeIcon icon='edit' color='#1890ff' />
               </Icon>
             </Tooltip>
@@ -61,7 +62,7 @@ class ItemTypes extends Component {
   componentWillMount() {
     if (this.props.itemTypes.length === 0)
       this.props.getItemTypes(this.props.accessToken);
-    if (this.props.projects.length === 0)
+    // if (this.props.projects.length === 0)
       this.props.getProjects(this.props.accessToken);
   }
 
@@ -73,7 +74,7 @@ class ItemTypes extends Component {
       okType: 'danger',
       cancelText: 'Cancel',
       onOk: () => {
-        this.props.deleteItemType(itemType.id)
+        this.props.deleteItemType(this.props.accessToken, itemType.id)
       },
       onCancel: () => {
       }
@@ -88,10 +89,11 @@ class ItemTypes extends Component {
           <div style={{ flex: 1, justifyContent: 'flex-start' }}>
             <h2>Item Types</h2>
           </div>
-          <Button onClick={() => this.props.clickAddItemType()}>
+          <Button onClick={() => this.props.showAddItemTypeModal()}>
             <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
             Add Item Type
           </Button>
+          {this.props.addItemTypeModalVisible && <AddItemTypeModal />}
         </div>
 
         <Table
@@ -102,8 +104,7 @@ class ItemTypes extends Component {
           bordered
           loading={this.props.loadingItemTypes}
         />
-
-        {this.props.showAddItemTypeModal && <AddItemTypeModal />}
+        {this.props.editItemTypeModalVisible && <EditItemTypeModal />}
       </>
     );
   }
@@ -112,9 +113,10 @@ class ItemTypes extends Component {
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
   itemTypes: state.itemTypes.itemTypes,
-  showAddItemTypeModal: state.itemTypes.showAddItemTypeModal,
+  addItemTypeModalVisible: state.itemTypes.addItemTypeModalVisibility,
+  editItemTypeModalVisible: state.itemTypes.editItemTypeModalVisibility,
   loadingItemTypes: state.itemTypes.loadingItemTypes,
-  projects: state.projects.projects,
+  //projects: state.projects.projects,
 });
 
-export default connect(mapStateToProps, { getItemTypes, clickAddItemType, deleteItemType, getProjects })(ItemTypes)
+export default connect(mapStateToProps, { getItemTypes, showAddItemTypeModal, showEditItemTypeModal, getProjects, deleteItemType })(ItemTypes)

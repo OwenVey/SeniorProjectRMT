@@ -4,74 +4,61 @@ import { Layout, Menu } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Navbar.css';
 import ProfileDropdownMenu from './ProfileDropdownMenu';
-
+import { connect } from "react-redux";
 const { Header } = Layout;
 
 class Navbar extends Component {
 
   render() {
     let href = window.location.pathname;
-    if (window.location.pathname === '/login') return null;
     return (
-      <Header style={{ justifyContent: 'center' }} className='header'>
+      this.props.navBarVisibility &&
+      <Header style={{ justifyContent: 'center', display: 'inline' }} className='header'>
 
         <div className='logo-group'>
           <FontAwesomeIcon size='2x' color='#1890ff' icon='pencil-alt' />
           <span className='logo-text'>Requirements Tool</span>
         </div>
 
+        <Menu
+          theme='dark'
+          mode='horizontal'
+          selectedKeys={[href]}
+          styles={{ verticalAlign: 'top' }}>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-
-          <div style={{ display: 'inline' }}>
-            <Menu
-              className='menu'
-              theme='dark'
-              mode='horizontal'
-              selectedKeys={[href]}
-              style={{ width: 'fit-content', height: '50px', display: 'inline-block', verticalAlign: 'top' }}>
-
-              <Menu.Item className='menu-item' key='/home'>
-                <NavLink to='/home'>
-                  <FontAwesomeIcon className='navbar-icon' icon='home' />
-                  Home
+          <Menu.Item className='menu-item' key='/home' >
+            <NavLink to='/home'>
+              <FontAwesomeIcon className='navbar-icon' icon='home' />
+              Home
                 </NavLink>
-              </Menu.Item>
+          </Menu.Item>
 
-              <Menu.Item className='menu-item' key='/project' >
-                <NavLink to='/project'>
-                  <FontAwesomeIcon className='navbar-icon' icon='archive' />
-                  Projects
+          <Menu.Item className='menu-item' key='/project' >
+            <NavLink to='/project'>
+              <FontAwesomeIcon className='navbar-icon' icon='archive' />
+              Projects
                 </NavLink>
-              </Menu.Item>
-
-              <Menu.Item className='menu-item' key='/admin'>
-                <NavLink to='/admin'>
-                  <FontAwesomeIcon className='navbar-icon' icon='lock' />
-                  Admin
+          </Menu.Item>
+          {this.props.adminAccess &&
+            <Menu.Item className='menu-item' key='/admin'>
+              <NavLink to='/admin'>
+                <FontAwesomeIcon className='navbar-icon' icon='lock' />
+                Admin
                 </NavLink>
-              </Menu.Item>
-            </Menu>
-          </div>
+            </Menu.Item>}
 
-          <div style={{ display: 'inline' }}>
-            <Menu
-              className='menu'
-              theme='dark'
-              mode='horizontal'
-              selectedKeys={[href]}
-              style={{ width: 'fit-content', height: '50px', display: 'inline-block', verticalAlign: 'top' }}
-            >
-              <Menu.Item key="/profile" style={{ paddingLeft: 10, paddingRight: 0 }} className="profile-menu">
-                <ProfileDropdownMenu />
-              </Menu.Item>
-            </Menu>
-          </div>
-
-        </div>
+          <Menu.Item key="/profile" style={{ float: 'right' }} className="profile-menu">
+            <ProfileDropdownMenu />
+          </Menu.Item>
+        </Menu>
       </Header>
     )
   }
 }
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+  adminAccess: state.authentication.loginUser.isAdmin,
+  navBarVisibility: state.authentication.isAuthenticated,
+})
+
+export default connect(mapStateToProps)(Navbar)

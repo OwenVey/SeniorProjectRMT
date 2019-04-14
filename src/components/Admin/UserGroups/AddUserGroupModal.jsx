@@ -30,7 +30,7 @@ class AddUserGroupModal extends Component {
         title={
           <>
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-              <FontAwesomeIcon icon='user' />
+              <FontAwesomeIcon icon='users' />
             </Icon>
             Add User Group
           </>
@@ -56,8 +56,8 @@ class AddUserGroupModal extends Component {
                 showSearch
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               >
-                {this.props.projects.sort((a, b) => a.name.localeCompare(b.name)).map(project => (
-                  <Option key={project.id} value={project.id}>{project.name}</Option>
+                {this.props.projects.map(project => (
+                  <Option key={project.id} value={project.id}>{`${project.name} (${project.globalId})`}</Option>
                 ))}
               </Select>
             )}

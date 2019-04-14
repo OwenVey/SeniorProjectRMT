@@ -16,25 +16,42 @@ import {
   addProjectFailure,
   clickAddProject,
   clickCancelAddProject,
+  branchProjectRequest,
+  branchProjectSuccess,
+  branchProjectFailure,
+  clickAddBranchProject,
+  clickCancelAddBranchProject,
+  getBranchesRequest,
+  getBranchesSuccess,
+  getBranchesFailure,
 
 } from '../actions/projects'
 
 const initialProjectsState = {
-  loadingProjects: true,
+  loadingProjects: false,
+  loadingBranches: true,
   projects: [],
+  branches: [],
   selectedProject: {},
+  selectedBranch: {},
   showEditProjectModal: false,
   showAddProjectModal: false,
+  showAddBranchProjectModal: false,
   loadingEdit: false,
+  getErrorMessage: '',
   editError: '',
   addError: '',
+  editBranchError: '',
+  addBranchError: '',
   loadingAdd: false,
+  loadingAddBranch: false,
 }
 
 export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsRequest]: (state, action) => {
-
+    state.loadingProjects = true;
+    state.getErrorMessage = '';
   },
 
   [getProjectsSuccess]: (state, action) => {
@@ -44,6 +61,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsFailure]: (state, action) => {
     state.loadingProjects = false;
+    state.getErrorMessage = action.payload;
   },
 
   [clickEditProject]: (state, action) => {
@@ -57,6 +75,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
   },
 
   [editProjectRequest]: (state, action) => {
+    state.editError = '';
     state.loadingEdit = true;
   },
 
@@ -85,6 +104,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [addProjectRequest]: (state, action) => {
     state.loadingAdd = true;
+    state.addError = '';
   },
 
   [addProjectSuccess]: (state, action) => {
@@ -104,5 +124,46 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [clickCancelAddProject]: (state, action) => {
     state.showAddProjectModal = false;
+  },
+
+  //--------Branch Stuff ------------------------
+
+  [getBranchesRequest]: (state, action) => {
+
+  },
+
+  [getBranchesSuccess]: (state, action) => {
+    state.loadingBranches = false;
+    state.branches = action.payload;
+  },
+
+  [getBranchesFailure]: (state, action) => {
+    state.selectedProject = {};
+    state.loadingBranches = false;
+  },
+
+  [branchProjectRequest]: (state, action) => {
+    state.loadingAddBranch = true;
+  },
+
+  [branchProjectSuccess]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.branches.push(action.payload);
+    state.showAddBranchProjectModal = false;
+  },
+
+  [branchProjectFailure]: (state, action) => {
+    state.loadingAddBranch = false;
+    state.addBranchError = action.payload;
+  },
+
+  [clickAddBranchProject]: (state, action) => {
+    state.selectedBranch = action.payload;
+    state.showAddBranchProjectModal = true;
+  },
+
+  [clickCancelAddBranchProject]: (state, action) => {
+    state.selectedBranch = {};
+    state.showAddBranchProjectModal = false;
   },
 })
