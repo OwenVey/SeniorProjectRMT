@@ -28,7 +28,7 @@ import {
 } from '../actions/projects'
 
 const initialProjectsState = {
-  loadingProjects: true,
+  loadingProjects: false,
   loadingBranches: true,
   projects: [],
   branches: [],
@@ -38,6 +38,7 @@ const initialProjectsState = {
   showAddProjectModal: false,
   showAddBranchProjectModal: false,
   loadingEdit: false,
+  getErrorMessage: '',
   editError: '',
   addError: '',
   editBranchError: '',
@@ -49,7 +50,8 @@ const initialProjectsState = {
 export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsRequest]: (state, action) => {
-
+    state.loadingProjects = true;
+    state.getErrorMessage = '';
   },
 
   [getProjectsSuccess]: (state, action) => {
@@ -59,6 +61,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsFailure]: (state, action) => {
     state.loadingProjects = false;
+    state.getErrorMessage = action.payload;
   },
 
   [clickEditProject]: (state, action) => {
@@ -72,6 +75,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
   },
 
   [editProjectRequest]: (state, action) => {
+    state.editError = '';
     state.loadingEdit = true;
   },
 
@@ -100,6 +104,7 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [addProjectRequest]: (state, action) => {
     state.loadingAdd = true;
+    state.addError = '';
   },
 
   [addProjectSuccess]: (state, action) => {
