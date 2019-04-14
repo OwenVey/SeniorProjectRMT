@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ExportButtonExcel from '../ExportExcel/ExportExcel';
 
 import './SearchBar.css';
 
@@ -18,6 +19,10 @@ class SearchBar extends Component {
           </div>
 
           <div className='searchgroup'>
+            <div className='tempExportButton'>
+              <ExportButtonExcel />
+            </div>
+
             <div>
               <Input.Search
                 style={{ width: '300px' }}
