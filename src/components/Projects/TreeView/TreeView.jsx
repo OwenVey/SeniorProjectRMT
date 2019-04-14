@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
-import { getTree, addTreeNode } from "../../../actions/tree";
+import { getTree, getChildren } from "../../../actions/tree";
 
 const TreeNode = Tree.TreeNode;
 const dataList = [];
@@ -48,7 +48,7 @@ class TreeView extends Component {
   }
 
   componentWillMount() {
-    this.props.getTree(this.props.accessToken, 2);
+    this.props.getTree(this.props.accessToken, 4);
   }
 
   onExpand = (expandedKeys) => {
@@ -203,27 +203,8 @@ class TreeView extends Component {
       resolve();
       return;
     }
-    setTimeout(() => {
-
-      const newNode = [
-        {
-          "fileName": "note",
-          "globalId": "1",
-          "id": 5,
-          "listing": 0,
-          "name": "test2",
-          "parentId": 4,
-          "projectId": 2,
-          "text": "test2",
-          "typeId": 1,
-          isLeaf: true,
-        }
-      ];
-      console.log(treeNode)
-      this.props.addTreeNode({ nodeId: treeNode.props.dataRef.id, newNode });
-
-      resolve();
-    }, 1000);
+    this.props.getChildren(this.props.accessToken, 4, treeNode.props.dataRef.id);
+    resolve();
   });
 
   renderTreeNodes = data => data.map((item) => {
@@ -295,5 +276,5 @@ const mapStateToProps = state => ({
   tree: state.tree.tree,
 });
 
-export default connect(mapStateToProps, { getTree, addTreeNode })(TreeView);
+export default connect(mapStateToProps, { getTree, getChildren })(TreeView);
 
