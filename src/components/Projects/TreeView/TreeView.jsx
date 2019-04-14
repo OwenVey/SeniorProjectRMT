@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Menu, Tree, Input, Dropdown, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
+import { connect } from "react-redux";
+import { getTree, getChildren } from "../../../actions/tree";
 
 const TreeNode = Tree.TreeNode;
 const dataList = [];
@@ -44,6 +45,10 @@ class TreeView extends Component {
       rightClickedTreeNode: null,
     };
     generateList(this.state.treeData);
+  }
+
+  componentWillMount() {
+    this.props.getTree(this.props.accessToken, 4);
   }
 
   onExpand = (expandedKeys) => {
@@ -133,8 +138,8 @@ class TreeView extends Component {
   }
 
   onSelect = (e) => {
-    const selectedKey = e[0];
-    let selectedNode = this.getSelectedNode(selectedKey, this.state.treeData);
+    const selectedKey = Number(e[0]);
+    let selectedNode = this.getSelectedNode(selectedKey, this.props.tree);
     this.props.handleItemSelect(selectedNode);
   }
 
@@ -142,7 +147,7 @@ class TreeView extends Component {
     let selectedNode;
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
-      if (node.key === key) {
+      if (node.id === key) {
         selectedNode = node;
       } else if (node.children && this.getSelectedNode(key, node.children)) {
         selectedNode = this.getSelectedNode(key, node.children);
@@ -152,16 +157,17 @@ class TreeView extends Component {
   }
 
   onRightClickTreeNode = ({ node }) => {
-    this.setState({ rightClickedTreeNode: node.props.eventKey })
+    this.setState({ rightClickedTreeNode: Number(node.props.eventKey) })
   }
 
   showDeleteModal = (e) => {
     e.domEvent.stopPropagation();
-    let selectedNode = this.getSelectedNode(this.state.rightClickedTreeNode, this.state.treeData);
+    let selectedNode = this.getSelectedNode(this.state.rightClickedTreeNode, this.props.tree);
 
     Modal.confirm({
       title: 'Delete',
-      content: selectedNode.children ? 'Are you sure delete the item "' + selectedNode.title + '" and its children?' : 'Are you sure you want to delete the item "' + selectedNode.title + '"?',
+      content: selectedNode.children ? 'Are you sure delete the item "' + selectedNode.name + '" and its children?'
+        : 'Are you sure you want to delete the item "' + selectedNode.name + '"?',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -192,72 +198,17 @@ class TreeView extends Component {
     }
   }
 
-  /* This ensures that fetchTree is called.
-  */
-  componentWillMount() {
-    this.fetchTree();
-  }
+  onLoadData = treeNode => new Promise((resolve) => {
+    if (treeNode.props.children) {
+      resolve();
+      return;
+    }
+    this.props.getChildren(this.props.accessToken, 4, treeNode.props.dataRef.id);
+    resolve();
+  });
 
-  /* This uses an access token and the database URL to retrieve object information.
-   * The information is then inserted into the tree and the treeData state.
-  */
-  fetchTree = () => {
-    console.log(this.props.accessToken);
-    const projectURL = `https://senior-design.timblin.org/api/project?accessToken=${this.props.accessToken}`;
-    axios
-      .get(projectURL)
-      .then(response => {
-        let projects = response.data.projects.map(project => {
-          let project_id = project.id;
-          const objectForProjectURL = `https://senior-design.timblin.org/api/object/${project_id}?accessToken=${this.props.accessToken}`;
-          var objects = null;
-          axios
-            .get(objectForProjectURL)
-            .then(response => {
-              objects = this.insertLevel(null, response.data.objects);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-          return {
-            key: project.global_id,
-            title: project.name,
-            children: objects,
-          }
-        })
-        this.setState({ treeData: projects });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+  renderTreeNodes = data => data.map((item) => {
 
-  /* This method uses a parentID and an array of objects to determine which objects have a parent.
-   * The method inserts the child into the array at the appropriate level.
-   * If there are no children, the children field is set to null.
-   * If there are children, the correct children, keys, title, and parents are set and pushed to
-   * * the appropriate level in the tree.
-  */
-  insertLevel = (parentID, objects) => {
-    var level = []
-    objects.forEach(object => {
-      if (object.parent === parentID) {
-        let children = this.insertLevel(object.id, objects);
-        if (children.length === 0)
-          children = null;
-        level.push({
-          ...object,
-          children: children,
-          key: object.global_id,
-          title: object.name,
-          parent: parentID
-        })
-      }
-    })
-    return level;
-  }
-
-  render() {
     const rightClickTreeNodeMenu = (
       <Menu>
         <Menu.Item key="1">Open</Menu.Item>
@@ -265,41 +216,46 @@ class TreeView extends Component {
         <Menu.Item key="3" onClick={this.showDeleteModal}>Delete</Menu.Item>
       </Menu>
     );
+    const { searchValue } = this.state;
+    const index = item.name.toLowerCase().indexOf(searchValue.toLowerCase());
+    const beforeStr = item.name.substr(0, index);
+    const middleStr = item.name.substr(index, searchValue.length);
+    const afterStr = item.name.substr(index + searchValue.length);
+    const name = index > -1 ?
+      <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}>
+        <span style={{ padding: '0px 30px', margin: '0px -30px' }}>
+          {beforeStr}
+          <span style={{ color: '#f50' }}>{middleStr}</span>
+          {afterStr}
+        </span>
+      </Dropdown>
+      :
+      <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}>
+        <span style={{ padding: '0px 30px', margin: '0px -30px' }}>{item.name}</span>
+      </Dropdown>
 
-    const { searchValue, expandedKeys, autoExpandParent } = this.state;
+    if (item.children) {
+      return (
+        <TreeNode key={item.id} title={name} dataRef={item} isLeaf={item.isLeaf} icon={<FontAwesomeIcon icon={item.fileName} />}>
+          {this.renderTreeNodes(item.children)}
+        </TreeNode>
+      );
+    }
+    return <TreeNode key={item.id} title={name} dataRef={item} isLeaf={item.isLeaf} icon={<FontAwesomeIcon icon={item.fileName} />} />;
+  });
 
-    const loop = data => data.map((item) => {
-      const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
-      const beforeStr = item.title.substr(0, index);
-      const middleStr = item.title.substr(index, searchValue.length);
-      const afterStr = item.title.substr(index + searchValue.length);
-      const title = index > -1 ? (
-        <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}>
-          <span style={{ padding: '0px 30px', margin: '0px -30px' }}>
-            {beforeStr}
-            <span style={{ color: '#f50' }}>{middleStr}</span>
-            {afterStr}
-          </span>
-        </Dropdown>
-      ) : <Dropdown overlay={rightClickTreeNodeMenu} trigger={['contextMenu']}><span style={{ padding: '0px 30px', margin: '0px -30px' }}>{item.title}</span></Dropdown>;
-      if (item.children) {
-        return (
-          <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />}>
-            {loop(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode key={item.key} title={title} icon={<FontAwesomeIcon icon={item.icon} />} />;
-    });
+
+  render() {
 
     return (
       <div>
         <div style={{ margin: '10px 10px 0px' }}><Input.Search placeholder="Search" onChange={this.onChange} /></div>
         <Tree.DirectoryTree
+          loadData={this.onLoadData}
           onExpand={this.onExpand}
-          expandedKeys={expandedKeys}
-          defaultSelectedKeys={['0-0']}
-          autoExpandParent={autoExpandParent}
+          expandedKeys={this.state.expandedKeys}
+          defaultSelectedKeys={['']}
+          autoExpandParent={this.state.autoExpandParent}
           draggable
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
@@ -307,7 +263,7 @@ class TreeView extends Component {
           onSelect={this.onSelect}
           onRightClick={this.onRightClickTreeNode}
         >
-          {loop(this.state.treeData)}
+          {this.renderTreeNodes(this.props.tree)}
         </Tree.DirectoryTree>
 
       </div>
@@ -315,4 +271,10 @@ class TreeView extends Component {
   }
 }
 
-export default TreeView;
+const mapStateToProps = state => ({
+  accessToken: state.authentication.accessToken,
+  tree: state.tree.tree,
+});
+
+export default connect(mapStateToProps, { getTree, getChildren })(TreeView);
+
