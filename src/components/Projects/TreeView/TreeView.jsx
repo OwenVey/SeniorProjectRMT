@@ -236,12 +236,12 @@ class TreeView extends Component {
 
     if (item.children) {
       return (
-        <TreeNode key={item.id} title={name} dataRef={item} icon={<FontAwesomeIcon icon={item.fileName} />}>
+        <TreeNode key={item.id} title={name} dataRef={item} isLeaf={item.isLeaf} icon={<FontAwesomeIcon icon={item.fileName} />}>
           {this.renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode key={item.id} title={name} dataRef={item} icon={<FontAwesomeIcon icon={item.fileName} />} />;
+    return <TreeNode key={item.id} title={name} dataRef={item} isLeaf={item.isLeaf} icon={<FontAwesomeIcon icon={item.fileName} />} />;
   });
 
 

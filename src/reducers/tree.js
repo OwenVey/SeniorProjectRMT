@@ -3,6 +3,7 @@ import { getTreeRequest, getTreeSuccess, getTreeFailure, getChildrenRequest, get
 
 const initialTreeState = {
   tree: [],
+  test: false,
 
 }
 
@@ -25,7 +26,7 @@ export const treeReducer = createReducer(initialTreeState, {
   },
 
   [getChildrenSuccess]: (state, action) => {
-    state.tree[0].children = action.payload;
+    state.tree[0].children = action.payload.children;
   },
 
   [getChildrenFailure]: (state, action) => {
