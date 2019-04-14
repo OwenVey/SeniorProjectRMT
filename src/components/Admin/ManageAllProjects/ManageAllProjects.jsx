@@ -9,6 +9,7 @@ import './ManageAllProjects.css';
 import { connect } from "react-redux";
 import { getProjects, clickEditProject, deleteProject, clickAddProject } from '../../../actions/projects'
 import moment from 'moment';
+import 
 
 const ResizeableTitle = props => {
 	const { onResize, width, ...restProps } = props;
