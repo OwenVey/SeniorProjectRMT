@@ -14,7 +14,6 @@ export const getTree = (accessToken, projectId) => dispatch => {
   dispatch(getTreeRequest());
   axios.get(`${ABORTPLATTEVILLE_URL}/getChildren?accessToken=${accessToken}&projectId=${projectId}`)
     .then(response => {
-      //response.data[0].isLeaf = true;
       dispatch(getTreeSuccess(response.data))
     })
     .catch(error => {
@@ -26,8 +25,8 @@ export const getChildren = (accessToken, projectId, parentId) => dispatch => {
   dispatch(getChildrenRequest());
   axios.get(`${ABORTPLATTEVILLE_URL}/getChildren?accessToken=${accessToken}&projectId=${projectId}&parentId=${parentId}`)
     .then(response => {
-      //response.data[0].isLeaf = true;
-      dispatch(getChildrenSuccess(response.data))
+      response.data.map(node => node.isLeaf = !node.hasChildren)
+      dispatch(getChildrenSuccess({ parentId, children: response.data }))
     })
     .catch(error => {
       dispatch(getChildrenFailure(error.message))
