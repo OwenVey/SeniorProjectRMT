@@ -54,8 +54,7 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
   dispatch(editProfileRequest());
   return axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
     firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email
+    lastName: user.lastName
   })
     .then(response => {
       dispatch(editProfileSuccess(response.data));

@@ -17,20 +17,20 @@ describe('User async actions', () => {
         moxios.uninstall();
     });
 
-    it('creates LOGIN_SUCCESS after successfully logging in', () => {
-        moxios.wait(() => {
-            const request = moxios.requests.mostRecent();
-            request.respondWith({
-                status: 200,
-                response: loginSuccessMock,
-            });
-        })
+    // it('creates LOGIN_SUCCESS after successfully logging in', () => {
+    //     moxios.wait(() => {
+    //         const request = moxios.requests.mostRecent();
+    //         request.respondWith({
+    //             status: 200,
+    //             response: loginRequestMock,
+    //         });
+    //     })
 
-        const expectedActions = [
-            { type: actions.loginRequest.toString(), payload: undefined },
-            { type: actions.loginSuccess.toString(), payload: loginRequestMock },
-        ]
-    })
+    //     const expectedActions = [
+    //         { type: actions.loginRequest.toString(), payload: undefined },
+    //         { type: actions.loginSuccess.toString(), payload: loginRequestMock },
+    //     ]
+    // });
 
     it('creates EDIT_PROFILE_SUCCESS after successfuly editing profile (first name and last name)', () => {
         moxios.wait(() => {
@@ -46,21 +46,22 @@ describe('User async actions', () => {
             { type: actions.editProfileSuccess.toString(), payload: editFirstLastMock },
         ];
 
-        const profileStore = mockStore({ users: { users: [] } })
+        const profileStore = mockStore({ users: { loginUser: {} } })
 
-        return profileStore.dispatch(actions.editProfile('3r285qk7-9538-6533-7e96-u549021crn76')).then(() => {
+        const edits = {
+            firstName: 'default',
+            lastName: "a"
+        }
+
+        const currentUser = {
+            "id": 1
+        }
+
+        return profileStore.dispatch(actions.editProfile('3r285qk7-9538-6533-7e96-u549021crn76', currentUser.id, edits)).then(() => {
             expect(profileStore.getActions()).toEqual(expectedActions);
         });
 
-        const user = {
-            "id": 17,
-            "firstName": "Testing",
-            "lastName": "Tester",
-            "email": "TestTestTest7",
-            // "createDate": "2019-04-12T10:02:51",
-            // "isAdmin": false,
-            // "isActive": false
-        }
+
     });
 });
 
