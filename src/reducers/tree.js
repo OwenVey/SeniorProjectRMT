@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit'
-import { getTreeRequest, getTreeSuccess, getTreeFailure, addTreeNode } from '../actions/tree'
+import { getTreeRequest, getTreeSuccess, getTreeFailure, getChildrenRequest, getChildrenSuccess, getChildrenFailure } from '../actions/tree'
 
 const initialTreeState = {
   tree: [],
@@ -12,6 +12,7 @@ export const treeReducer = createReducer(initialTreeState, {
   },
 
   [getTreeSuccess]: (state, action) => {
+    console.log(action.payload)
     state.tree = action.payload;
   },
 
@@ -19,10 +20,15 @@ export const treeReducer = createReducer(initialTreeState, {
     console.log(action.payload)
   },
 
-  [addTreeNode]: (state, action) => {
+  [getChildrenRequest]: (state, action) => {
 
+  },
 
-    state.tree[0].children = action.payload.newNode;
+  [getChildrenSuccess]: (state, action) => {
+    state.tree[0].children = action.payload;
+  },
+
+  [getChildrenFailure]: (state, action) => {
 
   },
 
