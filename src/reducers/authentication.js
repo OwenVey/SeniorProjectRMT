@@ -17,7 +17,10 @@ import {
   clickCancelEditPassword,
   editPasswordRequest,
   editPasswordSuccess,
-  editPasswordFailure
+  editPasswordFailure,
+  checkPasswordRequest,
+  checkPasswordSuccess,
+  checkPasswordFailure,
 } from '../actions/authentication'
 import {
   bindActionCreators
@@ -130,7 +133,30 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   },
 
   [editPasswordFailure]: (state, action) => {
+    state.editPasswordModalVisibility = true;
+    state.loginUser = action.payload;
+  },
+
+  /*
+  -----------------------------------------------
+  Check user password
+  -----------------------------------------------
+  */
+  [checkPasswordRequest]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editPasswordModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [checkPasswordSuccess]: (state, action) => {
 
   },
+
+  [checkPasswordFailure]: (state, action) => {
+
+  }
 
 });
