@@ -12,8 +12,19 @@ import {
   clickCancelEditProfile,
   editProfileSuccess,
   editProfileRequest,
-  editProfileFailure
+  editProfileFailure,
+  showEditPasswordModal,
+  clickCancelEditPassword,
+  editPasswordRequest,
+  editPasswordSuccess,
+  editPasswordFailure,
+  checkPasswordRequest,
+  checkPasswordSuccess,
+  checkPasswordFailure,
 } from '../actions/authentication'
+import {
+  bindActionCreators
+} from 'redux';
 
 const initialAuthenticationState = {
   accessToken: '',
@@ -23,6 +34,8 @@ const initialAuthenticationState = {
   invalidLogin: false,
   loginUser: {},
   editProfileModalVisibility: false,
+  editPasswordModalVisibility: false,
+  clickCancelEditPassword: true,
   clickCancelEditProfile: true,
 }
 
@@ -93,5 +106,58 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   [clickCancelEditProfile]: (state, action) => {
     state.editProfileModalVisibility = false;
   },
+
+  /*
+  -----------------------------------------------
+  Change user password
+  -----------------------------------------------
+  */
+  [editPasswordSuccess]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editPasswordModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [showEditPasswordModal]: (state, action) => {
+    state.editPasswordModalVisibility = true;
+  },
+
+  [clickCancelEditPassword]: (state, action) => {
+    state.editPasswordModalVisibility = false;
+  },
+
+  [editPasswordRequest]: (state, action) => {
+
+  },
+
+  [editPasswordFailure]: (state, action) => {
+    state.editPasswordModalVisibility = true;
+    state.loginUser = action.payload;
+  },
+
+  /*
+  -----------------------------------------------
+  Check user password
+  -----------------------------------------------
+  */
+  [checkPasswordRequest]: (state, action) => {
+    if (state.users && state.users.users) {
+      const index = state.users.users.findIndex(user => user.id === action.payload.id);
+      state.users[index] = action.payload;
+    }
+    state.editPasswordModalVisibility = false;
+    state.loginUser = action.payload;
+  },
+
+  [checkPasswordSuccess]: (state, action) => {
+
+  },
+
+  [checkPasswordFailure]: (state, action) => {
+
+  }
 
 });
