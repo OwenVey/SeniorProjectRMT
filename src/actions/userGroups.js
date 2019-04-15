@@ -20,7 +20,7 @@ export const editUserGroupFailure = createAction('EDIT_USER_GROUP_FAILURE');
 
 export const getUserGroups = accessToken => dispatch => {
   dispatch(getUserGroupsRequest());
-  axios.get(`${TIMBLIN_URL}/group?accessToken=${accessToken}`)
+  return axios.get(`${TIMBLIN_URL}/group?accessToken=${accessToken}`)
     .then(response => {
       dispatch(getUserGroupsSuccess(response.data.groups))
     })
@@ -31,7 +31,7 @@ export const getUserGroups = accessToken => dispatch => {
 
 export const addUserGroup = (accessToken, userGroup) => dispatch => {
   dispatch(addUserGroupRequest());
-  axios.post(`${TIMBLIN_URL}/group?accessToken=${accessToken}`,
+  return axios.post(`${TIMBLIN_URL}/group?accessToken=${accessToken}`,
     {
       projectID: userGroup.projectId,
       name: userGroup.name,
@@ -47,7 +47,7 @@ export const addUserGroup = (accessToken, userGroup) => dispatch => {
 
 export const editUserGroup = (accessToken, userGroupId, userGroup) => dispatch => {
   dispatch(editUserGroupRequest());
-  axios.patch(`${TIMBLIN_URL}/Group/${userGroupId}?accessToken=${accessToken}`, {
+  return axios.patch(`${TIMBLIN_URL}/Group/${userGroupId}?accessToken=${accessToken}`, {
     name: userGroup.name,
     description: userGroup.description,
     projectId: userGroup.projectId

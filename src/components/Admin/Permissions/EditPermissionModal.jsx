@@ -20,6 +20,15 @@ class EditPermissionModal extends Component {
   handleOkEditPermissionModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        let permissionString = "";
+        if (values.permission) {
+          permissionString = values.permission.includes("Create") ? 'C' : ''
+          permissionString += values.permission.includes("Read") ? 'R' : ''
+          permissionString += values.permission.includes("Manage") ? 'M' : ''
+          permissionString += values.permission.includes("Delete") ? 'D' : ''
+          permissionString += values.permission.includes("Admin") ? 'A' : ''
+        }
+        values.permission = permissionString;
         this.props.editUserProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
       }
     })
@@ -60,12 +69,12 @@ class EditPermissionModal extends Component {
         <div style={{ color: 'red' }}>{this.props.editError}</div>
         <Form onSubmit={this.handleOkEditPermissionModal} layout={'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Permissions">
-            {getFieldDecorator('permissions', {
+            {getFieldDecorator('permission', {
               rules: [
               ],
               initialValue: this.getPermissionCheckboxes(this.props.selectedPermission.permission)
             })(
-              <Checkbox.Group style={{ width: "100%"}}>
+              <Checkbox.Group style={{ width: "100%" }}>
                 <Row>
                   <Col span={8}><Checkbox value="Create">Create</Checkbox></Col>
                   <Col span={8}><Checkbox value="Read">Read</Checkbox></Col>

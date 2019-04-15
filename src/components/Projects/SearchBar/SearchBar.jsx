@@ -1,8 +1,27 @@
 import React, { Component } from "react";
-import { Input } from 'antd';
+import { Input, Upload, message, Icon, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ExportButtonExcel from '../ExportExcel/ExportExcel';
 
 import './SearchBar.css';
+
+const uploadProps = {
+  name: 'file',
+  action: '//jsonplaceholder.typicode.com/posts/',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
 
 class SearchBar extends Component {
 
@@ -18,6 +37,17 @@ class SearchBar extends Component {
           </div>
 
           <div className='searchgroup'>
+            <div className='tempImportButton'>
+              <Upload {...uploadProps}>
+                <Button>
+                  <Icon type="upload" /> Import CSV
+                </Button>
+              </Upload>,
+            </div>
+            <div className='tempExportButton'>
+              <ExportButtonExcel />
+            </div>
+
             <div>
               <Input.Search
                 style={{ width: '300px' }}

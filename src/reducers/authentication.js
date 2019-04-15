@@ -82,6 +82,7 @@ export const authenticationReducer = createReducer(initialAuthenticationState, {
   -----------------------------------------------
   */
   [editProfileSuccess]: (state, action) => {
+    state.loading = false;
     if (state.users && state.users.users) {
       const index = state.users.users.findIndex(user => user.id === action.payload.id);
       state.users[index] = action.payload;

@@ -31,7 +31,7 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
 
   // GET users
   [getUserGroupsRequest]: (state, action) => {
-
+    state.loadingUserGroups = true;
   },
 
   [getUserGroupsSuccess]: (state, action) => {
@@ -63,6 +63,7 @@ export const userGroupsReducer = createReducer(initialUserGroupsState, {
   },
 
   [addUserGroupFailure]: (state, action) => {
+    state.loadingAdd = false;
     state.addError = action.payload;
   },
 

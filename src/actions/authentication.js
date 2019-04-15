@@ -34,10 +34,10 @@ export const clickCancelEditPassword = createAction('CANCEL_EDIT_PASSWORD');
 
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
-  axios.post(`${TIMBLIN_URL}/login`, {
-      email,
-      password
-    })
+  return axios.post(`${TIMBLIN_URL}/login`, {
+    email,
+    password
+  })
     .then(response => {
       dispatch(loginSuccess(response.data))
     })
@@ -48,9 +48,9 @@ export const login = (email, password) => dispatch => {
 
 export const logout = (accessToken) => dispatch => {
   dispatch(logoutRequest());
-  axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
-      accessToken
-    })
+  return axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
+    accessToken
+  })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -63,6 +63,7 @@ export const logout = (accessToken) => dispatch => {
 
 export const editProfile = (accessToken, userId, user) => dispatch => {
   dispatch(editProfileRequest());
+
   axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
 
       firstName: user.firstName,
@@ -71,9 +72,10 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
     .then(response => {
       dispatch(editProfileSuccess(response.data))
 
+
     })
     .catch(error => {
-      dispatch(editProfileFailure(error.message))
+      dispatch(editProfileFailure(error.message));
     });
 }
 
