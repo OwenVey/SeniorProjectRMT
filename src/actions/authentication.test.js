@@ -1,3 +1,4 @@
+//Test file written by Samantha Murphy
 import * as actions from '../actions/authentication';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
