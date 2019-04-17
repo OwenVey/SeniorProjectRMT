@@ -49,12 +49,12 @@ describe('User async actions', () => {
         const profileStore = mockStore({ users: { loginUser: {} } })
 
         const edits = {
-            firstName: 'default',
+            firstName: "default",
             lastName: "a"
         }
 
         const currentUser = {
-            "id": 1
+            id: 1
         }
 
         return profileStore.dispatch(actions.editProfile('3r285qk7-9538-6533-7e96-u549021crn76', currentUser.id, edits)).then(() => {
