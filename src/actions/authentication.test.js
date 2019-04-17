@@ -17,20 +17,26 @@ describe('User async actions', () => {
         moxios.uninstall();
     });
 
-    // it('creates LOGIN_SUCCESS after successfully logging in', () => {
-    //     moxios.wait(() => {
-    //         const request = moxios.requests.mostRecent();
-    //         request.respondWith({
-    //             status: 200,
-    //             response: loginRequestMock,
-    //         });
-    //     })
+    it('creates LOGIN_SUCCESS after successfully logging in', () => {
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent();
+            request.respondWith({
+                status: 200,
+                response: loginRequestMock,
+            });
+        })
 
-    //     const expectedActions = [
-    //         { type: actions.loginRequest.toString(), payload: undefined },
-    //         { type: actions.loginSuccess.toString(), payload: loginRequestMock },
-    //     ]
-    // });
+        const expectedActions = [
+            { type: actions.loginRequest.toString(), payload: undefined },
+            { type: actions.loginSuccess.toString(), payload: loginRequestMock },
+        ]
+
+        const loginStore = mockStore({ users: { loginUser: {} } })
+
+        return loginStore.dispatch(actions.login('3r285qk7-9538-6533-7e96-u549021crn76', loginRequestMock.loginUser.id, loginRequestMock.loginUser)).then(() => {
+            expect(loginStore.getActions()).toEqual(expectedActions);
+        });
+    });
 
     it('creates EDIT_PROFILE_SUCCESS after successfuly editing profile (first name and last name)', () => {
         moxios.wait(() => {
