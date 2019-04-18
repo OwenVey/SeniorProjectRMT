@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Icon, Modal, Input, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
-import { clickCancelAddBranchProject, branchProject } from '../../../actions/projects'
+import { clickCancelEditBranch, editBranch } from '../../../actions/projects'
 
-class AddBranchProjectModal extends Component {
+class EditBranchModal extends Component {
 
-  handleOkAddBranchProjectModal = (e) => {
+  handleOkEditBranchModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.branchProject(this.props.accessToken, values, this.props.currentUserId, this.props.selectedBranch);
+        this.props.editBranch(this.props.accessToken, { ...values, id: this.props.selectedBranch.id });
       }
     })
   }
@@ -23,24 +23,25 @@ class AddBranchProjectModal extends Component {
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
               <FontAwesomeIcon icon='code-branch' />
             </Icon>
-            Branch Project
+            Edit Branch
           </>
         }
-        onOk={this.handleOkAddBranchProjectModal}
+        onOk={this.handleOkEditBranchModal}
         visible={true}
-        onCancel={() => this.props.clickCancelAddBranchProject()}
-        okText="Create Branch"
-        okButtonProps={{ loading: this.props.loadingAddBranch }}
+        onCancel={() => this.props.clickCancelEditBranch()}
+        okText="Save Changes"
+        okButtonProps={{ loading: this.props.loadingEdit }}
         maskClosable={false}
-        bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', overflowX: 'scroll', paddingTop: 5 }}
+        bodyStyle={{ maxHeight: '60vh', overflowY: 'scroll', paddingTop: 5 }}
       >
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        <Form onSubmit={this.handleOkAddBranchProjectModal} layout={'vertical'}>
+        <Form onSubmit={this.handleOkEditBranchModal} layout={'vertical'}>
           <Form.Item style={{ marginBottom: '0px' }} label="Global ID">
             {getFieldDecorator('globalId', {
               rules: [
                 { max: 20, message: 'Global ID must be 20 characters or less' }
               ],
+              initialValue: this.props.selectedBranch.globalId
             })(
               <Input placeholder='Global ID' />
             )}
@@ -48,9 +49,10 @@ class AddBranchProjectModal extends Component {
           <Form.Item style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
               rules: [
-                { required: true, message: 'Please input new branch name' },
+                { required: true, message: 'Please input branch name' },
                 { max: 255, message: 'Name must be 255 characters or less' }
               ],
+              initialValue: this.props.selectedBranch.name
             })(
               <Input placeholder='Name' />
             )}
@@ -63,11 +65,9 @@ class AddBranchProjectModal extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  currentUserId: state.authentication.loginUser.id,
-  projectBranches: state.projects.branches,
   selectedBranch: state.projects.selectedBranch,
-  loadingAddBranch: state.projects.loadingAddBranch,
-  errorMessage: state.projects.addError,
+  loadingEdit: state.projects.loadingEdit,
+  errorMessage: state.projects.editErrorMessage,
 });
 
-export default connect(mapStateToProps, { clickCancelAddBranchProject, branchProject })(Form.create()(AddBranchProjectModal));
+export default connect(mapStateToProps, { clickCancelEditBranch, editBranch })(Form.create()(EditBranchModal));
