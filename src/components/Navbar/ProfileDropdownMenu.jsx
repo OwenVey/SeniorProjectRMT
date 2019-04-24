@@ -12,11 +12,11 @@ const ProfileDropdownMenu = (props) => {
 
       <Menu.Item key="user-info" className="dropdown-item" disabled>
         <div className="user-full-name-info">
-          User Name
+
         </div>
-        <div className="username-info">
+        {/* <div className="username-info">
           @username
-        </div>
+        </div> */}
       </Menu.Item>
 
       <Menu.Divider style={{ backgroundColor: '#3e3e3e' }} />
@@ -24,7 +24,7 @@ const ProfileDropdownMenu = (props) => {
       <Menu.Item key="profile" className="dropdown-item">
         <NavLink to='/profile'>
           <FontAwesomeIcon className='navbar-icon' icon='user' />
-          Profile
+          My Profile
         </NavLink>
       </Menu.Item>
 
@@ -44,8 +44,8 @@ const ProfileDropdownMenu = (props) => {
       getPopupContainer={() => document.getElementsByClassName('profile-menu')[0]}>
 
       <div className='menu-item'>
-        <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
-        <span style={{ paddingLeft: '5px' }}>User Name</span>
+        <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>ME</Avatar>
+        <span style={{ paddingLeft: '5px' }}>Profile</span>
         <Icon style={{ marginLeft: '5px' }} type="down" />
       </div>
 
