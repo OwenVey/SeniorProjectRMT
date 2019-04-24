@@ -42,7 +42,7 @@ export const getUsers = accessToken => dispatch => {
     });
 };
 
-export const addUser = user => dispatch => {
+export const addUser = (user, accessToken) => dispatch => {
   dispatch(addUserRequest());
   axios.post(`${TIMBLIN_URL}/register`, {
     email: user.email,
@@ -53,17 +53,18 @@ export const addUser = user => dispatch => {
   })
     .then(response => {
       dispatch(addUserSuccess(response.data));
+      user.userGroup.map(userGroup => addGroups(user.id, userGroup, accessToken))
     })
     .catch(error => {
       dispatch(addUserFailure(error.message));
     });
 };
 
-export const addGroups = (user, userGroup, accessToken) => dispatch => {
+export const addGroups = (userId, userGroup, accessToken) => dispatch => {
   dispatch(addUserGroupLinkRequest());
   axios.post(`${TIMBLIN_URL}/userGrouplink?accessToken=${accessToken}`, {
-    userId: user.id,
-    groupId: userGroup.id,
+    userId: userId,
+    groupId: userGroup,
   })
     .then(response => {
       dispatch(addUserGroupLinkSuccess(response.data));

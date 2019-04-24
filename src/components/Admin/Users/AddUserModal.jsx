@@ -28,16 +28,8 @@ class AddUserModal extends Component {
   handleOkUserModal = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.addUser(values);
-        var length = this.props.groups.length();
-        for(var i = 0; i < length; i++){
-          this.props.addGroups(
-          values,
-          this.props.groups,
-          this.props.accessToken
-          );
-        }
-        
+        console.log(values)
+        this.props.addUser(values, this.props.accessToken);
       }
     });
   };
@@ -153,6 +145,7 @@ class AddUserModal extends Component {
                 placeholder='Please select a user group'
                 showSearch
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+             
               >
                 {this.props.userGroups.map(userGroup => (
                   <Option key={userGroup.id} value={userGroup.id}>{`${userGroup.name}`}</Option>
