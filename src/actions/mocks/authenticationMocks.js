@@ -1,4 +1,3 @@
-//29b99cf6-9f94-4c83-aea1-6195087f03f9
 export const loginRequestMock = {
     "accessToken": "3r285qk7-9538-6533-7e96-u549021crn76",
     "loginUser": {

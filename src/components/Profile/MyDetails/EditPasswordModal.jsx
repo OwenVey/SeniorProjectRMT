@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
-import { Modal, Input, Select, Form } from 'antd';
+import { Modal, Input, Form } from 'antd';
 import { connect } from 'react-redux';
-import { clickCancelEditPassword, editPassword, checkPassword } from "../../../actions/authentication";
+import { clickCancelEditPassword, editPassword } from "../../../actions/authentication";
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
 class EditPasswordModal extends Component {
 
+    state = {
+        confirmDirty: false
+    };
+
     handleSubmit = (e) => {
-        const { getFieldDecorator } = this.props.form;
         this.props.form.validateFields((err, values) => {
-            if (!err && values.newPassword != values.currentPassword && values.newPassword == values.confirmPassword) {
-                // this.props.checkPassword(values.currentPassword);
+            if (!err) {
                 this.props.editPassword(this.props.accessToken, this.props.user, values);
-                console.log("EDIT_PASSWORD_SUCCESS");
             }
         })
     }
+
+    compareToFirstPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && value !== form.getFieldValue("newPassword")) {
+            callback("The two passwords that you entered are inconsistent!");
+        } else {
+            callback();
+        }
+    };
+
+    validateToNextPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && this.state.confirmDirty) {
+            form.validateFields(["confirmPassword"], { force: true });
+        }
+        callback();
+    };
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -46,7 +63,8 @@ class EditPasswordModal extends Component {
                         <FormItem style={{ marginBottom: "0px" }} label="New Password">
                             {getFieldDecorator('newPassword', {
                                 rules: [
-                                    { required: true, message: 'Please enter new password' }
+                                    { required: true, message: 'Please enter new password' },
+                                    { validator: this.validateToNextPassword }
                                 ],
                             })
                                 (< Input type="password" />)
@@ -55,7 +73,8 @@ class EditPasswordModal extends Component {
                         <FormItem style={{ marginBottom: "0px" }} label="Verify Password">
                             {getFieldDecorator('confirmPassword', {
                                 rules: [
-                                    { required: true, message: 'Please enter new password' }
+                                    { required: true, message: 'Please enter new password' },
+                                    { validator: this.compareToFirstPassword }
                                 ],
                             })
                                 (< Input type="password" />)

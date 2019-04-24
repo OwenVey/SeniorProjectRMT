@@ -64,11 +64,11 @@ export const logout = (accessToken) => dispatch => {
 export const editProfile = (accessToken, userId, user) => dispatch => {
   dispatch(editProfileRequest());
 
-  axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
+  return axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
 
-      firstName: user.firstName,
-      lastName: user.lastName
-    })
+    firstName: user.firstName,
+    lastName: user.lastName
+  })
     .then(response => {
       dispatch(editProfileSuccess(response.data))
 
@@ -92,8 +92,8 @@ export const editPassword = (accessToken, user, values) => dispatch => {
   dispatch(editPasswordRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${user.id}?accessToken=${accessToken}`, {
-      password: values.confirmPassword
-    })
+    password: values.confirmPassword
+  })
     .then(response => {
       dispatch(editPasswordSuccess(response.data))
     })
