@@ -12,6 +12,10 @@ export const addUserRequest = createAction("ADD_USER_REQUEST");
 export const addUserSuccess = createAction("ADD_USER_SUCCESS");
 export const addUserFailure = createAction("ADD_USER_FAILURE");
 
+export const addUserGroupLinkRequest = createAction("ADD_USER_GROUP_LINK_REQUEST");
+export const addUserGroupLinkSuccess = createAction("ADD_USER_GROUP_LINK_SUCCESS");
+export const addUserGroupLinkFailure = createAction("ADD_USER_GROUP_LINK_FAILURE");
+
 export const showEditUserModal = createAction("SHOW_EDIT_USER_MODAL");
 export const hideEditUserModal = createAction("HIDE_EDIT_USER_MODAL");
 export const editUserRequest = createAction("EDIT_USER_REQUEST");
@@ -27,7 +31,7 @@ export const getUsers = accessToken => dispatch => {
       let users = response.data.users.map(user => {
         return {
           ...user,
-          userGroups: ["Developer"],
+          //userGroups: ["Developer"],
         };
       });
       if (response.status !== 200) throw Error();
@@ -52,6 +56,20 @@ export const addUser = user => dispatch => {
     })
     .catch(error => {
       dispatch(addUserFailure(error.message));
+    });
+};
+
+export const addGroups = (user, userGroup, accessToken) => dispatch => {
+  dispatch(addUserGroupLinkRequest());
+  axios.post(`${TIMBLIN_URL}/userGrouplink?accessToken=${accessToken}`, {
+    userId: user.id,
+    groupId: userGroup.id,
+  })
+    .then(response => {
+      dispatch(addUserGroupLinkSuccess(response.data));
+    })
+    .catch(error => {
+      dispatch(addUserGroupLinkFailure(error.message));
     });
 };
 

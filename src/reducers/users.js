@@ -6,6 +6,9 @@ import {
   addUserRequest,
   addUserSuccess,
   addUserFailure,
+  addUserGroupLinkRequest,
+  addUserGroupLinkSuccess,
+  addUserGroupLinkFailure,
   showAddUserModal,
   hideAddUserModal,
   editUserRequest,
@@ -18,9 +21,12 @@ import {
 const initialUsersState = {
   loadingUsers: true,
   users: [],
+  groups: [],
   loading: false,
+  loadingGroups: false,
   fetchErrorMessage: '',
   postErrorMessage: '',
+  postGroupErrorMessage: '',
   patchErrorMessage: '',
 
   addUserModalVisibility: false,
@@ -64,6 +70,20 @@ export const usersReducer = createReducer(initialUsersState, {
   [addUserFailure]: (state, action) => {
     state.loading = false;
     state.postErrorMessage = action.payload;
+  },
+
+  [addUserGroupLinkRequest]: (state, action) => {
+    state.loadingGroups = true;
+    state.postGroupErrorMessage = '';
+  },
+  [addUserGroupLinkSuccess]: (state, action) => {
+    state.loadingGroups = false;
+    state.groups = [];
+  },
+  [addUserGroupLinkFailure]: (state, action) => {
+    state.loadingGroups = false;
+    state.groups = [];
+    state.postGroupErrorMessage = action.payload;
   },
   //Modal Switching
   [showAddUserModal]: (state, action) => {
