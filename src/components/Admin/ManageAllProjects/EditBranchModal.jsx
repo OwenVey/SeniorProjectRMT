@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Form } from 'antd';
+import { Icon, Modal, Input, Form, Select, Switch } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { clickCancelEditBranch, editBranch } from '../../../actions/projects'
+
+const Option = Select.Option;
 
 class EditBranchModal extends Component {
 
@@ -36,16 +38,6 @@ class EditBranchModal extends Component {
       >
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         <Form onSubmit={this.handleOkEditBranchModal} layout={'vertical'}>
-          <Form.Item style={{ marginBottom: '0px' }} label="Global ID">
-            {getFieldDecorator('globalId', {
-              rules: [
-                { max: 20, message: 'Global ID must be 20 characters or less' }
-              ],
-              initialValue: this.props.selectedBranch.globalId
-            })(
-              <Input placeholder='Global ID' />
-            )}
-          </Form.Item>
           <Form.Item style={{ marginBottom: '0px' }} label="Name">
             {getFieldDecorator('name', {
               rules: [
@@ -55,6 +47,29 @@ class EditBranchModal extends Component {
               initialValue: this.props.selectedBranch.name
             })(
               <Input placeholder='Name' />
+            )}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Owner" >
+            {getFieldDecorator('ownerId', {
+              rules: [
+                { required: true, message: 'Please select an Owner' }
+              ],
+              initialValue: this.props.selectedBranch.ownerId
+            })(
+              <Select
+                showSearch
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                {this.props.users.map(user => (
+                  <Option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName} (${user.id})`}</Option>
+                ))}
+              </Select>
+            )}
+          </Form.Item>
+          <Form.Item style={{ marginBottom: '0px' }} label="Locked">
+            {getFieldDecorator('isLocked', {
+            })(
+              <Switch defaultChecked={this.props.selectedBranch.isLocked} />
             )}
           </Form.Item>
         </Form>
@@ -68,6 +83,7 @@ const mapStateToProps = state => ({
   selectedBranch: state.projects.selectedBranch,
   loadingEdit: state.projects.loadingEdit,
   errorMessage: state.projects.editErrorMessage,
+  users: state.users.users,
 });
 
 export default connect(mapStateToProps, { clickCancelEditBranch, editBranch })(Form.create()(EditBranchModal));

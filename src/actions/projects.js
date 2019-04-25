@@ -138,8 +138,9 @@ export const branchProject = (accessToken, branchInfo, currentUserId, trunk) => 
 export const editBranch = (accessToken, branch) => dispatch => {
   dispatch(editBranchRequest());
   return axios.patch(`${TIMBLIN_URL}/branch/${branch.id}?accessToken=${accessToken}`, {
-    globalId: branch.globalId ? branch.globalId : null,
     name: branch.name,
+    ownerId: branch.ownerId,
+    isLocked: branch.isLocked,
   })
     .then(response => {
       dispatch(editBranchSuccess(response.data))
