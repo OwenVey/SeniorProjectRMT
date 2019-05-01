@@ -68,6 +68,7 @@ export const addProject = (accessToken, project) => dispatch => {
     dueDate: moment(project.dueDate).subtract(6, "hours"),
   })
     .then(response => {
+      dispatch(getBranches(accessToken))
       dispatch(addProjectSuccess(response.data))
     })
     .catch(error => {
