@@ -2,35 +2,10 @@ import React, { Component } from 'react';
 import moment from 'moment'
 import { Icon, Modal, Input, Switch, Form, DatePicker } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import { connect } from "react-redux";
 import { clickCancelEditProject, editProject } from '../../../actions/projects'
 
 class EditProjectModal extends Component {
-
-  editProject = (projectInfo) => {
-    let valid = true
-    const url = `https://senior-design.timblin.org/api/project/${this.props.projectId}?accessToken=${this.props.accessToken}`
-    axios.patch(url, {
-      globalId: projectInfo.globalId,
-      name: projectInfo.name,
-      description: projectInfo.description,
-      dueDate: projectInfo.dueDate,
-      createDate: projectInfo.createDate,
-      completeDate: projectInfo.completeDate,
-      isActive: projectInfo.isActive
-    })
-      .catch(error => {
-        valid = false
-        console.log(error.response)
-        this.setErrorStatus(error)
-      })
-      .finally(() => {
-        if (valid) {
-          this.props.hide()
-        }
-      })
-  }
 
   handleOkEditProjectModal = (e) => {
     this.props.form.validateFields((err, values) => {
