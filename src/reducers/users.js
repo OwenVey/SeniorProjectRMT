@@ -15,7 +15,10 @@ import {
   editUserSuccess,
   editUserFailure,
   showEditUserModal,
-  hideEditUserModal
+  hideEditUserModal,
+  fetchGroupLinksRequest,
+  fetchGroupLinksSuccess,
+  fetchGroupLinksFailure
 } from "../actions/users";
 
 const initialUsersState = {
@@ -25,6 +28,7 @@ const initialUsersState = {
   loading: false,
   loadingGroups: false,
   fetchErrorMessage: '',
+  fetchGroupLinksErrorMessage: '',
   postErrorMessage: '',
   postGroupErrorMessage: '',
   patchErrorMessage: '',
@@ -52,6 +56,21 @@ export const usersReducer = createReducer(initialUsersState, {
 
   [fetchUsersFailure]: (state, action) => {
     state.loadingUsers = false;
+    state.loading = false;
+    state.fetchErrorMessage = action.payload;
+  },
+
+  [fetchGroupLinksRequest]: (state,action) => {
+    state.loading = false;
+    state.fetchGroupLinksErrorMessage = '';
+  },
+
+  [fetchGroupLinksSuccess]: (state,action) => {
+    state.loading = false;
+    state.groups = action.payload;
+  },
+
+  [fetchGroupLinksFailure]: (state,action) => {
     state.loading = false;
     state.fetchErrorMessage = action.payload;
   },

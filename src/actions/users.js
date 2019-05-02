@@ -22,6 +22,10 @@ export const editUserRequest = createAction("EDIT_USER_REQUEST");
 export const editUserSuccess = createAction("EDIT_USER_SUCCESS");
 export const editUserFailure = createAction("EDIT_USER_FAILURE");
 
+export const fetchGroupLinksRequest = createAction("FETCH_GROUP_LINKS_REQUEST");
+export const fetchGroupLinksSuccess = createAction("FETCH_GROUP_LINKS_SUCCESS");
+export const fetchGroupLinksFailure = createAction("FETCH_GROUP_LINKS_FAILURE");
+
 export const getUsers = accessToken => dispatch => {
   dispatch(fetchUsersRequest());
   axios
@@ -41,6 +45,25 @@ export const getUsers = accessToken => dispatch => {
       dispatch(fetchUsersFailure(error.message));
     });
 };
+
+export const getGroupLinks = (userId, accessToken) => dispatch => {
+  dispatch(fetchGroupLinksRequest());
+  axios
+    .get(`${TIMBLIN_URL}/usergrouplink${userId}?accessToken=${accessToken}`)
+    .then(response => {
+      //adds additional information to the user array.
+      let groups = response.data.user.Usergroup.map(groups => {
+        return {
+          ...groups,
+        };
+      });
+      if (response.status !== 200) throw Error();
+      dispatch(fetchGroupLinksSuccess(groups));
+    })
+    .catch(error => {
+      dispatch(fetchGroupLinksFailure(error.message));
+    });
+  }
 
 export const addUser = (user, accessToken) => dispatch => {
   dispatch(addUserRequest());
@@ -62,9 +85,9 @@ export const addUser = (user, accessToken) => dispatch => {
 
 export const addGroups = (userId, userGroup, accessToken) => dispatch => {
   dispatch(addUserGroupLinkRequest());
-  axios.post(`${TIMBLIN_URL}/userGrouplink?accessToken=${accessToken}`, {
-    userId: userId,
-    groupId: userGroup,
+  axios.post(`${TIMBLIN_URL}/usergrouplink?accessToken=${"a38f19ec-7ad1-4296-a2bb-67e7a79a72f0"}`, {
+    userId: 12,
+    groupId: 1,
   })
     .then(response => {
       dispatch(addUserGroupLinkSuccess(response.data));

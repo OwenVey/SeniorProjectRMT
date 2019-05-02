@@ -198,7 +198,7 @@ class Users extends Component {
           if (userGroups)
             return (
               userGroups.map(userGroup => {
-                let color;
+                let color = "green";
                 switch (userGroup) {
                   case "Developer":
                     color = "geekblue";
@@ -251,6 +251,8 @@ class Users extends Component {
   componentWillMount() {
     if (this.props.users.length === 0)
       this.props.getUsers(this.props.accessToken);
+    if (this.props.groups.length === 0)
+      this.props.getGroupLinks(this.props.accessToken);
   }
 
   handleSearch = (selectedKeys, confirm) => () => {
@@ -334,6 +336,7 @@ const mapStateToProps = state => ({
   editUserModalVisible: state.users.editUserModalVisibility,
   addUserModalVisible: state.users.addUserModalVisibility,
   loadingUsers: state.users.loadingUsers,
+  userGroups: state.users.groups
 });
 
 export default connect(mapStateToProps, { getUsers, showEditUserModal, showAddUserModal })(Users);
