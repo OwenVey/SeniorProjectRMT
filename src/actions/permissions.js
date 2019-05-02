@@ -77,11 +77,24 @@ export const editUserProjectPermission = (accessToken, userProjectPermission, pe
 
 export const deletePermission = (accessToken, permission) => dispatch => {
   dispatch(deletePermissionRequest());
-  return axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`)
+  if(permission.userId)
+  {
+    return axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/user/${permission.userId}?accessToken=${accessToken}`)
     .then(response => {
       dispatch(deletePermissionSuccess(permission))
     })
     .catch(error => {
       dispatch(deletePermissionFailure(error.message))
     });
+  }
+  if(permission.groupId) 
+  {
+    return axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/group/${permission.groupId}?accessToken=${accessToken}`)
+    .then(response => {
+      dispatch(deletePermissionSuccess(permission))
+    })
+    .catch(error => {
+      dispatch(deletePermissionFailure(error.message))
+    });
+  }
 }

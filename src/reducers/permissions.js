@@ -115,8 +115,16 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     },
 
     [deletePermissionSuccess]: (state, action) => {
-        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
-        state.userProjectPermissions.splice(index, 1);
+        if(action.payload.userId)
+        {
+            const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
+            state.userProjectPermissions.splice(index, 1);
+        }
+        if(action.payload.groupId)
+        {
+            const index = state.groupProjectPermissions.findIndex(permission => permission.groupId === action.payload.groupId);
+            state.groupProjectPermissions.splice(index, 1);
+        }
     },
 
     [deletePermissionFailure]: (state, action) => {
