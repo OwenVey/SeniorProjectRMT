@@ -4,9 +4,10 @@ import { recentlyViewedItemsReducer } from "./recentlyViewedItems";
 import { usersReducer } from "./users";
 import { userGroupsReducer } from './userGroups';
 import { projectsReducer } from './projects';
-import { permissionsReducer } from './permisions';
+import { permissionsReducer } from './permissions';
 import { organizationDetailsReducer } from './organizationDetails';
 import { itemTypesReducer } from './itemTypes';
+import { treeReducer } from './tree';
 
 export default combineReducers({
   recentlyViewedItems: recentlyViewedItemsReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
   permissions: permissionsReducer,
   organizationDetails: organizationDetailsReducer,
   itemTypes: itemTypesReducer,
+  tree: treeReducer,
 });

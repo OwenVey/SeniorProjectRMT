@@ -24,11 +24,18 @@ import {
   getBranchesRequest,
   getBranchesSuccess,
   getBranchesFailure,
-
+  editBranchSuccess,
+  editBranchFailure,
+  editBranchRequest,
+  deleteBranchRequest,
+  deleteBranchSuccess,
+  deleteBranchFailure,
+  clickEditBranch,
+  clickCancelEditBranch
 } from '../actions/projects'
 
 const initialProjectsState = {
-  loadingProjects: true,
+  loadingProjects: false,
   loadingBranches: true,
   projects: [],
   branches: [],
@@ -38,18 +45,22 @@ const initialProjectsState = {
   showAddProjectModal: false,
   showAddBranchProjectModal: false,
   loadingEdit: false,
+  getErrorMessage: '',
+  getBranchErrorMessage: '',
   editError: '',
   addError: '',
-  editBranchError: '',
-  addBranchError: '',
+  deleteError: '',
   loadingAdd: false,
   loadingAddBranch: false,
 }
 
 export const projectsReducer = createReducer(initialProjectsState, {
 
+  //#region Project
+  //#region Fetch
   [getProjectsRequest]: (state, action) => {
-
+    state.loadingProjects = true;
+    state.getErrorMessage = '';
   },
 
   [getProjectsSuccess]: (state, action) => {
@@ -59,6 +70,14 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsFailure]: (state, action) => {
     state.loadingProjects = false;
+    state.getErrorMessage = action.payload;
+  },
+  //#endregion
+
+  //#region Edit
+  [editProjectRequest]: (state, action) => {
+    state.editError = '';
+    state.loadingEdit = true;
   },
 
   [clickEditProject]: (state, action) => {
@@ -69,10 +88,6 @@ export const projectsReducer = createReducer(initialProjectsState, {
   [clickCancelEditProject]: (state, action) => {
     state.selectedProject = {};
     state.showEditProjectModal = false;
-  },
-
-  [editProjectRequest]: (state, action) => {
-    state.loadingEdit = true;
   },
 
   [editProjectSuccess]: (state, action) => {
@@ -86,7 +101,9 @@ export const projectsReducer = createReducer(initialProjectsState, {
     state.loadingEdit = false;
     state.editError = action.payload;
   },
+  //#endregion
 
+  //#region Delete
   [deleteProjectRequest]: (state, action) => {
   },
 
@@ -97,9 +114,12 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [deleteProjectFailure]: (state, action) => {
   },
+  //#endregion
 
+  //#region Add
   [addProjectRequest]: (state, action) => {
     state.loadingAdd = true;
+    state.addError = '';
   },
 
   [addProjectSuccess]: (state, action) => {
@@ -120,11 +140,14 @@ export const projectsReducer = createReducer(initialProjectsState, {
   [clickCancelAddProject]: (state, action) => {
     state.showAddProjectModal = false;
   },
+  //#endregion
+  //#endregion
 
-  //--------Branch Stuff ------------------------
-
+  //#region Branch
+  //#region Fetch
   [getBranchesRequest]: (state, action) => {
-
+    state.loadingBranches = true;
+    state.getBranchErrorMessage = '';
   },
 
   [getBranchesSuccess]: (state, action) => {
@@ -133,10 +156,12 @@ export const projectsReducer = createReducer(initialProjectsState, {
   },
 
   [getBranchesFailure]: (state, action) => {
-    state.selectedProject = {};
     state.loadingBranches = false;
+    state.getErrorMessage = action.payload;
   },
+  //#endregion
 
+  //#region Add
   [branchProjectRequest]: (state, action) => {
     state.loadingAddBranch = true;
   },
@@ -149,16 +174,63 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [branchProjectFailure]: (state, action) => {
     state.loadingAddBranch = false;
-    state.addBranchError = action.payload;
+    state.addError = action.payload;
   },
 
   [clickAddBranchProject]: (state, action) => {
     state.selectedBranch = action.payload;
     state.showAddBranchProjectModal = true;
+    state.addError = '';
   },
 
   [clickCancelAddBranchProject]: (state, action) => {
     state.selectedBranch = {};
     state.showAddBranchProjectModal = false;
   },
+  //#endregion
+
+  //#region Edit
+  [editBranchRequest]: (state, action) => {
+    state.editError = '';
+    state.loadingEdit = true;
+  },
+
+  [clickEditBranch]: (state, action) => {
+    state.selectedBranch = action.payload;
+    state.showEditBranchModal = true;
+  },
+
+  [clickCancelEditBranch]: (state, action) => {
+    state.selectedBranch = {};
+    state.showEditBranchModal = false;
+  },
+
+  [editBranchSuccess]: (state, action) => {
+    state.loadingEdit = false;
+    const index = state.branches.findIndex(branch => branch.id === action.payload.id);
+    state.branches[index] = action.payload;
+    state.showEditBranchModal = false;
+  },
+
+  [editBranchFailure]: (state, action) => {
+    state.loadingEdit = false;
+    state.editError = action.payload;
+  },
+  //#endregion
+
+  //#region Delete
+  [deleteBranchRequest]: (state, action) => {
+    state.deleteError = '';
+  },
+
+  [deleteBranchSuccess]: (state, action) => {
+    const index = state.branches.findIndex(branch => branch.id === action.payload);
+    state.branches.splice(index, 1);
+  },
+
+  [deleteBranchFailure]: (state, action) => {
+    state.deleteError = action.payload;
+  },
+  //#endregion
+  //#endregion
 })

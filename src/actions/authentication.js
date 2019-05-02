@@ -18,15 +18,26 @@ export const editProfileRequest = createAction('EDIT_PROFILE_REQUEST');
 export const editProfileFailure = createAction('EDIT_PROFILE_FAILURE');
 export const editProfileSuccess = createAction('EDIT_PROFILE_SUCCESS');
 
+export const editPasswordRequest = createAction('EDIT_PROFILE_PASSWORD_REQUEST');
+export const editPasswordSuccess = createAction('EDIT_PASSWORD_SUCCESS');
+export const editPasswordFailure = createAction('EDIT_PASSWORD_FAILURE');
+
+export const checkPasswordRequest = createAction('CHECK_PROFILE_PASSWORD_REQUEST');
+export const checkPasswordSuccess = createAction('CHECK_PASSWORD_SUCCESS');
+export const checkPasswordFailure = createAction('CHECK_PASSWORD_FAILURE');
+
 export const showEditProfileModal = createAction('SHOW_EDIT_PROFILE_MODAL');
 export const clickCancelEditProfile = createAction('CANCEL_EDIT_PROFILE');
 
+export const showEditPasswordModal = createAction('SHOW_EDIT_PASSWORD_MODAL');
+export const clickCancelEditPassword = createAction('CANCEL_EDIT_PASSWORD');
+
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
-  axios.post(`${TIMBLIN_URL}/login`, {
-      email,
-      password
-    })
+  return axios.post(`${TIMBLIN_URL}/login`, {
+    email,
+    password
+  })
     .then(response => {
       dispatch(loginSuccess(response.data))
     })
@@ -37,9 +48,9 @@ export const login = (email, password) => dispatch => {
 
 export const logout = (accessToken) => dispatch => {
   dispatch(logoutRequest());
-  axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
-      accessToken
-    })
+  return axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
+    accessToken
+  })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -51,22 +62,56 @@ export const logout = (accessToken) => dispatch => {
 }
 
 export const editProfile = (accessToken, userId, user) => dispatch => {
-  let newPassword;
-  if (user.password) {
-    newPassword = user.password
-  }
   dispatch(editProfileRequest());
-  console.log(user);
-  axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: newPassword
-    })
+
+  return axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
+
+    firstName: user.firstName,
+    lastName: user.lastName
+  })
     .then(response => {
       dispatch(editProfileSuccess(response.data))
+
+
     })
     .catch(error => {
-      dispatch(editProfileFailure(error.message))
+      dispatch(editProfileFailure(error.message));
     });
 }
+
+export const editPassword = (accessToken, user, values) => dispatch => {
+  let confirmPassword;
+  if (user) {
+    if (values.newPassword != values.currentPassword && values.newPassword == values.confirmPassword) {
+      confirmPassword = values.confirmPassword
+      console.log("confirmed!")
+    } else {
+      dispatch(editPasswordFailure)
+    }
+  }
+  dispatch(editPasswordRequest());
+  console.log(user);
+  axios.patch(`${TIMBLIN_URL}/user/${user.id}?accessToken=${accessToken}`, {
+    password: values.confirmPassword
+  })
+    .then(response => {
+      dispatch(editPasswordSuccess(response.data))
+    })
+    .catch(error => {
+      dispatch(editPasswordFailure(error.message))
+    });
+}
+
+// export const checkPassword = (password) => dispatch => {
+//   dispatch(checkPasswordRequest());
+//   axios.post(`${TIMBLIN_URL}/login`, {
+//       // email,
+//       password
+//     })
+//     .then(response => {
+//       dispatch(checkPasswordSuccess(response.data))
+//     })
+//     .catch(error => {
+//       dispatch(checkPasswordFailure(error.message))
+//     });
+// }

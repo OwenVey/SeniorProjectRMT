@@ -17,13 +17,9 @@ export default class ProjectPage extends Component {
   constructor() {
     super();
 
-    const tabs = [
-      { title: 'Project Name', content: 'Content of Tab 1', key: '1' },
-    ];
-
     this.state = {
-      activeKey: tabs[0].key,
-      tabs,
+      activeKey: '0',
+      tabs: [],
     }
   }
 
@@ -41,8 +37,8 @@ export default class ProjectPage extends Component {
 
   addTab = (node) => {
     const tabs = this.state.tabs;
-    if (tabs.filter(tab => tab.key === node.key).length > 0) {
-      this.setState({ activeKey: node.key });
+    if (tabs.filter(tab => tab.key === node.id).length > 0) {
+      this.setState({ activeKey: String(node.id) });
     }
     else {
       const content = node.children ?
@@ -53,11 +49,11 @@ export default class ProjectPage extends Component {
         </div>
         :
         <div className='projectcontent'>
-          <ObjectBar currentSelectedItem={node} accessToken={this.props.accessToken}/>
+          <ObjectBar currentSelectedItem={node} accessToken={this.props.accessToken} />
           <ObjectView object={node} />
         </div>
-      tabs.push({ title: <span><FontAwesomeIcon style={{ marginRight: '5px' }} icon={node.icon} />{node.title}</span>, content: content, key: node.key });
-      this.setState({ tabs, activeKey: node.key });
+      tabs.push({ title: <span><FontAwesomeIcon style={{ marginRight: '5px' }} icon={node.icon} />{node.name}</span>, content: content, key: node.id });
+      this.setState({ tabs, activeKey: String(node.id) });
     }
   }
 
@@ -71,7 +67,7 @@ export default class ProjectPage extends Component {
     });
     const tabs = this.state.tabs.filter(tab => tab.key !== targetKey);
     if (lastIndex >= 0 && activeKey === targetKey) {
-      activeKey = tabs[lastIndex].key;
+      activeKey = String(tabs[lastIndex].key);
     }
     this.setState({ tabs, activeKey });
   }
@@ -84,7 +80,7 @@ export default class ProjectPage extends Component {
         <div className='splitpane'>
           <SplitPane minSize={200} maxSize={-200} defaultSize={'85%'} primary='second'>
 
-            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken}/>
+            <TreeView handleItemSelect={this.onTreeItemSelect} accessToken={this.props.accessToken} />
 
             <Tabs
               hideAdd
@@ -94,7 +90,7 @@ export default class ProjectPage extends Component {
               type="editable-card"
               onEdit={this.onEdit}
             >
-              {this.state.tabs.map(tab => <TabPane style={{ margin: 0 }} tab={tab.title} key={tab.key}>{tab.content}</TabPane>)}
+              {this.state.tabs.map(tab => <TabPane style={{ margin: 0 }} tab={tab.title} key={String(tab.key)}>{tab.content}</TabPane>)}
             </Tabs>
 
           </SplitPane>

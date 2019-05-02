@@ -1,8 +1,8 @@
 import { createReducer } from "redux-starter-kit";
 import {
-    getUserProjectPermissionsRequest,
-    getUserProjectPermissionsSuccess,
-    getUserProjectPermissionsFailure,
+    getProjectPermissionsRequest,
+    getProjectPermissionsSuccess,
+    getProjectPermissionsFailure,
     addUserProjectPermissionRequest,
     addUserProjectPermissionSuccess,
     addUserProjectPermissionFailure,
@@ -20,38 +20,35 @@ import {
 } from "../actions/permissions";
 
 const initialPermissionsState = {
-    loadingPermissions: true,
+    loadingPermissions: false,
     userProjectPermissions: [],
     groupProjectPermissions: [],
-    userObjectPermissions: [],
-    groupObjectPermissions: [],
     loadingAdd: false,
     loadingEdit: false,
-    loading: false,
     fetchErrorMessage: '',
     addPermissionModalVisibility: false,
-    invalidAddPermission: false,
     addError: '',
     editError: '',
     editPermissionModalVisibility: false,
-    invalidEditPermission: false,
     selectedPermission: {}
 };
 
 export const permissionsReducer = createReducer(initialPermissionsState, {
     //getting Permissions
-    [getUserProjectPermissionsRequest]: (state, action) => {
-        state.loading = true;
+    [getProjectPermissionsRequest]: (state, action) => {
+        state.loadingPermissions = true;
         state.fetchErrorMessage = '';
     },
 
-    [getUserProjectPermissionsSuccess]: (state, action) => {
+    [getProjectPermissionsSuccess]: (state, action) => {
         state.loadingPermissions = false;
-        state.userProjectPermissions = action.payload;
+        state.userProjectPermissions = action.payload.userProjectPermissions;
+        state.groupProjectPermissions = action.payload.groupProjectPermissions;
     },
 
-    [getUserProjectPermissionsFailure]: (state, action) => {
+    [getProjectPermissionsFailure]: (state, action) => {
         state.loadingPermissions = false;
+        state.fetchErrorMessage = action.payload;
     },
     //-------------------------------------------------------------------
     // Adding A Permission
@@ -59,6 +56,7 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     //Modal Switching
     [addUserProjectPermissionRequest]: (state, action) => {
         state.loadingAdd = true;
+        state.addError = '';
     },
 
     [addUserProjectPermissionSuccess]: (state, action) => {
@@ -87,24 +85,24 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     [showEditPermissionModal]: (state, action) => {
         state.selectedPermission = action.payload;
         state.editPermissionModalVisibility = true;
-    }, 
-    
+    },
+
     [clickCancelEditPermission]: (state, action) => {
         state.selectedPermission = {};
         state.editPermissionModalVisibility = false;
     },
-    
+
     [editUserProjectPermissionRequest]: (state, action) => {
         state.loadingEdit = true;
     },
-    
+
     [editUserProjectPermissionSuccess]: (state, action) => {
         state.loadingEdit = false;
-        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId); //add projectId / permissionID when available
+        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
         state.userProjectPermissions[index] = action.payload;
         state.editPermissionModalVisibility = false;
     },
-    
+
     [editUserProjectPermissionFailure]: (state, action) => {
         state.loadingEdit = false;
         state.editError = action.payload;
@@ -115,12 +113,12 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     //-------------------------------------------------------------------
     [deletePermissionRequest]: (state, action) => {
     },
-  
+
     [deletePermissionSuccess]: (state, action) => {
-      const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
-      state.userProjectPermissions.splice(index, 1);
+        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
+        state.userProjectPermissions.splice(index, 1);
     },
-  
+
     [deletePermissionFailure]: (state, action) => {
     },
 });
