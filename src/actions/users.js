@@ -26,43 +26,38 @@ export const fetchGroupLinksRequest = createAction("FETCH_GROUP_LINKS_REQUEST");
 export const fetchGroupLinksSuccess = createAction("FETCH_GROUP_LINKS_SUCCESS");
 export const fetchGroupLinksFailure = createAction("FETCH_GROUP_LINKS_FAILURE");
 
-export const getUsers = accessToken => dispatch => {
+export const getUsers = (accessToken, userGroups) => dispatch => {
   dispatch(fetchUsersRequest());
   return axios
     .get(`${TIMBLIN_URL}/user?accessToken=${accessToken}`)
     .then(response => {
       //adds additional information to the user array.
       let users = response.data.users.map(user => {
-        return {
-          ...user,
-          //userGroups: ["Developer"],
-        };
+
+
+        dispatch(getGroupLinks(accessToken, user.id, userGroups));
+
+
       });
       dispatch(fetchUsersSuccess(response.data.users));
+
     })
     .catch(error => {
       dispatch(fetchUsersFailure(error.message));
     });
 };
 
-export const getGroupLinks = (userId, accessToken) => dispatch => {
+export const getGroupLinks = (accessToken, userId, groupNames) => dispatch => {
   dispatch(fetchGroupLinksRequest());
   axios
-    .get(`${TIMBLIN_URL}/usergrouplink${userId}?accessToken=${accessToken}`)
+    .get(`${TIMBLIN_URL}/usergrouplink?accessToken=${accessToken}&userId=${userId}`)
     .then(response => {
-      //adds additional information to the user array.
-      let groups = response.data.user.Usergroup.map(groups => {
-        return {
-          ...groups,
-        };
-      });
-      if (response.status !== 200) throw Error();
-      dispatch(fetchGroupLinksSuccess(groups));
+      dispatch(fetchGroupLinksSuccess({ userId, groups: response.data.userGroupLinks, groupNames }));
     })
     .catch(error => {
       dispatch(fetchGroupLinksFailure(error.message));
     });
-  }
+}
 
 export const addUser = (user, accessToken) => dispatch => {
   dispatch(addUserRequest());
@@ -75,18 +70,18 @@ export const addUser = (user, accessToken) => dispatch => {
   })
     .then(response => {
       dispatch(addUserSuccess(response.data));
-      user.userGroup.map(userGroup => addGroups(user.id, userGroup, accessToken))
+      user.userGroup.forEach(id => dispatch(addGroups(response.data.id, id, accessToken)))
     })
     .catch(error => {
       dispatch(addUserFailure(error.message));
     });
 };
 
-export const addGroups = (userId, userGroup, accessToken) => dispatch => {
+export const addGroups = (userId, userGroupId, accessToken) => dispatch => {
   dispatch(addUserGroupLinkRequest());
-  axios.post(`${TIMBLIN_URL}/usergrouplink?accessToken=${"a38f19ec-7ad1-4296-a2bb-67e7a79a72f0"}`, {
-    userId: 12,
-    groupId: 1,
+  axios.post(`${TIMBLIN_URL}/usergrouplink?accessToken=${accessToken}`, {
+    userId: userId,
+    groupId: userGroupId,
   })
     .then(response => {
       dispatch(addUserGroupLinkSuccess(response.data));

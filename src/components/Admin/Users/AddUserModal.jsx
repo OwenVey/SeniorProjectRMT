@@ -30,7 +30,6 @@ class AddUserModal extends Component {
       if (!err) {
         console.log(values)
         this.props.addUser(values, this.props.accessToken);
-        //values.userGroup.map(values => this.props.addGroups(values, this.props.accessToken))
       }
     });
   };

@@ -24,7 +24,6 @@ import {
 const initialUsersState = {
   loadingUsers: true,
   users: [],
-  groups: [],
   loading: false,
   loadingGroups: false,
   fetchErrorMessage: '',
@@ -32,13 +31,9 @@ const initialUsersState = {
   postErrorMessage: '',
   postGroupErrorMessage: '',
   patchErrorMessage: '',
-
   addUserModalVisibility: false,
-
   editUserModalVisibility: false,
-
   editUser: '',
-
 };
 
 export const usersReducer = createReducer(initialUsersState, {
@@ -60,19 +55,30 @@ export const usersReducer = createReducer(initialUsersState, {
     state.fetchErrorMessage = action.payload;
   },
 
-  [fetchGroupLinksRequest]: (state,action) => {
-    state.loading = false;
+  [fetchGroupLinksRequest]: (state, action) => {
+    state.loading = true;
     state.fetchGroupLinksErrorMessage = '';
   },
 
-  [fetchGroupLinksSuccess]: (state,action) => {
+  [fetchGroupLinksSuccess]: (state, action) => {
     state.loading = false;
-    state.groups = action.payload;
+    console.log('test')
+    const userId = action.payload.userId;
+    const groups = action.payload.groups;
+    const groupNames = action.payload.groupNames;
+    console.log(groupNames)
+
+    groups.map(group => console.log(groupNames))
+
+
+    state.users.find(user => user.id === userId).userGroups = groups;
   },
 
-  [fetchGroupLinksFailure]: (state,action) => {
+  [fetchGroupLinksFailure]: (state, action) => {
     state.loading = false;
     state.fetchErrorMessage = action.payload;
+
+
   },
   //-------------------------------------------------------------------
   // Adding A User
@@ -97,11 +103,9 @@ export const usersReducer = createReducer(initialUsersState, {
   },
   [addUserGroupLinkSuccess]: (state, action) => {
     state.loadingGroups = false;
-    state.groups = [];
   },
   [addUserGroupLinkFailure]: (state, action) => {
     state.loadingGroups = false;
-    state.groups = [];
     state.postGroupErrorMessage = action.payload;
   },
   //Modal Switching
