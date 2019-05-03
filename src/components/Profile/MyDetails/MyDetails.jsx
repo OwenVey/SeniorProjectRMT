@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EditProfileModal from './EditProfileModal';
 import EditPasswordModal from './EditPasswordModal';
+import moment from 'moment';
 
 class MyDetails extends Component {
   render() {
@@ -16,20 +17,18 @@ class MyDetails extends Component {
           </div>
           <Button onClick={() => this.props.showEditProfileModal()}>
             <Icon><FontAwesomeIcon icon='edit' /></Icon>
-            {/* <Icon></Icon> type="plus-circle" theme='filled' style={{ color: '#1890FF' }} /> */}
             Edit My Details
           </Button>
           <Button onClick={() => this.props.showEditPasswordModal()}>
             <Icon><FontAwesomeIcon icon='edit' /></Icon>
-            {/* <Icon></Icon> type="plus-circle" theme='filled' style={{ color: '#1890FF' }} /> */}
             Change Password
           </Button>
         </div>
         <div style={{ padding: '10px' }}>
-          <div> <strong>First Name:</strong> {this.props.loginUser.firstName}</div>
-          <div><strong>Last Name:</strong> {this.props.loginUser.lastName}</div>
-          <div><strong>Email:</strong> {this.props.loginUser.email}</div>
-          <div><strong>Account Created:</strong> {this.props.loginUser.createDate}</div>
+          <div> <strong>First Name: </strong>{this.props.loginUser.firstName}</div>
+          <div><strong>Last Name: </strong>{this.props.loginUser.lastName}</div>
+          <div><strong>Email: </strong>{this.props.loginUser.email}</div>
+          <div><strong>Account Created: </strong>{moment(this.props.loginUser.createDate).format('MM-DD-YYYY')}</div>
         </div>
         {this.props.editProfileModalVisibility && <EditProfileModal />}
         {this.props.editPasswordModalVisibility && <EditPasswordModal />}
