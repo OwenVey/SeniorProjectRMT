@@ -56,15 +56,25 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
     });
 }
 
-export const editUserProjectPermission = (accessToken, userProjectPermission, permission) => dispatch => {
+export const editUserProjectPermission = (accessToken, existingPermission, newPermission) => dispatch => {
   let endDate;
-  if (permission.endDate) {
-    endDate = moment(permission.endDate).subtract(6, "hours")
+  if (newPermission.endDate) {
+    endDate = moment(newPermission.endDate).subtract(6, "hours")
+  }
+
+  var permissionType = '';
+  if(existingPermission.userId)
+  {
+    permissionType = `user/${existingPermission.userId}`
+  }
+  if(existingPermission.groupId)
+  {
+    permissionType = `group/${existingPermission.groupId}`
   }
 
   dispatch(editUserProjectPermissionRequest());
-  return axios.patch(`${TIMBLIN_URL}/projectpermission/${userProjectPermission.projectId}/user/${userProjectPermission.userId}?accessToken=${accessToken}`, {
-    permission: permission.permission,
+  return axios.patch(`${TIMBLIN_URL}/projectpermission/${existingPermission.projectId}/${permissionType}?accessToken=${accessToken}`, {
+    permission: newPermission.permission,
     endDate: endDate,
   })
     .then(response => {
@@ -76,7 +86,6 @@ export const editUserProjectPermission = (accessToken, userProjectPermission, pe
 }
 
 export const deletePermission = (accessToken, permission) => dispatch => {
-  dispatch(deletePermissionRequest());
   var permissionType = '';
   if(permission.userId)
   {
@@ -86,6 +95,7 @@ export const deletePermission = (accessToken, permission) => dispatch => {
   {
     permissionType = `group/${permission.groupId}`
   }
+  dispatch(deletePermissionRequest());
   return axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/${permissionType}?accessToken=${accessToken}`)
   .then(response => {
     dispatch(deletePermissionSuccess(permission))
