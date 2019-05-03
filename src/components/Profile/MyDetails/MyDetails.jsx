@@ -25,11 +25,12 @@ class MyDetails extends Component {
             Change Password
           </Button>
         </div>
-        <div><strong>First Name:</strong> {this.props.loginUser.firstName}</div>
-        <div><strong>Last Name:</strong> {this.props.loginUser.lastName}</div>
-        <div><strong>Email:</strong> {this.props.loginUser.email}</div>
-        <div><strong>Account Created:</strong> {this.props.loginUser.createDate}</div>
-
+        <div style={{ padding: '10px' }}>
+          <div> <strong>First Name:</strong> {this.props.loginUser.firstName}</div>
+          <div><strong>Last Name:</strong> {this.props.loginUser.lastName}</div>
+          <div><strong>Email:</strong> {this.props.loginUser.email}</div>
+          <div><strong>Account Created:</strong> {this.props.loginUser.createDate}</div>
+        </div>
         {this.props.editProfileModalVisibility && <EditProfileModal />}
         {this.props.editPasswordModalVisibility && <EditPasswordModal />}
       </>
