@@ -38,14 +38,14 @@ class Permissions extends Component {
 				align: 'center',
 				render: (id, permission) => (
 					<>
-						<Tooltip title="Edit Project Permission">
+						<Tooltip title="Edit Permission">
 							<Icon onClick={() => this.props.showEditPermissionModal(permission)}>
 								<FontAwesomeIcon icon='edit' color='#1890ff' />
 							</Icon>
 						</Tooltip>
 						<Divider type='vertical' />
-						<Tooltip title="Delete Project Permission">
-							<Icon onClick={() => this.props.deletePermission(this.props.accessToken, permission)}>
+						<Tooltip title="Delete Permission">
+							<Icon onClick={() => this.handleDeletePermission(permission)}>
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
 							</Icon>
 						</Tooltip>
@@ -60,7 +60,7 @@ class Permissions extends Component {
 				width: 100,
 				render: (id, permission) => {
 					let name = ''
-					if(permission && permission.userId) {
+					if (permission && permission.userId) {
 						if (this.props.users.length !== 0) {
 							let user = this.lookupUser(permission.userId)
 							name = `${user.firstName} ${user.lastName}`
@@ -69,7 +69,7 @@ class Permissions extends Component {
 							`${name} (${permission.userId})`
 						)
 					}
-					else if(permission && permission.groupId){
+					else if (permission && permission.groupId) {
 						if (this.props.groups.length !== 0) {
 							let group = this.lookupGroup(permission.groupId)
 							name = group.name
@@ -201,21 +201,6 @@ class Permissions extends Component {
 			this.props.getProjectPermissions(this.props.accessToken)
 	}
 
-	handleDeleteUserProjectPermission = (userProjectPermission) => {
-		Modal.confirm({
-			title: 'Delete Project Permission',
-			content: `Are you sure you want to delete the project permission?`,
-			okText: 'Delete',
-			okType: 'danger',
-			cancelText: 'Cancel',
-			onOk: () => {
-				this.props.deleteUserProjectPermission(this.props.accessToken, userProjectPermission.userId, userProjectPermission.projectId)
-			},
-			onCancel: () => {
-			}
-		});
-	}
-
 	components = {
 		header: {
 			cell: ResizeableTitle,
@@ -242,6 +227,21 @@ class Permissions extends Component {
 			return { columns: nextColumns };
 		});
 	};
+
+	handleDeletePermission = (permission) => {
+		Modal.confirm({
+			title: 'Delete Permission',
+			content: `Are you sure you want to delete the permisison?`,
+			okText: 'Delete',
+			okType: 'danger',
+			cancelText: 'Cancel',
+			onOk: () => {
+				this.props.deletePermission(this.props.accessToken, permission)
+			},
+			onCancel: () => {
+			}
+		});
+	}
 
 	render() {
 		return (
