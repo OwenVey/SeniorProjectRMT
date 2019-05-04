@@ -6,9 +6,9 @@ import {
     addUserProjectPermissionRequest,
     addUserProjectPermissionSuccess,
     addUserProjectPermissionFailure,
-    editUserProjectPermissionRequest,
-    editUserProjectPermissionSuccess,
-    editUserProjectPermissionFailure,
+    editProjectPermissionRequest,
+    editProjectPermissionSuccess,
+    editProjectPermissionFailure,
     deletePermissionRequest,
     deletePermissionSuccess,
     deletePermissionFailure,
@@ -92,18 +92,24 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
         state.editPermissionModalVisibility = false;
     },
 
-    [editUserProjectPermissionRequest]: (state, action) => {
+    [editProjectPermissionRequest]: (state, action) => {
         state.loadingEdit = true;
     },
 
-    [editUserProjectPermissionSuccess]: (state, action) => {
+    [editProjectPermissionSuccess]: (state, action) => {
+        if (action.payload.userId) {
+            const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
+            state.userProjectPermissions[index] = action.payload;
+        }
+        if (action.payload.groupId) {
+            const index = state.groupProjectPermissions.findIndex(permission => permission.groupId === action.payload.groupId);
+            state.groupProjectPermissions[index] = action.payload;
+        }
         state.loadingEdit = false;
-        const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
-        state.userProjectPermissions[index] = action.payload;
         state.editPermissionModalVisibility = false;
     },
 
-    [editUserProjectPermissionFailure]: (state, action) => {
+    [editProjectPermissionFailure]: (state, action) => {
         state.loadingEdit = false;
         state.editError = action.payload;
     },
@@ -115,13 +121,11 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     },
 
     [deletePermissionSuccess]: (state, action) => {
-        if(action.payload.userId)
-        {
+        if (action.payload.userId) {
             const index = state.userProjectPermissions.findIndex(permission => permission.userId === action.payload.userId);
             state.userProjectPermissions.splice(index, 1);
         }
-        if(action.payload.groupId)
-        {
+        if (action.payload.groupId) {
             const index = state.groupProjectPermissions.findIndex(permission => permission.groupId === action.payload.groupId);
             state.groupProjectPermissions.splice(index, 1);
         }

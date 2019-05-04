@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Modal, Form, Row, Col, Checkbox, DatePicker } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
-import { clickCancelEditPermission, editUserProjectPermission } from '../../../actions/permissions';
+import { clickCancelEditPermission, editProjectPermission } from '../../../actions/permissions';
 import moment from 'moment';
 
 const FormItem = Form.Item;
@@ -29,7 +29,7 @@ class EditPermissionModal extends Component {
           permissionString += values.permission.includes("Admin") ? 'A' : ''
         }
         values.permission = permissionString;
-        this.props.editUserProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
+        this.props.editProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
       }
     })
   }
@@ -108,4 +108,4 @@ const mapStateToProps = state => ({
   editError: state.permissions.editError,
 });
 
-export default connect(mapStateToProps, { clickCancelEditPermission, editUserProjectPermission })(Form.create()(EditPermissionModal));
+export default connect(mapStateToProps, { clickCancelEditPermission, editProjectPermission })(Form.create()(EditPermissionModal));

@@ -14,9 +14,9 @@ export const addUserProjectPermissionFailure = createAction('ADD_USER_PROJECT_PE
 export const showAddPermissionModal = createAction('SHOW_ADD_PERMISSION_MODAL');
 export const clickCancelAddPermission = createAction('CLICK_CANCEL_ADD_PERMISSION');
 
-export const editUserProjectPermissionRequest = createAction('EDIT_USER_PROJECT_PERMISSION_REQUEST');
-export const editUserProjectPermissionSuccess = createAction('EDIT_USER_PROJECT_PERMISSION_SUCCESS');
-export const editUserProjectPermissionFailure = createAction('EDIT_USER_PROJECT_PERMISSION_FAILURE');
+export const editProjectPermissionRequest = createAction('EDIT_USER_PROJECT_PERMISSION_REQUEST');
+export const editProjectPermissionSuccess = createAction('EDIT_USER_PROJECT_PERMISSION_SUCCESS');
+export const editProjectPermissionFailure = createAction('EDIT_USER_PROJECT_PERMISSION_FAILURE');
 
 export const showEditPermissionModal = createAction('SHOW_EDIT_PERMISSION_MODAL');
 export const clickCancelEditPermission = createAction('CLICK_CANCEL_EDIT_PERMISSION');
@@ -56,51 +56,47 @@ export const addUserProjectPermission = (accessToken, permission) => dispatch =>
     });
 }
 
-export const editUserProjectPermission = (accessToken, existingPermission, newPermission) => dispatch => {
+export const editProjectPermission = (accessToken, existingPermission, newPermission) => dispatch => {
   let endDate;
   if (newPermission.endDate) {
     endDate = moment(newPermission.endDate).subtract(6, "hours")
   }
 
   var permissionType = '';
-  if(existingPermission.userId)
-  {
+  if (existingPermission.userId) {
     permissionType = `user/${existingPermission.userId}`
   }
-  if(existingPermission.groupId)
-  {
+  if (existingPermission.groupId) {
     permissionType = `group/${existingPermission.groupId}`
   }
 
-  dispatch(editUserProjectPermissionRequest());
+  dispatch(editProjectPermissionRequest());
   return axios.patch(`${TIMBLIN_URL}/projectpermission/${existingPermission.projectId}/${permissionType}?accessToken=${accessToken}`, {
     permission: newPermission.permission,
     endDate: endDate,
   })
     .then(response => {
-      dispatch(editUserProjectPermissionSuccess(response.data))
+      dispatch(editProjectPermissionSuccess(response.data))
     })
     .catch(error => {
-      dispatch(editUserProjectPermissionFailure(error.message))
+      dispatch(editProjectPermissionFailure(error.message))
     });
 }
 
 export const deletePermission = (accessToken, permission) => dispatch => {
   var permissionType = '';
-  if(permission.userId)
-  {
+  if (permission.userId) {
     permissionType = `user/${permission.userId}`
   }
-  if(permission.groupId)
-  {
+  if (permission.groupId) {
     permissionType = `group/${permission.groupId}`
   }
   dispatch(deletePermissionRequest());
   return axios.delete(`${TIMBLIN_URL}/projectpermission/${permission.projectId}/${permissionType}?accessToken=${accessToken}`)
-  .then(response => {
-    dispatch(deletePermissionSuccess(permission))
-  })
-  .catch(error => {
-    dispatch(deletePermissionFailure(error.message))
-  });
+    .then(response => {
+      dispatch(deletePermissionSuccess(permission))
+    })
+    .catch(error => {
+      dispatch(deletePermissionFailure(error.message))
+    });
 }
