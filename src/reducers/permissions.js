@@ -3,9 +3,9 @@ import {
     getProjectPermissionsRequest,
     getProjectPermissionsSuccess,
     getProjectPermissionsFailure,
-    addUserProjectPermissionRequest,
-    addUserProjectPermissionSuccess,
-    addUserProjectPermissionFailure,
+    addProjectPermissionRequest,
+    addProjectPermissionSuccess,
+    addProjectPermissionFailure,
     editProjectPermissionRequest,
     editProjectPermissionSuccess,
     editProjectPermissionFailure,
@@ -54,18 +54,23 @@ export const permissionsReducer = createReducer(initialPermissionsState, {
     // Adding A Permission
     //-------------------------------------------------------------------
     //Modal Switching
-    [addUserProjectPermissionRequest]: (state, action) => {
+    [addProjectPermissionRequest]: (state, action) => {
         state.loadingAdd = true;
         state.addError = '';
     },
 
-    [addUserProjectPermissionSuccess]: (state, action) => {
+    [addProjectPermissionSuccess]: (state, action) => {
         state.loadingAdd = false;
-        state.userProjectPermissions.push(action.payload);
         state.addPermissionModalVisibility = false;
+        if (action.payload.userId) {
+            state.userProjectPermissions.push(action.payload);
+        }
+        if (action.payload.groupId) {
+            state.groupProjectPermissions.push(action.payload);
+        }
     },
 
-    [addUserProjectPermissionFailure]: (state, action) => {
+    [addProjectPermissionFailure]: (state, action) => {
         state.loadingAdd = false;
         state.addError = action.payload;
     },
