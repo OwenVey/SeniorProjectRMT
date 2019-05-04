@@ -61,9 +61,9 @@ describe('Permissions Reducer', () => {
     });
   })
 
-  it('should handle ADD_USER_PROJECT_PERMISSION_REQUEST', () => {
+  it('should handle ADD_PROJECT_PERMISSION_REQUEST', () => {
     const action = {
-      type: actions.addUserProjectPermissionRequest.toString()
+      type: actions.addProjectPermissionRequest.toString()
     };
 
     expect(permissionsReducer({}, action)).toEqual({
@@ -72,9 +72,9 @@ describe('Permissions Reducer', () => {
     });
   });
 
-  it('should handle ADD_USER_PROJECT_PERMISSION_SUCCESS', () => {
+  it('should handle ADD_PROJECT_PERMISSION_SUCCESS', () => {
     const action = {
-      type: actions.addUserProjectPermissionSuccess.toString(),
+      type: actions.addProjectPermissionSuccess.toString(),
       payload: addUserProjectPermissionMock,
     };
 
@@ -85,9 +85,9 @@ describe('Permissions Reducer', () => {
     });
   })
 
-  it('should handle ADD_USER_PROJECT_PERMISSION_FAILURE', () => {
+  it('should handle ADD_PROJECT_PERMISSION_FAILURE', () => {
     const action = {
-      type: actions.addUserProjectPermissionFailure.toString(),
+      type: actions.addProjectPermissionFailure.toString(),
       payload: 'error',
     };
 
@@ -117,9 +117,9 @@ describe('Permissions Reducer', () => {
     });
   })
 
-  it('should handle EDIT_USER_PROJECT_PERMISSION_REQUEST', () => {
+  it('should handle EDIT_PROJECT_PERMISSION_REQUEST', () => {
     const action = {
-      type: actions.editUserProjectPermissionRequest.toString()
+      type: actions.editProjectPermissionRequest.toString()
     };
 
     expect(permissionsReducer({}, action)).toEqual({
@@ -127,9 +127,9 @@ describe('Permissions Reducer', () => {
     });
   });
 
-  it('should handle EDIT_USER_PROJECT_PERMISSION_SUCCESS', () => {
+  it('should handle EDIT_PROJECT_PERMISSION_SUCCESS', () => {
     const action = {
-      type: actions.editUserProjectPermissionSuccess.toString(),
+      type: actions.editProjectPermissionSuccess.toString(),
       payload: editUserProjectPermissionMock,
     };
 
@@ -140,9 +140,9 @@ describe('Permissions Reducer', () => {
     });
   })
 
-  it('should handle EDIT_USER_PROJECT_PERMISSION_FAILURE', () => {
+  it('should handle EDIT_PROJECT_PERMISSION_FAILURE', () => {
     const action = {
-      type: actions.editUserProjectPermissionFailure.toString(),
+      type: actions.editProjectPermissionFailure.toString(),
       payload: 'error',
     };
 

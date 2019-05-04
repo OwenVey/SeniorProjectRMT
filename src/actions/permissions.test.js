@@ -67,7 +67,7 @@ describe('Permission async actions', () => {
     });
   });
 
-  it('creates ADD_USER_PROJECT_PERMISSION_SUCCESS after successfuly adding a user project permission', () => {
+  it('creates ADD_PROJECT_PERMISSION_SUCCESS after successfuly adding a user project permission', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -77,8 +77,8 @@ describe('Permission async actions', () => {
     });
 
     const expectedActions = [
-      { type: actions.addUserProjectPermissionRequest.toString(), payload: undefined },
-      { type: actions.addUserProjectPermissionSuccess.toString(), payload: addUserProjectPermissionMock },
+      { type: actions.addProjectPermissionRequest.toString(), payload: undefined },
+      { type: actions.addProjectPermissionSuccess.toString(), payload: addUserProjectPermissionMock },
     ];
 
     const store = mockStore({ permissions: { userProjectPermissions: [] } })
@@ -90,12 +90,12 @@ describe('Permission async actions', () => {
       "endDate": "2020-04-17T16:41:24"
     }
 
-    return store.dispatch(actions.addUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', userProjectPermission)).then(() => {
+    return store.dispatch(actions.addProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it('creates ADD_USER_PROJECT_PERMISSION_FAILURE after failing to add a User Project Permissions', () => {
+  it('creates ADD_PROJECT_PERMISSION_FAILURE after failing to add a User Project Permissions', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -104,9 +104,9 @@ describe('Permission async actions', () => {
     });
 
     const expectedActions = [
-      { type: actions.addUserProjectPermissionRequest.toString(), payload: undefined },
+      { type: actions.addProjectPermissionRequest.toString(), payload: undefined },
       {
-        type: actions.addUserProjectPermissionFailure.toString(),
+        type: actions.addProjectPermissionFailure.toString(),
         payload: 'Request failed with status code 500'
       },
     ];
@@ -119,12 +119,12 @@ describe('Permission async actions', () => {
       "permission": "",
     }
 
-    return store.dispatch(actions.addUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', userProjectPermission)).then(() => {
+    return store.dispatch(actions.addProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it('creates EDIT_USER_PROJECT_PERMISSION_SUCCESS after successfuly editing a user project permission', () => {
+  it('creates EDIT_PROJECT_PERMISSION_SUCCESS after successfuly editing a user project permission', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -134,8 +134,8 @@ describe('Permission async actions', () => {
     });
 
     const expectedActions = [
-      { type: actions.editUserProjectPermissionRequest.toString(), payload: undefined },
-      { type: actions.editUserProjectPermissionSuccess.toString(), payload: editUserProjectPermissionMock },
+      { type: actions.editProjectPermissionRequest.toString(), payload: undefined },
+      { type: actions.editProjectPermissionSuccess.toString(), payload: editUserProjectPermissionMock },
     ];
 
     const store = mockStore({ permissions: { userProjectPermsissions: [] } })
@@ -152,12 +152,12 @@ describe('Permission async actions', () => {
       "endDate": "2019-04-12T16:41:24"
     }
 
-    return store.dispatch(actions.editUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
+    return store.dispatch(actions.editProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it('creates EDIT_USER_PROJECT_PERMISSION_FAILURE after failing to edit a User Project Permissions', () => {
+  it('creates EDIT_PROJECT_PERMISSION_FAILURE after failing to edit a User Project Permissions', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -166,9 +166,9 @@ describe('Permission async actions', () => {
     });
 
     const expectedActions = [
-      { type: actions.editUserProjectPermissionRequest.toString(), payload: undefined },
+      { type: actions.editProjectPermissionRequest.toString(), payload: undefined },
       {
-        type: actions.editUserProjectPermissionFailure.toString(),
+        type: actions.editProjectPermissionFailure.toString(),
         payload: 'Request failed with status code 500'
       },
     ];
@@ -186,7 +186,7 @@ describe('Permission async actions', () => {
       "endDate": "2019-04-12T16:41:24"
     }
 
-    return store.dispatch(actions.editUserProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
+    return store.dispatch(actions.editProjectPermission('2f5426d0-0912-4555-9b24-f637638aba70', oldPermission, userProjectPermission)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

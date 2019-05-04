@@ -4,6 +4,7 @@ import { Table, Button, Icon, Modal, Input, Tooltip, Divider } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProjects } from '../../../actions/projects';
 import { getUsers } from '../../../actions/users';
+import { getUserGroups } from '../../../actions/userGroups';
 import AddPermissionModal from './AddPermissionModal.jsx';
 import EditPermissionModal from './EditPermissionModal.jsx';
 import { getProjectPermissions, showEditPermissionModal, deletePermission, showAddPermissionModal } from "../../../actions/permissions";
@@ -52,20 +53,32 @@ class Permissions extends Component {
 				),
 			},
 			{
-				title: 'User',
-				key: 'userId',
-				dataIndex: 'userId',
+				title: 'User/Group',
+				key: 'userGroup',
+				dataIndex: 'userGroup',
 				align: 'center',
 				width: 100,
-				render: userId => {
+				render: (id, permission) => {
 					let name = ''
-					if (this.props.users.length !== 0) {
-						let user = this.lookupUser(userId)
-						name = `${user.firstName} ${user.lastName}`
+					if(permission && permission.userId) {
+						if (this.props.users.length !== 0) {
+							let user = this.lookupUser(permission.userId)
+							name = `${user.firstName} ${user.lastName}`
+						}
+						return (
+							`${name} (${permission.userId})`
+						)
 					}
-					return (
-						`${name} (${userId})`
-					)
+					else if(permission && permission.groupId){
+						if (this.props.groups.length !== 0) {
+							let group = this.lookupGroup(permission.groupId)
+							name = group.name
+						}
+						return (
+							`${name} (${permission.groupId})`
+						)
+					}
+					return ""
 				},
 			},
 			{
@@ -173,12 +186,18 @@ class Permissions extends Component {
 		return this.props.users.filter(user => user.id === userId)[0]
 	}
 
+	lookupGroup(groupId) {
+		return this.props.groups.filter(group => group.id === groupId)[0]
+	}
+
 	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken);
 		if (this.props.users.length === 0)
 			this.props.getUsers(this.props.accessToken);
-		if (this.props.userProjectPermissions.length === 0)
+		if (this.props.groups.length === 0)
+			this.props.getUserGroups(this.props.accessToken);
+		if (this.props.userProjectPermissions.length === 0 && this.props.groupProjectPermissions.length == 0)
 			this.props.getProjectPermissions(this.props.accessToken)
 	}
 
@@ -239,7 +258,7 @@ class Permissions extends Component {
 				<Table
 					bordered
 					rowKey={record => record.userId}
-					dataSource={this.props.userProjectPermissions}
+					dataSource={this.props.userProjectPermissions.concat(this.props.groupProjectPermissions)}
 					columns={this.state.columns}
 					loading={this.props.loadingPermissions}
 				/>
@@ -253,14 +272,16 @@ class Permissions extends Component {
 const mapStateToProps = state => ({
 	accessToken: state.authentication.accessToken,
 	userProjectPermissions: state.permissions.userProjectPermissions,
+	groupProjectPermissions: state.permissions.groupProjectPermissions,
 	editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
 	addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
 	loadingPermissions: state.permissions.loadingPermissions,
 	projects: state.projects.projects,
 	users: state.users.users,
+	groups: state.userGroups.userGroups,
 });
 
 export default connect(
 	mapStateToProps,
-	{ getProjectPermissions, showAddPermissionModal, showEditPermissionModal, deletePermission, getProjects, getUsers }
+	{ getProjectPermissions, showAddPermissionModal, showEditPermissionModal, deletePermission, getProjects, getUsers, getUserGroups }
 )(Permissions);
