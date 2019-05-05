@@ -28,8 +28,10 @@ export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 export const clickFile = createAction('CLICK_FILE');
 export const clickCancelFile = createAction('CLICK_CANCEL_FILE');
 
+
 export const clickAddProject = createAction('CLICK_ADD_PROJECT');
 export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
+
 
 export const getBranchesRequest = createAction('GET_BRANCHES_REQUEST');
 export const getBranchesSuccess = createAction('GET_BRANCHES_SUCCESS');
@@ -144,17 +146,6 @@ export const deleteProject = (accessToken, id) => dispatch => {
 //#endregion
 
 //#region BranchActions
-export const getBranches = accessToken => dispatch => {
-  dispatch(getBranchesRequest());
-  return axios.get(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`)
-    .then(response => {
-      dispatch(getBranchesSuccess(response.data.branches))
-    })
-    .catch(error => {
-      dispatch(getBranchesFailure(error.message))
-    });
-}
-
 export const branchProject = (accessToken, branchInfo, currentUserId, trunk) => dispatch => {
   dispatch(branchProjectRequest());
   return axios.post(`${TIMBLIN_URL}/branch?accessToken=${accessToken}`, {
