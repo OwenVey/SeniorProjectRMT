@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Input, Form, Select } from 'antd';
+import { Icon, Modal, Input, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { clickCancelAddBranchProject, branchProject } from '../../../actions/projects'
-
-const { Option } = Select;
 
 class AddBranchProjectModal extends Component {
 
@@ -23,7 +21,7 @@ class AddBranchProjectModal extends Component {
         title={
           <>
             <Icon style={{ color: '#1890FF', marginRight: 10 }}>
-              <FontAwesomeIcon icon='project-diagram' />
+              <FontAwesomeIcon icon='code-branch' />
             </Icon>
             Branch Project
           </>
@@ -69,7 +67,7 @@ const mapStateToProps = state => ({
   projectBranches: state.projects.branches,
   selectedBranch: state.projects.selectedBranch,
   loadingAddBranch: state.projects.loadingAddBranch,
-  errorMessage: state.projects.addBranchError,
+  errorMessage: state.projects.addError,
 });
 
 export default connect(mapStateToProps, { clickCancelAddBranchProject, branchProject })(Form.create()(AddBranchProjectModal));
