@@ -48,7 +48,7 @@ class TreeView extends Component {
   }
 
   componentWillMount() {
-    this.props.getTree(this.props.accessToken, 4);
+    this.props.getTree(this.props.accessToken, 1);
   }
 
   onExpand = (expandedKeys) => {
@@ -203,7 +203,7 @@ class TreeView extends Component {
       resolve();
       return;
     }
-    this.props.getChildren(this.props.accessToken, 4, treeNode.props.dataRef.id);
+    this.props.getChildren(this.props.accessToken, 1, treeNode.props.dataRef.id);
     resolve();
   });
 
