@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Input, Upload, message, Icon, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExportButtonExcel from '../Export/ExportExcel';
-
 import './SearchBar.css';
 
 const uploadProps = {
