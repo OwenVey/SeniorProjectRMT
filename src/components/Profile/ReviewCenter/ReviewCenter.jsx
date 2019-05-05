@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
+import { Checkbox } from 'antd'
 
 class ReviewCenter extends Component {
+    state = { checked: false }
+
+    handleCheckboxChange = event =>
+        this.setState({ checked: event.target.checked })
+
     render() {
         return (
             <div>
-                <h1>My Review Center</h1>
-                <h2>If fully implemented, this page will show information on what objects a user is currently reviewing.</h2>
+                <h3>Email me updates to items I'm following: <Checkbox></Checkbox></h3>
+                <h3>Automatically follow items I have commented on: <Checkbox></Checkbox></h3>
             </div>
         )
     }
