@@ -28,6 +28,11 @@ export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 export const clickFile = createAction('CLICK_FILE');
 export const clickCancelFile = createAction('CLICK_CANCEL_FILE');
 
+
+export const clickAddProject = createAction('CLICK_ADD_PROJECT');
+export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
+
+
 export const getBranchesRequest = createAction('GET_BRANCHES_REQUEST');
 export const getBranchesSuccess = createAction('GET_BRANCHES_SUCCESS');
 export const getBranchesFailure = createAction('GET_BRANCHES_FAILURE');

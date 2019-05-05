@@ -3,7 +3,7 @@ import { Icon, Modal, Input, Button, Upload, message, Form, Divider } from 'antd
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { clickCancelImportToProject, importToProject } from '../../../actions/projects'
-import ExportButtonExcel from '../../Projects/Export/ExportExcel';
+import ExportButtonExcel from '../../Projects/ExportExcel/ExportExcel';
 import {OutTable, ExcelRenderer} from 'react-excel-renderer';
 
 const uploadProps = {
