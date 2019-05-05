@@ -24,6 +24,11 @@ import {
   getBranchesRequest,
   getBranchesSuccess,
   getBranchesFailure,
+  importToProjectRequest,
+  importToProjectSuccess,
+  importToProjectFailure,
+  clickImportToProject,
+  clickCancelImportToProject,
 
 } from '../actions/projects'
 
@@ -40,10 +45,15 @@ const initialProjectsState = {
   loadingEdit: false,
   editError: '',
   addError: '',
+  importError: '',
   editBranchError: '',
   addBranchError: '',
   loadingAdd: false,
   loadingAddBranch: false,
+  loadingImport: false,
+  importFile: [],
+  selectedFile: {},
+  showImportToProjectModal: false,
 }
 
 export const projectsReducer = createReducer(initialProjectsState, {
@@ -59,6 +69,28 @@ export const projectsReducer = createReducer(initialProjectsState, {
 
   [getProjectsFailure]: (state, action) => {
     state.loadingProjects = false;
+  },
+
+  [importToProjectRequest]: (state, action) => {
+    state.loadingImport = true;
+  },
+
+  [importToProjectSuccess]: (state, action) => {
+    state.loadingImport = false;
+    state.fileObj = action.payload;
+    state.showImportToProjectModal = false;
+  },
+
+  [importToProjectFailure]: (state, action) => {
+    state.loadingImport = false;
+  },
+
+  [clickImportToProject]: (state, action) => {
+    state.showImportToProjectModal = true;
+  },
+
+  [clickCancelImportToProject]: (state, action) => {
+    state.showImportToProjectModal = false;
   },
 
   [clickEditProject]: (state, action) => {

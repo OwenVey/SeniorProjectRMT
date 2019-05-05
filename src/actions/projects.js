@@ -26,6 +26,9 @@ export const branchProjectFailure = createAction('BRANCH_PROJECT_FAILURE');
 export const clickEditProject = createAction('CLICK_EDIT_PROJECT');
 export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 
+export const clickFile = createAction('CLICK_FILE');
+export const clickCancelFile = createAction('CLICK_CANCEL_FILE');
+
 export const clickAddProject = createAction('CLICK_ADD_PROJECT');
 export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
 
@@ -35,6 +38,13 @@ export const getBranchesFailure = createAction('GET_BRANCHES_FAILURE');
 
 export const clickAddBranchProject = createAction('CLICK_ADD_BRANCH_PROJECT');
 export const clickCancelAddBranchProject = createAction('CLICK_CANCEL_ADD_BRANCH_PROJECT');
+
+export const importToProjectRequest = createAction('IMPORT_TO_PROJECT_REQUEST');
+export const importToProjectSuccess = createAction('IMPORT_TO_PROJECT_SUCCESS');
+export const importToProjectFailure = createAction('IMPORT_TO_PROJECT_FAILURE');
+
+export const clickImportToProject = createAction('CLICK_IMPORT_PROJECT');
+export const clickCancelImportToProject = createAction('CLICK_CANCEL_IMPORT_PROJECT');
 
 export const getBranches = accessToken => dispatch => {
   dispatch(getBranchesRequest());
@@ -70,6 +80,17 @@ export const addProject = (accessToken, project) => dispatch => {
     })
     .catch(error => {
       dispatch(addProjectFailure(error.message))
+    });
+}
+// THIS URL AND METHOD MUST BE UPDATED AFTER MIDDLE LAYER ENDPOINT IS ACQUIRED
+export const importToProject = (accessToken, project) => dispatch => {
+  dispatch(importToProjectRequest());
+  axios.post(`${TIMBLIN_URL}/project?accessToken=${accessToken}`)
+    .then(response => {
+      dispatch(importToProjectSuccess(response.data.projects))
+    })
+    .catch(error => {
+      dispatch(importToProjectFailure(error.message))
     });
 }
 
