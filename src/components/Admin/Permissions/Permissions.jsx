@@ -4,9 +4,10 @@ import { Table, Button, Icon, Modal, Input, Tooltip, Divider } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getProjects } from '../../../actions/projects';
 import { getUsers } from '../../../actions/users';
+import { getUserGroups } from '../../../actions/userGroups';
 import AddPermissionModal from './AddPermissionModal.jsx';
 import EditPermissionModal from './EditPermissionModal.jsx';
-import { getUserProjectPermissions, showEditPermissionModal, deletePermission, showAddPermissionModal } from "../../../actions/permissions";
+import { getProjectPermissions, showEditPermissionModal, deletePermission, showAddPermissionModal } from "../../../actions/permissions";
 import { Resizable } from 'react-resizable';
 import moment from 'moment';
 
@@ -26,7 +27,7 @@ const ResizeableTitle = props => {
 
 class Permissions extends Component {
 
-  state = {
+	state = {
 		searchText: '',
 		columns: [
 			{
@@ -37,39 +38,50 @@ class Permissions extends Component {
 				align: 'center',
 				render: (id, permission) => (
 					<>
-						<Tooltip title="Edit Project Permission">
+						<Tooltip title="Edit Permission">
 							<Icon onClick={() => this.props.showEditPermissionModal(permission)}>
 								<FontAwesomeIcon icon='edit' color='#1890ff' />
 							</Icon>
 						</Tooltip>
 						<Divider type='vertical' />
-						<Tooltip title="Delete Project Permission">
-							<Icon onClick={() => this.props.deletePermission(this.props.accessToken, permission)}>
+						<Tooltip title="Delete Permission">
+							<Icon onClick={() => this.handleDeletePermission(permission)}>
 								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
 							</Icon>
 						</Tooltip>
 					</>
 				),
-      },	
+			},
 			{
-        title: 'User',
-        key: 'userId',
-				dataIndex: 'userId',
+				title: 'User/Group',
+				key: 'userGroup',
+				dataIndex: 'userGroup',
 				align: 'center',
 				width: 100,
-				render: userId => {
+				render: (id, permission) => {
 					let name = ''
-					if (this.props.users.length !== 0)
-					{
-						let user = this.lookupUser(userId)
-						name = `${user.firstName} ${user.lastName}`
+					if (permission && permission.userId) {
+						if (this.props.users.length !== 0) {
+							let user = this.lookupUser(permission.userId)
+							name = `${user.firstName} ${user.lastName}`
+						}
+						return (
+							`${name} (${permission.userId})`
+						)
 					}
-					return (
-						`${name} (${userId})`
-          )
+					else if (permission && permission.groupId) {
+						if (this.props.groups.length !== 0) {
+							let group = this.lookupGroup(permission.groupId)
+							name = group.name
+						}
+						return (
+							`${name} (${permission.groupId})`
+						)
+					}
+					return ""
 				},
-      },
-      {
+			},
+			{
 				title: 'Project',
 				dataIndex: 'projectId',
 				key: 'projectId',
@@ -81,7 +93,7 @@ class Permissions extends Component {
 						name = this.lookupProject(projectId).name
 					return (
 						name
-          )
+					)
 				},
 			},
 			{
@@ -164,8 +176,8 @@ class Permissions extends Component {
 				},
 			},
 		]
-  };
-  
+	};
+
 	lookupProject(projectId) {
 		return this.props.projects.filter(project => project.id === projectId)[0]
 	}
@@ -174,28 +186,19 @@ class Permissions extends Component {
 		return this.props.users.filter(user => user.id === userId)[0]
 	}
 
-  componentWillMount() {
+	lookupGroup(groupId) {
+		return this.props.groups.filter(group => group.id === groupId)[0]
+	}
+
+	componentWillMount() {
 		if (this.props.projects.length === 0)
 			this.props.getProjects(this.props.accessToken);
 		if (this.props.users.length === 0)
 			this.props.getUsers(this.props.accessToken);
-		if (this.props.userProjectPermissions.length === 0)
-			this.props.getUserProjectPermissions(this.props.accessToken)
-	}
-
-	handleDeleteUserProjectPermission = (userProjectPermission) => {
-		Modal.confirm({
-			title: 'Delete Project Permission',
-			content: `Are you sure you want to delete the project permission?`,
-			okText: 'Delete',
-			okType: 'danger',
-			cancelText: 'Cancel',
-			onOk: () => {
-				this.props.deleteUserProjectPermission(this.props.accessToken, userProjectPermission.userId, userProjectPermission.projectId)
-			},
-			onCancel: () => {
-			}
-		});
+		if (this.props.groups.length === 0)
+			this.props.getUserGroups(this.props.accessToken);
+		if (this.props.userProjectPermissions.length === 0 && this.props.groupProjectPermissions.length == 0)
+			this.props.getProjectPermissions(this.props.accessToken)
 	}
 
 	components = {
@@ -225,43 +228,60 @@ class Permissions extends Component {
 		});
 	};
 
-  render() {
-    return (
-      <>
-        <div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
-          <div style={{ flex: 1, justifyContent: 'flex-start' }}>
-            <h2>Permissions</h2>
-          </div>
-          <Button onClick={() => this.props.showAddPermissionModal()}>
-            <Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
-            Add Permission
+	handleDeletePermission = (permission) => {
+		Modal.confirm({
+			title: 'Delete Permission',
+			content: `Are you sure you want to delete the permisison?`,
+			okText: 'Delete',
+			okType: 'danger',
+			cancelText: 'Cancel',
+			onOk: () => {
+				this.props.deletePermission(this.props.accessToken, permission)
+			},
+			onCancel: () => {
+			}
+		});
+	}
+
+	render() {
+		return (
+			<>
+				<div style={{ display: 'flex', flexDirection: 'row', margin: 15, marginBottom: 5, justifyContent: 'flex-end' }}>
+					<div style={{ flex: 1, justifyContent: 'flex-start' }}>
+						<h2>Permissions</h2>
+					</div>
+					<Button onClick={() => this.props.showAddPermissionModal()}>
+						<Icon type="plus-circle" theme='filled' style={{ color: '#1890FF' }} />
+						Add Permission
           </Button>
-        </div>
-		<Table
-          bordered
-          rowKey={record => record.userId}
-          dataSource={this.props.userProjectPermissions}
-          columns={this.state.columns}
-          loading={this.props.loadingPermissions}
-        />
-		{this.props.editPermissionModalVisible && <EditPermissionModal />}
-        {this.props.addPermissionModalVisible && <AddPermissionModal />}
-      </>
-    )
-  }
+				</div>
+				<Table
+					bordered
+					rowKey={record => record.userId}
+					dataSource={this.props.userProjectPermissions.concat(this.props.groupProjectPermissions)}
+					columns={this.state.columns}
+					loading={this.props.loadingPermissions}
+				/>
+				{this.props.editPermissionModalVisible && <EditPermissionModal />}
+				{this.props.addPermissionModalVisible && <AddPermissionModal />}
+			</>
+		)
+	}
 }
 
 const mapStateToProps = state => ({
-  	accessToken: state.authentication.accessToken,
-  	userProjectPermissions: state.permissions.userProjectPermissions,
-  	editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
-  	addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
-  	loadingPermissions: state.permissions.loadingPermissions,
-	  projects: state.projects.projects,
-	  users: state.users.users,
+	accessToken: state.authentication.accessToken,
+	userProjectPermissions: state.permissions.userProjectPermissions,
+	groupProjectPermissions: state.permissions.groupProjectPermissions,
+	editPermissionModalVisible: state.permissions.editPermissionModalVisibility,
+	addPermissionModalVisible: state.permissions.addPermissionModalVisibility,
+	loadingPermissions: state.permissions.loadingPermissions,
+	projects: state.projects.projects,
+	users: state.users.users,
+	groups: state.userGroups.userGroups,
 });
 
 export default connect(
-  mapStateToProps,
-  { getUserProjectPermissions, showAddPermissionModal, showEditPermissionModal, deletePermission, getProjects, getUsers }
+	mapStateToProps,
+	{ getProjectPermissions, showAddPermissionModal, showEditPermissionModal, deletePermission, getProjects, getUsers, getUserGroups }
 )(Permissions);

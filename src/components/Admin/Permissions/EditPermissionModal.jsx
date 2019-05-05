@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Modal, Form, Row, Col, Checkbox, DatePicker } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
-import { clickCancelEditPermission, editUserProjectPermission } from '../../../actions/permissions';
+import { clickCancelEditPermission, editProjectPermission } from '../../../actions/permissions';
 import moment from 'moment';
 
 const FormItem = Form.Item;
@@ -20,7 +20,16 @@ class EditPermissionModal extends Component {
   handleOkEditPermissionModal = (e) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.editUserProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
+        let permissionString = "";
+        if (values.permission) {
+          permissionString = values.permission.includes("Create") ? 'C' : ''
+          permissionString += values.permission.includes("Read") ? 'R' : ''
+          permissionString += values.permission.includes("Manage") ? 'M' : ''
+          permissionString += values.permission.includes("Delete") ? 'D' : ''
+          permissionString += values.permission.includes("Admin") ? 'A' : ''
+        }
+        values.permission = permissionString;
+        this.props.editProjectPermission(this.props.accessToken, this.props.selectedPermission, values);
       }
     })
   }
@@ -60,12 +69,12 @@ class EditPermissionModal extends Component {
         <div style={{ color: 'red' }}>{this.props.editError}</div>
         <Form onSubmit={this.handleOkEditPermissionModal} layout={'vertical'}>
           <FormItem style={{ marginBottom: '0px' }} label="Permissions">
-            {getFieldDecorator('permissions', {
+            {getFieldDecorator('permission', {
               rules: [
               ],
               initialValue: this.getPermissionCheckboxes(this.props.selectedPermission.permission)
             })(
-              <Checkbox.Group style={{ width: "100%"}}>
+              <Checkbox.Group style={{ width: "100%" }}>
                 <Row>
                   <Col span={8}><Checkbox value="Create">Create</Checkbox></Col>
                   <Col span={8}><Checkbox value="Read">Read</Checkbox></Col>
@@ -99,4 +108,4 @@ const mapStateToProps = state => ({
   editError: state.permissions.editError,
 });
 
-export default connect(mapStateToProps, { clickCancelEditPermission, editUserProjectPermission })(Form.create()(EditPermissionModal));
+export default connect(mapStateToProps, { clickCancelEditPermission, editProjectPermission })(Form.create()(EditPermissionModal));

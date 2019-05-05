@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Input, Upload, message, Icon, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import ImportRequirements from '../ImportRequirements';
-import ExportButtonExcel from '../ExportExcel/ExportExcel';
-
+import ExportButtonExcel from '../Export/ExportExcel';
 import './SearchBar.css';
 
 const uploadProps = {
@@ -38,7 +36,6 @@ class SearchBar extends Component {
           </div>
 
           <div className='searchgroup'>
-          
             <div className='tempImportButton'>
               <Upload {...uploadProps}>
                 <Button>
@@ -46,7 +43,6 @@ class SearchBar extends Component {
                 </Button>
               </Upload>,
             </div>
-
             <div className='tempExportButton'>
               <ExportButtonExcel />
             </div>
