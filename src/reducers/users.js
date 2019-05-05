@@ -62,15 +62,8 @@ export const usersReducer = createReducer(initialUsersState, {
 
   [fetchGroupLinksSuccess]: (state, action) => {
     state.loading = false;
-    console.log('test')
     const userId = action.payload.userId;
     const groups = action.payload.groups;
-    const groupNames = action.payload.groupNames;
-    console.log(groupNames)
-
-    groups.map(group => console.log(groupNames))
-
-
     state.users.find(user => user.id === userId).userGroups = groups;
   },
 

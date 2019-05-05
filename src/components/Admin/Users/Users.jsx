@@ -191,39 +191,20 @@ class Users extends Component {
         width: 250,
         sorter: (a, b) => a.email.localeCompare(b.email)
       },
-      // {
-      //   title: "User Groups",
-      //   dataIndex: "userGroups",
-      //   key: "userGroups",
-      //   render: userGroups => {
-      //     if (userGroups)
-      //       return (
-      //         userGroups.map(userGroup => {
-      //           let color = "green";
-      //           // switch (userGroup) {
-      //           //   case "Developer":
-      //           //     color = "geekblue";
-      //           //     break;
-      //           //   case "Admin":
-      //           //     color = "red";
-      //           //     break;
-      //           //   case "Product Owner":
-      //           //     color = "green";
-      //           //     break;
-      //           //   case "Scrum Master":
-      //           //     color = "purple";
-      //           //     break;
-      //           //   case "Customer":
-      //           //     color = "gold";
-      //           //     break;
-      //           //   default:
-      //           //     color = "";
-      //           // }
-      //           return <Tag key={color} color={color}>{userGroup}</Tag>;
-      //         })
-      //       )
-      //   }
-      // },
+      {
+        title: "User Groups",
+        dataIndex: "userGroups",
+        key: "userGroups",
+        render: userGroups => {
+          if (userGroups)
+            return (
+              userGroups.map(userGroup => {
+                const groupName = this.props.userGroups.find(uG => uG.id === userGroup.groupId).name;
+                return <Tag key={userGroup.id} >{groupName}</Tag>;
+              })
+            )
+        }
+      },
       {
         title: "User Status",
         dataIndex: "isActive",
@@ -253,7 +234,7 @@ class Users extends Component {
     if (this.props.userGroups.length === 0)
       this.props.getUserGroups(this.props.accessToken);
     if (this.props.users.length === 0)
-      this.props.getUsers(this.props.accessToken, this.props.userGroups);
+      this.props.getUsers(this.props.accessToken);
   }
 
   handleSearch = (selectedKeys, confirm) => () => {

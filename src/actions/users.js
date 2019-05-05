@@ -1,6 +1,8 @@
 import { createAction } from "redux-starter-kit";
 import axios from "axios";
 import { TIMBLIN_URL } from "../constants";
+import getUserGroups from '../actions/userGroups';
+
 
 export const fetchUsersRequest = createAction("FETCH_USERS_REQUEST");
 export const fetchUsersSuccess = createAction("FETCH_USERS_SUCCESS");
@@ -26,33 +28,27 @@ export const fetchGroupLinksRequest = createAction("FETCH_GROUP_LINKS_REQUEST");
 export const fetchGroupLinksSuccess = createAction("FETCH_GROUP_LINKS_SUCCESS");
 export const fetchGroupLinksFailure = createAction("FETCH_GROUP_LINKS_FAILURE");
 
-export const getUsers = (accessToken, userGroups) => dispatch => {
+export const getUsers = (accessToken) => dispatch => {
   dispatch(fetchUsersRequest());
   return axios
     .get(`${TIMBLIN_URL}/user?accessToken=${accessToken}`)
     .then(response => {
-      //adds additional information to the user array.
-      let users = response.data.users.map(user => {
-
-
-        dispatch(getGroupLinks(accessToken, user.id, userGroups));
-
-
+      response.data.users.map(user => {
+        dispatch(getGroupLinks(accessToken, user.id));
       });
       dispatch(fetchUsersSuccess(response.data.users));
-
     })
     .catch(error => {
       dispatch(fetchUsersFailure(error.message));
     });
 };
 
-export const getGroupLinks = (accessToken, userId, groupNames) => dispatch => {
+export const getGroupLinks = (accessToken, userId) => dispatch => {
   dispatch(fetchGroupLinksRequest());
   axios
     .get(`${TIMBLIN_URL}/usergrouplink?accessToken=${accessToken}&userId=${userId}`)
     .then(response => {
-      dispatch(fetchGroupLinksSuccess({ userId, groups: response.data.userGroupLinks, groupNames }));
+      dispatch(fetchGroupLinksSuccess({ userId, groups: response.data.userGroupLinks }));
     })
     .catch(error => {
       dispatch(fetchGroupLinksFailure(error.message));
