@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Checkbox } from 'antd'
 
 class ReviewCenter extends Component {
     state = { checked: false }
@@ -9,8 +10,8 @@ class ReviewCenter extends Component {
     render() {
         return (
             <div>
-                <h1>Email me updates to items I'm following: </h1>
-                <h2>Automatically follow items I have commented on: </h2>
+                <h3>Email me updates to items I'm following: <Checkbox></Checkbox></h3>
+                <h3>Automatically follow items I have commented on: <Checkbox></Checkbox></h3>
             </div>
         )
     }

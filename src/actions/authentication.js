@@ -35,9 +35,9 @@ export const clickCancelEditPassword = createAction('CANCEL_EDIT_PASSWORD');
 export const login = (email, password) => dispatch => {
   dispatch(loginRequest());
   return axios.post(`${TIMBLIN_URL}/login`, {
-    email,
-    password
-  })
+      email,
+      password
+    })
     .then(response => {
       dispatch(loginSuccess(response.data))
     })
@@ -49,8 +49,8 @@ export const login = (email, password) => dispatch => {
 export const logout = (accessToken) => dispatch => {
   dispatch(logoutRequest());
   return axios.delete(`${TIMBLIN_URL}/logout?accessToken=${accessToken}`, {
-    accessToken
-  })
+      accessToken
+    })
     .then(response => {
       if (response.status !== 200)
         throw Error();
@@ -66,9 +66,9 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
 
   return axios.patch(`${TIMBLIN_URL}/user/${userId}?accessToken=${accessToken}`, {
 
-    firstName: user.firstName,
-    lastName: user.lastName
-  })
+      firstName: user.firstName,
+      lastName: user.lastName
+    })
     .then(response => {
       dispatch(editProfileSuccess(response.data))
 
@@ -82,7 +82,7 @@ export const editProfile = (accessToken, userId, user) => dispatch => {
 export const editPassword = (accessToken, user, values) => dispatch => {
   let confirmPassword;
   if (user) {
-    if (values.newPassword != values.currentPassword && values.newPassword == values.confirmPassword) {
+    if (values.newPassword !== values.currentPassword && values.newPassword === values.confirmPassword) {
       confirmPassword = values.confirmPassword
       console.log("confirmed!")
     } else {
@@ -92,8 +92,8 @@ export const editPassword = (accessToken, user, values) => dispatch => {
   dispatch(editPasswordRequest());
   console.log(user);
   axios.patch(`${TIMBLIN_URL}/user/${user.id}?accessToken=${accessToken}`, {
-    password: values.confirmPassword
-  })
+      password: values.confirmPassword
+    })
     .then(response => {
       dispatch(editPasswordSuccess(response.data))
     })

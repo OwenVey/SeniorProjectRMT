@@ -1,6 +1,7 @@
+
 // import React, { Component } from "react";
 // import { Button } from 'antd';
-// let { json2excel, excel2json } = require('js2excel');
+// let { json2excel } = require('js2excel');
 
 // // excel's data will be exports, which you probably get it from server.
 // let data = [
@@ -36,17 +37,17 @@
 //             console.error('export error');
 //         }
 
-//         // for webpack 3: dynamic import
-//         import(/* webpackChunkName: "js2excel" */ 'js2excel').then(({ json2excel }) => {
-//             json2excel({
-//                 data,
-//                 name: 'test',
-//                 formateDate: 'dd/mm/yyyy'
-//             });
-//         }).catch((e) => {
 
-//         });
-//     };
+        // for webpack 3: dynamic import
+        // import(/* webpackChunkName: "js2excel" */ 'js2excel').then(({ json2excel }) => {
+        //     json2excel({
+        //         data,
+        //         name: 'test',
+        //         formateDate: 'dd/mm/yyyy'
+        //     });
+        // }).catch((e) => {
+
+        // });
 
 //     render() {
 

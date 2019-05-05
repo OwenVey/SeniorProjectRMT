@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
 import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
-import { getUsers, showEditUserModal, showAddUserModal } from "../../../actions/users";
+import { getUsers, getGroupLinks, showEditUserModal, showAddUserModal } from "../../../actions/users";
+import { getUserGroups } from '../../../actions/userGroups'
 import EditUserModal from "./EditUserModal";
 import AddUserModal from './AddUserModal';
 import "./Users.css";
@@ -198,27 +199,8 @@ class Users extends Component {
           if (userGroups)
             return (
               userGroups.map(userGroup => {
-                let color;
-                switch (userGroup) {
-                  case "Developer":
-                    color = "geekblue";
-                    break;
-                  case "Admin":
-                    color = "red";
-                    break;
-                  case "Product Owner":
-                    color = "green";
-                    break;
-                  case "Scrum Master":
-                    color = "purple";
-                    break;
-                  case "Customer":
-                    color = "gold";
-                    break;
-                  default:
-                    color = "";
-                }
-                return <Tag key={color} color={color}>{userGroup}</Tag>;
+                const groupName = this.props.userGroups.find(uG => uG.id === userGroup.groupId).name;
+                return <Tag key={userGroup.id} >{groupName}</Tag>;
               })
             )
         }
@@ -249,6 +231,8 @@ class Users extends Component {
   };
 
   componentWillMount() {
+    if (this.props.userGroups.length === 0)
+      this.props.getUserGroups(this.props.accessToken);
     if (this.props.users.length === 0)
       this.props.getUsers(this.props.accessToken);
   }
@@ -334,6 +318,7 @@ const mapStateToProps = state => ({
   editUserModalVisible: state.users.editUserModalVisibility,
   addUserModalVisible: state.users.addUserModalVisibility,
   loadingUsers: state.users.loadingUsers,
+  userGroups: state.userGroups.userGroups
 });
 
-export default connect(mapStateToProps, { getUsers, showEditUserModal, showAddUserModal })(Users);
+export default connect(mapStateToProps, { getUsers, getGroupLinks, showEditUserModal, showAddUserModal, getUserGroups })(Users);

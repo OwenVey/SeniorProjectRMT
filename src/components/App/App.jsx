@@ -6,11 +6,13 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import Navbar from "../Navbar/Navbar.jsx";
 import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
 import LoginPage from "../LoginPage/LoginPage.jsx";
+import RecoveryPage from "../RecoveryPage/RecoveryPage.jsx"
 import HomePage from "../Home/HomePage/HomePage.jsx";
 import ProjectPage from "../Projects/ProjectPage/ProjectPage.jsx";
 import AdminPage from "../Admin/AdminPage/AdminPage.jsx";
 import ProfilePage from "../Profile/ProfilePage/ProfilePage.jsx"
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
+
 
 library.add(fas, far);
 
@@ -22,6 +24,10 @@ const App = () => (
       <Route
         path="/login"
         component={LoginPage}
+      />
+      <Route
+        path="/recovery"
+        component={RecoveryPage}
       />
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PrivateRoute
