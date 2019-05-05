@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import { Alert, Button, Checkbox, Card } from 'antd';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -52,7 +52,9 @@ const LoginPage = (props) => {
               <div className='error'>{errors.password}</div>
 
               <Checkbox>Remember me</Checkbox>
-              <a className="login-form-forgot" href="/">Forgot password</a>
+              <NavLink to='/recovery'>
+                <a className="login-form-forgot">Forgot password</a>
+              </NavLink>
 
               <Button type="primary" htmlType="submit" className="login-form-button" loading={props.loading}>Log in</Button>
             </Form>

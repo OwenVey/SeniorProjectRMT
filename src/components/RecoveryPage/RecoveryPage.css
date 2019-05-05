@@ -11,7 +11,7 @@
   margin-bottom: 24px;
 }
 
-.login-form {
+.recovery-form {
   width: 300px;
 }
 
@@ -19,7 +19,11 @@
   float: right;
 }
 
-.login-form-button {
+.back-form-button {
+  width: 100%;
+  margin-top: 15px;
+}
+.recovery-form-button {
   width: 100%;
   margin-top: 15px;
 }
