@@ -6,29 +6,34 @@ import {
   addUserRequest,
   addUserSuccess,
   addUserFailure,
+  addUserGroupLinkRequest,
+  addUserGroupLinkSuccess,
+  addUserGroupLinkFailure,
   showAddUserModal,
   hideAddUserModal,
   editUserRequest,
   editUserSuccess,
   editUserFailure,
   showEditUserModal,
-  hideEditUserModal
+  hideEditUserModal,
+  fetchGroupLinksRequest,
+  fetchGroupLinksSuccess,
+  fetchGroupLinksFailure
 } from "../actions/users";
 
 const initialUsersState = {
   loadingUsers: true,
   users: [],
   loading: false,
+  loadingGroups: false,
   fetchErrorMessage: '',
+  fetchGroupLinksErrorMessage: '',
   postErrorMessage: '',
+  postGroupErrorMessage: '',
   patchErrorMessage: '',
-
   addUserModalVisibility: false,
-
   editUserModalVisibility: false,
-
   editUser: '',
-
 };
 
 export const usersReducer = createReducer(initialUsersState, {
@@ -49,6 +54,25 @@ export const usersReducer = createReducer(initialUsersState, {
     state.loading = false;
     state.fetchErrorMessage = action.payload;
   },
+
+  [fetchGroupLinksRequest]: (state, action) => {
+    state.loading = true;
+    state.fetchGroupLinksErrorMessage = '';
+  },
+
+  [fetchGroupLinksSuccess]: (state, action) => {
+    state.loading = false;
+    const userId = action.payload.userId;
+    const groups = action.payload.groups;
+    state.users.find(user => user.id === userId).userGroups = groups;
+  },
+
+  [fetchGroupLinksFailure]: (state, action) => {
+    state.loading = false;
+    state.fetchErrorMessage = action.payload;
+
+
+  },
   //-------------------------------------------------------------------
   // Adding A User
   //-------------------------------------------------------------------
@@ -64,6 +88,18 @@ export const usersReducer = createReducer(initialUsersState, {
   [addUserFailure]: (state, action) => {
     state.loading = false;
     state.postErrorMessage = action.payload;
+  },
+
+  [addUserGroupLinkRequest]: (state, action) => {
+    state.loadingGroups = true;
+    state.postGroupErrorMessage = '';
+  },
+  [addUserGroupLinkSuccess]: (state, action) => {
+    state.loadingGroups = false;
+  },
+  [addUserGroupLinkFailure]: (state, action) => {
+    state.loadingGroups = false;
+    state.postGroupErrorMessage = action.payload;
   },
   //Modal Switching
   [showAddUserModal]: (state, action) => {

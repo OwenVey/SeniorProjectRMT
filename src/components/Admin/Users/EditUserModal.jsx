@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Modal, Input, Select, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getUserGroups } from '../../../actions/userGroups'
 import { hideEditUserModal, editUser } from "../../../actions/users";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-const userGroups = [
-  <Option key="Developer">Developer</Option>,
-  <Option key="Admin">Admin</Option>,
-  <Option key="PO">Product Owner</Option>,
-  <Option key="SM">Scrum Master</Option>,
-  <Option key="Customer">Customer</Option>
-];
+// const userGroups = [
+//   <Option key="Developer">Developer</Option>,
+//   <Option key="Admin">Admin</Option>,
+//   <Option key="PO">Product Owner</Option>,
+//   <Option key="SM">Scrum Master</Option>,
+//   <Option key="Customer">Customer</Option>
+// ];
 
 class EditUserModal extends Component {
   constructor(props) {
@@ -65,6 +66,11 @@ class EditUserModal extends Component {
   handleUserGroupChange = e => {
     this.setState({ newUserGroups: e.map(userGroup => userGroup.label) });
   };
+
+  componentWillMount() {
+    if (this.props.userGroups.length === 0)
+      this.props.getUserGroups(this.props.accessToken)
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -137,7 +143,7 @@ class EditUserModal extends Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem style={{ marginBottom: "0px" }} label="User Groups">
+            {/* <FormItem style={{ marginBottom: "0px" }} label="User Groups">
               <Select
                 labelInValue
                 mode="multiple"
@@ -147,7 +153,25 @@ class EditUserModal extends Component {
               >
                 {userGroups}
               </Select>
-            </FormItem>
+            </FormItem> */}
+            <FormItem style={{ marginBottom: '0px' }} label="User Groups" >
+            {getFieldDecorator('userGroup', {
+              rules: [
+                //{ required: true, message: 'Please select a User Group' }
+              ],
+            })(
+              <Select
+                mode='multiple'
+                placeholder='Please select a user group'
+                showSearch
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                {this.props.userGroups.map(userGroup => (
+                  <Option key={userGroup.id} value={userGroup.id}>{`${userGroup.name}`}</Option>
+                ))}
+              </Select>
+            )}
+          </FormItem>
           </Form>
         </Modal>
       </div>
@@ -157,12 +181,13 @@ class EditUserModal extends Component {
 
 const mapStateToProps = state => ({
   accessToken: state.authentication.accessToken,
-  editableUser: state.users.editUser
+  editableUser: state.users.editUser,
+  userGroups: state.userGroups.userGroups,
 });
 
 export default Form.create()(
   connect(
     mapStateToProps,
-    { hideEditUserModal, editUser }
+    { getUserGroups, hideEditUserModal, editUser }
   )(EditUserModal)
 );
