@@ -93,7 +93,7 @@ class ImportToProjectModal extends Component {
                 <div>
                     <h2>Import</h2>
                     <div>
-                        <input type="file" onChange={this.fileHandler.bind(this)} style="60" />
+                        <input type="file" onChange={this.fileHandler.bind(this)}/>
                     </div>
                 </div>
             </div>
