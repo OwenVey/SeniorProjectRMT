@@ -19,9 +19,6 @@ export const addProjectRequest = createAction('ADD_PROJECT_REQUEST');
 export const addProjectSuccess = createAction('ADD_PROJECT_SUCCESS');
 export const addProjectFailure = createAction('ADD_PROJECT_FAILURE');
 
-export const clickAddProject = createAction('CLICK_ADD_PROJECT');
-export const clickCancelAddProject = createAction('CLICK_CANCEL_ADD_PROJECT');
-
 export const clickEditProject = createAction('CLICK_EDIT_PROJECT');
 export const clickCancelEditProject = createAction('CLICK_CANCEL_EDIT_PROJECT');
 
