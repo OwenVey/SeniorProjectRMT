@@ -1,54 +1,60 @@
-import React from 'react';
-import { Redirect, NavLink } from 'react-router-dom';
-import { Alert, Button, Card } from 'antd';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import './RecoveryPage.css';
+import React, { Component } from "react";
+import { Button } from 'antd';
+let { json2excel } = require('js2excel');
 
-const PasswordSchema = Yup.object().shape({
-    email: Yup.string()
-        .email('Invalid email')
-        .required('Required'),
-    password: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Required'),
-});
+// excel's data will be exports, which you probably get it from server.
+let data = [
+    {
+        "userId": 1,
+        "userPhoneNumber": 1888888888,
+        "userAddress": 'xxxx',
+        "date": '2013/09/10 09:10'  // string
+    },
+    {
+        "userId": 2,
+        "userPhoneNumber": 1888888888,
+        "userAddress": 'xxxx',
+        "date": new Date()
+    },
+    {
+        "userId": 3,
+        "userPhoneNumber": 1888888888,
+        "userAddress": 'xxxx',
+        "date": new Date()
+    }
+];
 
-const PasswordRecovery = (props) => {
-    return (
-        <div className='centered'>
+class ExportButtonExcel extends Component {
+    handleExportExcel = () => {
+        try {
+            json2excel({
+                data,
+                name: 'user-info-data',
+                formateDate: 'yyyy/mm/dd'
+            });
+        } catch (e) {
+            console.error('export error');
+        }
 
-            <Formik
-                initialValues={{
-                    email: '',
-                }}
-                validationSchema={PasswordSchema}
-                onSubmit={values => {
-                    props.login(values.email)
-                }}
-                render={({ errors, touched }) => (
-                    <Card title='Forgot Password?'>
-                        <Form className="recovery-form">
+        // for webpack 3: dynamic import
+        // import(/* webpackChunkName: "js2excel" */ 'js2excel').then(({ json2excel }) => {
+        //     json2excel({
+        //         data,
+        //         name: 'test',
+        //         formateDate: 'dd/mm/yyyy'
+        //     });
+        // }).catch((e) => {
 
-                            {props.invalidLogin && <Alert className='error-alert' message="Invalid login" type="error" />}
+        // });
+    };
 
-                            <div>Email</div>
-                            <Field name="email" type="email" placeholder='Email' className='ant-input' />
-                            <div className='error'>{errors.email}</div>
+    render() {
 
-
-                            <Button type="primary" htmlType="submit" className="recovery-form-button">Reset Password</Button>
-
-                            <NavLink to='/login'>
-                                <Button type="primary" className="back-form-button">Back</Button>
-                            </NavLink>
-                        </Form>
-                    </Card>
-                )}
-            >
-            </Formik>
-        </div>
-    );
+        return (
+            <React.Fragment>
+                <Button icon="export" onClick={() => this.handleExportExcel()}>Export to Excel</Button>
+            </React.Fragment>
+        );
+    }
 }
-export default PasswordRecovery;
+export default ExportButtonExcel;
