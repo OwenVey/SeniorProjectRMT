@@ -139,13 +139,13 @@ class UserGroups extends Component {
             );
         },
       },
-      {
-        title: '# of Users',
-        dataIndex: 'numUsers',
-        width: 150,
-        /*key: 'groupName',*/
-        render: text => <span> [Unimplemented] </span>,
-      },
+      // {
+      //   title: '# of Users',
+      //   dataIndex: 'numUsers',
+      //   width: 150,
+      //   /*key: 'groupName',*/
+      //   render: text => <span> [Unimplemented] </span>,
+      // },
       {
         title: 'ProjectId',
         dataIndex: 'projectId',
