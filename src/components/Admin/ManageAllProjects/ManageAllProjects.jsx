@@ -42,28 +42,25 @@ class ManageAllProjects extends Component {
 				align: 'center',
 				render: (id, project) => (
 					<>
-						<Tooltip title="File">
-							<Icon onClick={() => this.props.clickImportToProject(project)}>
-								<FontAwesomeIcon icon='file-excel' color='#1890ff' />
-							</Icon>
-						</Tooltip>
-						<Divider type='vertical' />
 						<Tooltip title="Edit Project Info">
 							<Icon onClick={() => this.props.clickEditProject(project)}>
 								<FontAwesomeIcon icon='edit' color='#1890ff' />
 							</Icon>
 						</Tooltip>
 						<Divider type='vertical' />
-						<Tooltip title="Delete Project">
-							<Icon onClick={() => this.handleDeleteProject(project)}>
-								<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' />
-							</Icon>
-						</Tooltip>
-						{/* <Tooltip title="Branch Project">
-							<Icon onClick={() => this.props.clickAddBranchProject(project)}>
-								<FontAwesomeIcon icon='code-branch' color='#370682' />
-							</Icon>
-						</Tooltip> */}
+						<Dropdown
+							overlay={<Menu>
+								<Menu.Item onClick={() => this.props.clickImportToProject(project)}>
+									<FontAwesomeIcon icon='file-excel' color='#1890ff' /> File
+								</Menu.Item>
+								<Menu.Item onClick={() => this.handleDeleteProject(project)}>
+									<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /> Delete
+              					</Menu.Item>
+							</Menu>}>
+							<a href='#none' className="ant-dropdown-link">
+								<Icon type="down" />
+							</a>
+						</Dropdown>
 					</>
 				),
 			},
@@ -407,20 +404,6 @@ class ManageAllProjects extends Component {
 		return this.props.users.filter(user => user.id === userId)[0]
 	}
 
-	branchMenuDropdown = (
-		<Menu>
-			<Menu.Item onClick={(branch) => this.props.clickAddBranchProject(branch)}>
-				<FontAwesomeIcon icon='code-branch' color='#370682' /> Branch
-      </Menu.Item>
-			<Menu.Item>
-				<FontAwesomeIcon icon='code-branch' color='#1aa526' /> Merge
-      </Menu.Item>
-			<Menu.Item>
-				<FontAwesomeIcon icon='trash-alt' color='#aa0a0a' /> Delete
-      </Menu.Item>
-		</Menu>
-	)
-
 	expandedRowRender = (projectId) => {
 		const columns = [
 			{
@@ -481,10 +464,6 @@ class ManageAllProjects extends Component {
 					return moment(text).format('MM-DD-YYYY')
 				}
 			},
-
-			//{ title: 'Is Locked', dataIndex: 'isLocked', key: 'isLocked' },
-			//{ title: 'Locked By', dataIndex: 'lockedById', key: 'lockedById' },
-
 			{ title: 'Trunk ID', dataIndex: 'trunkId', key: 'trunkId' },
 		];
 

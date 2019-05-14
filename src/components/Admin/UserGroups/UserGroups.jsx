@@ -149,57 +149,24 @@ class UserGroups extends Component {
       {
         title: 'ProjectId',
         dataIndex: 'projectId',
-        key: 'projectId',
-        defaultSortOrder: 'ascend',
-        width: 150,
-        sorter: (a, b) => a.projectId.localeCompare(b.projectId),
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-          <div className="custom-filter-dropdown">
-            <Input
-              ref={ele => (this.searchInput = ele)}
-              placeholder="Search Project Id"
-              value={selectedKeys[0]}
-              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={this.handleSearch(selectedKeys, confirm)}
-            />
-            <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-              Search
-            </Button>
-            <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-          </div>
-        ),
-        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#a9a9a9' : '#a9a9a9' }} />, //108ee9
-        onFilter: (value, record) => record.projectId.toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownVisibleChange: visible => {
-          if (visible) {
-            setTimeout(() => {
-              this.searchInput.focus();
-            });
-          }
-        },
-        render: (text) => {
-          const { searchText } = this.state;
-          return searchText ? (
-            <span>
-              {text
-                .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))
-                .map((fragment, i) =>
-                  fragment.toLowerCase() === searchText.toLowerCase() ? (
-                    <span key={i} className="highlight">
-                      {fragment}
-                    </span>
-                  ) : (
-                      fragment
-                    ) // eslint-disable-line
-                )}
-            </span>
-          ) : (
-              text
-            );
-        },
-      }],
+				key: 'projectId',
+				align: 'center',
+				width: 100,
+				render: projectId => {
+					let name = ''
+					if (this.props.projects.length !== 0)
+						name = this.lookupProject(projectId).name
+					return (
+						name
+					)
+				},
+			}],
   };
 
+  lookupProject(projectId) {
+		return this.props.projects.filter(project => project.id === projectId)[0]
+  }
+  
   componentWillMount() {
     if (this.props.userGroups.length === 0)
       this.props.getUserGroups(this.props.accessToken);

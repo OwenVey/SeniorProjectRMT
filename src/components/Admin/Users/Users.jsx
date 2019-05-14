@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Resizable } from "react-resizable";
 import { connect } from "react-redux";
-import { Table, Tag, Button, Input, Icon, Tooltip } from "antd";
+import { Table, Tag, Button, Input, Icon, Tooltip, Pagination } from "antd";
 import { getUsers, getGroupLinks, showEditUserModal, showAddUserModal } from "../../../actions/users";
 import { getUserGroups } from '../../../actions/userGroups'
 import EditUserModal from "./EditUserModal";
@@ -269,7 +269,7 @@ class Users extends Component {
       ...col,
       onHeaderCell: column => ({
         width: column.width,
-        onResize: this.handleResize(index)
+        onResize: this.handleResize(index),
       })
     }));
 
@@ -305,6 +305,7 @@ class Users extends Component {
           dataSource={this.props.users}
           bordered
           loading={this.props.loadingUsers}
+          pagination={{ pageSize: 6 }}
         />
         {this.props.editUserModalVisible && <EditUserModal />}
       </>
